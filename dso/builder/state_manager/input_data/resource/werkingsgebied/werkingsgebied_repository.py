@@ -14,7 +14,7 @@ class WerkingsgebiedRepository:
         werkingsgebied_id = werkingsgebied["UUID"]
         werkingsgebied["provincie_id"] = self._provincie_id
         werkingsgebied["expression_taal"] = self._expression_taal
-        self._werkingsgebieden[werkingsgebied_id] = Werkingsgebied.model_validate(werkingsgebied)
+        self._werkingsgebieden[werkingsgebied_id] = Werkingsgebied.parse_obj(werkingsgebied)
 
     def add_list(self, werkingsgebieden: List[dict]):
         for werkingsgebied in werkingsgebieden:

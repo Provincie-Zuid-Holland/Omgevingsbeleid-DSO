@@ -10,7 +10,7 @@ class AssetRepository:
 
     def add(self, asset: dict):
         asset_id = asset["UUID"]
-        self._assets[asset_id] = Asset.model_validate(asset)
+        self._assets[asset_id] = Asset.parse_obj(asset)
 
     def add_list(self, assets: List[dict]):
         for asset in assets:

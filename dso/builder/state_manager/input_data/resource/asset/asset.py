@@ -26,9 +26,9 @@ class Meta(BaseModel):
     Dpi: int = Field(150)
 
     @root_validator(pre=True)
-    def generate_formaat(fields: dict):
-        fields["Formaat"] = IllustratieFormaat[fields["ext"]]
-        return fields
+    def generate_formaat(cls, values: dict):
+        values["Formaat"] = IllustratieFormaat[values["ext"]]
+        return values
 
 
 class Asset(BaseModel):

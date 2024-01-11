@@ -64,11 +64,11 @@ class InputDataLoader:
         return data
 
     def _create_besluit(self, besluit_config: dict):
-        besluit = Besluit.model_validate(besluit_config)
+        besluit = Besluit.parse_obj(besluit_config)
         return besluit
 
     def _create_regeling(self, besluit_config: dict):
-        besluit = Regeling.model_validate(besluit_config)
+        besluit = Regeling.parse_obj(besluit_config)
         return besluit
 
     def _create_procedure_verloop(
@@ -76,7 +76,7 @@ class InputDataLoader:
         publication_settings: PublicationSettings,
         procedure_config: dict,
     ) -> ProcedureVerloop:
-        stappen: List[ProcedureStap] = [ProcedureStap.model_validate(s) for s in procedure_config["stappen"]]
+        stappen: List[ProcedureStap] = [ProcedureStap.parse_obj(s) for s in procedure_config["stappen"]]
         procedure_verloop = ProcedureVerloop(
             bekend_op=publication_settings.datum_bekendmaking,
             stappen=stappen,
