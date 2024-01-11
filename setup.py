@@ -10,7 +10,7 @@ setup(
     author_email='aa.wijsman@pzh.nl, jm.moos@pzh.nl',
     url='https://github.com/Provincie-Zuid-Holland/Omgevingsbeleid-DSO',  
     license='EUPL-1.2',  
-    package_dir={"": "dso"},
+    package_dir={"": "."},
     packages=find_packages(),
     install_requires=[
         'beautifulsoup4>=4.12.2',
