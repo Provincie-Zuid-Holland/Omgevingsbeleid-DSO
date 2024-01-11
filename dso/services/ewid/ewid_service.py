@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
-from dso.builder.state_manager.state_manager import StateManager
-from dso.services.ewid import ELEMENT_REF, EIDGenerationError
+from ...builder.state_manager.state_manager import StateManager
+from . import ELEMENT_REF, EIDGenerationError
 
 
 class EWIDService:

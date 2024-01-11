@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional
 
-from dso.builder.state_manager.input_data.resource.policy_object.policy_object import PolicyObject
+from .policy_object import PolicyObject
 
 
 class PolicyObjectRepository:

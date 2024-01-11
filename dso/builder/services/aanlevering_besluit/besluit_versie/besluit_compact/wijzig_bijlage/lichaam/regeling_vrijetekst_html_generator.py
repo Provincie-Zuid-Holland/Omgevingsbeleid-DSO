@@ -3,9 +3,9 @@ from copy import copy
 from lxml import etree
 from lxml import html as lxml_html
 
-from dso.builder.state_manager.input_data.object_template_repository import ObjectTemplateRepository
-from dso.builder.state_manager.input_data.resource.policy_object.policy_object_repository import PolicyObjectRepository
-from dso.builder.state_manager.state_manager import StateManager
+from .......state_manager.input_data.object_template_repository import ObjectTemplateRepository
+from .......state_manager.input_data.resource.policy_object.policy_object_repository import PolicyObjectRepository
+from .......state_manager.state_manager import StateManager
 
 
 class RegelingVrijetekstHtmlGenerator:

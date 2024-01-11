@@ -1,9 +1,9 @@
 from typing import List
 
-from dso.builder.state_manager.input_data.input_data_loader import InputData
-from dso.builder.state_manager.models import OutputFile
-from dso.builder.state_manager.states.artikel_eid_repository import ArtikelEidRepository
-from dso.builder.state_manager.states.ow_repository import OWStateRepository
+from .input_data.input_data_loader import InputData
+from .models import OutputFile
+from .states.artikel_eid_repository import ArtikelEidRepository
+from .states.ow_repository import OWStateRepository
 
 
 class StateManager:

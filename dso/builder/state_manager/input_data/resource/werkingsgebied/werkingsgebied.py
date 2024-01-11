@@ -5,7 +5,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
-from dso.models import FRBR
+from ......models import FRBR
 
 
 class Locatie(BaseModel):

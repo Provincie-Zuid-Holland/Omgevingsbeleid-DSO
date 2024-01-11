@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel, validator
 
-from dso.services.utils.waardelijsten import OnderwerpType, RechtsgebiedType
+from ....services.utils.waardelijsten import OnderwerpType, RechtsgebiedType
 
 
 class Regeling(BaseModel):

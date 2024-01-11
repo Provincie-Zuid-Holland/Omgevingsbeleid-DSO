@@ -1,8 +1,8 @@
 from typing import List
 
-from dso.builder.state_manager.input_data.resource.policy_object.policy_object_repository import PolicyObjectRepository
-from dso.services.utils.helpers import load_json_data
-from dso.services.utils.os import create_normalized_path
+from .policy_object_repository import PolicyObjectRepository
+from ......services.utils.helpers import load_json_data
+from ......services.utils.os import create_normalized_path
 
 
 class PolicyObjectResourceLoader:

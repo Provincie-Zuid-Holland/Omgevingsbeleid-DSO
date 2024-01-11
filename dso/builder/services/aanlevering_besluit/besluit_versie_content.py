@@ -1,14 +1,14 @@
-from dso.builder.services.aanlevering_besluit.besluit_versie.besluit_compact_content import BesluitCompactContent
-from dso.builder.services.aanlevering_besluit.besluit_versie.besluit_metadata_content import BesluitMetadataContent
-from dso.builder.services.aanlevering_besluit.besluit_versie.consolidatie_informatie_content import (
+from .besluit_versie.besluit_compact_content import BesluitCompactContent
+from .besluit_versie.besluit_metadata_content import BesluitMetadataContent
+from .besluit_versie.consolidatie_informatie_content import (
     ConsolidatieInformatieContent,
 )
-from dso.builder.services.aanlevering_besluit.besluit_versie.expression_identificatie_content import (
+from .besluit_versie.expression_identificatie_content import (
     ExpressionIdentificatieContent,
 )
-from dso.builder.services.aanlevering_besluit.besluit_versie.procedureverloop_content import ProcedureverloopContent
-from dso.builder.state_manager.state_manager import StateManager
-from dso.services.utils.helpers import load_template
+from .besluit_versie.procedureverloop_content import ProcedureverloopContent
+from ...state_manager.state_manager import StateManager
+from ....services.utils.helpers import load_template
 
 
 class BesluitVersieContent:

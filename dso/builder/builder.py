@@ -1,19 +1,19 @@
 import shutil
 from typing import List
 
-from dso.builder.services import BuilderService
-from dso.builder.services.aanlevering_besluit.aanlevering_besluit_builder import AanleveringBesluitBuilder
-from dso.builder.services.asset.asset_builder import AssetBuilder
-from dso.builder.services.geo.geo_informatie_object_vaststelling_builder import GeoInformatieObjectVaststellingBuilder
-from dso.builder.services.geo.gio_aanlevering_informatie_object_builder import GioAanleveringInformatieObjectBuilder
-from dso.builder.services.lvbb.manifest_builder import ManifestBuilder
-from dso.builder.services.lvbb.opdracht_builder import OpdrachtBuilder
-from dso.builder.services.ow.ow_builder import OwBuilder
-from dso.builder.state_manager.input_data.input_data_loader import InputData
-from dso.builder.state_manager.models import AssetContentData, FileContentData, StrContentData
-from dso.builder.state_manager.state_manager import StateManager
-from dso.services.assets.create_image import create_image
-from dso.services.utils.os import empty_directory
+from .services import BuilderService
+from .services.aanlevering_besluit.aanlevering_besluit_builder import AanleveringBesluitBuilder
+from .services.asset.asset_builder import AssetBuilder
+from .services.geo.geo_informatie_object_vaststelling_builder import GeoInformatieObjectVaststellingBuilder
+from .services.geo.gio_aanlevering_informatie_object_builder import GioAanleveringInformatieObjectBuilder
+from .services.lvbb.manifest_builder import ManifestBuilder
+from .services.lvbb.opdracht_builder import OpdrachtBuilder
+from .services.ow.ow_builder import OwBuilder
+from .state_manager.input_data.input_data_loader import InputData
+from .state_manager.models import AssetContentData, FileContentData, StrContentData
+from .state_manager.state_manager import StateManager
+from ..services.assets.create_image import create_image
+from ..services.utils.os import empty_directory
 
 
 class Builder:

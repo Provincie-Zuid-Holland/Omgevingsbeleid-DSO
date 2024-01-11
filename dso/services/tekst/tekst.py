@@ -4,13 +4,7 @@ from typing import Any, Dict, List, Optional, Type, TypeAlias, Union
 
 from bs4 import BeautifulSoup, CData, Comment, Declaration, Doctype, NavigableString, ProcessingInstruction, Tag
 
-from .lijst import (
-    LijstType,
-    LijstTypeOrdered,
-    LijstTypeUnordered,
-    NumberingStrategy,
-    numbering_factory,
-)
+from .lijst import LijstType, LijstTypeOrdered, LijstTypeUnordered, NumberingStrategy, numbering_factory
 
 object_code_regex = r"\[OBJECT-CODE:(.*?)\]"
 gebied_uuid_regex = r"\[GEBIED-UUID:(.*?)\]"

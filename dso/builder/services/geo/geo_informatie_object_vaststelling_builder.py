@@ -1,12 +1,12 @@
 from typing import List
 
-from dso.builder.services import BuilderService
-from dso.builder.services.geo.gml_geometry_generator import GMLGeometryGenerator
-from dso.builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
-from dso.builder.state_manager.models import OutputFile, StrContentData
-from dso.builder.state_manager.state_manager import StateManager
-from dso.models import ContentType
-from dso.services.utils.helpers import load_template
+from ...services import BuilderService
+from ...services.geo.gml_geometry_generator import GMLGeometryGenerator
+from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
+from ...state_manager.models import OutputFile, StrContentData
+from ...state_manager.state_manager import StateManager
+from ....models import ContentType
+from ....services.utils.helpers import load_template
 
 
 class GeoInformatieObjectVaststellingBuilder(BuilderService):

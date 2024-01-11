@@ -1,7 +1,7 @@
 import uuid
 from typing import Dict, List, Optional
 
-from dso.builder.state_manager.input_data.resource.asset.asset import Asset
+from .asset import Asset
 
 
 class AssetRepository:

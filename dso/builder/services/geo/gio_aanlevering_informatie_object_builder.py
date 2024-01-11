@@ -1,10 +1,10 @@
-from dso.builder.services import BuilderService
-from dso.builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
-from dso.builder.state_manager.models import OutputFile, StrContentData
-from dso.builder.state_manager.state_manager import StateManager
-from dso.models import ContentType
-from dso.services.utils.hashlib import compute_sha512_of_output_file
-from dso.services.utils.helpers import load_template
+from ...services import BuilderService
+from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
+from ...state_manager.models import OutputFile, StrContentData
+from ...state_manager.state_manager import StateManager
+from ....models import ContentType
+from ....services.utils.hashlib import compute_sha512_of_output_file
+from ....services.utils.helpers import load_template
 
 
 class GioAanleveringInformatieObjectBuilder(BuilderService):

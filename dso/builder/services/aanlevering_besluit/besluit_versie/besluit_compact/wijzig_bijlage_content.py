@@ -1,12 +1,12 @@
-from dso.builder.services.aanlevering_besluit.besluit_versie.besluit_compact.wijzig_bijlage.bijlage_werkingsgebieden_content import (
+from .wijzig_bijlage.bijlage_werkingsgebieden_content import (
     BijlageWerkingsgebiedenContent,
 )
-from dso.builder.services.aanlevering_besluit.besluit_versie.besluit_compact.wijzig_bijlage.lichaam_content import (
+from .wijzig_bijlage.lichaam_content import (
     LichaamContent,
 )
-from dso.builder.state_manager.state_manager import StateManager
-from dso.models import PublicationSettings
-from dso.services.utils.helpers import load_template
+from .....state_manager.state_manager import StateManager
+from ......models import PublicationSettings
+from ......services.utils.helpers import load_template
 
 
 class WijzigBijlageContent:

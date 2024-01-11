@@ -2,13 +2,13 @@ import os
 from dataclasses import dataclass
 from typing import List, Union
 
-from dso.builder.state_manager.input_data.besluit import Besluit
-from dso.builder.state_manager.input_data.object_template_repository import ObjectTemplateRepository
-from dso.builder.state_manager.input_data.regeling import Regeling
-from dso.builder.state_manager.input_data.resource.resource_loader import ResourceLoader
-from dso.builder.state_manager.input_data.resource.resources import Resources
-from dso.models import ProcedureStap, ProcedureVerloop, PublicationSettings
-from dso.services.utils.helpers import load_json_data
+from .besluit import Besluit
+from .object_template_repository import ObjectTemplateRepository
+from .regeling import Regeling
+from .resource.resource_loader import ResourceLoader
+from .resource.resources import Resources
+from ....models import ProcedureStap, ProcedureVerloop, PublicationSettings
+from ....services.utils.helpers import load_json_data
 
 
 @dataclass

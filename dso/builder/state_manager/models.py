@@ -1,8 +1,8 @@
 from abc import ABC
 from dataclasses import dataclass, field
 
-from dso.builder.state_manager.input_data.resource.asset.asset import Asset
-from dso.models import ContentType
+from .input_data.resource.asset.asset import Asset
+from ...models import ContentType
 
 
 class ContentData(ABC):

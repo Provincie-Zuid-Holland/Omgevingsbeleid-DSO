@@ -1,6 +1,6 @@
-from dso.builder.state_manager.models import OutputFile, StrContentData
-from dso.models import ContentType
-from dso.services.utils.helpers import load_template
+from ...state_manager.models import OutputFile, StrContentData
+from ....models import ContentType
+from ....services.utils.helpers import load_template
 
 
 class ManifestContent:

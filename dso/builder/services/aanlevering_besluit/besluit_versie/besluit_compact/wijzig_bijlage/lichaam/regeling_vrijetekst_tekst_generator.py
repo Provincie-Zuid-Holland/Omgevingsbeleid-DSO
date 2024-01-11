@@ -3,14 +3,14 @@ from uuid import UUID
 from bs4 import BeautifulSoup
 from lxml import etree
 
-from dso.builder.state_manager.input_data.resource.asset.asset import Asset
-from dso.builder.state_manager.input_data.resource.asset.asset_repository import AssetRepository
-from dso.builder.state_manager.state_manager import StateManager
-from dso.models import PublicationSettings
-from dso.services.ewid.ewid_service import EWIDService
-from dso.services.tekst.middleware import middleware_enrich_table
-from dso.services.tekst.tekst import Lichaam
-from dso.services.utils.helpers import is_html_valid
+from .......state_manager.input_data.resource.asset.asset import Asset
+from .......state_manager.input_data.resource.asset.asset_repository import AssetRepository
+from .......state_manager.state_manager import StateManager
+from ........models import PublicationSettings
+from ........services.ewid.ewid_service import EWIDService
+from ........services.tekst.middleware import middleware_enrich_table
+from ........services.tekst.tekst import Lichaam
+from ........services.utils.helpers import is_html_valid
 
 
 class RegelingVrijetekstTekstGenerator:

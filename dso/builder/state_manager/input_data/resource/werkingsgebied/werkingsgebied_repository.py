@@ -1,7 +1,7 @@
 import uuid
 from typing import Dict, List, Optional
 
-from dso.builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
+from .werkingsgebied import Werkingsgebied
 
 
 class WerkingsgebiedRepository:

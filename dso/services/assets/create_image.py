@@ -1,7 +1,7 @@
 import base64
 import re
 
-from dso.builder.state_manager.input_data.resource.asset.asset import Asset
+from ...builder.state_manager.input_data.resource.asset.asset import Asset
 
 
 def create_image(asset: Asset, path: str):

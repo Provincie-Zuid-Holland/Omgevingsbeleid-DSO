@@ -1,11 +1,11 @@
 from typing import List
 
-from dso.builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
+from .werkingsgebied_repository import (
     WerkingsgebiedRepository,
 )
-from dso.models import PublicationSettings
-from dso.services.utils.helpers import load_json_data
-from dso.services.utils.os import create_normalized_path
+from ......models import PublicationSettings
+from ......services.utils.helpers import load_json_data
+from ......services.utils.os import create_normalized_path
 
 
 class WerkingsgebiedResourceLoader:

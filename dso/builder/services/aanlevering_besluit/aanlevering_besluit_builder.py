@@ -1,10 +1,10 @@
-from dso.builder.services import BuilderService
-from dso.builder.services.aanlevering_besluit.besluit_versie_content import BesluitVersieContent
-from dso.builder.services.aanlevering_besluit.regeling_versie_informatie_content import RegelingVersieInformatieContent
-from dso.builder.state_manager.models import OutputFile, StrContentData
-from dso.builder.state_manager.state_manager import StateManager
-from dso.models import ContentType
-from dso.services.utils.helpers import load_template
+from ...services import BuilderService
+from .besluit_versie_content import BesluitVersieContent
+from .regeling_versie_informatie_content import RegelingVersieInformatieContent
+from ...state_manager.models import OutputFile, StrContentData
+from ...state_manager.state_manager import StateManager
+from ....models import ContentType
+from ....services.utils.helpers import load_template
 
 
 class AanleveringBesluitBuilder(BuilderService):

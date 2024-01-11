@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from dso.builder.state_manager.state_manager import StateManager
+from ...state_manager.state_manager import StateManager
 
 
 class BuilderService(ABC):

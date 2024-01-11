@@ -1,8 +1,8 @@
 from typing import List
 
-from dso.builder.state_manager.input_data.resource.asset.asset_repository import AssetRepository
-from dso.services.utils.helpers import load_json_data
-from dso.services.utils.os import create_normalized_path
+from .asset_repository import AssetRepository
+from ......services.utils.helpers import load_json_data
+from ......services.utils.os import create_normalized_path
 
 
 class AssetResourceLoader:

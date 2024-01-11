@@ -1,8 +1,8 @@
-from dso.builder.state_manager.models import OutputFile, StrContentData
-from dso.models import ContentType
-from dso.services.ow.enums import OwRegelingsgebiedObjectType
-from dso.services.ow.models import OWRegelingsgebied
-from dso.services.utils.helpers import load_template
+from ...state_manager.models import OutputFile, StrContentData
+from ....models import ContentType
+from ....services.ow.enums import OwRegelingsgebiedObjectType
+from ....services.ow.models import OWRegelingsgebied
+from ....services.utils.helpers import load_template
 
 
 class OwRegelingsgebiedContent:

@@ -1,11 +1,11 @@
-from dso.builder.state_manager.input_data.resource.asset.asset_resource_loader import AssetResourceLoader
-from dso.builder.state_manager.input_data.resource.policy_object.policy_object_resource_loader import (
+from .asset.asset_resource_loader import AssetResourceLoader
+from .policy_object.policy_object_resource_loader import (
     PolicyObjectResourceLoader,
 )
-from dso.builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_resource_loader import (
+from .werkingsgebied.werkingsgebied_resource_loader import (
     WerkingsgebiedResourceLoader,
 )
-from dso.models import PublicationSettings
+from .....models import PublicationSettings
 
 from .resources import Resources
 

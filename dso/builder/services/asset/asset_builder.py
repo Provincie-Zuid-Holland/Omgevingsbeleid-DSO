@@ -1,10 +1,10 @@
 from typing import List
 
-from dso.builder.services import BuilderService
-from dso.builder.state_manager.input_data.resource.asset.asset import Asset
-from dso.builder.state_manager.input_data.resource.asset.asset_repository import AssetRepository
-from dso.builder.state_manager.models import AssetContentData, OutputFile
-from dso.builder.state_manager.state_manager import StateManager
+from ...services import BuilderService
+from ...state_manager.input_data.resource.asset.asset import Asset
+from ...state_manager.input_data.resource.asset.asset_repository import AssetRepository
+from ...state_manager.models import AssetContentData, OutputFile
+from ...state_manager.state_manager import StateManager
 
 
 class AssetBuilder(BuilderService):

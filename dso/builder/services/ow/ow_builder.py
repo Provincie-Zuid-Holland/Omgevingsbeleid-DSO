@@ -1,9 +1,9 @@
-from dso.builder.services import BuilderService
-from dso.builder.services.ow.ow_divisie import OwDivisieContent
-from dso.builder.services.ow.ow_locaties import OwLocatiesContent
-from dso.builder.services.ow.ow_manifest import ManifestContent
-from dso.builder.services.ow.ow_regelinggebied import OwRegelingsgebiedContent
-from dso.builder.state_manager.state_manager import StateManager
+from ...services import BuilderService
+from ...services.ow.ow_divisie import OwDivisieContent
+from ...services.ow.ow_locaties import OwLocatiesContent
+from ...services.ow.ow_manifest import ManifestContent
+from ...services.ow.ow_regelinggebied import OwRegelingsgebiedContent
+from ...state_manager.state_manager import StateManager
 
 
 class OwBuilder(BuilderService):

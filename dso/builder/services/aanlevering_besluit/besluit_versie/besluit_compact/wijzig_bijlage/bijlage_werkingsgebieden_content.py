@@ -2,11 +2,11 @@ from typing import List
 
 from lxml import etree
 
-from dso.builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
-from dso.builder.state_manager.state_manager import StateManager
-from dso.models import PublicationSettings
-from dso.services.ewid.ewid_service import EWIDService
-from dso.services.utils.helpers import load_template
+from ......state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
+from ......state_manager.state_manager import StateManager
+from .......models import PublicationSettings
+from .......services.ewid.ewid_service import EWIDService
+from .......services.utils.helpers import load_template
 
 
 class BijlageWerkingsgebiedenContent:
