@@ -2,8 +2,8 @@ from typing import Union
 
 from bs4 import BeautifulSoup, Tag
 
-from dso.services.tekst.middleware import middleware_enrich_table
-from dso.services.tekst.tekst import Divisie
+from .middleware import middleware_enrich_table
+from .tekst import Divisie
 
 
 def html_to_divisie(html: str) -> Divisie:

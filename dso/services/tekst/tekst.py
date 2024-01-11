@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional, Type, TypeAlias, Union
 
 from bs4 import BeautifulSoup, CData, Comment, Declaration, Doctype, NavigableString, ProcessingInstruction, Tag
 
-from dso.services.tekst.lijst import (
+from .lijst import (
     LijstType,
     LijstTypeOrdered,
     LijstTypeUnordered,

@@ -7,7 +7,7 @@ from io import StringIO
 from jinja2 import Environment, FileSystemLoader
 from lxml import etree
 
-from dso.exceptions import FileWriteError, TemplateError
+from ...exceptions import FileWriteError, TemplateError
 
 env = Environment(loader=FileSystemLoader("."))
 

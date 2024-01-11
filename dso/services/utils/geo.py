@@ -3,8 +3,8 @@ import os
 import re
 from xml.etree import ElementTree
 
-from utils.data import Publicatieinstructies
-from utils.waardelijsten import InformatieObjectType, Provincie, WorkType
+from .data import Publicatieinstructies
+from .waardelijsten import InformatieObjectType, Provincie, WorkType
 
 
 def extract_name(filename):

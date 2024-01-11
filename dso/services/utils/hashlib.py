@@ -1,6 +1,6 @@
 import hashlib
 
-from dso.builder.state_manager.models import AssetContentData, FileContentData, OutputFile, StrContentData
+from ...builder.state_manager.models import AssetContentData, FileContentData, OutputFile, StrContentData
 
 
 def compute_sha512(file_path):

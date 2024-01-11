@@ -1,7 +1,7 @@
 import click
 
-from dso.builder.builder import Builder
-from dso.builder.state_manager.input_data.input_data_loader import InputData, InputDataLoader
+from .builder.builder import Builder
+from .builder.state_manager.input_data.input_data_loader import InputData, InputDataLoader
 
 
 @click.group()

@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import BaseModel, Field, root_validator, validator
 
-from dso.services.utils.waardelijsten import ProcedureStappenDefinitief, Provincie
+from .services.utils.waardelijsten import ProcedureStappenDefinitief, Provincie
 
 
 # <FRBRWork>/akn/nl/bill/pv28/2023/2_2093</FRBRWork>
