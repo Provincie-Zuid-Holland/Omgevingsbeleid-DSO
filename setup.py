@@ -40,8 +40,8 @@ setup(
         'Programming Language :: Python :: 3.10',
     ],
     entry_points={
-        'console_scripts': [
-            'generate=dso.cli generate ./input/01-hello-world/main.json ./output',
-        ],
+        # 'console_scripts': [
+        #     'generate=dso.cli generate ./input/01-hello-world/main.json ./output',
+        # ],
     },
 )
