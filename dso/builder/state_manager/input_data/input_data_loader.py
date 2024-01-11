@@ -2,13 +2,13 @@ import os
 from dataclasses import dataclass
 from typing import List, Union
 
+from ....models import ProcedureStap, ProcedureVerloop, PublicationSettings
+from ....services.utils.helpers import load_json_data
 from .besluit import Besluit
 from .object_template_repository import ObjectTemplateRepository
 from .regeling import Regeling
 from .resource.resource_loader import ResourceLoader
 from .resource.resources import Resources
-from ....models import ProcedureStap, ProcedureVerloop, PublicationSettings
-from ....services.utils.helpers import load_json_data
 
 
 @dataclass

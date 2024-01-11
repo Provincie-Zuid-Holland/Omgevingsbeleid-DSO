@@ -1,12 +1,8 @@
-from .wijzig_bijlage.bijlage_werkingsgebieden_content import (
-    BijlageWerkingsgebiedenContent,
-)
-from .wijzig_bijlage.lichaam_content import (
-    LichaamContent,
-)
-from .....state_manager.state_manager import StateManager
 from ......models import PublicationSettings
 from ......services.utils.helpers import load_template
+from .....state_manager.state_manager import StateManager
+from .wijzig_bijlage.bijlage_werkingsgebieden_content import BijlageWerkingsgebiedenContent
+from .wijzig_bijlage.lichaam_content import LichaamContent
 
 
 class WijzigBijlageContent:

@@ -1,12 +1,12 @@
 from typing import List
 from uuid import UUID
 
-from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
-from ...state_manager.models import OutputFile, StrContentData
 from ....models import ContentType
 from ....services.ow.enums import OwLocatieObjectType
 from ....services.ow.models import BestuurlijkeGrenzenVerwijzing, OWAmbtsgebied, OWGebied, OWGebiedenGroep
 from ....services.utils.helpers import load_template
+from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
+from ...state_manager.models import OutputFile, StrContentData
 
 
 class OwLocatiesContent:

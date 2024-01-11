@@ -1,5 +1,5 @@
-from ....state_manager.state_manager import StateManager
 from .....services.utils.helpers import load_template
+from ....state_manager.state_manager import StateManager
 
 
 class ProcedureverloopContent:

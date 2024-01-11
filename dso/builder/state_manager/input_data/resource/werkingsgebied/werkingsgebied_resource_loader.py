@@ -1,11 +1,9 @@
 from typing import List
 
-from .werkingsgebied_repository import (
-    WerkingsgebiedRepository,
-)
 from ......models import PublicationSettings
 from ......services.utils.helpers import load_json_data
 from ......services.utils.os import create_normalized_path
+from .werkingsgebied_repository import WerkingsgebiedRepository
 
 
 class WerkingsgebiedResourceLoader:

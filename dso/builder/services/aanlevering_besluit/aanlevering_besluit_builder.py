@@ -1,10 +1,10 @@
-from ...services import BuilderService
-from .besluit_versie_content import BesluitVersieContent
-from .regeling_versie_informatie_content import RegelingVersieInformatieContent
-from ...state_manager.models import OutputFile, StrContentData
-from ...state_manager.state_manager import StateManager
 from ....models import ContentType
 from ....services.utils.helpers import load_template
+from ...services import BuilderService
+from ...state_manager.models import OutputFile, StrContentData
+from ...state_manager.state_manager import StateManager
+from .besluit_versie_content import BesluitVersieContent
+from .regeling_versie_informatie_content import RegelingVersieInformatieContent
 
 
 class AanleveringBesluitBuilder(BuilderService):

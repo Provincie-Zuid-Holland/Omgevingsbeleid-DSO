@@ -1,8 +1,8 @@
 from typing import List
 
-from .policy_object_repository import PolicyObjectRepository
 from ......services.utils.helpers import load_json_data
 from ......services.utils.os import create_normalized_path
+from .policy_object_repository import PolicyObjectRepository
 
 
 class PolicyObjectResourceLoader:

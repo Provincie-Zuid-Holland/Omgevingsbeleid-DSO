@@ -1,8 +1,8 @@
-from ...state_manager.models import OutputFile, StrContentData
 from ....models import ContentType
 from ....services.ow.enums import OwRegelingsgebiedObjectType
 from ....services.ow.models import OWRegelingsgebied
 from ....services.utils.helpers import load_template
+from ...state_manager.models import OutputFile, StrContentData
 
 
 class OwRegelingsgebiedContent:

@@ -1,8 +1,8 @@
 from typing import List
 
-from .asset_repository import AssetRepository
 from ......services.utils.helpers import load_json_data
 from ......services.utils.os import create_normalized_path
+from .asset_repository import AssetRepository
 
 
 class AssetResourceLoader:

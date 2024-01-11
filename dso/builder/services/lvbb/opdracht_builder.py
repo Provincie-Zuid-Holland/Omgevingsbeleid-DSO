@@ -1,8 +1,8 @@
+from ....models import ContentType, OpdrachtType, PublicatieOpdracht
+from ....services.utils.helpers import load_template
 from ...services import BuilderService
 from ...state_manager.models import OutputFile, StrContentData
 from ...state_manager.state_manager import StateManager
-from ....models import ContentType, OpdrachtType, PublicatieOpdracht
-from ....services.utils.helpers import load_template
 
 
 class OpdrachtBuilder(BuilderService):

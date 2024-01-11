@@ -1,6 +1,6 @@
-from ....state_manager.state_manager import StateManager
 from .....services.utils.helpers import load_template
 from .....services.utils.waardelijsten import WorkType
+from ....state_manager.state_manager import StateManager
 
 
 class ExpressionIdentificatieContent:

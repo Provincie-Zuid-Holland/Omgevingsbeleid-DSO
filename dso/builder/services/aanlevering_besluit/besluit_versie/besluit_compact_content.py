@@ -1,9 +1,7 @@
-from .besluit_compact.artikelen_content import ArtikelenContent
-from .besluit_compact.wijzig_bijlage_content import (
-    WijzigBijlageContent,
-)
-from ....state_manager.state_manager import StateManager
 from .....services.utils.helpers import load_template
+from ....state_manager.state_manager import StateManager
+from .besluit_compact.artikelen_content import ArtikelenContent
+from .besluit_compact.wijzig_bijlage_content import WijzigBijlageContent
 
 
 class BesluitCompactContent:

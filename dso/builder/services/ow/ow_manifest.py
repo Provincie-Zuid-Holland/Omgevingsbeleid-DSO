@@ -1,6 +1,6 @@
-from ...state_manager.models import OutputFile, StrContentData
 from ....models import ContentType
 from ....services.utils.helpers import load_template
+from ...state_manager.models import OutputFile, StrContentData
 
 
 class ManifestContent:

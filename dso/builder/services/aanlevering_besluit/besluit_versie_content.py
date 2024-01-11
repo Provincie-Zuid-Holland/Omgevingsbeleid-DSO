@@ -1,14 +1,10 @@
+from ....services.utils.helpers import load_template
+from ...state_manager.state_manager import StateManager
 from .besluit_versie.besluit_compact_content import BesluitCompactContent
 from .besluit_versie.besluit_metadata_content import BesluitMetadataContent
-from .besluit_versie.consolidatie_informatie_content import (
-    ConsolidatieInformatieContent,
-)
-from .besluit_versie.expression_identificatie_content import (
-    ExpressionIdentificatieContent,
-)
+from .besluit_versie.consolidatie_informatie_content import ConsolidatieInformatieContent
+from .besluit_versie.expression_identificatie_content import ExpressionIdentificatieContent
 from .besluit_versie.procedureverloop_content import ProcedureverloopContent
-from ...state_manager.state_manager import StateManager
-from ....services.utils.helpers import load_template
 
 
 class BesluitVersieContent:

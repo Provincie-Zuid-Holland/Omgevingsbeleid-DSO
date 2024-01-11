@@ -2,11 +2,11 @@ from typing import List
 
 import roman
 
+from ......models import PublicationSettings
+from ......services.utils.helpers import load_template
 from .....state_manager.input_data.besluit import Besluit
 from .....state_manager.state_manager import StateManager
 from .....state_manager.states.artikel_eid_repository import ArtikelEidType
-from ......models import PublicationSettings
-from ......services.utils.helpers import load_template
 
 
 class ArtikelenContent:

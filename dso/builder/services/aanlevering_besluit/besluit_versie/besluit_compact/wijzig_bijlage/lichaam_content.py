@@ -1,10 +1,6 @@
-from .lichaam.regeling_vrijetekst_html_generator import (
-    RegelingVrijetekstHtmlGenerator,
-)
-from .lichaam.regeling_vrijetekst_tekst_generator import (
-    RegelingVrijetekstTekstGenerator,
-)
 from ......state_manager.state_manager import StateManager
+from .lichaam.regeling_vrijetekst_html_generator import RegelingVrijetekstHtmlGenerator
+from .lichaam.regeling_vrijetekst_tekst_generator import RegelingVrijetekstTekstGenerator
 
 
 class LichaamContent:

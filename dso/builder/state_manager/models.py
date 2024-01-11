@@ -1,8 +1,8 @@
 from abc import ABC
 from dataclasses import dataclass, field
 
-from .input_data.resource.asset.asset import Asset
 from ...models import ContentType
+from .input_data.resource.asset.asset import Asset
 
 
 class ContentData(ABC):

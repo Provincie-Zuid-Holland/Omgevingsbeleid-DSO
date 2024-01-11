@@ -1,6 +1,8 @@
 import shutil
 from typing import List
 
+from ..services.assets.create_image import create_image
+from ..services.utils.os import empty_directory
 from .services import BuilderService
 from .services.aanlevering_besluit.aanlevering_besluit_builder import AanleveringBesluitBuilder
 from .services.asset.asset_builder import AssetBuilder
@@ -12,8 +14,6 @@ from .services.ow.ow_builder import OwBuilder
 from .state_manager.input_data.input_data_loader import InputData
 from .state_manager.models import AssetContentData, FileContentData, StrContentData
 from .state_manager.state_manager import StateManager
-from ..services.assets.create_image import create_image
-from ..services.utils.os import empty_directory
 
 
 class Builder:
