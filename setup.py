@@ -11,7 +11,7 @@ setup(
     url='https://github.com/Provincie-Zuid-Holland/Omgevingsbeleid-DSO',  
     license='EUPL-1.2',  
     package_dir={"": "dso"},
-    packages=find_packages(where="dso"),
+    packages=find_packages(),
     install_requires=[
         'beautifulsoup4>=4.12.2',
         'certifi>=2023.11.17',
