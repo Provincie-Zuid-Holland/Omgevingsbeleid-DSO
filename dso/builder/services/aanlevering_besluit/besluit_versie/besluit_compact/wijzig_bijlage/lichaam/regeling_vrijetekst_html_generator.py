@@ -33,8 +33,14 @@ class RegelingVrijetekstHtmlGenerator:
             if "code" not in attributes:
                 raise RuntimeError(f"Missing required attribute code for object")
             object_code: str = attributes["code"]
+            
+            if "template_name" in attributes:
+                template_name = attributes["template_name"]
+                object_template = object_template_repository.get_by_type(template_name)
+            else:
+                object_template = object_template_repository.get_by_code(object_code)
+
             policy_object = policy_object_repository.get_by_code(object_code)
-            object_template = object_template_repository.get_by_code(object_code)
             object_html: str = object_template.render(
                 o=policy_object.data,
             )
