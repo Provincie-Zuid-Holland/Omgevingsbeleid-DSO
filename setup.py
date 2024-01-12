@@ -12,6 +12,10 @@ setup(
     license='EUPL-1.2',  
     package_dir={"": "."},
     packages=find_packages(),
+    include_package_data=True,
+    package_data={
+        '': ['templates/*', 'templates/**/*'],  # Includes all files in the templates directory
+    },
     install_requires=[
         'beautifulsoup4>=4.12.2',
         'certifi>=2023.11.17',
