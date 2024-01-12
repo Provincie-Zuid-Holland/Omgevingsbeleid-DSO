@@ -39,7 +39,7 @@ class GeoInformatieObjectVaststellingBuilder(BuilderService):
             )
 
         content = load_template(
-            "templates/geo/GeoInformatieObjectVaststelling.xml",
+            "geo/GeoInformatieObjectVaststelling.xml",
             pretty_print=True,
             achtergrondVerwijzing=werkingsgebied.Achtergrond_Verwijzing,
             achtergrondActualiteit=werkingsgebied.Achtergrond_Actualiteit,

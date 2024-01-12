@@ -19,7 +19,7 @@ class AanleveringBesluitBuilder(BuilderService):
         regeling_versie_informatie_content = RegelingVersieInformatieContent(state_manager).create()
 
         content = load_template(
-            "templates/akn/AanleveringBesluit.xml",
+            "akn/AanleveringBesluit.xml",
             pretty_print=True,
             besluit_versie=besluit_versie,
             regeling_versie_informatie_content=regeling_versie_informatie_content,

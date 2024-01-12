@@ -27,7 +27,7 @@ class GioAanleveringInformatieObjectBuilder(BuilderService):
         gml_hash = compute_sha512_of_output_file(output_file)
 
         content = load_template(
-            "templates/geo/AanleveringInformatieObject.xml",
+            "geo/AanleveringInformatieObject.xml",
             pretty_print=True,
             werkingsgebied_frbr=werkingsgebied.get_FRBR(),
             bestandsnaam=werkingsgebied.get_gml_filename(),

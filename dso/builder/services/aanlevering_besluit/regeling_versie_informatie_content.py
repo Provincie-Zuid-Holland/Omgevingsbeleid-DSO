@@ -8,7 +8,7 @@ class RegelingVersieInformatieContent:
 
     def create(self) -> str:
         content = load_template(
-            "templates/akn/RegelingVersieInformatie.xml",
+            "akn/RegelingVersieInformatie.xml",
             regeling_frbr=self._state_manager.input_data.publication_settings.regeling_frbr,
             regeling=self._state_manager.input_data.regeling,
             provincie_ref=self._state_manager.input_data.publication_settings.provincie_ref,

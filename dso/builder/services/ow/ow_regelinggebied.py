@@ -38,7 +38,7 @@ class OwRegelingsgebiedContent:
 
     def create_file(self):
         content = load_template(
-            "templates/ow/owRegelingsgebied.xml",
+            "ow/owRegelingsgebied.xml",
             pretty_print=True,
             data=self.xml_data,
         )

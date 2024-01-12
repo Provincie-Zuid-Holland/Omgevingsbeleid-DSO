@@ -19,7 +19,7 @@ class BijlageWerkingsgebiedenContent:
         ] = self._state_manager.input_data.resources.werkingsgebied_repository.all()
 
         content = load_template(
-            "templates/akn/besluit_versie/besluit_compact/wijzig_bijlage/BijlageWerkingsgebieden.xml",
+            "akn/besluit_versie/besluit_compact/wijzig_bijlage/BijlageWerkingsgebieden.xml",
             werkingsgebieden=werkingsgebieden,
         )
 

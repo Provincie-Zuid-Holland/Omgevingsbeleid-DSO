@@ -8,7 +8,7 @@ class ProcedureverloopContent:
 
     def create(self) -> str:
         content = load_template(
-            "templates/akn/besluit_versie/Procedureverloop.xml",
+            "akn/besluit_versie/Procedureverloop.xml",
             procedure=self._state_manager.input_data.procedure_verloop,
         )
         return content

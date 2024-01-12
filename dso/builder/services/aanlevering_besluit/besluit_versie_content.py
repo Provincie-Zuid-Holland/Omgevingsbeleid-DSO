@@ -21,7 +21,7 @@ class BesluitVersieContent:
         consolidatie_informatie = ConsolidatieInformatieContent(self._state_manager).create()
 
         content = load_template(
-            "templates/akn/BesluitVersie.xml",
+            "akn/BesluitVersie.xml",
             expression_identificatie=expression_identificatie,
             besluit_metadata=besluit_metadata,
             procedureverloop=procedureverloop,

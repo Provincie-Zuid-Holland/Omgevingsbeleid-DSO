@@ -10,7 +10,7 @@ class ExpressionIdentificatieContent:
     def create(self) -> str:
         besluit_frbr = self._state_manager.input_data.publication_settings.besluit_frbr
         content = load_template(
-            "templates/akn/besluit_versie/ExpressionIdentificatie.xml",
+            "akn/besluit_versie/ExpressionIdentificatie.xml",
             work=besluit_frbr.work,
             expression=besluit_frbr.expression,
             soort_work=WorkType.Besluit.value,

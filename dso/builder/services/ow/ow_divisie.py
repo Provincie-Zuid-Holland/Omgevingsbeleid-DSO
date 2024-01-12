@@ -66,7 +66,7 @@ class OwDivisieContent:
 
     def create_file(self):
         content = load_template(
-            "templates/ow/owDivisie.xml",
+            "ow/owDivisie.xml",
             pretty_print=True,
             data=self.xml_data,
         )

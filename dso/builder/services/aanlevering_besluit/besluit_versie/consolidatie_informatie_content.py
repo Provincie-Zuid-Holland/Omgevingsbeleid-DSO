@@ -34,7 +34,7 @@ class ConsolidatieInformatieContent:
             )
 
         content = load_template(
-            "templates/akn/besluit_versie/ConsolidatieInformatie.xml",
+            "akn/besluit_versie/ConsolidatieInformatie.xml",
             doel=doel,
             beoogde_regeling=beoogde_regeling,
             beoogd_informatieobjecten=beoogd_informatieobjecten,

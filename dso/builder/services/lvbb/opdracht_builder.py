@@ -32,6 +32,6 @@ class OpdrachtBuilder(BuilderService):
     def _get_template_file(self, opdracht_type: OpdrachtType) -> str:
         match opdracht_type:
             case OpdrachtType.PUBLICATIE:
-                return "templates/lvbb/opdracht/publicatie_opdracht.xml"
+                return "lvbb/opdracht/publicatie_opdracht.xml"
             case OpdrachtType.VALIDATIE:
-                return "templates/lvbb/opdracht/validatie_opdracht.xml"
+                return "lvbb/opdracht/validatie_opdracht.xml"

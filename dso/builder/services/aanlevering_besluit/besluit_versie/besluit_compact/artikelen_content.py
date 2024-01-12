@@ -50,7 +50,7 @@ class ArtikelenContent:
         self._state_manager.artikel_eid.add(tijd_artikel["eId"], ArtikelEidType.TIJD)
 
         content = load_template(
-            "templates/akn/besluit_versie/besluit_compact/Artikelen.xml",
+            "akn/besluit_versie/besluit_compact/Artikelen.xml",
             wijzig_artikel=wijzig_artikel,
             tekst_artikelen=tekst_artikelen,
             tijd_artikel=tijd_artikel,

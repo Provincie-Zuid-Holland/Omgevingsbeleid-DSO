@@ -18,7 +18,7 @@ class ManifestBuilder(BuilderService):
 
     def _create_manifest_file(self, output_files: List[OutputFile]) -> OutputFile:
         content = load_template(
-            "templates/lvbb/manifest.xml",
+            "lvbb/manifest.xml",
             pretty_print=True,
             output_files=output_files,
         )

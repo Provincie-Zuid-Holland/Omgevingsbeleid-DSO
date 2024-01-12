@@ -13,7 +13,7 @@ class BesluitCompactContent:
         wijzig_bijlage: str = WijzigBijlageContent(self._state_manager).create()
 
         content = load_template(
-            "templates/akn/besluit_versie/BesluitCompact.xml",
+            "akn/besluit_versie/BesluitCompact.xml",
             besluit=self._state_manager.input_data.besluit,
             artikelen_lichaam=artikelen_lichaam,
             wijzig_bijlage=wijzig_bijlage,

@@ -18,7 +18,7 @@ class BesluitMetadataContent:
             informatieobject_refs.append(werkingsgebied.get_FRBR().expression)
 
         content = load_template(
-            "templates/akn/besluit_versie/BesluitMetadata.xml",
+            "akn/besluit_versie/BesluitMetadata.xml",
             besluit=self._state_manager.input_data.besluit,
             provincie_ref=self._state_manager.input_data.publication_settings.provincie_ref,
             soort_bestuursorgaan=self._state_manager.input_data.publication_settings.soort_bestuursorgaan,

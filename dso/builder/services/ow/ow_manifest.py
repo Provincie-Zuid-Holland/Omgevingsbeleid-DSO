@@ -27,7 +27,7 @@ class ManifestContent:
 
     def _create_manifest_file(self):
         content = load_template(
-            "templates/ow/manifest-ow.xml",
+            "ow/manifest-ow.xml",
             pretty_print=True,
             data=self.xml_data,
         )

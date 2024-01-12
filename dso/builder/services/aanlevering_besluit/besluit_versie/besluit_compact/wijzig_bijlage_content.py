@@ -17,7 +17,7 @@ class WijzigBijlageContent:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
 
         content = load_template(
-            "templates/akn/besluit_versie/besluit_compact/WijzigBijlage.xml",
+            "akn/besluit_versie/besluit_compact/WijzigBijlage.xml",
             regeling_frbr=settings.regeling_frbr,
             lichaam=lichaam,
             bijlage_werkingsgebieden=bijlage_werkingsgebieden,

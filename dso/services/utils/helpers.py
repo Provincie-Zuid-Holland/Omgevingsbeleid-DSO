@@ -13,7 +13,7 @@ env = Environment(loader=FileSystemLoader("."))
 
 
 def load_template(template_name: str, pretty_print: bool = False, **context) -> str:
-    template = env.get_template(template_name)
+    template = env.get_template(f"dso/templates/{template_name}")
 
     try:
         output = template.render(**context)
