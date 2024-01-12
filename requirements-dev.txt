@@ -45,7 +45,9 @@ matplotlib-inline==0.1.6
 mdurl==0.1.2
     # via markdown-it-py
 mypy-extensions==1.0.0
-    # via black
+    # via
+    #   -r requirements-dev.in
+    #   black
 packaging==23.2
     # via black
 parso==0.8.3

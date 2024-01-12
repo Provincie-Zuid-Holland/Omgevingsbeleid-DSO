@@ -1,7 +1,6 @@
 click
 Jinja2
 MarkupSafe
-mypy-extensions
 packaging
 pathspec
 platformdirs

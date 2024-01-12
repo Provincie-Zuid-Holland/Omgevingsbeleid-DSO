@@ -19,7 +19,6 @@ setup(
         'jinja2>=3.1.3',
         'lxml>=5.1.0',
         'markupsafe>=2.1.3',
-        'mypy-extensions>=1.0.0',
         'numpy>=1.26.3',
         'packaging>=23.2',
         'pathspec>=0.12.1',
