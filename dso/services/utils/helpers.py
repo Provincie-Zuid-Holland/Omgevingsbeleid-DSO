@@ -16,7 +16,6 @@ template_path = pkg_resources.resource_filename('dso', 'templates')
 
 env = Environment(
     loader=FileSystemLoader(template_path),
-    autoescape=select_autoescape()
 )
 
 def load_template(template_name: str, pretty_print: bool = False, **context) -> str:
