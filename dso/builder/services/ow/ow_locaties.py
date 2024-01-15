@@ -70,6 +70,8 @@ class OwLocatiesContent:
             {gebiedengroep.geo_uuid: gebiedengroep.OW_ID for gebiedengroep in self.xml_data["gebiedengroepen"]}
         )
         for object_code, values in self.object_tekst_lookup.items():
+            if not "gebied_uuid" in values:
+                continue
             # Find the matching OWGebied and update ow_location_id to the state
             matching_ow_gebied = ow_gebied_mapping.get(UUID(values["gebied_uuid"]))
             if matching_ow_gebied:
