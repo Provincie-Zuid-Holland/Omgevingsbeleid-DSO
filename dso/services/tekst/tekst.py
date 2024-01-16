@@ -597,10 +597,18 @@ class Divisie(Element):
 
         # If the tag is a div then we will create a new Divisie
         elif tag.name == "div":
-            content: Divisie = Divisie(tag)
-            self.contents.append(content)
-            content.consume_children(tag.children)
-            return None
+            if tag.attrs.get("data-hint-element", None) == "divisietekst":
+                content: Divisietekst = Divisietekst()
+                self.contents.append(content)
+                leftover = content.consume_children(tag.children)
+                return leftover
+            else:
+                content: Divisie = Divisie(tag)
+                self.contents.append(content)
+                leftover_maybe = content.consume_children(tag.children)
+                if leftover_maybe is not None:
+                    a = True
+                return None
 
         # Else we will let the last Divisietekst consume the tag
         else:
