@@ -27,7 +27,7 @@
 			</geo:groepen>
             <geo:locaties>
                 {% for locatie in locaties %}
-                    {% include 'templates/geo/Locatie.xml' %}
+                    {% include 'geo/Locatie.xml' %}
                 {% endfor %}
             </geo:locaties>
         </geo:GeoInformatieObjectVersie>
