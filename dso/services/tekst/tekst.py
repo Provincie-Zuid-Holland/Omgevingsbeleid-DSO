@@ -677,8 +677,9 @@ class Lichaam(SimpleElement):
         super().__init__(
             xml_tag_name="Lichaam",
             xml_tag_attrs={
-                # @todo: this could also be done by a middleware...
-                # "xmlns": "https://standaarden.overheid.nl/stop/imop/tekst/",
+                # @todo: Should be done by the wid service
+                "eId": "body",
+                "wId": "body",
             },
         )
 
