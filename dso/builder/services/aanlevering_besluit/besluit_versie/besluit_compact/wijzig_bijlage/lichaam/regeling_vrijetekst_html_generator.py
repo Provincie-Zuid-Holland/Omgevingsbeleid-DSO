@@ -52,5 +52,8 @@ class RegelingVrijetekstHtmlGenerator:
                 parent.insert(parent.index(obj_xml), new_element)
             parent.remove(obj_xml)
 
-        result = etree.tostring(tree, pretty_print=False).decode()
-        return result
+        result = etree.tostring(tree, pretty_print=False, method="html").decode()
+        result_tree = lxml_html.fromstring(result)
+        inner_html = ''.join([etree.tostring(child, pretty_print=False, method="html").decode('utf-8') for child in result_tree.iterchildren()])
+
+        return inner_html
