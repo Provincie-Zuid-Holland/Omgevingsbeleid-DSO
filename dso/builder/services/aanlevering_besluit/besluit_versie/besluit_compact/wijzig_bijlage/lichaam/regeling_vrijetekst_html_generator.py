@@ -33,7 +33,7 @@ class RegelingVrijetekstHtmlGenerator:
             if "code" not in attributes:
                 raise RuntimeError(f"Missing required attribute code for object")
             object_code: str = attributes["code"]
-            
+
             if "template_name" in attributes:
                 template_name = attributes["template_name"]
                 object_template = object_template_repository.get_by_type(template_name)
@@ -54,6 +54,11 @@ class RegelingVrijetekstHtmlGenerator:
 
         result = etree.tostring(tree, pretty_print=False, method="html").decode()
         result_tree = lxml_html.fromstring(result)
-        inner_html = ''.join([etree.tostring(child, pretty_print=False, method="html").decode('utf-8') for child in result_tree.iterchildren()])
+        inner_html = "".join(
+            [
+                etree.tostring(child, pretty_print=False, method="html").decode("utf-8")
+                for child in result_tree.iterchildren()
+            ]
+        )
 
         return inner_html

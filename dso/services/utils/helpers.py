@@ -4,19 +4,20 @@ import os
 import zipfile
 from io import StringIO
 
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-from lxml import etree
 import pkg_resources
+from jinja2 import Environment, FileSystemLoader
+from lxml import etree
 
 from ...exceptions import FileWriteError, TemplateError
 
 # env = Environment(loader=FileSystemLoader("."))
 
-template_path = pkg_resources.resource_filename('dso', 'templates')
+template_path = pkg_resources.resource_filename("dso", "templates")
 
 env = Environment(
     loader=FileSystemLoader(template_path),
 )
+
 
 def load_template(template_name: str, pretty_print: bool = False, **context) -> str:
     template = env.get_template(f"/{template_name}")

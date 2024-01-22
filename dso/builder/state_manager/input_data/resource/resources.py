@@ -1,9 +1,8 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 from .asset.asset_repository import AssetRepository
 from .policy_object.policy_object_repository import PolicyObjectRepository
 from .werkingsgebied.werkingsgebied_repository import WerkingsgebiedRepository
-from pydantic import BaseModel
 
 
 class Resources(BaseModel):

@@ -34,4 +34,3 @@ class AssetRepository:
 
     def to_dict(self):
         return {k: v.dict() for k, v in self._assets.items()}
-

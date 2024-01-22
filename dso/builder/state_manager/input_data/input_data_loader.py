@@ -1,6 +1,7 @@
 import os
-from dataclasses import dataclass
 from typing import List, Union
+
+from pydantic import BaseModel
 
 from ....models import ProcedureStap, ProcedureVerloop, PublicationSettings
 from ....services.utils.helpers import load_json_data
@@ -9,7 +10,6 @@ from .object_template_repository import ObjectTemplateRepository
 from .regeling import Regeling
 from .resource.resource_loader import ResourceLoader
 from .resource.resources import Resources
-from pydantic import BaseModel
 
 
 class InputData(BaseModel):

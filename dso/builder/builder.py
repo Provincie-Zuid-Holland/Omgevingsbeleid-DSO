@@ -1,7 +1,8 @@
-import shutil
+import io
 from typing import List
+from zipfile import ZIP_DEFLATED, ZipFile
 
-from ..services.assets.create_image import create_image
+from ..services.assets.create_image import create_image, create_image_in_zip
 from ..services.utils.os import empty_directory
 from .services import BuilderService
 from .services.aanlevering_besluit.aanlevering_besluit_builder import AanleveringBesluitBuilder
@@ -45,6 +46,20 @@ class Builder:
 
                 case AssetContentData():
                     create_image(output_file.content.asset, destination_path)
+
+    def zip_files(self) -> io.BytesIO:
+        zip_buffer = io.BytesIO()
+        with ZipFile(zip_buffer, "a", ZIP_DEFLATED, False) as zip_file:
+            for output_file in self._state_manager.get_output_files():
+                match output_file.content:
+                    case StrContentData():
+                        zip_file.writestr(output_file.filename, output_file.content.content)
+
+                    case AssetContentData():
+                        create_image_in_zip(output_file.content.asset, zip_file, output_file.filename)
+
+        zip_buffer.seek(0)
+        return zip_buffer
 
     def export_json_state(self) -> str:
         """
