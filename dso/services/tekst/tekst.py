@@ -486,6 +486,10 @@ class Divisietekst(Element):
             self.object_code = tag.get("data-hint-object-code", None)
             self.location = tag.get("data-hint-gebied-uuid", None)
 
+            oc = tag.get("data-hint-object-code", None)
+            if oc is not None:
+                print(f"\nWorking divisietekst for object: {oc}\n")
+
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         # A div requires a new Divisie which a Divisietekst can not create
         if tag.name == "div":
@@ -553,6 +557,10 @@ class Divisie(Element):
         self.contents: List[Union["Divisie", Divisietekst]] = []
         self.object_code = tag.get("data-hint-object-code", None)
         self.location = tag.get("data-hint-gebied-uuid", None)
+
+        oc = tag.get("data-hint-object-code", None)
+        if oc is not None:
+            print(f"\nWorking divisie for object: {oc}\n")
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         while True:
