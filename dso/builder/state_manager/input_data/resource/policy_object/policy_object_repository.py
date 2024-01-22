@@ -33,3 +33,6 @@ class PolicyObjectRepository:
         if o is None:
             raise RuntimeError(f"Can not find object {object_code}")
         return o
+
+    def to_dict(self):
+        return {k: v.to_dict() for k, v in self._data.items()}

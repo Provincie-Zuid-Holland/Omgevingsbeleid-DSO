@@ -9,10 +9,10 @@ from .object_template_repository import ObjectTemplateRepository
 from .regeling import Regeling
 from .resource.resource_loader import ResourceLoader
 from .resource.resources import Resources
+from pydantic import BaseModel
 
 
-@dataclass
-class InputData:
+class InputData(BaseModel):
     publication_settings: PublicationSettings
     besluit: Besluit
     regeling: Regeling
@@ -20,6 +20,9 @@ class InputData:
     procedure_verloop: ProcedureVerloop
     resources: Resources
     object_template_repository: ObjectTemplateRepository
+
+    class Config:
+        arbitrary_types_allowed = True
 
 
 class InputDataLoader:

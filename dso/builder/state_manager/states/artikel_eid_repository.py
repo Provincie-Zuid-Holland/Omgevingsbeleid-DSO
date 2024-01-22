@@ -14,6 +14,12 @@ class ArtikelEidData:
     eid: str
     artikel_type: ArtikelEidType
 
+    def to_dict(self):
+        return {
+            "eid": self.eid,
+            "artikel_type": self.artikel_type,
+        }
+
 
 class ArtikelEidRepository:
     def __init__(self):
@@ -40,3 +46,6 @@ class ArtikelEidRepository:
                 raise RuntimeError(f"No eid data found for artikel_type {artikel_type}")
             case _:
                 raise RuntimeError(f"More then one eid data found for artikel_type {artikel_type}")
+
+    def to_dict(self):
+        return [d.to_dict() for d in self._data]

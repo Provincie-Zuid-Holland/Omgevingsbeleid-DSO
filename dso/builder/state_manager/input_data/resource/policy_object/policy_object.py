@@ -7,3 +7,6 @@ class PolicyObject:
 
     def get(self, key: str, default: Any = None):
         return self.data.get(key, default)
+
+    def to_dict(self):
+        return self.data

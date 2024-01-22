@@ -35,3 +35,6 @@ class WerkingsgebiedRepository:
 
     def is_empty(self) -> bool:
         return not self._werkingsgebieden
+
+    def to_dict(self):
+        return {k: v.dict() for k, v in self._werkingsgebieden.items()}

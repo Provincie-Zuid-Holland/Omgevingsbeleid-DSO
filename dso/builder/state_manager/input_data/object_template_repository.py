@@ -25,3 +25,6 @@ class ObjectTemplateRepository:
             result[object_code] = template
 
         return result
+
+    def to_dict(self):
+        return {i: k for i, k in enumerate(self._template_data.keys())}
