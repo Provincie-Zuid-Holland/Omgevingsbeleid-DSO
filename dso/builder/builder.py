@@ -12,7 +12,7 @@ from .services.lvbb.manifest_builder import ManifestBuilder
 from .services.lvbb.opdracht_builder import OpdrachtBuilder
 from .services.ow.ow_builder import OwBuilder
 from .state_manager.input_data.input_data_loader import InputData
-from .state_manager.models import AssetContentData, FileContentData, StrContentData
+from .state_manager.models import AssetContentData, StrContentData
 from .state_manager.state_manager import StateManager
 
 
@@ -45,9 +45,6 @@ class Builder:
 
                 case AssetContentData():
                     create_image(output_file.content.asset, destination_path)
-
-                case FileContentData():
-                    shutil.copy2(output_file.content.source_path, destination_path)
 
     def export_json_state(self) -> str:
         """

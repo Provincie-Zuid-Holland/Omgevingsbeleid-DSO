@@ -20,12 +20,6 @@ class AssetContentData(ContentData):
 
 
 @dataclass
-class FileContentData(ContentData):
-    def __init__(self, source_path: str):
-        self.source_path: str = source_path
-
-
-@dataclass
 class OutputFile:
     filename: str
     content_type: ContentType
