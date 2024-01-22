@@ -9,12 +9,14 @@ class OWStateRepository:
         locaties_content (dict): The content of the locaties XML data.
         divisie_content (dict): The content of the divisie XML data.
         regelingsgebied_content (dict): The content of the regelingsgebied XML data.
+        created_ow_objects (list): The created OW objects.
     """
 
     def __init__(self):
         self.locaties_content = None
         self.divisie_content = None
         self.regelingsgebied_content = None
+        self.created_ow_objects = []
 
     def store_locaties_content(self, xml_data):
         """
@@ -69,3 +71,34 @@ class OWStateRepository:
             list: The object types from regelingsgebied content.
         """
         return self.regelingsgebied_content.get("objectTypen", [])
+
+    def store_created_ow_object(self, ow_object):
+        """
+        Add new created OW object to the state.
+
+        Args:
+            ow_object (OWObject): The OW object to add to the state.
+        """
+        self.created_ow_objects.append(ow_object)
+
+    def get_created_ow_objects(self):
+        """
+        Retrieves the created OW objects.
+
+        Returns:
+            list: The created OW objects.
+        """
+        return self.created_ow_objects
+
+    def to_dict(self):
+        """
+        Converts the OW state repository to a dictionary.
+
+        Returns:
+            dict: The OW state repository as a dictionary.
+        """
+        return {
+            "locaties_content": self.locaties_content,
+            "divisie_content": self.divisie_content,
+            "regelingsgebied_content": self.regelingsgebied_content,
+        }

@@ -31,3 +31,11 @@ class OutputFile:
     content_type: ContentType
     content: ContentData
     options: dict = field(default_factory=dict)
+
+    def to_dict(self):
+        return {
+            "filename": self.filename,
+            "content_type": self.content_type,
+            "content": self.content,
+            "options": self.options,
+        }

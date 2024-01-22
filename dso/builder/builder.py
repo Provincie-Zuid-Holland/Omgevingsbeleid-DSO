@@ -48,3 +48,11 @@ class Builder:
 
                 case FileContentData():
                     shutil.copy2(output_file.content.source_path, destination_path)
+
+    def export_json_state(self) -> str:
+        """
+        Export a JSON representation of the state to archive
+        the inpurt/output of the builder and handle new objects created.
+        """
+        state = self._state_manager.build_state_export()
+        return state.json()
