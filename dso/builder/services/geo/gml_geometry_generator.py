@@ -38,6 +38,6 @@ class GMLGeometryGenerator:
         return xml_string
 
     def _ring_gml(self, ring, type):
-        coords = " ".join([f"{coord[0]} {coord[1]}" for coord in ring.coords])
+        coords = " ".join([f"{round(coord[0], 3)} {round(coord[1], 3)}" for coord in ring.coords])
         xml_string = f"<gml:{type}><gml:LinearRing><gml:posList>{coords}</gml:posList></gml:LinearRing></gml:{type}>"
         return xml_string

@@ -514,7 +514,7 @@ class Divisietekst(Element):
         raw: str = str(string).strip()
         if len(raw) == 0:
             return
-        raise RuntimeError(f"Consume string not implemented for Divisietekst")
+        raise RuntimeError(f"Consume string not implemented for Divisietekst for code {self.object_code}")
 
     def consume_comment(self, comment: Comment) -> LeftoverTag:
         object_code: Optional[str] = extract_object_code(str(comment))
