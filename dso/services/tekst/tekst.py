@@ -118,7 +118,8 @@ class SimpleElement(Element, metaclass=ABCMeta):
         for content in self.contents:
             if hasattr(content, "as_xml"):
                 child = content.as_xml(soup)
-                tag.append(child)
+                if child != "":
+                    tag.append(child)
             elif isinstance(content, str):
                 tag.append(content)
             else:
