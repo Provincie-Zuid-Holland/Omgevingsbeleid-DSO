@@ -224,10 +224,22 @@ class Al(SimpleElement):
         super().__init__(xml_tag_name="Al")
 
     def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
-        if not self.contents:
+        if self._is_empty():
             return ""
 
         return SimpleElement.as_xml(self, soup=soup, tag_name_overwrite=tag_name_overwrite)
+
+    def _is_empty(self):
+        if not self.contents:
+            return True
+
+        for content in self.contents:
+            if isinstance(content, str):
+                if content.strip() != "":
+                    return False
+            elif not isinstance(content, Br):
+                return False
+        return True
 
 
 class Br(SimpleElement):
