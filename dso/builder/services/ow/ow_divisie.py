@@ -1,5 +1,5 @@
 from ....models import ContentType
-from ....services.ow.enums import OwDivisieObjectType
+from ....services.ow.enums import OwDivisieObjectType, OwProcedureStatus
 from ....services.ow.exceptions import OWObjectGenerationError
 from ....services.ow.models import Annotation, OWDivisie, OWDivisieTekst, OWTekstDeel
 from ....services.utils.helpers import load_template
@@ -11,9 +11,15 @@ class OwDivisieContent:
     Prepares the content for the OWDivisies file from object_tekst_lookup.
     """
 
-    def __init__(self, object_tekst_lookup, levering_id):
+    def __init__(
+        self,
+        object_tekst_lookup: dict,
+        levering_id: str,
+        ow_procedure_status: OwProcedureStatus,
+    ):
         self.object_tekst_lookup = object_tekst_lookup
         self.levering_id = levering_id
+        self.ow_procedure_status = ow_procedure_status
         self.xml_data = {
             "filename": "owDivisie.xml",
             "leveringsId": self.levering_id,
@@ -43,15 +49,19 @@ class OwDivisieContent:
                 continue
 
             ow_div = None
-            ow_text_mapping = OWTekstDeel(divisie=None, locations=[values["ow_location_id"]])
+            ow_text_mapping = OWTekstDeel(
+                divisie=None,
+                locations=[values["ow_location_id"]],
+                procedure_status=self.ow_procedure_status,
+            )
 
             if values["tag"] == "Divisietekst":
-                ow_div = OWDivisieTekst(wid=values["wid"])
+                ow_div = OWDivisieTekst(wid=values["wid"], procedure_status=self.ow_procedure_status)
                 object_type = OwDivisieObjectType.DIVISIETEKST.value
                 ow_text_mapping.divisie = ow_div.OW_ID
                 annotations.append(Annotation(divisietekst_aanduiding=ow_div, tekstdeel=ow_text_mapping))
             elif values["tag"] == "Divisie":
-                ow_div = OWDivisie(wid=values["wid"])
+                ow_div = OWDivisie(wid=values["wid"], procedure_status=self.ow_procedure_status)
                 object_type = OwDivisieObjectType.DIVISIE.value
                 ow_text_mapping.divisie = ow_div.OW_ID
                 annotations.append(Annotation(divisie_aanduiding=ow_div, tekstdeel=ow_text_mapping))

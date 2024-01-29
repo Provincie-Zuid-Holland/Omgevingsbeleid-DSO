@@ -41,3 +41,13 @@ class OwDivisieObjectType(Enum):
 
 class OwRegelingsgebiedObjectType(Enum):
     REGELINGSGEBIED = "Regelingsgebied"
+
+
+class OwProcedureStatus(Enum):
+    """
+    For OW objects the procedure status is not provided by default (for "Definitief")
+    and only the value "ontwerp" is added for ontwerp besluiten.
+    Source: IMOW 2.0.2
+    """
+
+    ONTWERP = "ontwerp"

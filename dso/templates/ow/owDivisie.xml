@@ -17,6 +17,9 @@
 			<ow-dc:owObject>
 				<vt:Divisie wId="{{ annotatie.divisie_aanduiding.wid }}">
 					<vt:identificatie>{{ annotatie.divisie_aanduiding.OW_ID }}</vt:identificatie>
+                    {% if annotatie.divisie_aanduiding.procedure_status %}
+                    <l:procedurestatus>{{ annotatie.divisie_aanduiding.procedure_status.value }}</l:procedurestatus>
+                    {% endif %}
 				</vt:Divisie>
 			</ow-dc:owObject>
 		</sl:stand>
@@ -25,6 +28,9 @@
 			<ow-dc:owObject>
 				<vt:Divisietekst wId="{{ annotatie.divisietekst_aanduiding.wid }}">
 					<vt:identificatie>{{ annotatie.divisietekst_aanduiding.OW_ID }}</vt:identificatie>
+                    {% if annotatie.divisie_aanduiding.procedure_status %}
+                    <l:procedurestatus>{{ annotatie.divisie_aanduiding.procedure_status.value }}</l:procedurestatus>
+                    {% endif %}
 				</vt:Divisietekst>
 			</ow-dc:owObject>
 		</sl:stand>
@@ -34,6 +40,9 @@
 			<ow-dc:owObject>
 				<vt:Tekstdeel>
 					<vt:identificatie>{{ annotatie.tekstdeel.OW_ID }}</vt:identificatie>
+                    {% if annotatie.tekstdeel.procedure_status %}
+                    <l:procedurestatus>{{ annotatie.tekstdeel.procedure_status.value }}</l:procedurestatus>
+                    {% endif %}
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Exact</vt:idealisatie>
 					{% if annotatie.divisie_aanduiding %}
 					<vt:divisieaanduiding>
