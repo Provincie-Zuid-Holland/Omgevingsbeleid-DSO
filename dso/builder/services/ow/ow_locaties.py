@@ -2,7 +2,7 @@ from typing import List
 from uuid import UUID
 
 from ....models import ContentType
-from ....services.ow.enums import OwLocatieObjectType
+from ....services.ow.enums import OwLocatieObjectType, OwProcedureStatus
 from ....services.ow.models import BestuurlijkeGrenzenVerwijzing, OWAmbtsgebied, OWGebied, OWGebiedenGroep
 from ....services.utils.helpers import load_template
 from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
@@ -14,10 +14,18 @@ class OwLocatiesContent:
     Prepares the content for the OWLocaties file from Werkingsgebieden.
     """
 
-    def __init__(self, werkingsgebieden: List[Werkingsgebied], object_tekst_lookup, levering_id):
+    def __init__(
+        self,
+        werkingsgebieden: List[Werkingsgebied],
+        object_tekst_lookup: dict,
+        levering_id: str,
+        ow_procedure_status: OwProcedureStatus,
+    ):
         self.werkingsgebieden = werkingsgebieden
         self.object_tekst_lookup = object_tekst_lookup
         self.levering_id = levering_id
+        self.ow_procedure_status = ow_procedure_status
+
         self.xml_data = {
             "filename": "owLocaties.xml",
             "leveringsId": self.levering_id,
@@ -44,18 +52,28 @@ class OwLocatiesContent:
         """
 
         for werkingsgebied in self.werkingsgebieden:
-            ow_locations = [OWGebied(geo_uuid=loc.UUID, noemer=loc.Title) for loc in werkingsgebied.Locaties]
+            ow_locations = [
+                OWGebied(
+                    geo_uuid=loc.UUID,
+                    noemer=loc.Title,
+                    procedure_status=self.ow_procedure_status,
+                )
+                for loc in werkingsgebied.Locaties
+            ]
             ow_group = OWGebiedenGroep(
                 geo_uuid=werkingsgebied.UUID,
                 noemer=werkingsgebied.Title,
                 locations=ow_locations,
+                procedure_status=self.ow_procedure_status,
             )
             self.xml_data["gebieden"].extend(ow_locations)
             self.xml_data["gebiedengroepen"].append(ow_group)
 
         # Manually add ambtsgebied
+        # TODO: add in input data
         ambtsgebied = OWAmbtsgebied(
             OW_ID="nl.imow-pv28.ambtsgebied.002000000000000000009928",
+            procedure_status=self.ow_procedure_status,
             bestuurlijke_genzenverwijzing=BestuurlijkeGrenzenVerwijzing(
                 bestuurlijke_grenzen_id="PV28",
                 domein="NL.BI.BestuurlijkGebied",

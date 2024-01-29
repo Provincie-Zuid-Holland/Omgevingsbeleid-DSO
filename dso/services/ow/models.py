@@ -3,12 +3,13 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from .enums import IMOWTYPES
+from .enums import IMOWTYPES, OwProcedureStatus
 from .ow_id import generate_ow_id
 
 
 class OWObject(BaseModel):
     OW_ID: str
+    procedure_status: Optional[OwProcedureStatus] = None
 
 
 class BestuurlijkeGrenzenVerwijzing(BaseModel):

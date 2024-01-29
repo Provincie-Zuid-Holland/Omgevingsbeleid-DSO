@@ -1,3 +1,7 @@
+from typing import Optional
+
+from ....services.ow.enums import OwProcedureStatus
+from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
 from ...services.ow.ow_divisie import OwDivisieContent
 from ...services.ow.ow_locaties import OwLocatiesContent
@@ -21,10 +25,15 @@ class OwBuilder(BuilderService):
         werkingsgebieden = state_manager.input_data.resources.werkingsgebied_repository.all()
         leveringid = state_manager.input_data.publication_settings.opdracht.id_levering
 
+        ow_procedure_status: Optional[OwProcedureStatus] = None
+        if state_manager.input_data.besluit.soort_procedure == ProcedureType.Ontwerpbesluit:
+            ow_procedure_status = OwProcedureStatus.ONTWERP.value
+
         locaties_content = OwLocatiesContent(
             werkingsgebieden=werkingsgebieden,
             object_tekst_lookup=state_manager.object_tekst_lookup,
             levering_id=leveringid,
+            ow_procedure_status=ow_procedure_status,
         )
         locaties_state = locaties_content.create_locations()
         state_manager.ow_repository.store_locaties_content(locaties_state)
@@ -32,11 +41,15 @@ class OwBuilder(BuilderService):
         divisie_content = OwDivisieContent(
             object_tekst_lookup=state_manager.object_tekst_lookup,
             levering_id=leveringid,
+            ow_procedure_status=ow_procedure_status,
         )
         divisie_state = divisie_content.create_divisies()
         state_manager.ow_repository.store_divisie_content(divisie_state)
 
-        regelinggebied_content = OwRegelingsgebiedContent(levering_id=leveringid)
+        regelinggebied_content = OwRegelingsgebiedContent(
+            levering_id=leveringid,
+            ow_procedure_status=ow_procedure_status,
+        )
         regelinggebied_state = regelinggebied_content.create_regelingen()
         state_manager.ow_repository.store_regelingsgebied_content(regelinggebied_state)
 

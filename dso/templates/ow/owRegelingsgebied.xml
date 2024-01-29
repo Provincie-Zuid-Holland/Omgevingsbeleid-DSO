@@ -29,6 +29,9 @@
 			<ow-dc:owObject>
 				<rg:Regelingsgebied>
 					<rg:identificatie>{{ gebied.OW_ID }}</rg:identificatie>
+                    {% if gebied.procedure_status %}
+                    <l:procedurestatus>{{ gebied.procedure_status.value }}</l:procedurestatus>
+                    {% endif %}
 					<rg:locatieaanduiding>
 						<l:LocatieRef xlink:href="{{ gebied.ambtsgebied }}" />
 					</rg:locatieaanduiding>
