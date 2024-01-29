@@ -49,6 +49,10 @@ class Werkingsgebied(BaseModel):
         )
 
     def get_identifier(self) -> str:
+        identifier = f"{self.Object_Code}"
+        return identifier
+
+    def get_name(self) -> str:
         s: str = self.Title.lower()
         s = re.sub(r"[^a-z0-9 ]+", "", s)
         s = s.replace(" ", "-")
@@ -60,7 +64,7 @@ class Werkingsgebied(BaseModel):
         return version
 
     def get_gml_filename(self) -> str:
-        return f"locaties_{self.get_identifier()}.gml"
+        return f"locaties_{self.get_name()}.gml"
 
     def get_gio_filename(self) -> str:
-        return f"GIO_locaties_{self.get_identifier()}.xml"
+        return f"GIO_locaties_{self.get_name()}.xml"
