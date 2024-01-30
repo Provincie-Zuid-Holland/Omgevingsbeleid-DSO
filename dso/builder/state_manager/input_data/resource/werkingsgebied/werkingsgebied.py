@@ -49,7 +49,7 @@ class Werkingsgebied(BaseModel):
         )
 
     def get_identifier(self) -> str:
-        identifier = f"{self.Object_Code}"
+        identifier = str(self.Object_ID)
         return identifier
 
     def get_name(self) -> str:
