@@ -135,7 +135,7 @@ class EWIDService:
                 "wid": element_wid,
                 "tag": element.tag,
                 "gebied_code": gebied_code,
-                "gebied_uuid": werkingsgebied.UUID,
+                "gebied_uuid": str(werkingsgebied.UUID),
             }
 
         for child in element:
