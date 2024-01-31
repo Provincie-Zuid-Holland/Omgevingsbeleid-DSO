@@ -1,6 +1,10 @@
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
+from ...builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
+from ...builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
+    WerkingsgebiedRepository,
+)
 from ...builder.state_manager.state_manager import StateManager
 from . import ELEMENT_REF, EIDGenerationError
 
@@ -19,6 +23,9 @@ class EWIDService:
             wid_prefix (str): The prefix for the generated EWID.
         """
         self._state_manager: StateManager = state_manager
+        self._werkingsgebied_repository: WerkingsgebiedRepository = (
+            state_manager.input_data.resources.werkingsgebied_repository
+        )
 
         self.wid_prefix = wid_prefix
         self.global_counters = defaultdict(lambda: defaultdict(int))
@@ -119,12 +126,16 @@ class EWIDService:
         # Remember the EWID for location annotated policy objects
         if "data-hint-object-code" in element.attrib or "data-hint-location" in element.attrib:
             object_code = element.get("data-hint-object-code", None)
-            gebied_uuid = element.get("data-hint-gebied-uuid", None)
+            gebied_code = element.get("data-hint-gebied-code", None)
+
+            werkingsgebied: Werkingsgebied = self._werkingsgebied_repository.get_by_code(gebied_code)
+
             # Store pairing in state
             self._state_manager.object_tekst_lookup[object_code] = {
                 "wid": element_wid,
                 "tag": element.tag,
-                "gebied_uuid": gebied_uuid,
+                "gebied_code": gebied_code,
+                "gebied_uuid": werkingsgebied.UUID,
             }
 
         for child in element:

@@ -30,6 +30,18 @@ class WerkingsgebiedRepository:
             raise RuntimeError(f"Can not find werkingsgebied {idx}")
         return werkingsgebied
 
+    def get_by_code_optional(self, code: str) -> Optional[Werkingsgebied]:
+        for w in self._werkingsgebieden.values():
+            if w.Code == code:
+                return w
+        return None
+
+    def get_by_code(self, code: str) -> Werkingsgebied:
+        werkingsgebied: Optional[Werkingsgebied] = self.get_by_code_optional(code)
+        if werkingsgebied is None:
+            raise RuntimeError(f"Can not find werkingsgebied {code}")
+        return werkingsgebied
+
     def all(self) -> List[Werkingsgebied]:
         return list(self._werkingsgebieden.values())
 

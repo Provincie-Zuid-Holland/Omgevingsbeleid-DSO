@@ -9,8 +9,6 @@ from ......models import FRBR
 
 
 class Locatie(BaseModel):
-    Object_ID: Optional[int] = Field(None)
-    Object_Code: Optional[str] = Field(None)
     UUID: uuid.UUID
     Title: str
     Symbol: str
@@ -20,9 +18,10 @@ class Locatie(BaseModel):
 
 
 class Werkingsgebied(BaseModel):
-    Object_ID: Optional[int] = Field(None)
-    Object_Code: Optional[str] = Field(None)
     UUID: uuid.UUID
+    Object_ID: Optional[int] = Field(None)
+    Object_Type: Optional[str] = Field(None)
+    Code: str
     Title: str
     Symbol: str
     Created_Date: datetime

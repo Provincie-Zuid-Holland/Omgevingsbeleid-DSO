@@ -119,7 +119,7 @@
     "maatregel": [
       "<h1>{{ o.Title }}</h1>",
       "<!--[OBJECT-CODE:{{o.Code}}]-->",
-      "<!--[GEBIED-UUID:{{o.Gebied_UUID}}]-->",
+      "<!--[GEBIED-CODE:{{o.Werkingsgebied_Code}}]-->",
       "<h2>Omschrijving</h2>",
       "{{ o.Description }}"
     ]

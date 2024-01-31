@@ -72,7 +72,7 @@ class RegelingVrijetekstTekstGenerator:
         return result
 
     def _remove_hints(self, xml_data: str) -> str:
-        xml_data = self._clean_attribute(xml_data, "data-hint-gebied-uuid")
+        xml_data = self._clean_attribute(xml_data, "data-hint-gebied-code")
         xml_data = self._clean_attribute(xml_data, "data-hint-object-code")
         return xml_data
 

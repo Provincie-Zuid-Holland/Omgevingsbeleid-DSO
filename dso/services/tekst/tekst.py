@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup, CData, Comment, Declaration, Doctype, NavigableSt
 from .lijst import LijstType, LijstTypeOrdered, LijstTypeUnordered, NumberingStrategy, numbering_factory
 
 object_code_regex = r"\[OBJECT-CODE:(.*?)\]"
-gebied_uuid_regex = r"\[GEBIED-UUID:(.*?)\]"
+gebied_code_regex = r"\[GEBIED-CODE:(.*?)\]"
 
 
 def extract_object_code(text: str) -> Optional[str]:
@@ -18,8 +18,8 @@ def extract_object_code(text: str) -> Optional[str]:
     return result
 
 
-def extract_gebied_uuid(text: str) -> Optional[str]:
-    matched = re.search(gebied_uuid_regex, text)
+def extract_gebied_code(text: str) -> Optional[str]:
+    matched = re.search(gebied_code_regex, text)
     if not matched:
         return None
     result = matched.group(1)
@@ -492,12 +492,12 @@ class Divisietekst(Element):
         self.kop: Optional[Kop] = None
         self.inhoud: Optional[Inhoud] = None
         self.object_code: Optional[str] = None
-        self.location: Optional[str] = None
+        self.gebied_code: Optional[str] = None
 
         if tag is not None:
             self.test = tag.get("data-nummer", None)
             self.object_code = tag.get("data-hint-object-code", None)
-            self.location = tag.get("data-hint-gebied-uuid", None)
+            self.gebied_code = tag.get("data-hint-gebied-code", None)
 
             oc = tag.get("data-hint-object-code", None)
             if oc is not None:
@@ -534,9 +534,9 @@ class Divisietekst(Element):
         if object_code is not None:
             self.object_code = object_code
 
-        location_uuid: Optional[str] = extract_gebied_uuid(str(comment))
-        if location_uuid is not None:
-            self.location = location_uuid
+        gebied_code: Optional[str] = extract_gebied_code(str(comment))
+        if gebied_code is not None:
+            self.gebied_code = gebied_code
 
         return None
 
@@ -550,7 +550,7 @@ class Divisietekst(Element):
         tag_divisietekst: Tag = soup.new_tag("Divisietekst")
         tag_divisietekst.attrs = {
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
-            **({"data-hint-gebied-uuid": self.location} if self.location else {}),
+            **({"data-hint-gebied-code": self.gebied_code} if self.gebied_code else {}),
         }
 
         if self.kop is not None:
@@ -569,7 +569,7 @@ class Divisie(Element):
         self.kop: Optional[Kop] = None
         self.contents: List[Union["Divisie", Divisietekst]] = []
         self.object_code = tag.get("data-hint-object-code", None)
-        self.location = tag.get("data-hint-gebied-uuid", None)
+        self.gebied_code = tag.get("data-hint-gebied-code", None)
 
         oc = tag.get("data-hint-object-code", None)
         if oc is not None:
@@ -649,9 +649,9 @@ class Divisie(Element):
         if object_code is not None:
             self.object_code = object_code
 
-        location_uuid: Optional[str] = extract_gebied_uuid(str(comment))
-        if location_uuid is not None:
-            self.location = location_uuid
+        gebied_code: Optional[str] = extract_gebied_code(str(comment))
+        if gebied_code is not None:
+            self.gebied_code = gebied_code
 
         return None
 
@@ -674,7 +674,7 @@ class Divisie(Element):
         tag_divisie: Tag = soup.new_tag("Divisie")
         tag_divisie.attrs = {
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
-            **({"data-hint-gebied-uuid": self.location} if self.location else {}),
+            **({"data-hint-gebied-code": self.gebied_code} if self.gebied_code else {}),
         }
 
         if self.kop is not None:
