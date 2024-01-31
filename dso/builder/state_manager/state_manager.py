@@ -42,6 +42,7 @@ class StateManager:
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
         self.ow_repository: OWStateRepository = OWStateRepository()
         self._output_files: List[OutputFile] = []
+        self.debug: dict = {}
 
     def add_output_file(self, output_file: OutputFile):
         self._output_files.append(output_file)

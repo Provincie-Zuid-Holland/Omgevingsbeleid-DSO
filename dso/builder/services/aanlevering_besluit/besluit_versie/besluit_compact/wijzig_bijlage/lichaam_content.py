@@ -11,4 +11,7 @@ class LichaamContent:
         html: str = RegelingVrijetekstHtmlGenerator(self._state_manager).create()
         tekst: str = RegelingVrijetekstTekstGenerator(self._state_manager).create(html)
 
+        self._state_manager.debug["html"] = html
+        self._state_manager.debug["tekst"] = tekst
+
         return tekst

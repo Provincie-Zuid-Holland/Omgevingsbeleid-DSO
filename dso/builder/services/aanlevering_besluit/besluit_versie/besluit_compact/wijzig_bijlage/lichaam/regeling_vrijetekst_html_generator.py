@@ -45,6 +45,12 @@ class RegelingVrijetekstHtmlGenerator:
                 o=policy_object.data,
             )
 
+            # @todo: remove debug
+            if object_code == "visie_algemeen-2":
+                print("\n\n")
+                print(object_html)
+                print("\n\n")
+
             new_elements = lxml_html.fragments_fromstring(object_html)
 
             parent = obj_xml.getparent()
