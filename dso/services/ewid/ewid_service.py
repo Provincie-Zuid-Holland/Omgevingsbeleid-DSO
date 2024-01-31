@@ -124,7 +124,7 @@ class EWIDService:
         self.set_element_attributes(element, tag, element_eid)
 
         # Remember the EWID for location annotated policy objects
-        if "data-hint-object-code" in element.attrib or "data-hint-location" in element.attrib:
+        if "data-hint-object-code" in element.attrib and "data-hint-gebied-code" in element.attrib:
             object_code = element.get("data-hint-object-code", None)
             gebied_code = element.get("data-hint-gebied-code", None)
 
