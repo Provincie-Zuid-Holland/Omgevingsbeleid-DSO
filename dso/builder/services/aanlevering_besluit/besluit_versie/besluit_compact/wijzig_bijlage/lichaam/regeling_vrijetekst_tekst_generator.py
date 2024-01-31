@@ -1,4 +1,4 @@
-import copy
+from copy import copy
 from uuid import UUID
 
 from bs4 import BeautifulSoup
