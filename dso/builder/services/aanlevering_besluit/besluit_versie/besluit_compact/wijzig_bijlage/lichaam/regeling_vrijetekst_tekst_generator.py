@@ -1,3 +1,4 @@
+import copy
 from uuid import UUID
 
 from bs4 import BeautifulSoup
@@ -19,9 +20,16 @@ class RegelingVrijetekstTekstGenerator:
 
     def create(self, html: str):
         tekst: str = self._html_to_xml_lichaam(html)
+        self._state_manager.debug['tekst-part-1'] = copy(tekst)
+
         tekst = self._enrich_illustratie(tekst)
+        self._state_manager.debug['tekst-part-2'] = copy(tekst)
+
         tekst = self._add_ewids(tekst)
+        self._state_manager.debug['tekst-part-3'] = copy(tekst)
+
         tekst = self._remove_hints(tekst)
+        self._state_manager.debug['tekst-part-4'] = copy(tekst)
 
         return tekst
 
