@@ -6,7 +6,7 @@ def middleware_image_in_p(html_content: str) -> str:
     while modified:
         modified_html, modified = _process_html(modified_html)
 
-    return html_content
+    return modified_html
 
 
 def _process_html(html_content: str) -> str:
