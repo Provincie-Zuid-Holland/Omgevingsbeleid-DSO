@@ -1,6 +1,6 @@
 import re
 from abc import ABCMeta, abstractmethod
-from typing import Any, Dict, List, Optional, Type, TypeAlias, Union
+from typing import Any, Dict, List, Optional, Tuple, Type, TypeAlias, Union
 
 from bs4 import BeautifulSoup, CData, Comment, Declaration, Doctype, NavigableString, ProcessingInstruction, Tag
 
@@ -48,8 +48,9 @@ class IsEmptyTrait(metaclass=ABCMeta):
 
 
 class Element(AsXmlTrait, metaclass=ABCMeta):
-    def consume_children(self, children: List[Any]):
-        for element in children:
+    def consume_children(self, tag: Tag) -> Tuple[Optional[Tag], Optional[Tag]]:
+        children = tag.children
+        for i, element in children:
             if isinstance(element, Comment):
                 self.consume_comment(element)
             elif isinstance(element, NavigableString):
@@ -63,9 +64,27 @@ class Element(AsXmlTrait, metaclass=ABCMeta):
             elif isinstance(element, Declaration):
                 raise NotImplementedError("Declaration", element)
             elif isinstance(element, Tag):
-                self.consume_tag(element)
+                failed_tag = self.consume_tag(element)
+                if failed_tag is not None:
+                    # The current element could not consume the tag
+                    # We need to combine this leftoverTag with the rest of the children
+                    # And then return it to the parent element, maybe he knows what to do
+                    leftover_tag = None
+                    leftover_children = children[i+1:]
+                    if leftover_children:
+                        leftover_tag = self._as_tag(tag.name, leftover_children)
+
+                    return failed_tag, leftover_tag
             else:
                 raise Exception("Unknown type", element)
+        return None, None
+
+    def _as_tag(self, tag_name: str, children: List[Any]) -> Tag:
+        soup_helper = BeautifulSoup(features="xml")
+        tag = soup_helper.new_tag(tag_name)
+        for child in children:
+            tag.append(child)
+        return tag
 
     @abstractmethod
     def consume_tag(self, tag: Tag) -> LeftoverTag:
@@ -103,8 +122,10 @@ class SimpleElement(Element, metaclass=ABCMeta):
                 tag=tag,
                 context=self._get_generate_context(),
             )
-            content.consume_children(tag.children)
             self.contents.append(content)
+
+            # @todo implement
+            failed_tag, remainder_tag = content.consume_children(tag)
             return None
         return tag
 
@@ -293,6 +314,18 @@ class Inhoud(SimpleElement):
     def __init__(self, tag: Optional[Tag] = None):
         super().__init__(xml_tag_name="Inhoud")
 
+    def consume_tag(self, tag: Tag) -> LeftoverTag:
+        leftoverTag = SimpleElement.consume_tag(self, tag)
+
+        counter = 0
+        while True:
+            if leftoverTag is None:
+                return None
+            leftoverTag = Inhoud.consume_tag(leftoverTag)
+            counter += 1
+            if counter > 100:
+                raise RuntimeError(f"Not expecting to take so long to consume everything. Failed in Inhoud on tag: {tag}")
+
 
 # td
 class Entry(SimpleElement):
@@ -367,13 +400,17 @@ class Table(Element):
             if self.thead is not None:
                 raise RuntimeError("Multiple thead are not supported")
             self.thead = Thead(tag)
-            self.thead.consume_children(tag.children)
+            failed_tag, _ = self.thead.consume_children(tag)
+            if failed_tag is not None:
+                raise RuntimeError(f"Not implemented: {tag.name} for Table.thead")
             return None
         if tag.name == "tbody":
             if self.tbody is not None:
                 raise RuntimeError("Multiple tbody are not supported")
             self.tbody = Tbody(tag)
-            self.tbody.consume_children(tag.children)
+            failed_tag, _ = self.thead.consume_children(tag)
+            if failed_tag is not None:
+                raise RuntimeError(f"Not implemented: {tag.name} for Table.tbody")
             return None
 
     def consume_string(self, string: NavigableString):
@@ -502,8 +539,10 @@ class Divisietekst(Element):
             if self.kop is not None:
                 return tag
             kop = Kop(tag)
-            kop.consume_children(tag.children)
             self.kop = kop
+            failed_tag, _ = kop.consume_children(tag)
+            if failed_tag is not None:
+                raise RuntimeError(f"Not implemented: {failed_tag.name} for Divisietekst")
             return None
 
         # Any other tags will just be send in a Inhoud
@@ -597,15 +636,20 @@ class Divisie(Element):
                 return leftover
 
             kop = Kop(tag)
-            kop.consume_children(tag.children)
             self.kop = kop
+            failed_tag, _ = kop.consume_children(tag)
+            if failed_tag is not None:
+                raise RuntimeError(f"Not implemented: {failed_tag.name} for Divisietekst.kop")
+
             return None
 
         # If the tag is a div then we will create a new Divisie
         elif tag.name == "div":
             content: Divisie = Divisie(tag)
             self.contents.append(content)
-            content.consume_children(tag.children)
+            failed_tag, _ = content.consume_children(tag)
+            if failed_tag is not None:
+                raise RuntimeError(f"Not implemented: {failed_tag.name} for Divisietekst.div")
             return None
 
         # Else we will let the last Divisietekst consume the tag
