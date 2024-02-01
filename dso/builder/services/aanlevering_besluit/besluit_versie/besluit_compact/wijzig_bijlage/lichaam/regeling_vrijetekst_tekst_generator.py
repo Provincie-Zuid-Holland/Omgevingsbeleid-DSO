@@ -6,7 +6,7 @@ from lxml import etree
 
 from ........models import PublicationSettings
 from ........services.ewid.ewid_service import EWIDService
-from ........services.tekst.middleware import middleware_enrich_table
+from ........services.tekst.middleware import middleware_enrich_table, middleware_image_in_p
 from ........services.tekst.tekst import Lichaam
 from ........services.utils.helpers import is_html_valid
 from .......state_manager.input_data.resource.asset.asset import Asset
@@ -20,16 +20,16 @@ class RegelingVrijetekstTekstGenerator:
 
     def create(self, html: str):
         tekst: str = self._html_to_xml_lichaam(html)
-        self._state_manager.debug['tekst-part-1'] = copy(tekst)
+        self._state_manager.debug["tekst-part-1"] = copy(tekst)
 
         tekst = self._enrich_illustratie(tekst)
-        self._state_manager.debug['tekst-part-2'] = copy(tekst)
+        self._state_manager.debug["tekst-part-2"] = copy(tekst)
 
         tekst = self._add_ewids(tekst)
-        self._state_manager.debug['tekst-part-3'] = copy(tekst)
+        self._state_manager.debug["tekst-part-3"] = copy(tekst)
 
         tekst = self._remove_hints(tekst)
-        self._state_manager.debug['tekst-part-4'] = copy(tekst)
+        self._state_manager.debug["tekst-part-4"] = copy(tekst)
 
         return tekst
 
@@ -38,6 +38,9 @@ class RegelingVrijetekstTekstGenerator:
             raise RuntimeError("Invalid html")
 
         html = middleware_enrich_table(html)
+        html = middleware_image_in_p(html)
+        self._state_manager.debug["tekst-part-0"] = copy(html)
+
         input_soup = BeautifulSoup(html, "html.parser")
         lichaam = Lichaam()
         lichaam.consume_children(input_soup.children)

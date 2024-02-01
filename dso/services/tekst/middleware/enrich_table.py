@@ -1,14 +1,6 @@
 from bs4 import BeautifulSoup
 
 
-def calculate_columns(row):
-    columns = 0
-    for cell in row.find_all(["td", "th"], recursive=False):
-        colspan = cell.get("colspan")
-        columns += int(colspan) if colspan else 1
-    return columns
-
-
 def middleware_enrich_table(html):
     soup = BeautifulSoup(html, "html.parser")
 
@@ -19,7 +11,7 @@ def middleware_enrich_table(html):
 
         # Set the column count as am attribute in the table
         # That makes it easier for the tekst parser to build the colspec
-        max_columns = calculate_columns(first_row)
+        max_columns = _calculate_columns(first_row)
         table["data-columns"] = str(max_columns)
 
         # This will move the first row into a thead if that is needed
@@ -31,3 +23,11 @@ def middleware_enrich_table(html):
                 table.insert(0, thead)
 
     return str(soup)
+
+
+def _calculate_columns(row):
+    columns = 0
+    for cell in row.find_all(["td", "th"], recursive=False):
+        colspan = cell.get("colspan")
+        columns += int(colspan) if colspan else 1
+    return columns
