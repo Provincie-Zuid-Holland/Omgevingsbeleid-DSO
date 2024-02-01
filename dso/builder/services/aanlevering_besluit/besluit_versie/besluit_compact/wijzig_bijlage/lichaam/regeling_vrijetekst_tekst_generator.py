@@ -6,7 +6,7 @@ from lxml import etree
 
 from ........models import PublicationSettings
 from ........services.ewid.ewid_service import EWIDService
-from ........services.tekst.middleware import middleware_enrich_table, middleware_image_in_p
+from ........services.tekst.middleware import middleware_enrich_table
 from ........services.tekst.tekst import Lichaam
 from ........services.utils.helpers import is_html_valid
 from .......state_manager.input_data.resource.asset.asset import Asset
@@ -38,7 +38,6 @@ class RegelingVrijetekstTekstGenerator:
             raise RuntimeError("Invalid html")
 
         html = middleware_enrich_table(html)
-        html = middleware_image_in_p(html)
         self._state_manager.debug["tekst-part-0"] = copy(html)
 
         input_soup = BeautifulSoup(html, "html.parser")
