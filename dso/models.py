@@ -92,7 +92,7 @@ class PublicatieOpdracht(BaseModel):
 
 
 class DocumentType(Enum):
-    PROGRAMMA = "Omgevingsprogramma"
+    PROGRAMMA = "Programma"
     VISIE = "Omgevingsvisie"
 
 

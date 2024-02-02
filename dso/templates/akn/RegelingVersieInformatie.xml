@@ -8,7 +8,7 @@
         <versienummer>{{ regeling.versienummer }}</versienummer>
     </RegelingVersieMetadata>
     <RegelingMetadata xmlns="https://standaarden.overheid.nl/stop/imop/data/">
-        <soortRegeling>/join/id/stop/regelingtype_010</soortRegeling>
+        <soortRegeling>{{ soort_regeling }}</soortRegeling>
         <eindverantwoordelijke>{{ provincie_ref }}</eindverantwoordelijke>
         <maker>{{ provincie_ref }}</maker>
         <soortBestuursorgaan>{{ soort_bestuursorgaan }}</soortBestuursorgaan>
