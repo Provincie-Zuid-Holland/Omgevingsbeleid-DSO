@@ -14,9 +14,11 @@
         {% endfor %}
     </rechtsgebieden>
     <soortProcedure>{{ besluit.soort_procedure.value }}</soortProcedure>
+    {% if informatieobject_refs | length > 0 %}
     <informatieobjectRefs>
         {% for ref in informatieobject_refs %}
             <informatieobjectRef>{{ ref }}</informatieobjectRef>
         {% endfor %}
     </informatieobjectRefs>
+    {% endif %} 
 </BesluitMetadata>
