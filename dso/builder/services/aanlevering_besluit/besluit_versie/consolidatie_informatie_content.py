@@ -25,13 +25,14 @@ class ConsolidatieInformatieContent:
             Werkingsgebied
         ] = self._state_manager.input_data.resources.werkingsgebied_repository.all()
         for werkingsgebied in werkingsgebieden:
-            eid: str = self._state_manager.werkingsgebied_eid_lookup[str(werkingsgebied.UUID)]
-            beoogd_informatieobjecten.append(
-                {
-                    "instrument_versie": werkingsgebied.get_FRBR().expression,
-                    "eid": f"!{settings.regeling_componentnaam}#{eid}",
-                }
-            )
+            if werkingsgebied.New:
+                eid: str = self._state_manager.werkingsgebied_eid_lookup[str(werkingsgebied.UUID)]
+                beoogd_informatieobjecten.append(
+                    {
+                        "instrument_versie": werkingsgebied.get_FRBR().expression,
+                        "eid": f"!{settings.regeling_componentnaam}#{eid}",
+                    }
+                )
 
         content = load_template(
             "akn/besluit_versie/ConsolidatieInformatie.xml",
