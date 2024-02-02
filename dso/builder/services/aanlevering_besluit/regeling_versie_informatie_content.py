@@ -22,5 +22,5 @@ class RegelingVersieInformatieContent:
         return content
 
     def _get_soort_regeling(self) -> str:
-        document_type: DocumentType = self._state_manager.input_data.publication_settings.document_type.upper()
+        document_type: DocumentType = self._state_manager.input_data.publication_settings.document_type.value
         return RegelingType[document_type].value
