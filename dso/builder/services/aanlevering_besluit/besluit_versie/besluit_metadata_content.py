@@ -15,7 +15,8 @@ class BesluitMetadataContent:
         ] = self._state_manager.input_data.resources.werkingsgebied_repository.all()
         informatieobject_refs: List[str] = []
         for werkingsgebied in werkingsgebieden:
-            informatieobject_refs.append(werkingsgebied.get_FRBR().expression)
+            if werkingsgebied.New:
+                informatieobject_refs.append(werkingsgebied.get_FRBR().expression)
 
         content = load_template(
             "akn/besluit_versie/BesluitMetadata.xml",
