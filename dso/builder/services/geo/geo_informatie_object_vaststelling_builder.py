@@ -14,8 +14,9 @@ class GeoInformatieObjectVaststellingBuilder(BuilderService):
         werkingsgebieden = state_manager.input_data.resources.werkingsgebied_repository.all()
 
         for werkingsgebied in werkingsgebieden:
-            output_file: OutputFile = self._generate_glm(werkingsgebied)
-            state_manager.add_output_file(output_file)
+            if werkingsgebied.New:
+                output_file: OutputFile = self._generate_glm(werkingsgebied)
+                state_manager.add_output_file(output_file)
 
         return state_manager
 

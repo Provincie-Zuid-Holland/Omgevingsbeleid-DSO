@@ -3,10 +3,10 @@ from copy import copy
 from lxml import etree
 from lxml import html as lxml_html
 
+from ........services.tekst.middleware import middleware_image_in_p
 from .......state_manager.input_data.object_template_repository import ObjectTemplateRepository
 from .......state_manager.input_data.resource.policy_object.policy_object_repository import PolicyObjectRepository
 from .......state_manager.state_manager import StateManager
-from ........services.tekst.middleware import middleware_image_in_p
 
 
 class RegelingVrijetekstHtmlGenerator:
@@ -48,9 +48,9 @@ class RegelingVrijetekstHtmlGenerator:
 
             object_html = middleware_image_in_p(object_html)
             # @todo remove debug
-            if not 'html_templates' in self._state_manager.debug:
-                self._state_manager.debug['html_templates'] = {}
-            self._state_manager.debug['html_templates'][object_code] = copy(object_html)
+            if not "html_templates" in self._state_manager.debug:
+                self._state_manager.debug["html_templates"] = {}
+            self._state_manager.debug["html_templates"][object_code] = copy(object_html)
 
             new_elements = lxml_html.fragments_fromstring(object_html)
 

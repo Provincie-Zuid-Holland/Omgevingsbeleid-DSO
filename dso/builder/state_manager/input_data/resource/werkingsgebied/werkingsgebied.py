@@ -22,6 +22,7 @@ class Werkingsgebied(BaseModel):
     Object_ID: Optional[int] = Field(None)
     Object_Type: Optional[str] = Field(None)
     Code: str
+    New: bool
     Title: str
     Symbol: str
     Created_Date: datetime
