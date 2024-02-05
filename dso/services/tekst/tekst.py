@@ -509,7 +509,7 @@ class Divisietekst(Element):
             return tag
 
         # Headings will be send to the Kop
-        if tag.name in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+        if tag.name in ["h1", "h2", "h3", "h4"]:
             if self.kop is not None:
                 return tag
             kop = Kop(tag)
@@ -583,7 +583,7 @@ class Divisie(Element):
 
     def _try_consume_tag(self, tag: Tag) -> LeftoverTag:
         # Headings will be send to the Kop
-        if tag.name in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+        if tag.name in ["h1", "h2", "h3", "h4"]:
             if self.kop is not None:
                 # If we already have a title and we need a title
                 # Then we create a new Divisie or Divisietekst based on the title level

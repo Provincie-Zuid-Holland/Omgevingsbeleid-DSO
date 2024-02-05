@@ -117,11 +117,15 @@
   ],
   "object_templates": {
     "maatregel": [
+      "<div>",
       "<h1>{{ o.Title }}</h1>",
       "<!--[OBJECT-CODE:{{o.Code}}]-->",
       "<!--[GEBIED-CODE:{{o.Werkingsgebied_Code}}]-->",
       "<h2>Omschrijving</h2>",
-      "{{ o.Description }}"
+      "{{ o.Description }}",
+      "<h6>Rol</h6>",
+      "<p>Mooie bierzuip rol!</p>",
+      "</div>"
     ]
   }
 }
