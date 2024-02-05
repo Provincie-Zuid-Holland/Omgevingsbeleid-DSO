@@ -217,7 +217,7 @@ class Strong(SimpleElement):
 
 class TussenKop(SimpleElement):
     def __init__(self, tag: Optional[Tag] = None):
-        super().__init__(xml_tag_name="TussenKop")
+        super().__init__(xml_tag_name="Tussenkop")
 
 
 class Al(SimpleElement):
