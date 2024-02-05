@@ -20,8 +20,15 @@ def _process_html(html_content: str) -> str:
         for child in list(element):
             if child.tag == "img":
                 new_p_tag = html.Element("p")
-                while child.getnext() is not None:
-                    new_p_tag.append(child.getnext())
+
+                if child.tail is not None:
+                    new_p_tag.text = (new_p_tag.text or "") + child.tail
+                    child.tail = None
+
+                next_sibling = child.getnext()
+                while next_sibling is not None:
+                    new_p_tag.append(next_sibling)
+                    next_sibling = next_sibling.getnext()
 
                 element.addnext(new_p_tag)
                 element.addnext(child)
