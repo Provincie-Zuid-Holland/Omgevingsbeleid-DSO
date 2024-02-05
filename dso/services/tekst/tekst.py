@@ -809,6 +809,7 @@ Inhoud.element_generators = [
     element_ol_handler,
     element_img_handler,
     element_table_handler,
+    element_h6_tussenkop_handler,
 ]
 Li.element_generators = [
     element_p_handler,
