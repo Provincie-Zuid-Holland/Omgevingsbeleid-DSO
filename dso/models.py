@@ -3,7 +3,11 @@ from typing import List
 
 from pydantic import BaseModel, Field, root_validator, validator
 
-from .services.utils.waardelijsten import ProcedureStappenDefinitief, Provincie
+from .services.utils.waardelijsten import (
+    BestuursorgaanSoort,
+    ProcedureStappenDefinitief,
+    Provincie,
+)
 
 
 # <FRBRWork>/akn/nl/bill/pv28/2023/2_2093</FRBRWork>
@@ -30,6 +34,13 @@ class FRBR(BaseModel):
 class ProcedureStap(BaseModel):
     soort_stap: ProcedureStappenDefinitief
     voltooid_op: str
+
+    @validator("soort_stap", pre=True)
+    def map_enum_value(cls, v):
+        try:
+            return ProcedureStappenDefinitief[v].value
+        except KeyError:
+            raise ValueError(f"{v} is geen valide ProcedureStap uit de waardelijst")
 
 
 class ProcedureVerloop(BaseModel):
@@ -107,7 +118,7 @@ class PublicationSettings(BaseModel):
     datum_juridisch_werkend_vanaf: str
     provincie_id: str
     wId_suffix: str
-    soort_bestuursorgaan: str
+    soort_bestuursorgaan: BestuursorgaanSoort
     expression_taal: str
     regeling_componentnaam: str
     provincie_ref: str = Provincie.Zuid_Holland.value
@@ -120,6 +131,13 @@ class PublicationSettings(BaseModel):
     @validator("document_type", pre=True, always=True)
     def _format_document_type(cls, v):
         return DocumentType[v]
+
+    @validator("soort_bestuursorgaan", pre=True)
+    def _format_soort_bestuursorgaan(cls, v):
+        try:
+            return BestuursorgaanSoort[v].value
+        except KeyError:
+            raise ValueError(f"{v} is geen valide Bestuursorgaan uit de waardelijst")
 
     @root_validator(pre=True)
     def _generate_besluit_frbr(cls, v):

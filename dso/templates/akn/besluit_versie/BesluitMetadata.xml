@@ -1,7 +1,7 @@
 <BesluitMetadata xmlns="https://standaarden.overheid.nl/stop/imop/data/">
     <eindverantwoordelijke>{{ provincie_ref }}</eindverantwoordelijke>
     <maker>{{ provincie_ref }}</maker>
-    <soortBestuursorgaan>{{ soort_bestuursorgaan }}</soortBestuursorgaan>
+    <soortBestuursorgaan>{{ soort_bestuursorgaan.value }}</soortBestuursorgaan>
     <officieleTitel>{{ besluit.officiele_titel }}</officieleTitel>
     <onderwerpen>
         {% for onderwerp in besluit.onderwerpen %}
