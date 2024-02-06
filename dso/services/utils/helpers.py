@@ -9,6 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 from lxml import etree
 
 from ...exceptions import FileWriteError, TemplateError
+from .jinja_filters import jinja2_filter_has_text
 
 # env = Environment(loader=FileSystemLoader("."))
 
@@ -17,6 +18,7 @@ template_path = pkg_resources.resource_filename("dso", "templates")
 env = Environment(
     loader=FileSystemLoader(template_path),
 )
+env.filters["has_text"] = jinja2_filter_has_text
 
 
 def load_template(template_name: str, pretty_print: bool = False, **context) -> str:
