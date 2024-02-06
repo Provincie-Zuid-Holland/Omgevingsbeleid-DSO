@@ -11,7 +11,7 @@
         <soortRegeling>{{ soort_regeling }}</soortRegeling>
         <eindverantwoordelijke>{{ provincie_ref }}</eindverantwoordelijke>
         <maker>{{ provincie_ref }}</maker>
-        <soortBestuursorgaan>{{ soort_bestuursorgaan }}</soortBestuursorgaan>
+        <soortBestuursorgaan>{{ soort_bestuursorgaan.value }}</soortBestuursorgaan>
         <officieleTitel>{{ regeling.officiele_titel }}</officieleTitel>
         <heeftCiteertitelInformatie>
             <CiteertitelInformatie>
