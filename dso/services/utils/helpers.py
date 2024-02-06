@@ -15,14 +15,14 @@ from .jinja_filters import jinja2_filter_has_text
 
 template_path = pkg_resources.resource_filename("dso", "templates")
 
-env = Environment(
+jinja2_env = Environment(
     loader=FileSystemLoader(template_path),
 )
-env.filters["has_text"] = jinja2_filter_has_text
+jinja2_env.filters["has_text"] = jinja2_filter_has_text
 
 
 def load_template(template_name: str, pretty_print: bool = False, **context) -> str:
-    template = env.get_template(f"/{template_name}")
+    template = jinja2_env.get_template(f"/{template_name}")
 
     try:
         output = template.render(**context)

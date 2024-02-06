@@ -2,6 +2,8 @@ from typing import Dict, List, Union
 
 from jinja2 import Template
 
+from ....services.utils.helpers import jinja2_env
+
 
 class ObjectTemplateRepository:
     def __init__(self, template_data: Dict[str, Union[str, List[str]]]):
@@ -21,7 +23,7 @@ class ObjectTemplateRepository:
             if isinstance(data, list):
                 data = "".join(data)
 
-            template = Template(data)
+            template = jinja2_env.from_string(data)
             result[object_code] = template
 
         return result
