@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -15,12 +15,12 @@ from .states.ow_repository import OWStateRepository
 
 
 class StateExport(BaseModel):
-    input_data: InputData
-    werkingsgebied_eid_lookup: dict
-    object_tekst_lookup: dict
-    artikel_eid: ArtikelEidRepository
-    ow_repository: OWStateRepository
-    _output_files: List[OutputFile]
+    input_data: Optional[InputData]
+    werkingsgebied_eid_lookup: Optional[dict]
+    object_tekst_lookup: Optional[dict]
+    artikel_eid: Optional[ArtikelEidRepository]
+    ow_repository: Optional[OWStateRepository]
+    output_files: Optional[List[OutputFile]]
 
     class Config:
         arbitrary_types_allowed = True
@@ -31,6 +31,7 @@ class StateExport(BaseModel):
             ObjectTemplateRepository: lambda v: v.to_dict() if v is not None else None,
             ArtikelEidRepository: lambda v: v.to_dict() if v is not None else None,
             OWStateRepository: lambda v: v.to_dict() if v is not None else None,
+            OutputFile: lambda v: v.to_dict() if v is not None else None,
         }
 
 
@@ -41,18 +42,18 @@ class StateManager:
         self.object_tekst_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
         self.ow_repository: OWStateRepository = OWStateRepository()
-        self._output_files: List[OutputFile] = []
+        self.output_files: List[OutputFile] = []
         self.debug: dict = {}
 
     def add_output_file(self, output_file: OutputFile):
-        self._output_files.append(output_file)
+        self.output_files.append(output_file)
 
     def get_output_files(self) -> List[OutputFile]:
-        output_files = sorted(self._output_files, key=lambda o: o.filename)
+        output_files = sorted(self.output_files, key=lambda o: o.filename)
         return output_files
 
     def get_output_file_by_filename(self, filename: str) -> OutputFile:
-        for output_file in self._output_files:
+        for output_file in self.output_files:
             if output_file.filename == filename:
                 return output_file
 
@@ -65,6 +66,6 @@ class StateManager:
             object_tekst_lookup=self.object_tekst_lookup,
             artikel_eid=self.artikel_eid,
             ow_repository=self.ow_repository,
-            _output_files=self._output_files,
+            output_files=self.output_files,
         )
         return export

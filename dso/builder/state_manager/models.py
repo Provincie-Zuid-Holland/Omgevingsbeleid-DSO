@@ -27,9 +27,14 @@ class OutputFile:
     options: dict = field(default_factory=dict)
 
     def to_dict(self):
-        return {
+        serializable_data = {
             "filename": self.filename,
             "content_type": self.content_type,
-            "content": self.content,
             "options": self.options,
         }
+        if isinstance(self.content, StrContentData):
+            serializable_data["content"] = str(self.content.content)
+        else:
+            serializable_data["content"] = None
+
+        return serializable_data

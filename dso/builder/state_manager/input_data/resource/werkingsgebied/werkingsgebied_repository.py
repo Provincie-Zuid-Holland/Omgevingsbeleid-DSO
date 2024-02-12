@@ -49,4 +49,5 @@ class WerkingsgebiedRepository:
         return not self._werkingsgebieden
 
     def to_dict(self):
-        return {k: v.dict() for k, v in self._werkingsgebieden.items()}
+        serializable_data = {str(k): v.json() for k, v in self._werkingsgebieden.items()}
+        return serializable_data

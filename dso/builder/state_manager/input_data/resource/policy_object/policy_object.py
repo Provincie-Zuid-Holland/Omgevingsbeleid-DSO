@@ -1,4 +1,5 @@
 from typing import Any
+import uuid
 
 
 class PolicyObject:
@@ -9,4 +10,10 @@ class PolicyObject:
         return self.data.get(key, default)
 
     def to_dict(self):
-        return self.data
+        serializable_dict = {}
+        for key, value in self.data.items():
+            if isinstance(value, uuid.UUID):
+                serializable_dict[key] = str(value)
+            else:
+                serializable_dict[key] = value
+        return serializable_dict

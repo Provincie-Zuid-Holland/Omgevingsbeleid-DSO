@@ -39,3 +39,8 @@ class Asset(BaseModel):
     def get_filename(self) -> str:
         filename: str = f"img_{self.UUID}.{self.Meta.Ext}"
         return filename
+
+    def json(self, *args, **kwargs):
+        # do not include the content in a json export
+        exclude_fields = {"Content"}
+        return super().json(exclude=exclude_fields, *args, **kwargs)

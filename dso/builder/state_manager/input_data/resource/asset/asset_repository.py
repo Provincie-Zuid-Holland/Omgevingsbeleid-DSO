@@ -32,5 +32,9 @@ class AssetRepository:
     def is_empty(self) -> bool:
         return not self._assets
 
+    # def to_dict(self):
+    #     return {k: v.dict() for k, v in self._assets.items()}
+
     def to_dict(self):
-        return {k: v.dict() for k, v in self._assets.items()}
+        serializable_data = {k: v.dict() for k, v in self._assets.items()}
+        return serializable_data
