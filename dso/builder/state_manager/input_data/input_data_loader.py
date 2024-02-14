@@ -1,5 +1,5 @@
 import os
-from typing import List, Union
+from typing import List, Union, Optional
 
 from pydantic import BaseModel
 
@@ -20,6 +20,7 @@ class InputData(BaseModel):
     procedure_verloop: ProcedureVerloop
     resources: Resources
     object_template_repository: ObjectTemplateRepository
+    regelingsgebied: Optional[dict]
 
     class Config:
         arbitrary_types_allowed = True

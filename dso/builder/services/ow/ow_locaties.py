@@ -1,17 +1,28 @@
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 
 from ....models import ContentType
 from ....services.ow.enums import OwLocatieObjectType, OwProcedureStatus
-from ....services.ow.models import BestuurlijkeGrenzenVerwijzing, OWAmbtsgebied, OWGebied, OWGebiedenGroep
+from ....services.ow.models import (
+    BestuurlijkeGrenzenVerwijzing,
+    OWAmbtsgebied,
+    OWGebied,
+    OWGebiedenGroep,
+)
 from ....services.utils.helpers import load_template
-from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
+from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import (
+    Werkingsgebied,
+)
 from ...state_manager.models import OutputFile, StrContentData
 
 
 class OwLocatiesContent:
     """
     Prepares the content for the OWLocaties file from Werkingsgebieden.
+
+    Assuming that ambtsgebied should only be defined as location
+    on the first publication or if updated in value based on TPOD 2.0.2
+    https://docs.geostandaarden.nl/tpod/def-st-TPOD-OVI-20230407/#00B96535
     """
 
     def __init__(
@@ -20,11 +31,13 @@ class OwLocatiesContent:
         object_tekst_lookup: dict,
         levering_id: str,
         ow_procedure_status: OwProcedureStatus,
+        ambtsgebied_data: Optional[dict],
     ):
         self.werkingsgebieden = werkingsgebieden
         self.object_tekst_lookup = object_tekst_lookup
         self.levering_id = levering_id
         self.ow_procedure_status = ow_procedure_status
+        self.ambtsgebied_data = ambtsgebied_data
 
         self.xml_data = {
             "filename": "owLocaties.xml",
@@ -41,6 +54,11 @@ class OwLocatiesContent:
         Create OWGebied and OWGebiedenGroep objects and return them in a dict
         """
         self._create_ow_locations()
+
+        if self.ambtsgebied_data:
+            ambtsgebied = self._create_amtsgebied(self.ambtsgebied_data)
+            self.xml_data["ambtsgebieden"].append(ambtsgebied)
+
         self._add_object_types()
         self.file = self.create_file()
         return self.xml_data
@@ -50,7 +68,6 @@ class OwLocatiesContent:
         Create new OW Locations from werkingsgebieden.
         Use manual ambtsgebied for now.
         """
-
         for werkingsgebied in self.werkingsgebieden:
             ow_locations = [
                 OWGebied(
@@ -69,23 +86,15 @@ class OwLocatiesContent:
             self.xml_data["gebieden"].extend(ow_locations)
             self.xml_data["gebiedengroepen"].append(ow_group)
 
-        # Manually add ambtsgebied
-        # TODO: add in input data
-        ambtsgebied = OWAmbtsgebied(
-            OW_ID="nl.imow-pv28.ambtsgebied.002000000000000000009928",
-            procedure_status=self.ow_procedure_status,
-            bestuurlijke_genzenverwijzing=BestuurlijkeGrenzenVerwijzing(
-                bestuurlijke_grenzen_id="PV28",
-                domein="NL.BI.BestuurlijkGebied",
-                geldig_op="2023-09-29",
-            ),
-        )
-        self.xml_data["ambtsgebieden"].append(ambtsgebied)
-
         # Update object_tekst_lookup with OW_IDs
-        ow_gebied_mapping = {gebied.geo_uuid: gebied.OW_ID for gebied in self.xml_data["gebieden"]}
+        ow_gebied_mapping = {
+            gebied.geo_uuid: gebied.OW_ID for gebied in self.xml_data["gebieden"]
+        }
         ow_gebied_mapping.update(
-            {gebiedengroep.geo_uuid: gebiedengroep.OW_ID for gebiedengroep in self.xml_data["gebiedengroepen"]}
+            {
+                gebiedengroep.geo_uuid: gebiedengroep.OW_ID
+                for gebiedengroep in self.xml_data["gebiedengroepen"]
+            }
         )
         for object_code, values in self.object_tekst_lookup.items():
             if values.get("gebied_uuid", None) is None:
@@ -94,6 +103,14 @@ class OwLocatiesContent:
             matching_ow_gebied = ow_gebied_mapping.get(UUID(values["gebied_uuid"]))
             if matching_ow_gebied:
                 values["ow_location_id"] = matching_ow_gebied
+
+    def _create_amtsgebied(self, ambtsgebied_data: dict):
+        """
+        Should only create an ambtsgebied if manually added or updated.
+        """
+        new_ambtsgebied = OWAmbtsgebied(**ambtsgebied_data)
+        new_ambtsgebied.procedure_status = self.ow_procedure_status
+        return new_ambtsgebied
 
     def _add_object_types(self):
         # Add object types for used location types

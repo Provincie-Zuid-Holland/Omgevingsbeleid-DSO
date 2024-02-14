@@ -29,11 +29,14 @@ class OwBuilder(BuilderService):
         if state_manager.input_data.besluit.soort_procedure == ProcedureType.Ontwerpbesluit:
             ow_procedure_status = OwProcedureStatus.ONTWERP.value
 
+        regelingsgebied_data = state_manager.input_data.regelingsgebied
+
         locaties_content = OwLocatiesContent(
             werkingsgebieden=werkingsgebieden,
             object_tekst_lookup=state_manager.object_tekst_lookup,
             levering_id=leveringid,
             ow_procedure_status=ow_procedure_status,
+            ambtsgebied_data=regelingsgebied_data.get('ambtsgebied', None),
         )
         locaties_state = locaties_content.create_locations()
         state_manager.ow_repository.store_locaties_content(locaties_state)
@@ -49,8 +52,9 @@ class OwBuilder(BuilderService):
         regelinggebied_content = OwRegelingsgebiedContent(
             levering_id=leveringid,
             ow_procedure_status=ow_procedure_status,
+            regelinggebied_data=regelingsgebied_data.get('regelingsgebied', None),
         )
-        regelinggebied_state = regelinggebied_content.create_regelingen()
+        regelinggebied_state = regelinggebied_content.create_regelingsgebieden()
         state_manager.ow_repository.store_regelingsgebied_content(regelinggebied_state)
 
         manifest_content = ManifestContent(
