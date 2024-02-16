@@ -19,12 +19,16 @@ class BestuurlijkeGrenzenVerwijzing(BaseModel):
 
 
 class OWAmbtsgebied(OWObject):
-    OW_ID: str = Field(default_factory=lambda: generate_ow_id(IMOWTYPES.REGELINGSGEBIED))
+    OW_ID: str = Field(
+        default_factory=lambda: generate_ow_id(IMOWTYPES.REGELINGSGEBIED)
+    )
     bestuurlijke_genzenverwijzing: BestuurlijkeGrenzenVerwijzing
 
 
 class OWRegelingsgebied(OWObject):
-    OW_ID: str = Field(default_factory=lambda: generate_ow_id(IMOWTYPES.REGELINGSGEBIED))
+    OW_ID: str = Field(
+        default_factory=lambda: generate_ow_id(IMOWTYPES.REGELINGSGEBIED)
+    )
     ambtsgebied: str  # locatieaanduiding ambtsgebied
 
 
