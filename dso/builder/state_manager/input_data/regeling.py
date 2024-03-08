@@ -15,11 +15,23 @@ class Regeling(BaseModel):
 
     @validator("rechtsgebieden", pre=True, always=True)
     def _format_rechtsgebieden(cls, v):
-        return [RechtsgebiedType[i] for i in v]
+        result = []
+        for entry in v:
+            if entry in RechtsgebiedType.__members__.values():
+                result.append(entry)
+            else:
+                result.append(RechtsgebiedType[entry])
+        return result
 
     @validator("onderwerpen", pre=True, always=True)
     def _format_onderwerpen(cls, v):
-        return [OnderwerpType[i] for i in v]
+        result = []
+        for entry in v:
+            if entry in OnderwerpType.__members__.values():
+                result.append(entry)
+            else:
+                result.append(OnderwerpType[entry])
+        return result
 
     @validator("is_officieel", pre=True, always=True)
     def _format_is_officieel(cls, v):
