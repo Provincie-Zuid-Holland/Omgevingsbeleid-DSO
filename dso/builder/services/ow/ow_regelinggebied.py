@@ -1,4 +1,5 @@
 from typing import Optional
+
 from ....models import ContentType
 from ....services.ow.enums import OwProcedureStatus, OwRegelingsgebiedObjectType
 from ....services.ow.models import OWRegelingsgebied

@@ -2,19 +2,11 @@ from typing import List, Optional
 from uuid import UUID
 
 from ....models import ContentType
-from ....services.ow.enums import OwLocatieObjectType, OwProcedureStatus, IMOWTYPES
-from ....services.ow.models import (
-    BestuurlijkeGrenzenVerwijzing,
-    OWAmbtsgebied,
-    OWGebied,
-    OWGebiedenGroep,
-)
-
+from ....services.ow.enums import IMOWTYPES, OwLocatieObjectType, OwProcedureStatus
+from ....services.ow.models import OWAmbtsgebied, OWGebied, OWGebiedenGroep
 from ....services.ow.ow_id import generate_ow_id
 from ....services.utils.helpers import load_template
-from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import (
-    Werkingsgebied,
-)
+from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from ...state_manager.models import OutputFile, StrContentData
 
 
@@ -73,9 +65,7 @@ class OwLocatiesContent:
         for werkingsgebied in self.werkingsgebieden:
             ow_locations = [
                 OWGebied(
-                    OW_ID=generate_ow_id(
-                        ow_type=IMOWTYPES.GEBIED, unique_code=loc.UUID.hex
-                    ),
+                    OW_ID=generate_ow_id(ow_type=IMOWTYPES.GEBIED, unique_code=loc.UUID.hex),
                     geo_uuid=loc.UUID,
                     noemer=loc.Title,
                     procedure_status=self.ow_procedure_status,
@@ -83,9 +73,7 @@ class OwLocatiesContent:
                 for loc in werkingsgebied.Locaties
             ]
             ow_group = OWGebiedenGroep(
-                OW_ID=generate_ow_id(
-                    ow_type=IMOWTYPES.GEBIEDENGROEP, unique_code=werkingsgebied.UUID.hex
-                ),
+                OW_ID=generate_ow_id(ow_type=IMOWTYPES.GEBIEDENGROEP, unique_code=werkingsgebied.UUID.hex),
                 geo_uuid=werkingsgebied.UUID,
                 noemer=werkingsgebied.Title,
                 locations=ow_locations,
@@ -95,14 +83,9 @@ class OwLocatiesContent:
             self.xml_data["gebiedengroepen"].append(ow_group)
 
         # Update object_tekst_lookup with OW_IDs
-        ow_gebied_mapping = {
-            gebied.geo_uuid: gebied.OW_ID for gebied in self.xml_data["gebieden"]
-        }
+        ow_gebied_mapping = {gebied.geo_uuid: gebied.OW_ID for gebied in self.xml_data["gebieden"]}
         ow_gebied_mapping.update(
-            {
-                gebiedengroep.geo_uuid: gebiedengroep.OW_ID
-                for gebiedengroep in self.xml_data["gebiedengroepen"]
-            }
+            {gebiedengroep.geo_uuid: gebiedengroep.OW_ID for gebiedengroep in self.xml_data["gebiedengroepen"]}
         )
         for object_code, values in self.object_tekst_lookup.items():
             if values.get("gebied_uuid", None) is None:

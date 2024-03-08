@@ -36,7 +36,7 @@ class OwBuilder(BuilderService):
             object_tekst_lookup=state_manager.object_tekst_lookup,
             levering_id=leveringid,
             ow_procedure_status=ow_procedure_status,
-            ambtsgebied_data=regelingsgebied_data.get('ambtsgebied', None),
+            ambtsgebied_data=regelingsgebied_data.get("ambtsgebied", None),
         )
         locaties_state = locaties_content.create_locations()
         state_manager.ow_repository.store_locaties_content(locaties_state)
@@ -52,7 +52,7 @@ class OwBuilder(BuilderService):
         regelinggebied_content = OwRegelingsgebiedContent(
             levering_id=leveringid,
             ow_procedure_status=ow_procedure_status,
-            regelinggebied_data=regelingsgebied_data.get('regelingsgebied', None),
+            regelinggebied_data=regelingsgebied_data.get("regelingsgebied", None),
         )
         regelinggebied_state = regelinggebied_content.create_regelingsgebieden()
         state_manager.ow_repository.store_regelingsgebied_content(regelinggebied_state)
