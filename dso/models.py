@@ -130,6 +130,8 @@ class PublicationSettings(BaseModel):
 
     @validator("soort_bestuursorgaan", pre=True)
     def _format_soort_bestuursorgaan(cls, v):
+        if v in BestuursorgaanSoort.__members__.values():
+            return v
         try:
             return BestuursorgaanSoort[v].value
         except KeyError:
