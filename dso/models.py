@@ -98,7 +98,7 @@ class PublicatieOpdracht(BaseModel):
         return OpdrachtType[v]
 
 
-class DocumentType(Enum):
+class DocumentType(str, Enum):
     PROGRAMMA = "Programma"
     OMGEVINGSVISIE = "Omgevingsvisie"
 

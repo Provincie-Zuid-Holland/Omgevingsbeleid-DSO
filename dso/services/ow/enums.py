@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class IMOWTYPES(Enum):
+class IMOWTYPES(str, Enum):
     REGELTEKST = "regeltekst"
     GEBIED = "gebied"
     GEBIEDENGROEP = "gebiedengroep"
@@ -27,23 +27,23 @@ class IMOWTYPES(Enum):
     DIVISIETEKST = "divisietekst"
 
 
-class OwLocatieObjectType(Enum):
+class OwLocatieObjectType(str, Enum):
     AMBTSGEBIED = "Ambtsgebied"
     GEBIED = "Gebied"
     GEBIEDENGROEP = "Gebiedengroep"
 
 
-class OwDivisieObjectType(Enum):
+class OwDivisieObjectType(str, Enum):
     DIVISIE = "Divisie"
     DIVISIETEKST = "Divisietekst"
     TEKSTDEEL = "Tekstdeel"
 
 
-class OwRegelingsgebiedObjectType(Enum):
+class OwRegelingsgebiedObjectType(str, Enum):
     REGELINGSGEBIED = "Regelingsgebied"
 
 
-class OwProcedureStatus(Enum):
+class OwProcedureStatus(str, Enum):
     """
     For OW objects the procedure status is not provided by default (for "Definitief")
     and only the value "ontwerp" is added for ontwerp besluiten.

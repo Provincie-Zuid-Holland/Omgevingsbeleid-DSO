@@ -8,7 +8,7 @@ from enum import Enum
 
 
 # https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/blob/1.2.0/waardelijsten/procedurestap_definitief.xml?ref_type=tags
-class ProcedureStappenDefinitief(Enum):
+class ProcedureStappenDefinitief(str, Enum):
     Vaststelling = "/join/id/stop/procedure/stap_002"
     Ondertekening = "/join/id/stop/procedure/stap_003"
     Publicatie = "/join/id/stop/procedure/stap_004"
@@ -21,7 +21,7 @@ class ProcedureStappenDefinitief(Enum):
 
 
 # https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/blob/1.2.0/waardelijsten/procedurestap_ontwerp.xml?ref_type=tags
-class ProcedureStappenOntwerp(Enum):
+class ProcedureStappenOntwerp(str, Enum):
     Vaststelling = "/join/id/stop/procedure/stap_002"
     Ondertekening = "/join/id/stop/procedure/stap_003"
     Publicatie = "/join/id/stop/procedure/stap_004"
@@ -30,7 +30,7 @@ class ProcedureStappenOntwerp(Enum):
 
 
 # https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/blob/1.2.0/waardelijsten/provincie.xml?ref_type=tags
-class Provincie(Enum):
+class Provincie(str, Enum):
     Drenthe = "/tooi/id/provincie/pv22"
     Flevoland = "/tooi/id/provincie/pv24"
     Fryslân = "/tooi/id/provincie/pv21"
@@ -46,7 +46,7 @@ class Provincie(Enum):
 
 
 # https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/raw/1.2.0/waardelijsten/soortregeling.xml?ref_type=tags
-class RegelingType(Enum):
+class RegelingType(str, Enum):
     AMvB = "/join/id/stop/regelingtype_001"
     Ministeriele_Regeling = "/join/id/stop/regelingtype_002"
     Omgevingsplan = "/join/id/stop/regelingtype_003"
@@ -65,21 +65,21 @@ class RegelingType(Enum):
     Voorbeschermingsregels_Omgevingsverordening = "/join/id/stop/regelingtype_016"
 
 
-# https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/raw/1.2.0/waardelijsten/soortprocedure.xml?ref_type=tags
-class ProcedureType(Enum):
+# https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/raw/1.2.0/waardelijsten/soortprocedure.xml
+class ProcedureType(str, Enum):
     Ontwerpbesluit = "/join/id/stop/proceduretype_ontwerp"
     Definitief_besluit = "/join/id/stop/proceduretype_definitief"
 
 
 # https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/blob/1.2.0/waardelijsten/soortpublicatie.xml?ref_type=tags
-class PublicatieType(Enum):
+class PublicatieType(str, Enum):
     Bekendmaking = "/join/id/stop/soortpublicatie_001"
     Kennisgeving = "/join/id/stop/soortpublicatie_002"
     Rectificatie = "/join/id/stop/soortpublicatie_003"
 
 
 # https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/raw/1.2.0/waardelijsten/soortwork.xml?ref_type=tags
-class WorkType(Enum):
+class WorkType(str, Enum):
     Besluit = "/join/id/stop/work_003"
     Geconsolideerd_informatieobject = "/join/id/stop/work_005"
     Geconsolideerde_regeling = "/join/id/stop/work_006"
@@ -93,13 +93,13 @@ class WorkType(Enum):
     Versieinformatie = "/join/id/stop/work_024"
 
 
-class InformatieObjectType(Enum):
+class InformatieObjectType(str, Enum):
     Geoinformatieobject = "/join/id/stop/informatieobject/gio_002"
     PDF_document = "/join/id/stop/informatieobject/doc_001"
 
 
 # https://gitlab.com/koop/STOP/standaard/-/blob/1.3.0/waardelijsten/rechtsgebied.xml
-class RechtsgebiedType(Enum):
+class RechtsgebiedType(str, Enum):
     Agrarischrecht = "/tooi/def/concept/c_8054d6b3"
     Arbeidsrechtensociaalzekerheidsrecht = "/tooi/def/concept/c_7cca4bd5"
     Arbitrage = "/tooi/def/concept/c_825c930b"
@@ -203,7 +203,7 @@ class RechtsgebiedType(Enum):
 
 
 # https://gitlab.com/koop/STOP/standaard/-/blob/1.3.0/waardelijsten/onderwerp.xml
-class OnderwerpType(Enum):
+class OnderwerpType(str, Enum):
     zorg_en_gezondheid = "/tooi/def/concept/c_d0463fb7"
     wonen = "/tooi/def/concept/c_124eaf3a"
     werk = "/tooi/def/concept/c_9d1917e9"
@@ -305,7 +305,7 @@ class OnderwerpType(Enum):
     klimaatverandering = "/tooi/def/concept/c_79010191"
 
 
-class BestuursorgaanSoort(Enum):
+class BestuursorgaanSoort(str, Enum):
     Burgemeester = "/tooi/def/thes/kern/c_2c4e7407"
     College_van_burgemeester_en_wethouders = "/tooi/def/thes/kern/c_28ecfd6d"
     gemeenteraad = "/tooi/def/thes/kern/c_2a7d8663"

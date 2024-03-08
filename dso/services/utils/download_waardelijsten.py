@@ -44,7 +44,7 @@ if __name__ == "__main__":
     created_enum = generate_enum_from_url(args.url)
     if created_enum:
         print(f"#{str(args.url)}")
-        class_definition = f"class {created_enum.__name__}(Enum):"
+        class_definition = f"class {created_enum.__name__}(str, Enum):"
         print(class_definition)
         for name, member in created_enum.__members__.items():
             print(f'{name} = "{member.value}"')

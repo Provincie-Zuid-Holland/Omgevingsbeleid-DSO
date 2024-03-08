@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class FIXED_ELEMENT_REF(Enum):
+class FIXED_ELEMENT_REF(str, Enum):
     Aanhef = "formula_1"
     AlgemeneToelichting = "genrecital"
     ArtikelgewijzeToelichting = "artrecital"
@@ -13,7 +13,7 @@ class FIXED_ELEMENT_REF(Enum):
     Toelichting = "recital"
 
 
-class ELEMENT_REF(Enum):
+class ELEMENT_REF(str, Enum):
     Afdeling = "subchp"
     Artikel = "art"
     Begrip = "item"
