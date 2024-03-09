@@ -12,13 +12,9 @@
             <Label>{{ tekst_artikel.label }}</Label>
             <Nummer>{{ tekst_artikel.nummer }}</Nummer>
         </Kop>
-        {% if tekst_artikel.inhoud %}
         <Inhoud>
-            <Al>{{ tekst_artikel.inhoud }}</Al>
+            {{ tekst_artikel.inhoud }}
         </Inhoud>
-        {% else %}
-        <Gereserveerd />
-        {% endif %}
     </Artikel>
     {% endfor %}
     <Artikel eId="{{ tijd_artikel.eId }}" wId="{{ tijd_artikel.wId }}">
@@ -27,7 +23,7 @@
             <Nummer>{{ tijd_artikel.nummer }}</Nummer>
         </Kop>
         <Inhoud>
-            <Al>{{ tijd_artikel.inhoud }}</Al>
+            {{ tijd_artikel.inhoud }}
         </Inhoud>
     </Artikel>
 </Lichaam>
