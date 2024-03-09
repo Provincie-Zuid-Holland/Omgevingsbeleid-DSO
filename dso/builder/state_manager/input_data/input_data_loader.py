@@ -1,10 +1,11 @@
 import os
-from typing import List, Optional, Union
+from typing import List, Union
 
 from pydantic import BaseModel
 
 from ....models import ProcedureStap, ProcedureVerloop, PublicationSettings
 from ....services.utils.helpers import load_json_data
+from .ambtsgebied import Ambtsgebied
 from .besluit import Besluit
 from .object_template_repository import ObjectTemplateRepository
 from .regeling import Regeling
@@ -20,7 +21,7 @@ class InputData(BaseModel):
     procedure_verloop: ProcedureVerloop
     resources: Resources
     object_template_repository: ObjectTemplateRepository
-    regelingsgebied: Optional[dict]
+    ambtsgebied: Ambtsgebied
 
     class Config:
         arbitrary_types_allowed = True

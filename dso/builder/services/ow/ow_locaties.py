@@ -1,11 +1,12 @@
-from typing import List, Optional
+from typing import List
 from uuid import UUID
 
 from ....models import ContentType
 from ....services.ow.enums import IMOWTYPES, OwLocatieObjectType, OwProcedureStatus
-from ....services.ow.models import OWAmbtsgebied, OWGebied, OWGebiedenGroep
+from ....services.ow.models import BestuurlijkeGrenzenVerwijzing, OWAmbtsgebied, OWGebied, OWGebiedenGroep
 from ....services.ow.ow_id import generate_ow_id
 from ....services.utils.helpers import load_template
+from ...state_manager.input_data.ambtsgebied import Ambtsgebied
 from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from ...state_manager.models import OutputFile, StrContentData
 
@@ -21,12 +22,14 @@ class OwLocatiesContent:
 
     def __init__(
         self,
+        provincie_id: str,
         werkingsgebieden: List[Werkingsgebied],
         object_tekst_lookup: dict,
         levering_id: str,
         ow_procedure_status: OwProcedureStatus,
-        ambtsgebied_data: Optional[dict],
+        ambtsgebied_data: Ambtsgebied,
     ):
+        self._provincie_id: str = provincie_id
         self.werkingsgebieden = werkingsgebieden
         self.object_tekst_lookup = object_tekst_lookup
         self.levering_id = levering_id
@@ -49,9 +52,9 @@ class OwLocatiesContent:
         """
         self._create_ow_locations()
 
-        if self.ambtsgebied_data:
-            ambtsgebied = self._create_amtsgebied(self.ambtsgebied_data)
-            self.xml_data["ambtsgebieden"].append(ambtsgebied)
+        if self.ambtsgebied_data.new:
+            ow_ambtsgebied = self._create_amtsgebied()
+            self.xml_data["ambtsgebieden"].append(ow_ambtsgebied)
 
         self._add_object_types()
         self.file = self.create_file()
@@ -95,11 +98,22 @@ class OwLocatiesContent:
             if matching_ow_gebied:
                 values["ow_location_id"] = matching_ow_gebied
 
-    def _create_amtsgebied(self, ambtsgebied_data: dict):
-        """
-        Should only create an ambtsgebied if manually added or updated.
-        """
-        new_ambtsgebied = OWAmbtsgebied(**ambtsgebied_data)
+    def _create_amtsgebied(self):
+        ow_id: str = (
+            generate_ow_id(
+                IMOWTYPES.AMBTSGEBIED,
+                self._provincie_id,
+                self.ambtsgebied_data.identificatie_suffix,
+            ),
+        )
+        new_ambtsgebied: OWAmbtsgebied = OWAmbtsgebied(
+            OW_ID=ow_id,
+            bestuurlijke_genzenverwijzing=BestuurlijkeGrenzenVerwijzing(
+                bestuurlijke_grenzen_id=self._provincie_id.upper(),
+                domein=self.ambtsgebied_data.domein,
+                geldig_op=self.ambtsgebied_data.geldig_op,
+            ),
+        )
         new_ambtsgebied.procedure_status = self.ow_procedure_status
         return new_ambtsgebied
 

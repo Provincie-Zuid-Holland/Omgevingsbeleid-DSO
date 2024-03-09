@@ -7,6 +7,7 @@ from ...services.ow.ow_divisie import OwDivisieContent
 from ...services.ow.ow_locaties import OwLocatiesContent
 from ...services.ow.ow_manifest import ManifestContent
 from ...services.ow.ow_regelinggebied import OwRegelingsgebiedContent
+from ...state_manager.input_data.ambtsgebied import Ambtsgebied
 from ...state_manager.state_manager import StateManager
 
 
@@ -22,6 +23,7 @@ class OwBuilder(BuilderService):
         """
         Create all ow objects and save the output files to state
         """
+        provincie_id: str = state_manager.input_data.publication_settings.provincie_id
         werkingsgebieden = state_manager.input_data.resources.werkingsgebied_repository.all()
         leveringid = state_manager.input_data.publication_settings.opdracht.id_levering
 
@@ -29,14 +31,15 @@ class OwBuilder(BuilderService):
         if state_manager.input_data.besluit.soort_procedure == ProcedureType.Ontwerpbesluit:
             ow_procedure_status = OwProcedureStatus.ONTWERP.value
 
-        regelingsgebied_data = state_manager.input_data.regelingsgebied
+        ambtsgebied: Ambtsgebied = state_manager.input_data.ambtsgebied
 
         locaties_content = OwLocatiesContent(
+            provincie_id=provincie_id,
             werkingsgebieden=werkingsgebieden,
             object_tekst_lookup=state_manager.object_tekst_lookup,
             levering_id=leveringid,
             ow_procedure_status=ow_procedure_status,
-            ambtsgebied_data=regelingsgebied_data.get("ambtsgebied", None),
+            ambtsgebied_data=ambtsgebied,
         )
         locaties_state = locaties_content.create_locations()
         state_manager.ow_repository.store_locaties_content(locaties_state)
@@ -50,9 +53,10 @@ class OwBuilder(BuilderService):
         state_manager.ow_repository.store_divisie_content(divisie_state)
 
         regelinggebied_content = OwRegelingsgebiedContent(
+            provincie_id=provincie_id,
             levering_id=leveringid,
             ow_procedure_status=ow_procedure_status,
-            regelinggebied_data=regelingsgebied_data.get("regelingsgebied", None),
+            ambtsgebied=ambtsgebied,
         )
         regelinggebied_state = regelinggebied_content.create_regelingsgebieden()
         state_manager.ow_repository.store_regelingsgebied_content(regelinggebied_state)
