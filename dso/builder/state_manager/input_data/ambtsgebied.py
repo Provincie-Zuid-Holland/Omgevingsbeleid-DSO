@@ -6,6 +6,3 @@ class Ambtsgebied(BaseModel):
     domein: str
     geldig_op: str
     new: bool
-
-
-# regelingsgebied

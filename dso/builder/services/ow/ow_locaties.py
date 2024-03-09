@@ -99,12 +99,10 @@ class OwLocatiesContent:
                 values["ow_location_id"] = matching_ow_gebied
 
     def _create_amtsgebied(self):
-        ow_id: str = (
-            generate_ow_id(
-                IMOWTYPES.AMBTSGEBIED,
-                self._provincie_id,
-                self.ambtsgebied_data.identificatie_suffix,
-            ),
+        ow_id: str = generate_ow_id(
+            IMOWTYPES.AMBTSGEBIED,
+            self._provincie_id,
+            self.ambtsgebied_data.identificatie_suffix,
         )
         new_ambtsgebied: OWAmbtsgebied = OWAmbtsgebied(
             OW_ID=ow_id,
