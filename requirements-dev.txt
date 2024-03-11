@@ -8,15 +8,15 @@ asttokens==2.4.1
     # via
     #   devtools
     #   stack-data
-autoflake==2.2.1
+autoflake==2.3.0
     # via -r requirements-dev.in
-bandit==1.7.6
+bandit==1.7.8
     # via -r requirements-dev.in
-black==23.12.1
+black==24.2.0
     # via -r requirements-dev.in
 click==8.1.7
     # via black
-debugpy==1.8.0
+debugpy==1.8.1
     # via -r requirements-dev.in
 decorator==5.1.1
     # via ipython
@@ -28,11 +28,7 @@ executing==2.0.1
     # via
     #   devtools
     #   stack-data
-gitdb==4.0.11
-    # via gitpython
-gitpython==3.1.41
-    # via bandit
-ipython==8.20.0
+ipython==8.22.2
     # via -r requirements-dev.in
 isort==5.13.2
     # via -r requirements-dev.in
@@ -48,7 +44,7 @@ mypy-extensions==1.0.0
     # via
     #   -r requirements-dev.in
     #   black
-packaging==23.2
+packaging==24.0
     # via black
 parso==0.8.3
     # via jedi
@@ -58,7 +54,7 @@ pbr==6.0.0
     # via stevedore
 pexpect==4.9.0
     # via ipython
-platformdirs==4.1.0
+platformdirs==4.2.0
     # via black
 prompt-toolkit==3.0.43
     # via ipython
@@ -75,29 +71,26 @@ pygments==2.17.2
     #   rich
 pyyaml==6.0.1
     # via bandit
-rich==13.7.0
+rich==13.7.1
     # via bandit
 six==1.16.0
     # via asttokens
-smmap==5.0.1
-    # via gitdb
 stack-data==0.6.3
     # via ipython
-stevedore==5.1.0
+stevedore==5.2.0
     # via bandit
-toml==0.10.2
-    # via vulture
 tomli==2.0.1
     # via
     #   autoflake
     #   black
+    #   vulture
 traitlets==5.14.1
     # via
     #   ipython
     #   matplotlib-inline
-typing-extensions==4.9.0
+typing-extensions==4.10.0
     # via black
-vulture==2.10
+vulture==2.11
     # via -r requirements-dev.in
 wcwidth==0.2.13
     # via prompt-toolkit

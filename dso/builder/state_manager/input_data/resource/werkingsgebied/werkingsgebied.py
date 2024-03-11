@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, root_validator
 
 from ......models import FRBR
 
@@ -14,7 +14,15 @@ class Locatie(BaseModel):
     Symbol: str
     Created_Date: datetime
     Modified_Date: datetime
-    Geometry: str
+
+    Gml: Optional[str] = Field(None)
+    Geometry: Optional[str] = Field(None)
+
+    @root_validator
+    def _must_have_a_source(self, v):
+        if v["Gml"] is None and v["Geometry"] is None:
+            raise ValueError("Must provide Gml or Geometry for Locatie")
+        return v
 
 
 class Werkingsgebied(BaseModel):

@@ -14,9 +14,9 @@ class BijlageWerkingsgebiedenContent:
         self._state_manager: StateManager = state_manager
 
     def create(self) -> str:
-        all_werkingsgebieden: List[
-            Werkingsgebied
-        ] = self._state_manager.input_data.resources.werkingsgebied_repository.all()
+        all_werkingsgebieden: List[Werkingsgebied] = (
+            self._state_manager.input_data.resources.werkingsgebied_repository.all()
+        )
         # werkingsgebieden: List[Werkingsgebied] = [w for w in all_werkingsgebieden if w.New]
         werkingsgebieden = all_werkingsgebieden
 

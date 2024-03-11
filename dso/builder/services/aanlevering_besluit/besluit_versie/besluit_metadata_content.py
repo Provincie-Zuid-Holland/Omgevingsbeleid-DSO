@@ -10,9 +10,9 @@ class BesluitMetadataContent:
         self._state_manager: StateManager = state_manager
 
     def create(self) -> str:
-        werkingsgebieden: List[
-            Werkingsgebied
-        ] = self._state_manager.input_data.resources.werkingsgebied_repository.all()
+        werkingsgebieden: List[Werkingsgebied] = (
+            self._state_manager.input_data.resources.werkingsgebied_repository.all()
+        )
         informatieobject_refs: List[str] = []
         for werkingsgebied in werkingsgebieden:
             if werkingsgebied.New:

@@ -1,10 +1,12 @@
 from typing import List
 
+from lxml import etree
+
 from ....models import ContentType
 from ....services.utils.helpers import load_template
 from ...services import BuilderService
 from ...services.geo.gml_geometry_generator import GMLGeometryGenerator
-from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
+from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Locatie, Werkingsgebied
 from ...state_manager.models import OutputFile, StrContentData
 from ...state_manager.state_manager import StateManager
 
@@ -24,11 +26,7 @@ class GeoInformatieObjectVaststellingBuilder(BuilderService):
         locaties: List[dict] = []
         for location in werkingsgebied.Locaties:
             gml_id: str = f"gml-{location.UUID}"
-            generator = GMLGeometryGenerator(
-                gml_id,
-                location.Geometry,
-            )
-            geometry_xml = generator.generate_xml()
+            geometry_xml = self._get_geometry_xml(gml_id, location)
             locaties.append(
                 {
                     "gml_id": gml_id,
@@ -54,3 +52,21 @@ class GeoInformatieObjectVaststellingBuilder(BuilderService):
             content=StrContentData(content),
         )
         return output_file
+
+    def _get_geometry_xml(self, gml_id: str, location: Locatie) -> str:
+        if location.Gml is not None:
+            root = etree.fromstring(location.Gml)
+            root.attrib.clear()
+            root.set("srsName", "urn:ogc:def:crs:EPSG::28992")
+            root.set("id", f"{gml_id}-0")
+            gml = etree.tostring(root, pretty_print=True).decode()
+            return gml
+        elif location.Geometry is not None:
+            generator = GMLGeometryGenerator(
+                gml_id,
+                location.Geometry,
+            )
+            geometry_xml = generator.generate_xml()
+            return geometry_xml
+
+        raise RuntimeError("Should have a Gml or Geometry for Location")
