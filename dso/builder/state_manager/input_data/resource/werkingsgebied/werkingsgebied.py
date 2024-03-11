@@ -19,7 +19,7 @@ class Locatie(BaseModel):
     Geometry: Optional[str] = Field(None)
 
     @root_validator
-    def _must_have_a_source(self, v):
+    def _must_have_a_source(cls, v):
         if v["Gml"] is None and v["Geometry"] is None:
             raise ValueError("Must provide Gml or Geometry for Locatie")
         return v
