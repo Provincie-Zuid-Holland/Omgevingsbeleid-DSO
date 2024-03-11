@@ -58,7 +58,7 @@ class GeoInformatieObjectVaststellingBuilder(BuilderService):
             root = etree.fromstring(location.Gml)
             root.attrib.clear()
             root.set("srsName", "urn:ogc:def:crs:EPSG::28992")
-            root.set("gml:id", f"{gml_id}-0")
+            root.set("{http://www.opengis.net/gml/3.2}id", f"{gml_id}-0")
             gml = etree.tostring(root, pretty_print=True).decode()
             return gml
         elif location.Geometry is not None:
