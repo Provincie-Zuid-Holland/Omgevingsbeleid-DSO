@@ -43,7 +43,7 @@
                     {% if annotatie.tekstdeel.procedure_status %}
                     <l:procedurestatus>{{ annotatie.tekstdeel.procedure_status.value }}</l:procedurestatus>
                     {% endif %}
-					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Exact</vt:idealisatie>
+					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
 					{% if annotatie.divisie_aanduiding %}
 					<vt:divisieaanduiding>
 						<vt:DivisieRef xlink:href="{{ annotatie.tekstdeel.divisie }}"/>
