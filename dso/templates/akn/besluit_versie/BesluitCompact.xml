@@ -3,13 +3,13 @@
         <Al>{{ besluit.regeling_opschrift }}</Al>
     </RegelingOpschrift>
     <Aanhef eId="formula_1" wId="formula_1">
-        {{ besluit.aanhef }}
+        {{ aanhef_xml }}
     </Aanhef>
     {{ artikelen_lichaam }}
     <Sluiting eId="formula_2" wId="formula_2">
-        {{ besluit.sluiting }}
+        {{ sluiting_xml }}
         <Ondertekening>
-            {{ besluit.ondertekening }}
+            {{ ondertekening_xml }}
         </Ondertekening>
     </Sluiting>
     {{ wijzig_bijlage }}
