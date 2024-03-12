@@ -18,7 +18,7 @@ class BijlageWerkingsgebiedenContent:
             self._state_manager.input_data.resources.werkingsgebied_repository.all()
         )
         # werkingsgebieden: List[Werkingsgebied] = [w for w in all_werkingsgebieden if w.New]
-        werkingsgebieden = all_werkingsgebieden
+        werkingsgebieden = sorted(all_werkingsgebieden, key=lambda w: w.Title)
 
         content = load_template(
             "akn/besluit_versie/besluit_compact/wijzig_bijlage/BijlageWerkingsgebieden.xml",
