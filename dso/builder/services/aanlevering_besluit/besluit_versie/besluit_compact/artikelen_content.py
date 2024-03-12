@@ -1,8 +1,10 @@
 from typing import List
 
 import roman
+from bs4 import BeautifulSoup
 
 from ......models import PublicationSettings
+from ......services.tekst.tekst import Inhoud
 from ......services.utils.helpers import load_template
 from .....state_manager.input_data.besluit import Besluit
 from .....state_manager.state_manager import StateManager
@@ -39,7 +41,8 @@ class ArtikelenContent:
 
         tekst_artikelen = []
         for tekst_artikel in besluit.tekst_artikelen:
-            tekst_artikelen.append(create_article(tekst_artikel.label, tekst_artikel.inhoud))
+            inhoud = self._html_to_xml_inhoud(tekst_artikel.inhoud)
+            tekst_artikelen.append(create_article(tekst_artikel.label, inhoud))
 
         tijd_artikel = create_article(besluit.tijd_artikel.label, besluit.tijd_artikel.inhoud)
 
@@ -56,3 +59,13 @@ class ArtikelenContent:
             tijd_artikel=tijd_artikel,
         )
         return content
+
+    def _html_to_xml_inhoud(self, html: str) -> str:
+        input_soup = BeautifulSoup(html, "html.parser")
+        lichaam = Inhoud()
+        lichaam.consume_children(input_soup.children)
+
+        output_soup = BeautifulSoup(features="xml")
+        output = lichaam.as_xml(output_soup)
+        output_xml = str(output)
+        return output_xml
