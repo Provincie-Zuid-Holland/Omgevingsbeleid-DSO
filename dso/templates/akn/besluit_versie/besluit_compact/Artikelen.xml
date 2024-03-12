@@ -12,9 +12,7 @@
             <Label>{{ tekst_artikel.label }}</Label>
             <Nummer>{{ tekst_artikel.nummer }}</Nummer>
         </Kop>
-        <Inhoud>
-            {{ tekst_artikel.inhoud }}
-        </Inhoud>
+        {{ tekst_artikel.inhoud }}
     </Artikel>
     {% endfor %}
     <Artikel eId="{{ tijd_artikel.eId }}" wId="{{ tijd_artikel.wId }}">
