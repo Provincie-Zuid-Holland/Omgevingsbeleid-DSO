@@ -4,7 +4,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Field, root_validator
 
-from ......models import FRBR
+from ......models import GioFRBR
 
 
 class Locatie(BaseModel):
@@ -26,21 +26,12 @@ class Werkingsgebied(BaseModel):
     UUID: uuid.UUID
     Code: str
     New: bool
-    Work: str
-    Expression_Version: str
+    Frbr: GioFRBR
     Title: str
     Symbol: str
     Achtergrond_Verwijzing: str
     Achtergrond_Actualiteit: str
     Locaties: List[Locatie] = Field(..., alias="Onderverdelingen")
-
-    def get_FRBR(self) -> FRBR:
-        expression: str = f"{self.Work}/{self.Expression_Version}"
-
-        return FRBR(
-            work=self.Work,
-            expression=expression,
-        )
 
     def get_name(self) -> str:
         s: str = self.Title.lower()

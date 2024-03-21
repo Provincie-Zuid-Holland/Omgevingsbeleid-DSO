@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel
 
@@ -39,6 +39,7 @@ class StateManager:
     def __init__(self, input_data: InputData):
         self.input_data: InputData = input_data
         self.werkingsgebied_eid_lookup: dict = {}
+        self.used_wid_map: Dict[str, str] = {}
         self.object_tekst_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
         self.ow_repository: OWStateRepository = OWStateRepository()

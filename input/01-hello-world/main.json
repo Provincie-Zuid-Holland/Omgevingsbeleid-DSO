@@ -13,9 +13,7 @@
   "settings": {
     "document_type": "PROGRAMMA",
     "provincie_id": "pv28",
-    "wId_suffix": "1",
     "soort_bestuursorgaan": "/tooi/def/thes/kern/c_411b4e4a",
-    "expression_taal": "nld",
     "datum_bekendmaking": "2024-02-14",
     "datum_juridisch_werkend_vanaf": "2024-02-15",
     "regeling_componentnaam": "nieuweregeling",
@@ -23,21 +21,19 @@
       "__comment": "Dit is de /akn/bill",
       "work_land": "nl",
       "work_datum": "2024",
-      "work_overig": "2_2093",
+      "work_overig": "besluit-omgevingsvisie-1",
       "expression_taal": "nld",
       "expression_datum": "2024-01-05",
-      "expression_versie": "2093",
-      "expression_overig": null
+      "expression_versie": "1"
     },
     "regeling_frbr": {
       "__comment": "Dit is de /akn/act",
       "work_land": "nl",
       "work_datum": "2024",
-      "work_overig": "2_89",
+      "work_overig": "omgevingsvisie-1",
       "expression_taal": "nld",
       "expression_datum": "2024-01-05",
-      "expression_versie": "89",
-      "expression_overig": null
+      "expression_versie": "1"
     },
     "doel": {
       "__comment": "Wordt gebruikt voor <doel> in <ConsolidatieInformatie>",

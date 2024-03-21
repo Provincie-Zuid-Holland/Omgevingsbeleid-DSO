@@ -76,14 +76,16 @@ class RegelingVrijetekstTekstGenerator:
 
         ewid_service = EWIDService(
             state_manager=self._state_manager,
-            wid_prefix=f"{settings.provincie_id}_{settings.wId_suffix}",
+            wid_prefix=f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}",
+            known_wid_map=self._state_manager.input_data.known_wid_map,
         )
-        result: str = ewid_service.modify_xml(xml_source=xml_data)
+        result: str = ewid_service.add_ewids(xml_data)
         return result
 
     def _remove_hints(self, xml_data: str) -> str:
         xml_data = self._clean_attribute(xml_data, "data-hint-gebied-code")
         xml_data = self._clean_attribute(xml_data, "data-hint-object-code")
+        xml_data = self._clean_attribute(xml_data, "data-hint-wid-code")
         return xml_data
 
     def _clean_attribute(self, xml_data: str, attribute: str) -> str:

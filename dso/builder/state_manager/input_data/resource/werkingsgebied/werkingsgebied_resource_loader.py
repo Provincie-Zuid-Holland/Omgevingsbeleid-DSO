@@ -13,10 +13,7 @@ class WerkingsgebiedResourceLoader:
         self._werkingsgebied_files: List[str] = werkingsgebied_files
 
     def load(self) -> WerkingsgebiedRepository:
-        repository = WerkingsgebiedRepository(
-            self._publication_settings.provincie_id,
-            self._publication_settings.expression_taal,
-        )
+        repository = WerkingsgebiedRepository()
 
         for werkingsgebied_file in self._werkingsgebied_files:
             path = create_normalized_path(self._base_dir, werkingsgebied_file)

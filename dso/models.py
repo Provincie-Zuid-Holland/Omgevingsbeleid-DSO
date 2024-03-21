@@ -1,30 +1,79 @@
+from abc import ABCMeta, abstractmethod
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, Field, root_validator, validator
 
 from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappenDefinitief, Provincie
 
 
-# <FRBRWork>/akn/nl/bill/pv28/2023/2_2093</FRBRWork>
-# <FRBRExpression>/akn/nl/bill/pv28/2023/2_2093/nld@2023-09-29;2093</FRBRExpression>
-class FRBR(BaseModel):
-    work: str
-    expression: str
+class FRBR(BaseModel, metaclass=ABCMeta):
+    Work_Province_ID: str
+    Work_Date: str
+    Work_Other: str
+    Expression_Language: str
+    Expression_Date: str
+    Expression_Version: Optional[int]
 
-    @staticmethod
-    def from_dict(document_type: str, overheid: str, data: dict):
-        work = f"/akn/{data['work_land']}/{document_type}/{overheid}/{data['work_datum']}/{data['work_overig']}"
-        expression = f"{work}/{data['expression_taal']}@{data['expression_datum']}"
-        if "expression_versie" in data and data["expression_versie"]:
-            expression = f"{expression};{data['expression_versie']}"
-            if "expression_overig" in data and data["expression_overig"]:
-                expression = f"{expression};{data['expression_overig']}"
+    @abstractmethod
+    def get_work(self) -> str:
+        pass
 
-        return FRBR(
-            work=work,
-            expression=expression,
-        )
+    @abstractmethod
+    def get_expression_part(self) -> str:
+        pass
+
+    def get_expression(self) -> str:
+        work: str = self.get_work()
+        expression_part: str = self.get_expression_part()
+        expression: str = f"{work}/{expression_part}"
+        return expression
+
+
+# <FRBRWork>/akn/nl/bill/pv28/2023/omgevingsvisie-1</FRBRWork>
+# <FRBRExpression>/akn/nl/bill/pv28/2023/omgevingsvisie-1/nld@2024-09-29;2</FRBRExpression>
+class BillFRBR(FRBR):
+    Work_Country: str
+
+    def get_work(self) -> str:
+        work: str = f"/akn/{self.Work_Country}/bill/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        return work
+
+    def get_expression_part(self) -> str:
+        expression_part: str = f"{self.Expression_Language}@{self.Expression_Date}"
+        if self.Expression_Version is not None:
+            expression_part = f"{expression_part};{self.Expression_Version}"
+        return expression_part
+
+
+# <FRBRWork>/akn/nl/act/pv28/2023/omgevingsvisie-1</FRBRWork>
+# <FRBRExpression>/akn/nl/act/pv28/2023/omgevingsvisie-1/nld@2024-09-29;2</FRBRExpression>
+class ActFRBR(FRBR):
+    Work_Country: str
+
+    def get_work(self) -> str:
+        work: str = f"/akn/{self.Work_Country}/act/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        return work
+
+    def get_expression_part(self) -> str:
+        expression_part: str = f"{self.Expression_Language}@{self.Expression_Date}"
+        if self.Expression_Version is not None:
+            expression_part = f"{expression_part};{self.Expression_Version}"
+        return expression_part
+
+
+# <FRBRWork>/join/id/regdata/pv28/2024/3</FRBRWork>
+# <FRBRExpression>/join/id/regdata/pv28/2024/3/nld@2024-01-30;1855</FRBRExpression>
+class GioFRBR(FRBR):
+    def get_work(self) -> str:
+        work: str = f"/join/id/regdata/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        return work
+
+    def get_expression_part(self) -> str:
+        expression_part: str = f"{self.Expression_Language}@{self.Expression_Date}"
+        if self.Expression_Version is not None:
+            expression_part = f"{expression_part};{self.Expression_Version}"
+        return expression_part
 
 
 class ProcedureStap(BaseModel):
@@ -113,9 +162,7 @@ class PublicationSettings(BaseModel):
     datum_bekendmaking: str
     datum_juridisch_werkend_vanaf: str
     provincie_id: str
-    wId_suffix: str
     soort_bestuursorgaan: BestuursorgaanSoort
-    expression_taal: str
     regeling_componentnaam: str
     provincie_ref: str = Provincie.Zuid_Holland.value
     dso_versioning: DSOVersion = Field(default_factory=DSOVersion)

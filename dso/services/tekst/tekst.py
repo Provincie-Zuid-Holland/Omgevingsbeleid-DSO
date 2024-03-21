@@ -549,6 +549,7 @@ class Divisietekst(Element):
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
         tag_divisietekst: Tag = soup.new_tag("Divisietekst")
         tag_divisietekst.attrs = {
+            **({"data-hint-wid-code": self.object_code} if self.object_code else {}),
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
             **({"data-hint-gebied-code": self.gebied_code} if self.gebied_code else {}),
         }
@@ -673,6 +674,7 @@ class Divisie(Element):
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
         tag_divisie: Tag = soup.new_tag("Divisie")
         tag_divisie.attrs = {
+            **({"data-hint-wid-code": self.object_code} if self.object_code else {}),
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
             **({"data-hint-gebied-code": self.gebied_code} if self.gebied_code else {}),
         }

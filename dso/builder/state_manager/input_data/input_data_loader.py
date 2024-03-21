@@ -1,7 +1,7 @@
 import os
-from typing import List, Union
+from typing import Dict, List, Union
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from ....models import ProcedureStap, ProcedureVerloop, PublicationSettings
 from ....services.utils.helpers import load_json_data
@@ -22,6 +22,7 @@ class InputData(BaseModel):
     resources: Resources
     object_template_repository: ObjectTemplateRepository
     ambtsgebied: Ambtsgebied
+    known_wid_map: Dict[str, str] = Field({})
 
     class Config:
         arbitrary_types_allowed = True
@@ -36,11 +37,8 @@ class InputDataLoader:
         main_config: dict = load_json_data(self._main_file_path)
 
         publication_settings = PublicationSettings.from_json(main_config["settings"])
-
         besluit = self._create_besluit(main_config["besluit"])
-
         regeling = self._create_regeling(main_config["regeling"])
-
         regeling_vrijetekst = self._create_regeling_vrijetekst(main_config["regeling_vrijetekst"])
 
         procedure_verloop = self._create_procedure_verloop(

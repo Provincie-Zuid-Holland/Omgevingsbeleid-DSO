@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from collections import defaultdict
+from typing import Dict, Optional
 
 from ...builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from ...builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
@@ -14,159 +15,104 @@ class EWIDService:
     The EWIDService class is responsible for generating EWID for policy objects.
     """
 
-    def __init__(self, state_manager: StateManager, wid_prefix: str):
-        """
-        Initializes an instance of the EWIDService class.
+    def __init__(
+        self,
+        state_manager: Optional[StateManager],
+        wid_prefix: str,
+        known_wid_map: Dict[str, str] = {},
+    ):
+        self._wid_prefix = wid_prefix
+        self._known_wid_map: Dict[str, str] = known_wid_map
 
-        Args:
-            state_manager (StateManager): The state manager object.
-            wid_prefix (str): The prefix for the generated EWID.
-        """
-        self._state_manager: StateManager = state_manager
-        self._werkingsgebied_repository: WerkingsgebiedRepository = (
-            state_manager.input_data.resources.werkingsgebied_repository
-        )
+        self._state_manager: Optional[StateManager] = state_manager
+        self._werkingsgebied_repository: Optional[WerkingsgebiedRepository] = None
+        if state_manager is not None:
+            self._werkingsgebied_repository = state_manager.input_data.resources.werkingsgebied_repository
 
-        self.wid_prefix = wid_prefix
-        self.global_counters = defaultdict(lambda: defaultdict(int))
+        self._element_refs: Dict[str, str] = {e.name: e.value for e in ELEMENT_REF}
+        self._eid_counters = defaultdict(lambda: defaultdict(int))
+        self._wid_counters = defaultdict(lambda: defaultdict(int))
 
-        self.root = None
-        self.tree = None
+    def add_ewids(self, xml_source: str) -> str:
+        root = self._parse_xml(xml_source)
+        self._fill_ewid(root)
+        result_xml: str = ET.tostring(root, encoding="utf-8")
+        return result_xml
 
-    def parse_xml(self, xml_string: str):
-        """
-        Parses an XML string and sets the root and tree attributes.
-
-        Args:
-            xml_string (str): The XML string to parse.
-        """
+    def _parse_xml(self, xml_string: str):
         try:
-            self.tree = ET.ElementTree(ET.fromstring(xml_string))
-            self.root = self.tree.getroot()
+            tree = ET.ElementTree(ET.fromstring(xml_string))
+            root = tree.getroot()
+            return root
         except ET.ParseError as e:
             print(f"Error parsing XML: {e}")
             raise EIDGenerationError(xml_string, str(e))
 
-    def parse_xml_file(self, xml_source):
-        """
-        Parses an XML file and sets the root and tree attributes.
+    def _generate_eid(self, tag_name: str, parent_eid: str, parent_tag_name: str) -> str:
+        eid_value = self._element_refs.get(tag_name, tag_name)
+        parent_key = parent_eid if parent_eid else parent_tag_name
 
-        Args:
-            xml_source: The XML file to parse.
-        """
-        try:
-            self.tree = ET.parse(xml_source)
-            self.root = self.tree.getroot()
-        except ET.ParseError as e:
-            print(f"Error parsing XML file: {e}")
-            raise EIDGenerationError(xml_source, str(e))
+        self._eid_counters[parent_key][eid_value] += 1
+        count: int = self._eid_counters[parent_key][eid_value]
 
-    def increment_counter(self, parent_key, eid_value):
-        """
-        Increments the counter for the given parent key and EWID value.
-
-        Args:
-            parent_key: The parent key.
-            eid_value: The EWID value.
-
-        Returns:
-            int: The incremented counter value.
-        """
-        self.global_counters[parent_key][eid_value] += 1
-        return self.global_counters[parent_key][eid_value]
-
-    def generate_eid(self, element, parent_eid, parent_tag):
-        """
-        Generates a unique EWID for the given element according
-        to explicit structure.
-
-        Args:
-            element: The element for which to generate the EWID.
-            parent_eid: The parent EWID.
-            parent_tag: The parent tag.
-
-        Returns:
-            str: The generated EWID.
-        """
-        tag = element.tag
-        eid_value = ELEMENT_REF[tag].value if tag in ELEMENT_REF.__members__ else tag
-        parent_key = parent_eid if parent_eid else parent_tag
-        count = self.increment_counter(parent_key, eid_value)
         new_eid = f"{eid_value}_o_{count}"
         return f"{parent_eid}__{new_eid}" if parent_eid else new_eid
 
-    def set_element_attributes(self, element, tag, element_eid):
-        """
-        Sets the "eid" and "wid" attributes for the given element.
-        assumes wid format is: <prefix>__<eid>
+    def _generate_wid(self, tag_name: str, parent_wid: str, parent_tag_name: str) -> str:
+        wid_value = self._element_refs.get(tag_name, tag_name)
+        parent_key = parent_wid if parent_wid else parent_tag_name
 
-        Args:
-            element: The element for which to set the attributes.
-            tag: The tag of the element.
-            element_eid: The element EWID.
-        """
-        if tag in ELEMENT_REF.__members__:
-            element.set("eId", element_eid)
-            element.set("wId", f"{self.wid_prefix}__{element_eid}")
+        self._wid_counters[parent_key][wid_value] += 1
+        count: int = self._wid_counters[parent_key][wid_value]
 
-    def fill_ewid(self, element, parent_eid="", parent_tag=""):
+        new_wid = f"{wid_value}_o_{count}"
+        return f"{parent_wid}__{new_wid}"
+
+    def _fill_ewid(self, element, parent_eid="", parent_wid="", parent_tag_name=""):
         """
         Fills the EWID for the given element and its children.
-
-        Args:
-            element: The element for which to fill the EWID.
-            parent_eid: The parent EWID.
-            parent_tag: The parent tag.
         """
-        tag = element.tag
-        element_eid = self.generate_eid(element, parent_eid, parent_tag)
-        element_wid = f"{self.wid_prefix}__{element_eid}"
-        self.set_element_attributes(element, tag, element_eid)
+        tag_name = element.tag
+        eid = self._generate_eid(tag_name, parent_eid, parent_tag_name)
+        child_parent_eid = eid if tag_name in self._element_refs else parent_eid
 
-        # Remember the EWID for location annotated policy objects
-        if "data-hint-object-code" in element.attrib and "data-hint-gebied-code" in element.attrib:
+        wid_lookup_object_code = element.get("data-hint-wid-code", None)
+        if wid_lookup_object_code in self._known_wid_map:
+            wid = self._known_wid_map[wid_lookup_object_code]
+            child_parent_wid = wid if tag_name in self._element_refs else ""
+        elif parent_wid != "":
+            wid = self._generate_wid(tag_name, parent_wid, parent_tag_name)
+            child_parent_wid = wid if tag_name in self._element_refs else ""
+        else:
+            wid = f"{self._wid_prefix}__{eid}"
+            child_parent_wid = ""
+
+        if tag_name in self._element_refs:
+            element.set("eId", eid)
+            element.set("wId", wid)
+
+        if self._state_manager is not None:
             object_code = element.get("data-hint-object-code", None)
             gebied_code = element.get("data-hint-gebied-code", None)
 
-            werkingsgebied: Werkingsgebied = self._werkingsgebied_repository.get_by_code(gebied_code)
+            # Remember the WID for policy objects
+            if object_code is not None:
+                self._state_manager.used_wid_map[object_code] = wid
 
-            # Store pairing in state
-            self._state_manager.object_tekst_lookup[object_code] = {
-                "wid": element_wid,
-                "tag": element.tag,
-                "gebied_code": gebied_code,
-                "gebied_uuid": str(werkingsgebied.UUID),
-            }
+            # Remember the EWID for location annotated policy objects
+            if object_code is not None and gebied_code is not None:
+                werkingsgebied: Werkingsgebied = self._werkingsgebied_repository.get_by_code(gebied_code)
+                self._state_manager.object_tekst_lookup[object_code] = {
+                    "wid": wid,
+                    "tag": element.tag,
+                    "gebied_code": gebied_code,
+                    "gebied_uuid": str(werkingsgebied.UUID),
+                }
 
         for child in element:
-            child_parent_eid = element_eid if tag in ELEMENT_REF.__members__ else parent_eid
-            self.fill_ewid(child, child_parent_eid, tag)
-
-    def modify_xml(self, xml_source):
-        """
-        Modifies the XML by filling the EWID and returns the modified XML as a string.
-
-        Args:
-            xml_source: The XML source to modify.
-
-        Returns:
-            str: The modified XML as a string.
-        """
-        self.parse_xml(xml_source)
-        if self.tree:
-            self.fill_ewid(self.root)
-            return ET.tostring(self.root, encoding="unicode")
-        else:
-            return None
-
-    def write_to_file(self, output_file):
-        """
-        Writes the modified XML to the specified output file.
-
-        Args:
-            output_file: The output file to write to.
-        """
-        if self.tree:
-            self.tree.write(output_file)
-        else:
-            print("No XML tree to write.")
+            self._fill_ewid(
+                child,
+                child_parent_eid,
+                child_parent_wid,
+                tag_name,
+            )

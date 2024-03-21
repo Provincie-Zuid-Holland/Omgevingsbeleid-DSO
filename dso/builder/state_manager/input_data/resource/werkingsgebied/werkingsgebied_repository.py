@@ -5,15 +5,11 @@ from .werkingsgebied import Werkingsgebied
 
 
 class WerkingsgebiedRepository:
-    def __init__(self, provincie_id: str, expression_taal: str):
-        self._provincie_id: str = provincie_id
-        self._expression_taal: str = expression_taal
+    def __init__(self):
         self._werkingsgebieden: Dict[str, Werkingsgebied] = {}
 
     def add(self, werkingsgebied: dict):
         werkingsgebied_id = werkingsgebied["UUID"]
-        werkingsgebied["provincie_id"] = self._provincie_id
-        werkingsgebied["expression_taal"] = self._expression_taal
         self._werkingsgebieden[werkingsgebied_id] = Werkingsgebied.parse_obj(werkingsgebied)
 
     def add_list(self, werkingsgebieden: List[dict]):
