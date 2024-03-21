@@ -62,7 +62,7 @@ class OwBuilder(BuilderService):
         state_manager.ow_repository.store_regelingsgebied_content(regelinggebied_state)
 
         manifest_content = ManifestContent(
-            act_akn=str(state_manager.input_data.publication_settings.regeling_frbr.work),
+            act_work=str(state_manager.input_data.publication_settings.regeling_frbr.get_work()),
             doel=state_manager.input_data.publication_settings.doel,
         )
         manifest_file = manifest_content.create_manifest(

@@ -1,7 +1,7 @@
+from .....models import BillFRBR
 from .....services.utils.helpers import load_template
 from .....services.utils.waardelijsten import WorkType
 from ....state_manager.state_manager import StateManager
-from .....models import BillFRBR
 
 
 class ExpressionIdentificatieContent:

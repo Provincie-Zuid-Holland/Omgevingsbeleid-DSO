@@ -4,8 +4,8 @@ from ...state_manager.models import OutputFile, StrContentData
 
 
 class ManifestContent:
-    def __init__(self, act_akn: str, doel: DoelFRBR):
-        self._act_akn = act_akn
+    def __init__(self, act_work: str, doel: DoelFRBR):
+        self._act_work = act_work
         self._doel = doel
 
     def create_manifest(self, divisie_data, locaties_data, regelingsgebied_data) -> OutputFile:
@@ -21,7 +21,7 @@ class ManifestContent:
         content = load_template(
             "ow/manifest-ow.xml",
             pretty_print=True,
-            act_akn=self._act_akn,
+            act_work=self._act_work,
             doel_id=self._doel.get_work(),
             files=file_data,
         )
