@@ -29,8 +29,9 @@ class BijlageWerkingsgebiedenContent:
         ewid_service = EWIDService(
             state_manager=self._state_manager,
             wid_prefix=f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}",
+            known_wid_map=self._state_manager.input_data.known_wid_map,
         )
-        content = ewid_service.modify_xml(xml_source=content)
+        content = ewid_service.add_ewids(content)
 
         # Resolve the wid from the werkingsgebieden
         content = self._create_werkingsgebieden_wid_lookup(content)
