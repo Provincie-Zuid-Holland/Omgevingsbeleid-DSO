@@ -28,7 +28,7 @@ class BijlageWerkingsgebiedenContent:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
         ewid_service = EWIDService(
             state_manager=self._state_manager,
-            wid_prefix=f"{settings.provincie_id}_{settings.wId_suffix}",
+            wid_prefix=f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}",
         )
         content = ewid_service.modify_xml(xml_source=content)
 

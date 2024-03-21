@@ -19,7 +19,7 @@ class ArtikelenContent:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
         besluit: Besluit = self._state_manager.input_data.besluit
 
-        wId_prefix: str = f"{settings.provincie_id}_{settings.wId_suffix}__"
+        wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__"
         eId_prefix: str = "art_"
         eId_counter: List[int] = [1]  # List allows us to modify it, as it goes by reference
 

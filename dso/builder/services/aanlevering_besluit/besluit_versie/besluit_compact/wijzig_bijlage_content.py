@@ -23,6 +23,6 @@ class WijzigBijlageContent:
             bijlage_werkingsgebieden=bijlage_werkingsgebieden,
             regeling_opschrift=self._state_manager.input_data.besluit.regeling_opschrift,
             componentnaam=settings.regeling_componentnaam,
-            wid_prefix=f"{settings.provincie_id}_{settings.wId_suffix}__",
+            wid_prefix=f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__",
         )
         return content
