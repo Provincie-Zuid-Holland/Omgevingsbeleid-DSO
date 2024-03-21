@@ -13,10 +13,10 @@ class ConsolidatieInformatieContent:
 
     def create(self) -> str:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
-        doel: str = f"/join/id/proces/{ settings.provincie_id }/{settings.doel.jaar}/{settings.doel.naam}"
+        doel: str = settings.doel.get_work()
 
         beoogde_regeling = {
-            "instrument_versie": settings.regeling_frbr.expression,
+            "instrument_versie": settings.regeling_frbr.get_expression(),
             "eid": self._state_manager.artikel_eid.find_one_by_type(ArtikelEidType.WIJZIG).eid,
         }
 
@@ -29,7 +29,7 @@ class ConsolidatieInformatieContent:
                 eid: str = self._state_manager.werkingsgebied_eid_lookup[str(werkingsgebied.UUID)]
                 beoogd_informatieobjecten.append(
                     {
-                        "instrument_versie": werkingsgebied.get_FRBR().expression,
+                        "instrument_versie": werkingsgebied.Frbr.get_expression(),
                         "eid": f"!{settings.regeling_componentnaam}#{eid}",
                     }
                 )

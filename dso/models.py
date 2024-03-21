@@ -24,10 +24,12 @@ class FRBR(BaseModel, metaclass=ABCMeta):
         pass
 
     def get_expression(self) -> str:
-        work: str = self.get_work()
+        result: str = self.get_work()
         expression_part: str = self.get_expression_part()
-        expression: str = f"{work}/{expression_part}"
-        return expression
+        if expression_part is not "":
+            result = f"{result}/{expression_part}"
+
+        return result
 
 
 # <FRBRWork>/akn/nl/bill/pv28/2023/omgevingsvisie-1</FRBRWork>
@@ -74,6 +76,21 @@ class GioFRBR(FRBR):
         if self.Expression_Version is not None:
             expression_part = f"{expression_part};{self.Expression_Version}"
         return expression_part
+
+
+# /join/id/proces/pv28/2024/instelling-programma-1
+class DoelFRBR(FRBR):
+    # Removing these base fields by declaring a default value
+    Expression_Language: str = Field("")
+    Expression_Date: str = Field("")
+    Expression_Version: Optional[int] = Field(1)
+
+    def get_work(self) -> str:
+        work: str = f"/join/id/proces/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        return work
+
+    def get_expression_part(self) -> str:
+        return ""
 
 
 class ProcedureStap(BaseModel):
@@ -166,10 +183,10 @@ class PublicationSettings(BaseModel):
     regeling_componentnaam: str
     provincie_ref: str = Provincie.Zuid_Holland.value
     dso_versioning: DSOVersion = Field(default_factory=DSOVersion)
-    besluit_frbr: FRBR
-    regeling_frbr: FRBR
+    besluit_frbr: BillFRBR
+    regeling_frbr: ActFRBR
     opdracht: PublicatieOpdracht
-    doel: Doel
+    doel: DoelFRBR
 
     @validator("document_type", pre=True, always=True)
     def _format_document_type(cls, v):
@@ -183,26 +200,6 @@ class PublicationSettings(BaseModel):
             return BestuursorgaanSoort[v].value
         except KeyError:
             raise ValueError(f"{v} is geen valide Bestuursorgaan uit de waardelijst")
-
-    @root_validator(pre=True)
-    def _generate_besluit_frbr(cls, v):
-        frbr = FRBR.from_dict(
-            "bill",
-            v["provincie_id"],
-            v["besluit_frbr"],
-        )
-        v["besluit_frbr"] = frbr
-        return v
-
-    @root_validator(pre=True)
-    def _generate_regeling_frbr(cls, v):
-        frbr = FRBR.from_dict(
-            "act",
-            v["provincie_id"],
-            v["regeling_frbr"],
-        )
-        v["regeling_frbr"] = frbr
-        return v
 
     @root_validator(pre=True)
     def _generate_opdracht(cls, v):

@@ -65,8 +65,7 @@ class OwBuilder(BuilderService):
             act_akn=str(state_manager.input_data.publication_settings.regeling_frbr.work),
             doel=state_manager.input_data.publication_settings.doel,
         )
-
-        manifest_content.create_manifest(
+        manifest_file = manifest_content.create_manifest(
             state_manager.ow_repository.divisie_content,
             state_manager.ow_repository.locaties_content,
             state_manager.ow_repository.regelingsgebied_content,
@@ -75,6 +74,6 @@ class OwBuilder(BuilderService):
         state_manager.add_output_file(locaties_content.file)
         state_manager.add_output_file(divisie_content.file)
         state_manager.add_output_file(regelinggebied_content.file)
-        state_manager.add_output_file(manifest_content.file)
+        state_manager.add_output_file(manifest_file)
 
         return state_manager
