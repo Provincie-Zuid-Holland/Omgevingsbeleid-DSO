@@ -42,7 +42,7 @@ class GeoInformatieObjectVaststellingBuilder(BuilderService):
             pretty_print=True,
             achtergrondVerwijzing=werkingsgebied.Achtergrond_Verwijzing,
             achtergrondActualiteit=werkingsgebied.Achtergrond_Actualiteit,
-            frbr=werkingsgebied.get_FRBR(),
+            frbr=werkingsgebied.Frbr.get_expression(),
             locaties=locaties,
         )
 

@@ -16,7 +16,7 @@ class BesluitMetadataContent:
         informatieobject_refs: List[str] = []
         for werkingsgebied in werkingsgebieden:
             if werkingsgebied.New:
-                informatieobject_refs.append(werkingsgebied.get_FRBR().expression)
+                informatieobject_refs.append(werkingsgebied.Frbr.get_expression())
 
         content = load_template(
             "akn/besluit_versie/BesluitMetadata.xml",
