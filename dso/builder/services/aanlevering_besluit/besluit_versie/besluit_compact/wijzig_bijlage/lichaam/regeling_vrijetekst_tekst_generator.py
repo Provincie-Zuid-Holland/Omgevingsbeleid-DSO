@@ -1,4 +1,5 @@
 from copy import copy
+from typing import List
 from uuid import UUID
 
 from bs4 import BeautifulSoup
@@ -102,4 +103,6 @@ class RegelingVrijetekstTekstGenerator:
     def _store_used_wids(self, xml_data: str):
         soup = BeautifulSoup(xml_data, "lxml")
         elements_with_wid = soup.find_all(attrs={"wId": True})
-        wid_values = [element["wId"] for element in elements_with_wid]
+        used_wids: List[str] = [element["wId"] for element in elements_with_wid]
+        unique_used_wids: List[str] = list(set(self._state_manager.used_wids + used_wids))
+        self._state_manager.used_wids = unique_used_wids
