@@ -10,7 +10,6 @@ from ......models import GioFRBR
 class Locatie(BaseModel):
     UUID: uuid.UUID
     Title: str
-    Symbol: str
 
     Gml: Optional[str] = Field(None)
     Geometry: Optional[str] = Field(None)
@@ -28,7 +27,6 @@ class Werkingsgebied(BaseModel):
     New: bool
     Frbr: GioFRBR
     Title: str
-    Symbol: str
     Achtergrond_Verwijzing: str
     Achtergrond_Actualiteit: str
     Locaties: List[Locatie] = Field(..., alias="Onderverdelingen")
