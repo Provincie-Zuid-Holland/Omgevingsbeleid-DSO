@@ -22,7 +22,13 @@ class InputData(BaseModel):
     resources: Resources
     object_template_repository: ObjectTemplateRepository
     ambtsgebied: Ambtsgebied
+
+    # wId's used by indentifiers, for example beleidskeuze-4 by that object
+    # Although it should be possible to add custom identifiers
     known_wid_map: Dict[str, str] = Field({})
+    # All previously used wIds. Which are allowed to be used again
+    # The main reason here is that we can not generate new wIds for old versions
+    known_wids: List[str] = Field([])
 
     class Config:
         arbitrary_types_allowed = True

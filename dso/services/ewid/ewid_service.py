@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from ...builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from ...builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
@@ -20,9 +20,13 @@ class EWIDService:
         state_manager: Optional[StateManager],
         wid_prefix: str,
         known_wid_map: Dict[str, str] = {},
+        known_wids: List[str] = [],
     ):
         self._wid_prefix = wid_prefix
         self._known_wid_map: Dict[str, str] = known_wid_map
+
+        # Make it a map for faster lookup
+        self._known_wids: Dict[str, bool] = {wid: True for wid in known_wids}
 
         self._state_manager: Optional[StateManager] = state_manager
         self._werkingsgebied_repository: Optional[WerkingsgebiedRepository] = None
@@ -76,16 +80,31 @@ class EWIDService:
         eid = self._generate_eid(tag_name, parent_eid, parent_tag_name)
         child_parent_eid = eid if tag_name in self._element_refs else parent_eid
 
+        # By default, we will generate a new wId based on the eId
+        # Then we might override the wId if we think that a previous Act Version already generated it
+        wid = f"{self._wid_prefix}__{eid}"
+        child_parent_wid = (
+            ""  # settins the wId parent to empty, will force the next child to use the eId unless the ifs below match
+        )
+
         wid_lookup_object_code = element.get("data-hint-wid-code", None)
         if wid_lookup_object_code in self._known_wid_map:
+            # This will force to use a specific wId because we are really certain
+            # Like for our api objects
             wid = self._known_wid_map[wid_lookup_object_code]
             child_parent_wid = wid if tag_name in self._element_refs else ""
         elif parent_wid != "":
-            wid = self._generate_wid(tag_name, parent_wid, parent_tag_name)
-            child_parent_wid = wid if tag_name in self._element_refs else ""
-        else:
-            wid = f"{self._wid_prefix}__{eid}"
-            child_parent_wid = ""
+            potential_wid: str = self._generate_wid(tag_name, parent_wid, parent_tag_name)
+            # This is mosly the result of parents being forced to a wId (parents matched the previous if)
+            # Now we would like to continue on our parents (previous act version) path.
+            # But we can only do so, if the wId was actually created in previous Act
+            if self._known_wids.get(potential_wid, False):
+                # The wid from another act version is valid
+                wid = potential_wid
+                child_parent_wid = wid if tag_name in self._element_refs else ""
+
+            # On the invalid wid we do not do anything
+            # Because the wid was already set based on the eid
 
         if tag_name in self._element_refs:
             element.set("eId", eid)

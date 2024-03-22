@@ -31,6 +31,8 @@ class RegelingVrijetekstTekstGenerator:
         tekst = self._remove_hints(tekst)
         self._state_manager.debug["tekst-part-4"] = copy(tekst)
 
+        self._store_used_wids(tekst)
+
         return tekst
 
     def _html_to_xml_lichaam(self, html: str) -> str:
@@ -78,6 +80,7 @@ class RegelingVrijetekstTekstGenerator:
             state_manager=self._state_manager,
             wid_prefix=f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}",
             known_wid_map=self._state_manager.input_data.known_wid_map,
+            known_wids=self._state_manager.input_data.known_wids,
         )
         result: str = ewid_service.add_ewids(xml_data)
         return result
@@ -95,3 +98,8 @@ class RegelingVrijetekstTekstGenerator:
 
         output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
         return output
+
+    def _store_used_wids(self, xml_data: str):
+        soup = BeautifulSoup(xml_data, "lxml")
+        elements_with_wid = soup.find_all(attrs={"wId": True})
+        wid_values = [element["wId"] for element in elements_with_wid]

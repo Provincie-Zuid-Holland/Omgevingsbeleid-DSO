@@ -39,12 +39,19 @@ class StateManager:
     def __init__(self, input_data: InputData):
         self.input_data: InputData = input_data
         self.werkingsgebied_eid_lookup: dict = {}
-        self.used_wid_map: Dict[str, str] = {}
         self.object_tekst_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
         self.ow_repository: OWStateRepository = OWStateRepository()
         self.output_files: List[OutputFile] = []
         self.debug: dict = {}
+
+        # wId's used by indentifiers, for example beleidskeuze-4 by that object
+        # Although it should be possible to add custom identifiers
+        self.used_wid_map: Dict[str, str] = {}
+
+        # All used wids, for export purposes
+        # This will be send in the input data for the next version of this Act
+        self.used_wids: List[str] = []
 
     def add_output_file(self, output_file: OutputFile):
         self.output_files.append(output_file)
