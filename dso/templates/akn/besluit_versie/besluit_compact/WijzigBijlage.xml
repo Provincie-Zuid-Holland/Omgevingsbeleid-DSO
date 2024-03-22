@@ -4,7 +4,7 @@
         <Nummer>A</Nummer>
         <Opschrift>Bijlage bij Artikel I</Opschrift>
     </Kop>
-    <RegelingVrijetekst componentnaam="{{ componentnaam }}" wordt="{{ regeling_frbr.expression }}">
+    <RegelingVrijetekst componentnaam="{{ componentnaam }}" wordt="{{ regeling_frbr.get_expression() }}">
         <RegelingOpschrift eId="longTitle" wId="longTitle">
             <Al>{{ regeling_opschrift }}</Al>
         </RegelingOpschrift>
