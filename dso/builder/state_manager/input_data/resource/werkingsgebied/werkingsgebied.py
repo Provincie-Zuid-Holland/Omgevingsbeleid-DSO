@@ -27,6 +27,7 @@ class Werkingsgebied(BaseModel):
     New: bool
     Frbr: GioFRBR
     Title: str
+    Geboorteregeling: str
     Achtergrond_Verwijzing: str
     Achtergrond_Actualiteit: str
     Locaties: List[Locatie] = Field(..., alias="Onderverdelingen")

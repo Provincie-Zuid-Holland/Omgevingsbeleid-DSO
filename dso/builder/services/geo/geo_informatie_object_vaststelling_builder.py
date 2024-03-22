@@ -42,7 +42,7 @@ class GeoInformatieObjectVaststellingBuilder(BuilderService):
             pretty_print=True,
             achtergrondVerwijzing=werkingsgebied.Achtergrond_Verwijzing,
             achtergrondActualiteit=werkingsgebied.Achtergrond_Actualiteit,
-            frbr=werkingsgebied.Frbr.get_expression(),
+            frbr=werkingsgebied.Frbr,
             locaties=locaties,
         )
 
@@ -55,12 +55,13 @@ class GeoInformatieObjectVaststellingBuilder(BuilderService):
 
     def _get_geometry_xml(self, gml_id: str, location: Locatie) -> str:
         if location.Gml is not None:
-            root = etree.fromstring(location.Gml)
-            root.attrib.clear()
-            root.set("srsName", "urn:ogc:def:crs:EPSG::28992")
-            root.set("{http://www.opengis.net/gml/3.2}id", f"{gml_id}-0")
-            gml = etree.tostring(root, pretty_print=True).decode()
-            return gml
+            return location.Gml
+            # root = etree.fromstring(location.Gml)
+            # root.attrib.clear()
+            # root.set("srsName", "urn:ogc:def:crs:EPSG::28992")
+            # root.set("{http://www.opengis.net/gml/3.2}id", f"{gml_id}-0")
+            # gml = etree.tostring(root, pretty_print=True).decode()
+            # return gml
         elif location.Geometry is not None:
             generator = GMLGeometryGenerator(
                 gml_id,

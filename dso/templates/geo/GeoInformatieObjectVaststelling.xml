@@ -15,8 +15,8 @@
     </geo:context>
     <geo:vastgesteldeVersie>
         <geo:GeoInformatieObjectVersie>
-            <geo:FRBRWork>{{ frbr.work }}</geo:FRBRWork>
-            <geo:FRBRExpression>{{ frbr.expression }}</geo:FRBRExpression>
+            <geo:FRBRWork>{{ frbr.get_work() }}</geo:FRBRWork>
+            <geo:FRBRExpression>{{ frbr.get_expression() }}</geo:FRBRExpression>
             <geo:groepen>
                 {% for locatie in locaties %}
 				<geo:Groep>

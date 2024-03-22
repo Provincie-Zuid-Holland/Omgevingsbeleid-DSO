@@ -30,10 +30,10 @@ class GioAanleveringInformatieObjectBuilder(BuilderService):
         content = load_template(
             "geo/AanleveringInformatieObject.xml",
             pretty_print=True,
-            werkingsgebied_frbr=werkingsgebied.Frbr.get_expression(),
+            werkingsgebied_frbr=werkingsgebied.Frbr,
             bestandsnaam=werkingsgebied.get_gml_filename(),
             gml_hash=gml_hash,
-            regeling_frbr=state_manager.input_data.publication_settings.regeling_frbr,
+            geboorteregeling=werkingsgebied.Geboorteregeling,
             provincie_ref=state_manager.input_data.publication_settings.provincie_ref,
             naamInformatie_object=werkingsgebied.Title,
         )
