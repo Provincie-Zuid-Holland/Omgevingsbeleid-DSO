@@ -1,6 +1,5 @@
 from typing import List
 
-from lxml import etree
 
 from ....models import ContentType
 from ....services.utils.helpers import load_template
@@ -55,12 +54,7 @@ class GeoInformatieObjectVaststellingBuilder(BuilderService):
 
     def _get_geometry_xml(self, gml_id: str, location: Locatie) -> str:
         if location.Gml is not None:
-            # return location.Gml
-            root = etree.fromstring(location.Gml)
-            root.attrib.clear()
-            root.set("srsName", "urn:ogc:def:crs:EPSG::28992")
-            gml = etree.tostring(root, pretty_print=True).decode()
-            return gml
+            return location.Gml
         elif location.Geometry is not None:
             generator = GMLGeometryGenerator(
                 gml_id,
