@@ -1,9 +1,9 @@
 import os
-from typing import Dict, List, Union
+from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, Field
 
-from ....models import ProcedureStap, ProcedureVerloop, PublicationSettings
+from ....models import ProcedureStap, ProcedureVerloop, PublicationSettings, RegelingMutatie
 from ....services.utils.helpers import load_json_data
 from .ambtsgebied import Ambtsgebied
 from .besluit import Besluit
@@ -18,20 +18,24 @@ class InputData(BaseModel):
     besluit: Besluit
     regeling: Regeling
     regeling_vrijetekst: str
+    regeling_mutatie: Optional[RegelingMutatie] = Field(None)
     procedure_verloop: ProcedureVerloop
     resources: Resources
     object_template_repository: ObjectTemplateRepository
     ambtsgebied: Ambtsgebied
 
-    # wId's used by indentifiers, for example beleidskeuze-4 by that object
-    # Although it should be possible to add custom identifiers
-    known_wid_map: Dict[str, str] = Field({})
-    # All previously used wIds. Which are allowed to be used again
-    # The main reason here is that we can not generate new wIds for old versions
-    known_wids: List[str] = Field([])
-
     class Config:
         arbitrary_types_allowed = True
+
+    def get_known_wid_map(self) -> Dict[str, str]:
+        if self.regeling_mutatie is None:
+            return {}
+        return self.regeling_mutatie.bekend_wid_map
+
+    def get_known_wids(self) -> List[str]:
+        if self.regeling_mutatie is None:
+            return []
+        return self.regeling_mutatie.bekend_wids
 
 
 class InputDataLoader:

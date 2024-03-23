@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from enum import Enum
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field, root_validator, validator
 
@@ -210,3 +210,15 @@ class PublicationSettings(BaseModel):
     @classmethod
     def from_json(cls, json_data):
         return cls(**json_data)
+
+
+class RegelingMutatie(BaseModel):
+    was_regeling_frbr: ActFRBR
+
+    # wId's used by indentifiers, for example beleidskeuze-4 by that object
+    # Although it should be possible to add custom identifiers
+    bekend_wid_map: Dict[str, str]
+
+    # All previously used wIds. Which are allowed to be used again
+    # The main reason here is that we can not generate new wIds for old versions
+    bekend_wids: List[str]

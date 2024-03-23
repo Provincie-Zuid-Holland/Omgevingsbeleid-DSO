@@ -29,7 +29,8 @@ class BijlageWerkingsgebiedenContent:
         ewid_service = EWIDService(
             state_manager=self._state_manager,
             wid_prefix=f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}",
-            known_wid_map=self._state_manager.input_data.known_wid_map,
+            known_wid_map=self._state_manager.input_data.get_known_wid_map(),
+            known_wids=self._state_manager.input_data.get_known_wids(),
         )
         content = ewid_service.add_ewids(content)
 
