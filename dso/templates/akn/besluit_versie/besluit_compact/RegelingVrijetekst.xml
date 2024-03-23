@@ -1,0 +1,7 @@
+<RegelingVrijetekst componentnaam="{{ componentnaam }}" wordt="{{ regeling_frbr.get_expression() }}">
+    <RegelingOpschrift eId="longTitle" wId="longTitle">
+        <Al>{{ regeling_opschrift }}</Al>
+    </RegelingOpschrift>
+    {{ lichaam }}
+    {{ bijlage_werkingsgebieden }}
+</RegelingVrijetekst>
