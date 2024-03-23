@@ -1,5 +1,5 @@
 import io
-from typing import List
+from typing import Dict, List
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from ..services.assets.create_image import create_image, create_image_in_zip
@@ -68,3 +68,9 @@ class Builder:
         """
         state = self._state_manager.build_state_export()
         return state.json()
+
+    def get_used_wid_map(self) -> Dict[str, str]:
+        return self._state_manager.get_used_wid_map()
+
+    def get_used_wids(self) -> List[str]:
+        return self._state_manager.get_used_wids()
