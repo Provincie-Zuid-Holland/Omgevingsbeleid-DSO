@@ -1,4 +1,4 @@
-<RegelingVrijetekst componentnaam="{{ componentnaam }}" wordt="{{ regeling_frbr.get_expression() }}">
+<RegelingVrijetekst componentnaam="{{ componentnaam }}" wordt="{{ wordt }}">
     <RegelingOpschrift eId="longTitle" wId="longTitle">
         <Al>{{ regeling_opschrift }}</Al>
     </RegelingOpschrift>
