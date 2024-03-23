@@ -1,6 +1,5 @@
 from typing import List
 
-
 from ....models import ContentType
 from ....services.utils.helpers import load_template
 from ...services import BuilderService

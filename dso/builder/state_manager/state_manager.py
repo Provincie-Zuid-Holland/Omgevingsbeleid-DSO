@@ -77,3 +77,9 @@ class StateManager:
             output_files=self.output_files,
         )
         return export
+
+    def get_used_wid_map(self) -> Dict[str, str]:
+        return self.used_wid_map
+
+    def get_used_wids(self) -> List[str]:
+        return self.used_wids
