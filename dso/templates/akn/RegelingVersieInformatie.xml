@@ -7,27 +7,5 @@
     <RegelingVersieMetadata xmlns="https://standaarden.overheid.nl/stop/imop/data/">
         <versienummer>{{ regeling.versienummer }}</versienummer>
     </RegelingVersieMetadata>
-    <RegelingMetadata xmlns="https://standaarden.overheid.nl/stop/imop/data/">
-        <soortRegeling>{{ soort_regeling }}</soortRegeling>
-        <eindverantwoordelijke>{{ provincie_ref }}</eindverantwoordelijke>
-        <maker>{{ provincie_ref }}</maker>
-        <soortBestuursorgaan>{{ soort_bestuursorgaan.value }}</soortBestuursorgaan>
-        <officieleTitel>{{ regeling.officiele_titel }}</officieleTitel>
-        <heeftCiteertitelInformatie>
-            <CiteertitelInformatie>
-                <citeertitel>{{ regeling.citeertitel }}</citeertitel>
-                <isOfficieel>{{ regeling.is_officieel }}</isOfficieel>
-            </CiteertitelInformatie>
-        </heeftCiteertitelInformatie>
-        <onderwerpen>
-            {% for onderwerp in regeling.onderwerpen %}
-            <onderwerp>{{ onderwerp.value }}</onderwerp>
-            {% endfor %}
-        </onderwerpen>
-        <rechtsgebieden>
-            {% for rechtsgebied in regeling.rechtsgebieden %}
-            <rechtsgebied>{{ rechtsgebied.value }}</rechtsgebied>
-            {% endfor %}
-        </rechtsgebieden>
-    </RegelingMetadata>
+    {{ regeling_metadata }}
 </RegelingVersieInformatie>
