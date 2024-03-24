@@ -16,24 +16,41 @@ class WijzigBijlageContent:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
 
         if self._state_manager.input_data.regeling_mutatie is not None:
+            # When doing a mutation we need to create the RegelingVrijetekst
+            # without the was/wordt/componentnaam attributes
+            # As they needs to be in the wrapped RegelingMutatie tag
+            regeling_vrijetekst: str = load_template(
+                "akn/besluit_versie/besluit_compact/RegelingVrijetekst.xml",
+                componentnaam=None,
+                was=None,
+                wordt=None,
+                lichaam=lichaam,
+                bijlage_werkingsgebieden=bijlage_werkingsgebieden,
+                regeling_opschrift=self._state_manager.input_data.regeling.officiele_titel,
+                componentnaam=settings.regeling_componentnaam,
+            )
+
             regeling_content: str = load_template(
                 "akn/besluit_versie/besluit_compact/RegelingMutatie.xml",
+                componentnaam=settings.regeling_componentnaam,
                 was=self._state_manager.input_data.regeling_mutatie.was_regeling_frbr.get_expression(),
                 wordt=settings.regeling_frbr.get_expression(),
-                lichaam=lichaam,
-                bijlage_werkingsgebieden=bijlage_werkingsgebieden,
-                regeling_opschrift=self._state_manager.input_data.regeling.officiele_titel,
-                componentnaam=settings.regeling_componentnaam,
+                regeling_vrijetekst=regeling_vrijetekst,
             )
         else:
-            regeling_content: str = load_template(
+            regeling_vrijetekst: str = load_template(
                 "akn/besluit_versie/besluit_compact/RegelingVrijetekst.xml",
+                componentnaam=settings.regeling_componentnaam,
+                was=None,
                 wordt=settings.regeling_frbr.get_expression(),
                 lichaam=lichaam,
                 bijlage_werkingsgebieden=bijlage_werkingsgebieden,
                 regeling_opschrift=self._state_manager.input_data.regeling.officiele_titel,
-                componentnaam=settings.regeling_componentnaam,
             )
+            regeling_content = regeling_vrijetekst
+
+        # We store the regelingvrijetekst for the future mutation in case we implemented Renvooi
+        self._state_manager.regeling_vrijetekst = regeling_vrijetekst
 
         content = load_template(
             "akn/besluit_versie/besluit_compact/WijzigBijlage.xml",

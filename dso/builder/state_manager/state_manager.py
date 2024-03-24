@@ -53,6 +53,8 @@ class StateManager:
         # This will be send in the input data for the next version of this Act
         self.used_wids: List[str] = []
 
+        self.regeling_vrijetekst: Optional[str] = None
+
     def add_output_file(self, output_file: OutputFile):
         self.output_files.append(output_file)
 

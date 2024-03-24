@@ -1,11 +1,5 @@
 <RegelingMutatie componentnaam="{{ componentnaam }}" was="{{ was }}" wordt="{{ wordt }}">
     <VervangRegeling>
-        <RegelingVrijetekst>
-            <RegelingOpschrift eId="longTitle" wId="longTitle">
-                <Al>{{ regeling_opschrift }}</Al>
-            </RegelingOpschrift>
-            {{ lichaam }}
-            {{ bijlage_werkingsgebieden }}
-        </RegelingVrijetekst>
+        {{ regeling_vrijetekst }}
     </VervangRegeling>
 </RegelingMutatie>
