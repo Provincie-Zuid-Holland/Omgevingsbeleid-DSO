@@ -1,7 +1,7 @@
 <RegelingVrijetekst
-    {% if componentnaam | length %}componentnaam="{{ componentnaam }}"{% endif %}
-    {% if was | length %}was="{{ was }}"{% endif %}
-    {% if wordt | length %}wordt="{{ wordt }}"{% endif %}>
+    {% if componentnaam is not none %}componentnaam="{{ componentnaam }}"{% endif %}
+    {% if was is not none %}was="{{ was }}"{% endif %}
+    {% if wordt is not none %}wordt="{{ wordt }}"{% endif %}>
     <RegelingOpschrift eId="longTitle" wId="longTitle">
         <Al>{{ regeling_opschrift }}</Al>
     </RegelingOpschrift>
