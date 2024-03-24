@@ -27,7 +27,6 @@ class WijzigBijlageContent:
                 lichaam=lichaam,
                 bijlage_werkingsgebieden=bijlage_werkingsgebieden,
                 regeling_opschrift=self._state_manager.input_data.regeling.officiele_titel,
-                componentnaam=settings.regeling_componentnaam,
             )
 
             regeling_content: str = load_template(
