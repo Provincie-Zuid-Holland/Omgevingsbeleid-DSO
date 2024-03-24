@@ -1,5 +1,5 @@
 import io
-from typing import Dict, List
+from typing import Dict, List, Optional
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from ..services.assets.create_image import create_image, create_image_in_zip
@@ -70,7 +70,10 @@ class Builder:
         return state.json()
 
     def get_used_wid_map(self) -> Dict[str, str]:
-        return self._state_manager.get_used_wid_map()
+        return self._state_manager.used_wid_map
 
     def get_used_wids(self) -> List[str]:
-        return self._state_manager.get_used_wids()
+        return self._state_manager.used_wids
+
+    def get_regeling_vrijetekst(self) -> Optional[str]:
+        return self._state_manager.regeling_vrijetekst
