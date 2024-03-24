@@ -214,6 +214,7 @@ class PublicationSettings(BaseModel):
 
 class RegelingMutatie(BaseModel):
     was_regeling_frbr: ActFRBR
+    was_regeling_vrijetekst: str
 
     # wId's used by indentifiers, for example beleidskeuze-4 by that object
     # Although it should be possible to add custom identifiers
