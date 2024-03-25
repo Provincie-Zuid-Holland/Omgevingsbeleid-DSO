@@ -233,5 +233,5 @@ class RegelingMutatie(BaseModel):
 
 
 class UsedWidGroup(BaseModel):
-    wid_map: Dict[str, str]
-    wids: List[str]
+    wid_map: Dict[str, str] = Field({})
+    wids: List[str] = Field([])
