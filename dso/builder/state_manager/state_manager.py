@@ -47,7 +47,7 @@ class StateManager:
         self.debug: dict = {}
 
         self.regeling_vrijetekst: Optional[str] = None
-        self.used_wid_groups: Dict[str, UsedWidGroup]
+        self.used_wid_groups: Dict[str, UsedWidGroup] = {}
 
     def add_used_wid_code(self, group: str, wid_code: str, wid: str):
         if not group in self.used_wid_groups:
