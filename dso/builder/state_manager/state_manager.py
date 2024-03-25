@@ -46,6 +46,11 @@ class StateManager:
         self.debug: dict = {}
         self.regeling_vrijetekst: Optional[str] = None
 
+        # All OW IDS for export purposes
+        self.created_ow_object_ids: List[str] = []
+        # Mapping of created OW IDS to input identifiers for export state reference
+        self.created_ow_objects_map: dict = {}
+
         # Service is in the state manager
         # As we use it on multiple places, and the internal state should be updates for each use
         self.ewid_service: EWIDService = EWIDService(

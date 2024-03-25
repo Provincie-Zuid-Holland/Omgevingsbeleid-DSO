@@ -61,10 +61,8 @@ class OwBuilder(BuilderService):
         regelinggebied_state = regelinggebied_content.create_regelingsgebieden()
         state_manager.ow_repository.store_regelingsgebied_content(regelinggebied_state)
 
-        ow_id_list = state_manager.ow_repository.get_created_objects_id_list()
-        state_manager.created_ow_object_ids = ow_id_list
-        ow_map = state_manager.ow_repository.get_ow_object_mapping()
-        state_manager.created_ow_objects_map = ow_map
+        state_manager.created_ow_object_ids = state_manager.ow_repository.get_created_objects_id_list()
+        state_manager.created_ow_objects_map = state_manager.ow_repository.get_ow_object_mapping()
 
         manifest_content = ManifestContent(
             act_work=str(state_manager.input_data.publication_settings.regeling_frbr.get_work()),
