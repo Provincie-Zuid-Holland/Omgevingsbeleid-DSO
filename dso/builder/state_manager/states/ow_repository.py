@@ -1,5 +1,8 @@
 from typing import List, Optional
+from pydantic import BaseModel
 
+
+from ....services.ow.models import OWAmbtsgebied, OWGebied, OWGebiedenGroep, OWDivisie, OWDivisieTekst
 
 class OWStateRepository:
     """
@@ -16,7 +19,48 @@ class OWStateRepository:
         self.locaties_content = None
         self.divisie_content = None
         self.regelingsgebied_content = None
-        self.created_ow_objects = []
+
+    def get_created_objects(self):
+        created_ow_objects = []
+        # Add locations
+        keys = ["gebieden", "gebiedengroepen", "ambtsgebieden"]
+        for key in keys:
+            created_ow_objects.extend(self.locaties_content.get(key, []))
+
+        # Add annotation sections
+        annotations = self.divisie_content.get("annotaties", []) 
+        for annotation in annotations:
+            attributes = [annotation.divisie_aanduiding, annotation.divisietekst_aanduiding, annotation.tekstdeel]
+            created_ow_objects.extend(attr for attr in attributes if attr is not None)
+
+        # ambtsgebied/regelingsgebied? excluded for now
+        return created_ow_objects
+
+    def get_created_objects_id_list(self):
+        created_ow_objects = self.get_created_objects()
+        ow_id_list = [ ow.OW_ID for ow in created_ow_objects ]
+        return ow_id_list
+
+    def get_ow_object_mapping(self):
+        """
+        Mapping of created OW IDS to input identifiers for export state reference
+        """
+        created_ow_objects = self.get_created_objects()
+        created_ow_objects_map = {
+            "gebieden_map": {},
+            "gebiedengroep_map": {},
+            "wid_map": {},
+        }
+
+        for obj in created_ow_objects:
+            if isinstance(obj, OWGebied):
+                created_ow_objects_map["gebieden_map"][obj.mapped_geo_code] = obj.OW_ID
+            if isinstance(obj, OWGebiedenGroep):
+                created_ow_objects_map["gebiedengroep_map"][obj.mapped_geo_code] = obj.OW_ID
+            if isinstance(obj, OWDivisie) or isinstance(obj, OWDivisieTekst):
+                created_ow_objects_map["wid_map"][obj.wid] = obj.OW_ID
+        
+        return created_ow_objects_map
 
     def store_locaties_content(self, xml_data):
         """
@@ -71,24 +115,6 @@ class OWStateRepository:
             list: The object types from regelingsgebied content.
         """
         return self.regelingsgebied_content.get("objectTypen", [])
-
-    def store_created_ow_object(self, ow_object):
-        """
-        Add new created OW object to the state.
-
-        Args:
-            ow_object (OWObject): The OW object to add to the state.
-        """
-        self.created_ow_objects.append(ow_object)
-
-    def get_created_ow_objects(self):
-        """
-        Retrieves the created OW objects.
-
-        Returns:
-            list: The created OW objects.
-        """
-        return self.created_ow_objects
 
     def to_dict(self):
         """

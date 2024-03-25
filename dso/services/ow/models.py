@@ -30,6 +30,7 @@ class OWRegelingsgebied(OWObject):
 class OWLocation(OWObject):
     geo_uuid: UUID
     noemer: Optional[str] = None
+    mapped_geo_code: Optional[str]
 
 
 class OWGebied(OWLocation):

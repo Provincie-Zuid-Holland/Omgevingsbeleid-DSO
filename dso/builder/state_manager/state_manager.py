@@ -46,6 +46,20 @@ class StateManager:
         self.output_files: List[OutputFile] = []
         self.debug: dict = {}
 
+
+        # All OW IDS for export purposes
+        self.created_ow_object_ids: List[str] = []
+        # Mapping of created OW IDS to input identifiers for export state reference
+        self.created_ow_objects_map: dict = {}
+
+        # wId's used by indentifiers, for example beleidskeuze-4 by that object
+        # Although it should be possible to add custom identifiers
+        self.used_wid_map: Dict[str, str] = {}
+
+        # All used wids, for export purposes
+        # This will be send in the input data for the next version of this Act
+        self.used_wids: List[str] = []
+
         self.regeling_vrijetekst: Optional[str] = None
         self.used_wid_groups: Dict[str, UsedWidGroup] = {}
 
