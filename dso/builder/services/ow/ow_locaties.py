@@ -68,19 +68,21 @@ class OwLocatiesContent:
         for werkingsgebied in self.werkingsgebieden:
             ow_locations = [
                 OWGebied(
-                    OW_ID=generate_ow_id(ow_type=IMOWTYPES.GEBIED, unique_code=loc.UUID.hex),
+                    OW_ID=generate_ow_id(ow_type=IMOWTYPES.GEBIED),
                     geo_uuid=loc.UUID,
                     noemer=loc.Title,
                     procedure_status=self.ow_procedure_status,
+                    mapped_geo_code=werkingsgebied.Code
                 )
                 for loc in werkingsgebied.Locaties
             ]
             ow_group = OWGebiedenGroep(
-                OW_ID=generate_ow_id(ow_type=IMOWTYPES.GEBIEDENGROEP, unique_code=werkingsgebied.UUID.hex),
+                OW_ID=generate_ow_id(ow_type=IMOWTYPES.GEBIEDENGROEP),
                 geo_uuid=werkingsgebied.UUID,
                 noemer=werkingsgebied.Title,
                 locations=ow_locations,
                 procedure_status=self.ow_procedure_status,
+                mapped_geo_code=werkingsgebied.Code
             )
             self.xml_data["gebieden"].extend(ow_locations)
             self.xml_data["gebiedengroepen"].append(ow_group)
@@ -99,11 +101,9 @@ class OwLocatiesContent:
                 values["ow_location_id"] = matching_ow_gebied
 
     def _create_amtsgebied(self):
-        ow_id: str = generate_ow_id(
-            IMOWTYPES.AMBTSGEBIED,
-            self._provincie_id,
-            self.ambtsgebied_data.identificatie_suffix,
-        )
+        #TODO: now always new OW ID, reuse from state if same work.
+        ow_id: str = generate_ow_id(IMOWTYPES.AMBTSGEBIED, self._provincie_id)
+        # unique_code=self.ambtsgebied_data.identificatie_suffix,
         new_ambtsgebied: OWAmbtsgebied = OWAmbtsgebied(
             OW_ID=ow_id,
             bestuurlijke_genzenverwijzing=BestuurlijkeGrenzenVerwijzing(
