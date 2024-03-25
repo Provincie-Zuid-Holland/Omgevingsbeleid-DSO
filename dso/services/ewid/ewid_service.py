@@ -117,14 +117,13 @@ class EWIDService:
             element.set("wId", wid)
 
         if self._state_manager is not None:
-            object_code = element.get("data-hint-object-code", None)
-            gebied_code = element.get("data-hint-gebied-code", None)
-
             # Remember the WID for policy objects
-            if object_code is not None:
-                self._state_manager.used_wid_map[object_code] = wid
+            if wid_lookup_object_code is not None:
+                self._state_manager.used_wid_map[wid_lookup_object_code] = wid
 
             # Remember the EWID for location annotated policy objects
+            object_code = element.get("data-hint-object-code", None)
+            gebied_code = element.get("data-hint-gebied-code", None)
             if object_code is not None and gebied_code is not None:
                 werkingsgebied: Werkingsgebied = self._werkingsgebied_repository.get_by_code(gebied_code)
                 self._state_manager.object_tekst_lookup[object_code] = {
