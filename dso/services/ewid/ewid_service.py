@@ -89,12 +89,13 @@ class EWIDService:
         wid_resolved: bool = False
 
         wid_lookup_object_code = element.get("data-hint-wid-code", None)
-        if wid_lookup_object_code in self._known_wid_map:
+        if wid_lookup_object_code:
             # This will force to use a specific wId because we are really certain
             # Like for our api objects
-            wid = self._known_wid_map[wid_lookup_object_code]
-            child_parent_wid = wid if tag_name in self._element_refs else ""
-            wid_resolved = True
+            if wid_lookup_object_code in self._known_wid_map:
+                wid = self._known_wid_map[wid_lookup_object_code]
+                child_parent_wid = wid if tag_name in self._element_refs else ""
+                wid_resolved = True
         elif parent_wid != "":
             potential_wid: str = self._generate_wid(tag_name, parent_wid, parent_tag_name)
             # This is mosly the result of parents being forced to a wId (parents matched the previous if)
