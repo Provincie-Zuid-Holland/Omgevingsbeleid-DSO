@@ -24,21 +24,32 @@ class BijlageWerkingsgebiedenContent:
         )
 
         content = self._state_manager.ewid_service.add_ewids(content)
-
-        # Resolve the wid from the werkingsgebieden
         content = self._create_werkingsgebieden_wid_lookup(content)
+        content = self._remove_hints(content)
 
         return content
 
     def _create_werkingsgebieden_wid_lookup(self, xml_content: str):
         root = etree.fromstring(xml_content)
-        elements = root.xpath("//*[@data-info-werkingsgebied-uuid]")
+        elements = root.xpath("//*[@data-hint-werkingsgebied-uuid]")
 
         for element in elements:
-            uuid = element.get("data-info-werkingsgebied-uuid")
+            uuid = element.get("data-hint-werkingsgebied-uuid")
             eid = element.get("eId")
             # Set the werkingsgebied eid in the StateManager
             self._state_manager.werkingsgebied_eid_lookup[uuid] = eid
-            del element.attrib["data-info-werkingsgebied-uuid"]
 
         return etree.tostring(root, encoding="unicode", pretty_print=True)
+
+    def _remove_hints(self, xml_data: str) -> str:
+        xml_data = self._clean_attribute(xml_data, "data-hint-wid-code")
+        xml_data = self._clean_attribute(xml_data, "data-hint-werkingsgebied-uuid")
+        return xml_data
+
+    def _clean_attribute(self, xml_data: str, attribute: str) -> str:
+        root = etree.fromstring(xml_data)
+        for element in root.xpath(f"//*[@{attribute}]"):
+            element.attrib.pop(attribute)
+
+        output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
+        return output
