@@ -6,7 +6,6 @@ from ...builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied 
 from ...builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
     WerkingsgebiedRepository,
 )
-from ...builder.state_manager.state_manager import StateManager
 from . import ELEMENT_REF, EIDGenerationError
 
 
@@ -17,34 +16,49 @@ class EWIDService:
 
     def __init__(
         self,
-        state_manager: Optional[StateManager],
         wid_prefix: str,
         known_wid_group: Optional[str] = None,
         known_wid_map: Dict[str, str] = {},
         known_wids: List[str] = [],
+        werkingsgebied_repository: Optional[WerkingsgebiedRepository] = None,
         eid_counters=defaultdict(lambda: defaultdict(int)),
         wid_counters=defaultdict(lambda: defaultdict(int)),
     ):
+        self._werkingsgebied_repository: Optional[WerkingsgebiedRepository] = werkingsgebied_repository
         self._known_wid_group: Optional[str] = known_wid_group
         self._wid_prefix: str = wid_prefix
         self._known_wid_map: Dict[str, str] = known_wid_map
         # Make it a map for faster lookup
         self._known_wids: Dict[str, bool] = {wid: True for wid in known_wids}
 
-        self._state_manager: Optional[StateManager] = state_manager
-        self._werkingsgebied_repository: Optional[WerkingsgebiedRepository] = None
-        if state_manager is not None:
-            self._werkingsgebied_repository = state_manager.input_data.resources.werkingsgebied_repository
-
         self._element_refs: Dict[str, str] = {e.name: e.value for e in ELEMENT_REF}
         self._eid_counters = eid_counters
         self._wid_counters = wid_counters
+
+        # wId's used by indentifiers, for example beleidskeuze-4 by that object
+        # Although it should be possible to add custom identifiers
+        self._state_used_wid_map: Dict[str, str] = {}
+        # All used wids, for export purposes
+        # This will be send in the input data for the next version of this Act
+        self._state_used_wids: List[str] = []
+
+        # wId lookup used by OW files
+        self._state_object_tekst_lookup: dict = {}
 
     def add_ewids(self, xml_source: str) -> str:
         root = self._parse_xml(xml_source)
         self._fill_ewid(root)
         result_xml: str = ET.tostring(root, encoding="utf-8")
         return result_xml
+
+    def get_state_used_wid_map(self) -> Dict[str, str]:
+        return self._state_used_wid_map
+
+    def get_state_used_wids(self) -> List[str]:
+        return self._state_used_wids
+
+    def get_state_object_tekst_lookup(self) -> dict:
+        return self._state_object_tekst_lookup
 
     def _parse_xml(self, xml_string: str):
         try:
@@ -113,32 +127,25 @@ class EWIDService:
         if not wid_resolved:
             # It could be that the eId that we created was used in a wId previously.
             # Then we are quite certain that we can reuse that one
-            # Can we really?
+            # @note: Can we really?
             pass
 
         if tag_name in self._element_refs:
             element.set("eId", eid)
             element.set("wId", wid)
 
-        if self._state_manager is not None:
-            # Store wid usage
-            self._state_manager.add_used_wid(
-                self._known_wid_group,
-                wid,
-            )
-            if wid_lookup_object_code is not None:
-                self._state_manager.add_used_wid_code(
-                    self._known_wid_group,
-                    wid_lookup_object_code,
-                    wid,
-                )
+        # Store wid usage
+        self._state_used_wids.append(wid)
+        if wid_lookup_object_code is not None:
+            self._state_used_wid_map[wid_lookup_object_code] = wid
 
+        if self._werkingsgebied_repository is not None:
             # Remember the EWID for location annotated policy objects
             object_code = element.get("data-hint-object-code", None)
             gebied_code = element.get("data-hint-gebied-code", None)
             if object_code is not None and gebied_code is not None:
                 werkingsgebied: Werkingsgebied = self._werkingsgebied_repository.get_by_code(gebied_code)
-                self._state_manager.object_tekst_lookup[object_code] = {
+                self._state_object_tekst_lookup[object_code] = {
                     "wid": wid,
                     "tag": element.tag,
                     "gebied_code": gebied_code,

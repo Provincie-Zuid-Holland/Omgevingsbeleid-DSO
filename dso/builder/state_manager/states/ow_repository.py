@@ -1,8 +1,7 @@
 from typing import List, Optional
-from pydantic import BaseModel
 
+from ....services.ow.models import OWDivisie, OWDivisieTekst, OWGebied, OWGebiedenGroep
 
-from ....services.ow.models import OWAmbtsgebied, OWGebied, OWGebiedenGroep, OWDivisie, OWDivisieTekst
 
 class OWStateRepository:
     """
@@ -28,7 +27,7 @@ class OWStateRepository:
             created_ow_objects.extend(self.locaties_content.get(key, []))
 
         # Add annotation sections
-        annotations = self.divisie_content.get("annotaties", []) 
+        annotations = self.divisie_content.get("annotaties", [])
         for annotation in annotations:
             attributes = [annotation.divisie_aanduiding, annotation.divisietekst_aanduiding, annotation.tekstdeel]
             created_ow_objects.extend(attr for attr in attributes if attr is not None)
@@ -38,7 +37,7 @@ class OWStateRepository:
 
     def get_created_objects_id_list(self):
         created_ow_objects = self.get_created_objects()
-        ow_id_list = [ ow.OW_ID for ow in created_ow_objects ]
+        ow_id_list = [ow.OW_ID for ow in created_ow_objects]
         return ow_id_list
 
     def get_ow_object_mapping(self):
@@ -59,7 +58,7 @@ class OWStateRepository:
                 created_ow_objects_map["gebiedengroep_map"][obj.mapped_geo_code] = obj.OW_ID
             if isinstance(obj, OWDivisie) or isinstance(obj, OWDivisieTekst):
                 created_ow_objects_map["wid_map"][obj.wid] = obj.OW_ID
-        
+
         return created_ow_objects_map
 
     def store_locaties_content(self, xml_data):

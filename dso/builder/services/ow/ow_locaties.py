@@ -72,7 +72,7 @@ class OwLocatiesContent:
                     geo_uuid=loc.UUID,
                     noemer=loc.Title,
                     procedure_status=self.ow_procedure_status,
-                    mapped_geo_code=werkingsgebied.Code
+                    mapped_geo_code=werkingsgebied.Code,
                 )
                 for loc in werkingsgebied.Locaties
             ]
@@ -82,7 +82,7 @@ class OwLocatiesContent:
                 noemer=werkingsgebied.Title,
                 locations=ow_locations,
                 procedure_status=self.ow_procedure_status,
-                mapped_geo_code=werkingsgebied.Code
+                mapped_geo_code=werkingsgebied.Code,
             )
             self.xml_data["gebieden"].extend(ow_locations)
             self.xml_data["gebiedengroepen"].append(ow_group)
@@ -101,7 +101,7 @@ class OwLocatiesContent:
                 values["ow_location_id"] = matching_ow_gebied
 
     def _create_amtsgebied(self):
-        #TODO: now always new OW ID, reuse from state if same work.
+        # TODO: now always new OW ID, reuse from state if same work.
         ow_id: str = generate_ow_id(IMOWTYPES.AMBTSGEBIED, self._provincie_id)
         # unique_code=self.ambtsgebied_data.identificatie_suffix,
         new_ambtsgebied: OWAmbtsgebied = OWAmbtsgebied(

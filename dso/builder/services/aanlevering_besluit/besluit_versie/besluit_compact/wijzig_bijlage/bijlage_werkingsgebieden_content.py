@@ -2,8 +2,6 @@ from typing import List
 
 from lxml import etree
 
-from .......models import PublicationSettings
-from .......services.ewid.ewid_service import EWIDService
 from .......services.utils.helpers import load_template
 from ......state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from ......state_manager.state_manager import StateManager
@@ -25,14 +23,7 @@ class BijlageWerkingsgebiedenContent:
             werkingsgebieden=werkingsgebieden,
         )
 
-        settings: PublicationSettings = self._state_manager.input_data.publication_settings
-        ewid_service = EWIDService(
-            state_manager=self._state_manager,
-            wid_prefix=f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}",
-            known_wid_map=self._state_manager.input_data.get_known_wid_map("bijlage-werkingsgebieden"),
-            known_wids=self._state_manager.input_data.get_known_wids("bijlage-werkingsgebieden"),
-        )
-        content = ewid_service.add_ewids(content)
+        content = self._state_manager.ewid_service.add_ewids(content)
 
         # Resolve the wid from the werkingsgebieden
         content = self._create_werkingsgebieden_wid_lookup(content)

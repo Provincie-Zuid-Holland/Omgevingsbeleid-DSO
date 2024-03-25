@@ -511,7 +511,7 @@ class Divisietekst(Element):
             return tag
 
         # Headings will be send to the Kop
-        if tag.name in ["h1", "h2", "h3", "h4"]:
+        if tag.name in ["h1", "h2"]:
             if self.kop is not None:
                 return tag
             kop = Kop(tag)
@@ -829,6 +829,8 @@ Inhoud.element_generators = [
     element_ol_handler,
     element_img_handler,
     element_table_handler,
+    element_h3_tussenkop_handler,
+    element_h4_tussenkop_handler,
     element_h5_tussenkop_handler,
     element_h6_tussenkop_handler,
 ]

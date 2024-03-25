@@ -27,19 +27,15 @@ class InputData(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
-    def get_known_wid_map(self, wid_group: str) -> Dict[str, str]:
+    def get_known_wid_map(self) -> Dict[str, str]:
         if self.regeling_mutatie is None:
             return {}
-        if wid_group not in self.regeling_mutatie.known_wid_groups:
-            return {}
-        return self.regeling_mutatie.known_wid_groups[wid_group].wid_map
+        return self.regeling_mutatie.bekend_wid_map
 
-    def get_known_wids(self, wid_group: str) -> List[str]:
+    def get_known_wids(self) -> List[str]:
         if self.regeling_mutatie is None:
             return []
-        if wid_group not in self.regeling_mutatie.known_wid_groups:
-            return {}
-        return self.regeling_mutatie.known_wid_groups[wid_group].wids
+        return self.regeling_mutatie.bekend_wids
 
 
 class InputDataLoader:

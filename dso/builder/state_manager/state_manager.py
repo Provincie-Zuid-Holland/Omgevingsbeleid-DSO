@@ -1,8 +1,8 @@
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from pydantic import BaseModel
 
-from ...models import UsedWidGroup
+from ...services.ewid.ewid_service import EWIDService
 from ..state_manager.input_data.object_template_repository import ObjectTemplateRepository
 from ..state_manager.input_data.resource.asset.asset_repository import AssetRepository
 from ..state_manager.input_data.resource.policy_object.policy_object_repository import PolicyObjectRepository
@@ -40,38 +40,20 @@ class StateManager:
     def __init__(self, input_data: InputData):
         self.input_data: InputData = input_data
         self.werkingsgebied_eid_lookup: dict = {}
-        self.object_tekst_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
         self.ow_repository: OWStateRepository = OWStateRepository()
         self.output_files: List[OutputFile] = []
         self.debug: dict = {}
-
-
-        # All OW IDS for export purposes
-        self.created_ow_object_ids: List[str] = []
-        # Mapping of created OW IDS to input identifiers for export state reference
-        self.created_ow_objects_map: dict = {}
-
-        # wId's used by indentifiers, for example beleidskeuze-4 by that object
-        # Although it should be possible to add custom identifiers
-        self.used_wid_map: Dict[str, str] = {}
-
-        # All used wids, for export purposes
-        # This will be send in the input data for the next version of this Act
-        self.used_wids: List[str] = []
-
         self.regeling_vrijetekst: Optional[str] = None
-        self.used_wid_groups: Dict[str, UsedWidGroup] = {}
 
-    def add_used_wid_code(self, group: str, wid_code: str, wid: str):
-        if not group in self.used_wid_groups:
-            self.used_wid_groups[group] = UsedWidGroup()
-        self.used_wid_groups[group].wid_map[wid_code] = wid
-
-    def add_used_wid(self, group: str, wid: str):
-        if not group in self.used_wid_groups:
-            self.used_wid_groups[group] = UsedWidGroup()
-        self.used_wid_groups[group].wids.append(wid)
+        # Service is in the state manager
+        # As we use it on multiple places, and the internal state should be updates for each use
+        self.ewid_service: EWIDService = EWIDService(
+            wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.Expression_Version}",
+            known_wid_map=input_data.get_known_wid_map(),
+            known_wids=input_data.get_known_wids(),
+            werkingsgebied_repository=input_data.resources.werkingsgebied_repository,
+        )
 
     def add_output_file(self, output_file: OutputFile):
         self.output_files.append(output_file)
@@ -91,7 +73,7 @@ class StateManager:
         export = StateExport(
             input_data=self.input_data,
             werkingsgebied_eid_lookup=self.werkingsgebied_eid_lookup,
-            object_tekst_lookup=self.object_tekst_lookup,
+            object_tekst_lookup=self.ewid_service.get_state_object_tekst_lookup(),
             artikel_eid=self.artikel_eid,
             ow_repository=self.ow_repository,
             output_files=self.output_files,

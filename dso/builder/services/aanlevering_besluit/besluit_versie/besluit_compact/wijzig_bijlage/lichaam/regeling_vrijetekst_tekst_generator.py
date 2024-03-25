@@ -4,8 +4,6 @@ from uuid import UUID
 from bs4 import BeautifulSoup
 from lxml import etree
 
-from ........models import PublicationSettings
-from ........services.ewid.ewid_service import EWIDService
 from ........services.tekst.middleware import middleware_enrich_table
 from ........services.tekst.tekst import Lichaam
 from ........services.utils.helpers import is_html_valid
@@ -30,8 +28,6 @@ class RegelingVrijetekstTekstGenerator:
 
         tekst = self._remove_hints(tekst)
         self._state_manager.debug["tekst-part-4"] = copy(tekst)
-
-        # self._store_used_wids(tekst)
 
         return tekst
 
@@ -74,16 +70,7 @@ class RegelingVrijetekstTekstGenerator:
         return output
 
     def _add_ewids(self, xml_data: str) -> str:
-        settings: PublicationSettings = self._state_manager.input_data.publication_settings
-
-        ewid_service = EWIDService(
-            state_manager=self._state_manager,
-            wid_prefix=f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}",
-            known_wid_group="regeling",
-            known_wid_map=self._state_manager.input_data.get_known_wid_map("regeling"),
-            known_wids=self._state_manager.input_data.get_known_wids("regeling"),
-        )
-        result: str = ewid_service.add_ewids(xml_data)
+        result: str = self._state_manager.ewid_service.add_ewids(xml_data)
         return result
 
     def _remove_hints(self, xml_data: str) -> str:
@@ -99,11 +86,3 @@ class RegelingVrijetekstTekstGenerator:
 
         output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
         return output
-
-    # def _store_used_wids(self, xml_data: str):
-    #     soup = BeautifulSoup(xml_data, "lxml-xml")
-    #     elements_with_wid = soup.find_all(attrs={"wId": True}, recursive=True)
-
-    #     used_wids: List[str] = [element["wId"] for element in elements_with_wid]
-    #     unique_used_wids: List[str] = list(set(self._state_manager.used_wids + used_wids))
-    #     self._state_manager.used_wids = unique_used_wids

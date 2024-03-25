@@ -2,7 +2,6 @@ import io
 from typing import Dict, List, Optional
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from ..models import UsedWidGroup
 from ..services.assets.create_image import create_image, create_image_in_zip
 from ..services.utils.os import empty_directory
 from .services import BuilderService
@@ -70,8 +69,11 @@ class Builder:
         state = self._state_manager.build_state_export()
         return state.json()
 
-    def get_used_wid_data(self) -> Dict[str, UsedWidGroup]:
-        return self._state_manager.used_wid_groups
+    def get_used_wid_map(self) -> Dict[str, str]:
+        return self._state_manager.ewid_service.get_state_used_wid_map()
+
+    def get_used_wids(self) -> List[str]:
+        return self._state_manager.ewid_service.get_state_used_wids()
 
     def get_regeling_vrijetekst(self) -> Optional[str]:
         return self._state_manager.regeling_vrijetekst
