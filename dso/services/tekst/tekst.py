@@ -491,11 +491,13 @@ class Divisietekst(Element):
     def __init__(self, tag: Optional[Tag] = None):
         self.kop: Optional[Kop] = None
         self.inhoud: Optional[Inhoud] = None
+        self.wid_code: Optional[str] = None
         self.object_code: Optional[str] = None
         self.gebied_code: Optional[str] = None
 
         if tag is not None:
             self.test = tag.get("data-nummer", None)
+            self.wid_code = tag.get("data-hint-wid-code", None)
             self.object_code = tag.get("data-hint-object-code", None)
             self.gebied_code = tag.get("data-hint-gebied-code", None)
 
@@ -548,8 +550,9 @@ class Divisietekst(Element):
 
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
         tag_divisietekst: Tag = soup.new_tag("Divisietekst")
+        wid_code = self.wid_code or self.object_code
         tag_divisietekst.attrs = {
-            **({"data-hint-wid-code": self.object_code} if self.object_code else {}),
+            **({"data-hint-wid-code": wid_code} if wid_code else {}),
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
             **({"data-hint-gebied-code": self.gebied_code} if self.gebied_code else {}),
         }
@@ -569,6 +572,7 @@ class Divisie(Element):
     def __init__(self, tag: Optional[Tag] = None):
         self.kop: Optional[Kop] = None
         self.contents: List[Union["Divisie", Divisietekst]] = []
+        self.wid_code = tag.get("data-hint-wid-code", None)
         self.object_code = tag.get("data-hint-object-code", None)
         self.gebied_code = tag.get("data-hint-gebied-code", None)
 
@@ -673,8 +677,9 @@ class Divisie(Element):
 
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
         tag_divisie: Tag = soup.new_tag("Divisie")
+        wid_code = self.wid_code or self.object_code
         tag_divisie.attrs = {
-            **({"data-hint-wid-code": self.object_code} if self.object_code else {}),
+            **({"data-hint-wid-code": wid_code} if wid_code else {}),
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
             **({"data-hint-gebied-code": self.gebied_code} if self.gebied_code else {}),
         }
@@ -693,23 +698,6 @@ class Divisie(Element):
                 raise RuntimeError("Can not convert child to xml")
 
         return tag_divisie
-
-
-# class Lichaam(SimpleElement):
-#     def __init__(self, tag: Optional[Tag] = None):
-#         super().__init__(
-#             xml_tag_name="Lichaam",
-#             xml_tag_attrs={
-#                 # @todo: Should be done by the wid service
-#                 "eId": "body",
-#                 "wId": "body",
-#             },
-#         )
-
-#     def consume_string(self, string: NavigableString):
-#         raw: str = str(string).strip()
-#         if len(raw) != 0:
-#             raise RuntimeError(f"Can not write plain text to Lijst. Trying to write: {raw}")
 
 
 class Lichaam(SimpleElement):
