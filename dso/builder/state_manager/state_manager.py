@@ -2,6 +2,7 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel
 
+from ...models import UsedWidGroup
 from ..state_manager.input_data.object_template_repository import ObjectTemplateRepository
 from ..state_manager.input_data.resource.asset.asset_repository import AssetRepository
 from ..state_manager.input_data.resource.policy_object.policy_object_repository import PolicyObjectRepository
@@ -45,15 +46,18 @@ class StateManager:
         self.output_files: List[OutputFile] = []
         self.debug: dict = {}
 
-        # wId's used by indentifiers, for example beleidskeuze-4 by that object
-        # Although it should be possible to add custom identifiers
-        self.used_wid_map: Dict[str, str] = {}
-
-        # All used wids, for export purposes
-        # This will be send in the input data for the next version of this Act
-        self.used_wids: List[str] = []
-
         self.regeling_vrijetekst: Optional[str] = None
+        self.used_wid_groups: Dict[str, UsedWidGroup]
+
+    def add_used_wid_code(self, group: str, wid_code: str, wid: str):
+        if not group in self.used_wid_groups:
+            self.used_wid_groups[group] = UsedWidGroup()
+        self.used_wid_groups[group].wid_map[wid_code] = wid
+
+    def add_used_wid(self, group: str, wid: str):
+        if not group in self.used_wid_groups:
+            self.used_wid_groups[group] = UsedWidGroup()
+        self.used_wid_groups[group].wids.append(wid)
 
     def add_output_file(self, output_file: OutputFile):
         self.output_files.append(output_file)

@@ -1,5 +1,4 @@
 from copy import copy
-from typing import List
 from uuid import UUID
 
 from bs4 import BeautifulSoup
@@ -32,7 +31,7 @@ class RegelingVrijetekstTekstGenerator:
         tekst = self._remove_hints(tekst)
         self._state_manager.debug["tekst-part-4"] = copy(tekst)
 
-        self._store_used_wids(tekst)
+        # self._store_used_wids(tekst)
 
         return tekst
 
@@ -80,8 +79,9 @@ class RegelingVrijetekstTekstGenerator:
         ewid_service = EWIDService(
             state_manager=self._state_manager,
             wid_prefix=f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}",
-            known_wid_map=self._state_manager.input_data.get_known_wid_map(),
-            known_wids=self._state_manager.input_data.get_known_wids(),
+            known_wid_group="regeling",
+            known_wid_map=self._state_manager.input_data.get_known_wid_map("regeling"),
+            known_wids=self._state_manager.input_data.get_known_wids("regeling"),
         )
         result: str = ewid_service.add_ewids(xml_data)
         return result
@@ -100,10 +100,10 @@ class RegelingVrijetekstTekstGenerator:
         output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
         return output
 
-    def _store_used_wids(self, xml_data: str):
-        soup = BeautifulSoup(xml_data, "lxml-xml")
-        elements_with_wid = soup.find_all(attrs={"wId": True}, recursive=True)
+    # def _store_used_wids(self, xml_data: str):
+    #     soup = BeautifulSoup(xml_data, "lxml-xml")
+    #     elements_with_wid = soup.find_all(attrs={"wId": True}, recursive=True)
 
-        used_wids: List[str] = [element["wId"] for element in elements_with_wid]
-        unique_used_wids: List[str] = list(set(self._state_manager.used_wids + used_wids))
-        self._state_manager.used_wids = unique_used_wids
+    #     used_wids: List[str] = [element["wId"] for element in elements_with_wid]
+    #     unique_used_wids: List[str] = list(set(self._state_manager.used_wids + used_wids))
+    #     self._state_manager.used_wids = unique_used_wids

@@ -212,14 +212,26 @@ class PublicationSettings(BaseModel):
         return cls(**json_data)
 
 
+class KnownWidGroup(BaseModel):
+    # wId's used by indentifiers, for example beleidskeuze-4 by that object
+    # Although it should be possible to add custom identifiers
+    wid_map: Dict[str, str]
+
+    # All previously used wIds. Which are allowed to be used again
+    # The main reason here is that we can not generate new wIds for old versions
+    wids: List[str]
+
+
 class RegelingMutatie(BaseModel):
     was_regeling_frbr: ActFRBR
     was_regeling_vrijetekst: str
 
-    # wId's used by indentifiers, for example beleidskeuze-4 by that object
-    # Although it should be possible to add custom identifiers
-    bekend_wid_map: Dict[str, str]
+    # We partition wId set per place rendered
+    # For example: RegelingVrijetekst.Lichaam and RegelingVrijetekst.Bijlage-1 have separate wId cache
+    # This prevents that for example Bijlage-2 will use wIds from Bijlage-1
+    known_wid_groups: Dict[str, KnownWidGroup]
 
-    # All previously used wIds. Which are allowed to be used again
-    # The main reason here is that we can not generate new wIds for old versions
-    bekend_wids: List[str]
+
+class UsedWidGroup(BaseModel):
+    wid_map: Dict[str, str]
+    wids: List[str]

@@ -1,4 +1,4 @@
-<Bijlage>
+<Bijlage data-hint-wid-code="bijlage-werkingsgebieden">
     <Kop>
         <Label>Bijlage</Label>
         <Nummer>A</Nummer>
@@ -6,9 +6,9 @@
     </Kop>
     <Divisietekst>
         <Inhoud>
-            <Begrippenlijst>
+            <Begrippenlijst data-hint-wid-code="bijlage-werkingsgebieden-referenties">
                 {% for werkingsgebied in werkingsgebieden %}
-                <Begrip>
+                <Begrip data-hint-wid-code="bijlage-werkingsgebieden-referentie-{{ werkingsgebied.Code }}">
                     <Term>{{ werkingsgebied.Title }}</Term>
                     <Definitie>
                         <Al>

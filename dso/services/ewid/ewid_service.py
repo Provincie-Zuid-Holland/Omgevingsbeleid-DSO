@@ -19,12 +19,15 @@ class EWIDService:
         self,
         state_manager: Optional[StateManager],
         wid_prefix: str,
+        known_wid_group: Optional[str] = None,
         known_wid_map: Dict[str, str] = {},
         known_wids: List[str] = [],
+        eid_counters=defaultdict(lambda: defaultdict(int)),
+        wid_counters=defaultdict(lambda: defaultdict(int)),
     ):
-        self._wid_prefix = wid_prefix
+        self._known_wid_group: Optional[str] = known_wid_group
+        self._wid_prefix: str = wid_prefix
         self._known_wid_map: Dict[str, str] = known_wid_map
-
         # Make it a map for faster lookup
         self._known_wids: Dict[str, bool] = {wid: True for wid in known_wids}
 
@@ -34,8 +37,8 @@ class EWIDService:
             self._werkingsgebied_repository = state_manager.input_data.resources.werkingsgebied_repository
 
         self._element_refs: Dict[str, str] = {e.name: e.value for e in ELEMENT_REF}
-        self._eid_counters = defaultdict(lambda: defaultdict(int))
-        self._wid_counters = defaultdict(lambda: defaultdict(int))
+        self._eid_counters = eid_counters
+        self._wid_counters = wid_counters
 
     def add_ewids(self, xml_source: str) -> str:
         root = self._parse_xml(xml_source)
@@ -118,9 +121,17 @@ class EWIDService:
             element.set("wId", wid)
 
         if self._state_manager is not None:
-            # Remember the WID for policy objects
+            # Store wid usage
+            self._state_manager.add_used_wid(
+                self._known_wid_group,
+                wid,
+            )
             if wid_lookup_object_code is not None:
-                self._state_manager.used_wid_map[wid_lookup_object_code] = wid
+                self._state_manager.add_used_wid_code(
+                    self._known_wid_group,
+                    wid_lookup_object_code,
+                    wid,
+                )
 
             # Remember the EWID for location annotated policy objects
             object_code = element.get("data-hint-object-code", None)
