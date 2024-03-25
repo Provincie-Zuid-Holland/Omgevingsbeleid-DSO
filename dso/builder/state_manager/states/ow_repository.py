@@ -1,10 +1,14 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
+from ....models import OwData
 from ....services.ow.models import OWDivisie, OWDivisieTekst, OWGebied, OWGebiedenGroep
 
 
 class OWStateRepository:
-    def __init__(self):
+    def __init__(self, ow_input_data: OwData):
+        self._input_object_ids: List[str] = ow_input_data.object_ids
+        self._input_object_map: Dict[str, Dict[str, str]] = ow_input_data.object_map
+
         self.locaties_content = None
         self.divisie_content = None
         self.regelingsgebied_content = None

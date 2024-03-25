@@ -3,7 +3,7 @@ from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, Field
 
-from ....models import ProcedureStap, ProcedureVerloop, PublicationSettings, RegelingMutatie
+from ....models import OwData, ProcedureStap, ProcedureVerloop, PublicationSettings, RegelingMutatie
 from ....services.utils.helpers import load_json_data
 from .ambtsgebied import Ambtsgebied
 from .besluit import Besluit
@@ -23,6 +23,7 @@ class InputData(BaseModel):
     resources: Resources
     object_template_repository: ObjectTemplateRepository
     ambtsgebied: Ambtsgebied
+    ow_data: OwData
 
     class Config:
         arbitrary_types_allowed = True

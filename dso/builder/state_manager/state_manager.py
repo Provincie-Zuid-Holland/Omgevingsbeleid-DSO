@@ -41,7 +41,7 @@ class StateManager:
         self.input_data: InputData = input_data
         self.werkingsgebied_eid_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
-        self.ow_repository: OWStateRepository = OWStateRepository()
+        self.ow_repository: OWStateRepository = OWStateRepository(input_data.ow_data)
         self.output_files: List[OutputFile] = []
         self.debug: dict = {}
         self.regeling_vrijetekst: Optional[str] = None

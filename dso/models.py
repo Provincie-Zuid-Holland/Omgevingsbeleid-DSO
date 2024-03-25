@@ -223,3 +223,8 @@ class RegelingMutatie(BaseModel):
     # All previously used wIds. Which are allowed to be used again
     # The main reason here is that we can not generate new wIds for old versions
     bekend_wids: List[str]
+
+
+class OwData(BaseModel):
+    object_ids: List[str] = Field([])
+    object_map: Dict[str, Dict[str, str]] = Field({})
