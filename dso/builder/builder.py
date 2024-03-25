@@ -77,3 +77,9 @@ class Builder:
 
     def get_regeling_vrijetekst(self) -> Optional[str]:
         return self._state_manager.regeling_vrijetekst
+
+    def get_created_ow_object_ids(self) -> List[str]:
+        return self._state_manager.created_ow_object_ids
+
+    def get_created_ow_object_map(self) -> Dict[str, Dict[str, str]]:
+        return self._state_manager.created_ow_objects_map
