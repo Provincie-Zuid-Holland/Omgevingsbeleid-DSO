@@ -28,7 +28,6 @@ class WijzigBijlageContent:
                 bijlage_werkingsgebieden=bijlage_werkingsgebieden,
                 regeling_opschrift=self._state_manager.input_data.regeling.officiele_titel,
             )
-
             regeling_content: str = load_template(
                 "akn/besluit_versie/besluit_compact/RegelingMutatie.xml",
                 componentnaam=settings.regeling_componentnaam,

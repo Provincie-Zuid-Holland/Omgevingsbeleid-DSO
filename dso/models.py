@@ -26,7 +26,7 @@ class FRBR(BaseModel, metaclass=ABCMeta):
     def get_expression(self) -> str:
         result: str = self.get_work()
         expression_part: str = self.get_expression_part()
-        if expression_part is not "":
+        if expression_part != "":
             result = f"{result}/{expression_part}"
 
         return result

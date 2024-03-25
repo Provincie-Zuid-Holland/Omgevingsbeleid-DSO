@@ -695,6 +695,23 @@ class Divisie(Element):
         return tag_divisie
 
 
+# class Lichaam(SimpleElement):
+#     def __init__(self, tag: Optional[Tag] = None):
+#         super().__init__(
+#             xml_tag_name="Lichaam",
+#             xml_tag_attrs={
+#                 # @todo: Should be done by the wid service
+#                 "eId": "body",
+#                 "wId": "body",
+#             },
+#         )
+
+#     def consume_string(self, string: NavigableString):
+#         raw: str = str(string).strip()
+#         if len(raw) != 0:
+#             raise RuntimeError(f"Can not write plain text to Lijst. Trying to write: {raw}")
+
+
 class Lichaam(SimpleElement):
     def __init__(self, tag: Optional[Tag] = None):
         super().__init__(
@@ -705,6 +722,19 @@ class Lichaam(SimpleElement):
                 "wId": "body",
             },
         )
+
+    def consume_tag(self, tag: Tag) -> LeftoverTag:
+        if tag.name not in ["div", "object"]:
+            raise RuntimeError("Lichaam only expects 'div' and 'object' as elements")
+
+        if tag.attrs.get("data-hint-element", None) == "divisietekst":
+            content: Element = Divisietekst(tag)
+        else:
+            content: Element = Divisie(tag)
+
+        content.consume_children(tag.children)
+        self.contents.append(content)
+        return None
 
     def consume_string(self, string: NavigableString):
         raw: str = str(string).strip()
@@ -811,6 +841,7 @@ Inhoud.element_generators = [
     element_ol_handler,
     element_img_handler,
     element_table_handler,
+    element_h5_tussenkop_handler,
     element_h6_tussenkop_handler,
 ]
 Li.element_generators = [

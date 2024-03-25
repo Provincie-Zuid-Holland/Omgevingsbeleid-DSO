@@ -86,6 +86,7 @@ class EWIDService:
         child_parent_wid = (
             ""  # settins the wId parent to empty, will force the next child to use the eId unless the ifs below match
         )
+        wid_resolved: bool = False
 
         wid_lookup_object_code = element.get("data-hint-wid-code", None)
         if wid_lookup_object_code in self._known_wid_map:
@@ -93,6 +94,7 @@ class EWIDService:
             # Like for our api objects
             wid = self._known_wid_map[wid_lookup_object_code]
             child_parent_wid = wid if tag_name in self._element_refs else ""
+            wid_resolved = True
         elif parent_wid != "":
             potential_wid: str = self._generate_wid(tag_name, parent_wid, parent_tag_name)
             # This is mosly the result of parents being forced to a wId (parents matched the previous if)
@@ -102,9 +104,13 @@ class EWIDService:
                 # The wid from another act version is valid
                 wid = potential_wid
                 child_parent_wid = wid if tag_name in self._element_refs else ""
+                wid_resolved = True
 
-            # On the invalid wid we do not do anything
-            # Because the wid was already set based on the eid
+        if not wid_resolved:
+            # It could be that the eId that we created was used in a wId previously.
+            # Then we are quite certain that we can reuse that one
+            # Can we really?
+            pass
 
         if tag_name in self._element_refs:
             element.set("eId", eid)
