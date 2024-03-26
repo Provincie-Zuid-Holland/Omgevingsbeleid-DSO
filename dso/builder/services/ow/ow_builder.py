@@ -29,7 +29,7 @@ class OwBuilder(BuilderService):
 
         ow_procedure_status: Optional[OwProcedureStatus] = None
         if state_manager.input_data.besluit.soort_procedure == ProcedureType.Ontwerpbesluit:
-            ow_procedure_status = OwProcedureStatus.ONTWERP.value
+            ow_procedure_status = OwProcedureStatus.ONTWERP
 
         ambtsgebied: Ambtsgebied = state_manager.input_data.ambtsgebied
 
