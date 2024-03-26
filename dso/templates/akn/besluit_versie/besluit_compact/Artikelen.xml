@@ -15,6 +15,7 @@
         {{ tekst_artikel.inhoud }}
     </Artikel>
     {% endfor %}
+    {% if tijd_artikel is not none %}
     <Artikel eId="{{ tijd_artikel.eId }}" wId="{{ tijd_artikel.wId }}">
         <Kop>
             <Label>{{ tijd_artikel.label }}</Label>
@@ -24,4 +25,5 @@
             {{ tijd_artikel.inhoud }}
         </Inhoud>
     </Artikel>
+    {% endif %}
 </Lichaam>

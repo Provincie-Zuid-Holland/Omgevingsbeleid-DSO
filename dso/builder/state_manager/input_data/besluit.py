@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, validator
 
@@ -16,7 +16,10 @@ class Besluit(BaseModel):
     aanhef: str
     wijzig_artikel: Artikel
     tekst_artikelen: List[Artikel]
-    tijd_artikel: Artikel
+
+    # tijd_artikel does not exist on drafts
+    tijd_artikel: Optional[Artikel]
+
     sluiting: str
     ondertekening: str
     rechtsgebieden: List[RechtsgebiedType]

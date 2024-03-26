@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import roman
 from bs4 import BeautifulSoup
@@ -44,13 +44,17 @@ class ArtikelenContent:
             inhoud = self._html_to_xml_inhoud(tekst_artikel.inhoud)
             tekst_artikelen.append(create_article(tekst_artikel.label, inhoud))
 
-        tijd_artikel = create_article(besluit.tijd_artikel.label, besluit.tijd_artikel.inhoud)
+        tijd_artikel: Optional[dict] = None
+        if besluit.tijd_artikel is not None:
+            tijd_artikel = create_article(besluit.tijd_artikel.label, besluit.tijd_artikel.inhoud)
 
         # Store the eId's as we need them later
         self._state_manager.artikel_eid.add(wijzig_artikel["eId"], ArtikelEidType.WIJZIG)
         for tekst_artikel in tekst_artikelen:
             self._state_manager.artikel_eid.add(tekst_artikel["eId"], ArtikelEidType.TEKST)
-        self._state_manager.artikel_eid.add(tijd_artikel["eId"], ArtikelEidType.BESLUIT_INWERKINGSTIJD)
+
+        if tijd_artikel is not None:
+            self._state_manager.artikel_eid.add(tijd_artikel["eId"], ArtikelEidType.BESLUIT_INWERKINGSTIJD)
 
         content = load_template(
             "akn/besluit_versie/besluit_compact/Artikelen.xml",
