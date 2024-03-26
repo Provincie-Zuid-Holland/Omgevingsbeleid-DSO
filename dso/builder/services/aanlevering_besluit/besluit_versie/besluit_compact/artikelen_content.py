@@ -50,7 +50,7 @@ class ArtikelenContent:
         self._state_manager.artikel_eid.add(wijzig_artikel["eId"], ArtikelEidType.WIJZIG)
         for tekst_artikel in tekst_artikelen:
             self._state_manager.artikel_eid.add(tekst_artikel["eId"], ArtikelEidType.TEKST)
-        self._state_manager.artikel_eid.add(tijd_artikel["eId"], ArtikelEidType.TIJD)
+        self._state_manager.artikel_eid.add(tijd_artikel["eId"], ArtikelEidType.BESLUIT_INWERKINGSTIJD)
 
         content = load_template(
             "akn/besluit_versie/besluit_compact/Artikelen.xml",

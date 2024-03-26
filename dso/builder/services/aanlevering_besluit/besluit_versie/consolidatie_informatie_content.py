@@ -13,7 +13,7 @@ class ConsolidatieInformatieContent:
 
     def create(self) -> str:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
-        doel: str = settings.doel.get_work()
+        instelling_doel: str = settings.instelling_doel.frbr.get_work()
 
         beoogde_regeling = {
             "instrument_versie": settings.regeling_frbr.get_expression(),
@@ -34,14 +34,21 @@ class ConsolidatieInformatieContent:
                     }
                 )
 
+        tijdstempels = []
+        if settings.instelling_doel.datum_juridisch_werkend_vanaf is not None:
+            tijdstempels.append(
+                {
+                    "doel": instelling_doel,
+                    "datum": settings.instelling_doel.datum_juridisch_werkend_vanaf,
+                    "eid": self._state_manager.artikel_eid.find_one_by_type(ArtikelEidType.BESLUIT_INWERKINGSTIJD).eid,
+                }
+            )
+
         content = load_template(
             "akn/besluit_versie/ConsolidatieInformatie.xml",
-            doel=doel,
+            instelling_doel=instelling_doel,
             beoogde_regeling=beoogde_regeling,
             beoogd_informatieobjecten=beoogd_informatieobjecten,
-            tijdstempel={
-                "datum": settings.datum_juridisch_werkend_vanaf,
-                "eid": self._state_manager.artikel_eid.find_one_by_type(ArtikelEidType.TIJD).eid,
-            },
+            tijdstempels=tijdstempels,
         )
         return content

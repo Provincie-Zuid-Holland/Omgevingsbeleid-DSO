@@ -6,7 +6,8 @@ from typing import List
 class ArtikelEidType(str, Enum):
     WIJZIG = "WIJZIG"
     TEKST = "TEKST"
-    TIJD = "TIJD"
+    BESLUIT_INWERKINGSTIJD = "BESLUIT_INWERKINGSTIJD"
+    REGELING_UITWERKINGSTIJD = "REGELING_UITWERKINGSTIJD"
 
 
 @dataclass

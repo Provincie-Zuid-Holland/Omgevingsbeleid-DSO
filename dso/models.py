@@ -169,15 +169,23 @@ class DocumentType(str, Enum):
     OMGEVINGSVISIE = "Omgevingsvisie"
 
 
-class Doel(BaseModel):
-    jaar: str
-    naam: str
+class InstellingDoel(BaseModel):
+    frbr: DoelFRBR
+    datum_juridisch_werkend_vanaf: Optional[str]
+
+
+class InstrekkingDoel(BaseModel):
+    frbr: DoelFRBR
+    datum_juridisch_tot: str
+
+
+class Intrekking(BaseModel):
+    doel: InstrekkingDoel
 
 
 class PublicationSettings(BaseModel):
     document_type: DocumentType
     datum_bekendmaking: str
-    datum_juridisch_werkend_vanaf: str
     provincie_id: str
     soort_bestuursorgaan: BestuursorgaanSoort
     regeling_componentnaam: str
@@ -186,7 +194,8 @@ class PublicationSettings(BaseModel):
     besluit_frbr: BillFRBR
     regeling_frbr: ActFRBR
     opdracht: PublicatieOpdracht
-    doel: DoelFRBR
+    instelling_doel: InstellingDoel
+    intrekking: Optional[Intrekking] = Field(None)
 
     @validator("document_type", pre=True, always=True)
     def _format_document_type(cls, v):

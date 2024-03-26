@@ -68,7 +68,7 @@ class OwBuilder(BuilderService):
 
         manifest_content = ManifestContent(
             act_work=str(state_manager.input_data.publication_settings.regeling_frbr.get_work()),
-            doel=state_manager.input_data.publication_settings.doel,
+            doel=state_manager.input_data.publication_settings.instelling_doel.frbr,
         )
         manifest_file = manifest_content.create_manifest(
             state_manager.ow_repository.divisie_content,
