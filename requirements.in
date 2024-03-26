@@ -1,13 +1,12 @@
 click
 Jinja2
 MarkupSafe
-mypy-extensions
 packaging
 pathspec
 platformdirs
 tomli
 typing_extensions
-pydantic
+pydantic==1.*
 lxml
 pyproj
 shapely

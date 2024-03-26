@@ -1,0 +1,16 @@
+<BesluitCompact xmlns="https://standaarden.overheid.nl/stop/imop/tekst/">
+    <RegelingOpschrift eId="longTitle" wId="longTitle">
+        <Al>{{ besluit.regeling_opschrift }}</Al>
+    </RegelingOpschrift>
+    <Aanhef eId="formula_1" wId="formula_1">
+        {{ aanhef_xml }}
+    </Aanhef>
+    {{ artikelen_lichaam }}
+    <Sluiting eId="formula_2" wId="formula_2">
+        {{ sluiting_xml }}
+        <Ondertekening>
+            {{ ondertekening_xml }}
+        </Ondertekening>
+    </Sluiting>
+    {{ wijzig_bijlage }}
+</BesluitCompact>

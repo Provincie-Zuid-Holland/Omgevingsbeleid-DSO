@@ -1,9 +1,10 @@
 {
-    "Object_ID": null,
-    "Code": null,
+    "Object_ID": 3,
+    "Code": "werkingsgebied-3",
     "UUID": "1772f3b2-e9db-4984-bf67-13d687cdcbf2",
     "Title": "Maatwerkgebied glastuinbouw",
     "Symbol": "ES227",
+    "New": false,
     "Created_Date": "2022-03-15 00:00:00.000",
     "Modified_Date": "2022-03-15 00:00:00.000",
     "Achtergrond_Verwijzing": "TOP10NL",

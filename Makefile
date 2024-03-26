@@ -8,7 +8,7 @@ help:
 MAIN_FILE ?= ./input/01-hello-world/main.json
 OUTPUT_DIR ?= ./output/
 generate:
-	@python -m app.cmds generate $(MAIN_FILE) $(OUTPUT_DIR)
+	@python -m dso.cmds generate $(MAIN_FILE) $(OUTPUT_DIR)
 
 pip-sync:
 	pip install -U pip pip-tools
@@ -25,14 +25,6 @@ pip-upgrade:
 	pip-compile --upgrade requirements-dev.in
 
 fix:
-	python -m isort app/
-	python -m black app/ stubs/
-	python -m autoflake -ri --exclude=__init__.py --remove-all-unused-imports app/ stubs/
-
-check-security:
-	python -m bandit --configfile bandit.yml -r app/
-
-check-venture:
-	python -m vulture app/ --exclude app/tests/ --min-confidence 100
-
-check: check-venture check-security
+	python -m isort dso/
+	python -m black dso/ stubs/
+	python -m autoflake -ri --exclude=__init__.py --remove-all-unused-imports dso/ stubs/
