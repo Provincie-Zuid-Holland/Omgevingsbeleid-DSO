@@ -111,6 +111,7 @@ class OwLocatiesContent:
                 geldig_op=self.ambtsgebied_data.geldig_op,
             ),
             mapped_uuid=self.ambtsgebied_data.UUID,
+            procedure_status=self.ow_procedure_status,
         )
         new_ambtsgebied.procedure_status = self.ow_procedure_status
         return new_ambtsgebied
