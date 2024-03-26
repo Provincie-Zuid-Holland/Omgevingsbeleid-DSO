@@ -116,14 +116,14 @@ class EWIDService:
             if self._known_wids.get(potential_wid, False):
                 # The wid from another act version is valid
                 wid = potential_wid
-                parent_wid = wid if tag_name in self._element_refs else ""
+                if tag_name in self._element_refs:
+                    parent_wid = wid
 
         if tag_name in self._element_refs:
+            self._state_used_wids.append(wid)
             element.set("eId", eid)
             element.set("wId", wid)
 
-        # Store wid usage
-        self._state_used_wids.append(wid)
         if wid_lookup_object_code is not None:
             self._state_used_wid_map[wid_lookup_object_code] = wid
 
