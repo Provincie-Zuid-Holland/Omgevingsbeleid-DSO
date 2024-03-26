@@ -1,9 +1,9 @@
 from typing import Optional
 
 from ....models import ContentType
-from ....services.ow.enums import OwDivisieObjectType, OwProcedureStatus
+from ....services.ow.enums import IMOWTYPES, OwDivisieObjectType, OwProcedureStatus
 from ....services.ow.exceptions import OWObjectGenerationError
-from ....services.ow.models import IMOWTYPES, Annotation, OWDivisie, OWDivisieTekst, OWTekstDeel
+from ....services.ow.models import Annotation, OWDivisie, OWDivisieTekst, OWTekstDeel
 from ....services.ow.ow_id import generate_ow_id
 from ....services.utils.helpers import load_template
 from ...state_manager.models import OutputFile, StrContentData
