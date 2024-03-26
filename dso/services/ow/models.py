@@ -20,6 +20,7 @@ class BestuurlijkeGrenzenVerwijzing(BaseModel):
 
 class OWAmbtsgebied(OWObject):
     bestuurlijke_genzenverwijzing: BestuurlijkeGrenzenVerwijzing
+    mapped_uuid: Optional[UUID]
 
 
 class OWRegelingsgebied(OWObject):

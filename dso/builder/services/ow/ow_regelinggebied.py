@@ -21,12 +21,12 @@ class OwRegelingsgebiedContent:
         provincie_id: str,
         levering_id,
         ow_procedure_status: OwProcedureStatus,
-        ambtsgebied: Ambtsgebied,
+        ambtsgebied_ow_id: str,
     ):
         self.provincie_id: str = provincie_id
         self.levering_id = levering_id
         self.ow_procedure_status = ow_procedure_status
-        self.ambtsgebied = ambtsgebied
+        self.ambtsgebied = ambtsgebied_ow_id
         self.xml_data = {
             "filename": "owRegelingsgebied.xml",
             "leveringsId": self.levering_id,
@@ -47,19 +47,11 @@ class OwRegelingsgebiedContent:
         Always include regelingsgebied once for a bill+act.
         Point to existing ambtsgebied if available in state.
         """
-        ow_id: str = generate_ow_id(
-            IMOWTYPES.REGELINGSGEBIED,
-            self.provincie_id,
-            self.ambtsgebied.identificatie_suffix,
-        )
-        ambtsgebied_ow_id: str = generate_ow_id(
-            IMOWTYPES.AMBTSGEBIED,
-            self.provincie_id,
-            self.ambtsgebied.identificatie_suffix,
-        )
+        # TODO: currently generates new OW ID every time. Read from input data if unchanged
+        ow_id: str = generate_ow_id(IMOWTYPES.REGELINGSGEBIED, self.provincie_id)
         regelingsgebied = OWRegelingsgebied(
             OW_ID=ow_id,
-            ambtsgebied=ambtsgebied_ow_id,
+            ambtsgebied=self.ambtsgebied,
         )
         regelingsgebied.procedure_status = self.ow_procedure_status
         return regelingsgebied

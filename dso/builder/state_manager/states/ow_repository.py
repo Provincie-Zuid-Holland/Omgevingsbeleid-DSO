@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
 
 from ....models import OwData
-from ....services.ow.models import OWDivisie, OWDivisieTekst, OWGebied, OWGebiedenGroep
+from ....services.ow.models import OWDivisie, OWDivisieTekst, OWGebied, OWGebiedenGroep, OWAmbtsgebied, OWRegelingsgebied, OWTekstDeel
 
 
 class OWStateRepository:
@@ -12,6 +12,8 @@ class OWStateRepository:
         self.locaties_content = None
         self.divisie_content = None
         self.regelingsgebied_content = None
+
+        self.created_ow_objects = []
 
     def get_created_objects(self):
         created_ow_objects = []
@@ -26,30 +28,47 @@ class OWStateRepository:
             attributes = [annotation.divisie_aanduiding, annotation.divisietekst_aanduiding, annotation.tekstdeel]
             created_ow_objects.extend(attr for attr in attributes if attr is not None)
 
-        # ambtsgebied/regelingsgebied? excluded for now
+        # ambtsgebied/regelingsgebied
+        regelingsgebieden = self.regelingsgebied_content.get("regelingsgebieden")
+        if regelingsgebieden:
+            created_ow_objects.extend(regelingsgebieden)
+
+        self.created_ow_objects = created_ow_objects
         return created_ow_objects
 
     def get_created_objects_id_list(self):
-        created_ow_objects = self.get_created_objects()
-        ow_id_list = [ow.OW_ID for ow in created_ow_objects]
+        ow_id_list = [ow.OW_ID for ow in self.created_ow_objects]
         return ow_id_list
 
     def get_ow_object_mapping(self):
         # Mapping of created OW IDS to input identifiers for export state reference
-        created_ow_objects = self.get_created_objects()
         created_ow_objects_map = {
-            "gebieden_map": {},
-            "gebiedengroep_map": {},
-            "wid_map": {},
+            "id_mapping": {
+                "gebieden": {},
+                "gebiedengroep": {},
+                "ambtsgebied": {},
+                "wid": {},
+                "regelingsgebied": {},
+            },
+            "tekstdeel_mapping": {},
         }
 
-        for obj in created_ow_objects:
+        for obj in self.created_ow_objects:
             if isinstance(obj, OWGebied):
-                created_ow_objects_map["gebieden_map"][obj.mapped_geo_code] = obj.OW_ID
+                created_ow_objects_map["id_mapping"]["gebieden"][obj.mapped_geo_code] = obj.OW_ID
             if isinstance(obj, OWGebiedenGroep):
-                created_ow_objects_map["gebiedengroep_map"][obj.mapped_geo_code] = obj.OW_ID
+                created_ow_objects_map["id_mapping"]["gebiedengroep"][obj.mapped_geo_code] = obj.OW_ID
             if isinstance(obj, OWDivisie) or isinstance(obj, OWDivisieTekst):
-                created_ow_objects_map["wid_map"][obj.wid] = obj.OW_ID
+                created_ow_objects_map["id_mapping"]["wid"][obj.wid] = obj.OW_ID
+            if isinstance(obj, OWAmbtsgebied):
+                created_ow_objects_map["id_mapping"]["ambtsgebied"][str(obj.mapped_uuid)] = obj.OW_ID
+            if isinstance(obj, OWRegelingsgebied):
+                created_ow_objects_map["id_mapping"]["regelingsgebied"][obj.ambtsgebied] = obj.OW_ID
+            if isinstance(obj, OWTekstDeel):
+                created_ow_objects_map["tekstdeel_mapping"][obj.OW_ID] = {
+                    "divisie": obj.divisie,
+                    "location": obj.locations[0], # gebiedengroep
+                }
 
         return created_ow_objects_map
 

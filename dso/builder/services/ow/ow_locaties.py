@@ -52,10 +52,9 @@ class OwLocatiesContent:
         """
         self._create_ow_locations()
 
-        if self.ambtsgebied_data.new:
-            ow_ambtsgebied = self._create_amtsgebied()
-            self.xml_data["ambtsgebieden"].append(ow_ambtsgebied)
-
+        # TODO: Add input data + state check to see if new ambtsgebied is needed
+        ow_ambtsgebied = self._create_amtsgebied()
+        self.xml_data["ambtsgebieden"].append(ow_ambtsgebied)
         self._add_object_types()
         self.file = self.create_file()
         return self.xml_data
@@ -111,6 +110,7 @@ class OwLocatiesContent:
                 domein=self.ambtsgebied_data.domein,
                 geldig_op=self.ambtsgebied_data.geldig_op,
             ),
+            mapped_uuid=self.ambtsgebied_data.UUID,
         )
         new_ambtsgebied.procedure_status = self.ow_procedure_status
         return new_ambtsgebied

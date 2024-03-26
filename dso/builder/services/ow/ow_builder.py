@@ -52,15 +52,17 @@ class OwBuilder(BuilderService):
         divisie_state = divisie_content.create_divisies()
         state_manager.ow_repository.store_divisie_content(divisie_state)
 
+        # TODO: for new version publications ensure if no new ambtsgebied created, same regelingsgebied is used
         regelinggebied_content = OwRegelingsgebiedContent(
             provincie_id=provincie_id,
             levering_id=leveringid,
             ow_procedure_status=ow_procedure_status,
-            ambtsgebied=ambtsgebied,
+            ambtsgebied_ow_id=locaties_state["ambtsgebieden"][0].OW_ID,
         )
         regelinggebied_state = regelinggebied_content.create_regelingsgebieden()
         state_manager.ow_repository.store_regelingsgebied_content(regelinggebied_state)
 
+        state_manager.ow_repository.get_created_objects()
         state_manager.created_ow_object_ids = state_manager.ow_repository.get_created_objects_id_list()
         state_manager.created_ow_objects_map = state_manager.ow_repository.get_ow_object_mapping()
 
