@@ -27,8 +27,8 @@
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisietekst wId="{{ annotatie.divisietekst_aanduiding.wid }}">
-                    {% if annotatie.divisie_aanduiding.procedure_status is not none %}
-                    <ow:procedurestatus>{{ annotatie.divisie_aanduiding.procedure_status.value }}</ow:procedurestatus>
+                    {% if annotatie.divisietekst_aanduiding.procedure_status is not none %}
+                    <ow:procedurestatus>{{ annotatie.divisietekst_aanduiding.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
 					<vt:identificatie>{{ annotatie.divisietekst_aanduiding.OW_ID }}</vt:identificatie>
 				</vt:Divisietekst>
@@ -44,11 +44,11 @@
                     {% endif %}
 					<vt:identificatie>{{ annotatie.tekstdeel.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
-					{% if annotatie.divisie_aanduiding %}
+					{% if annotatie.divisie_aanduiding is not none %}
 					<vt:divisieaanduiding>
 						<vt:DivisieRef xlink:href="{{ annotatie.tekstdeel.divisie }}"/>
 					</vt:divisieaanduiding>
-					{% elif annotatie.divisietekst_aanduiding %}
+					{% elif annotatie.divisietekst_aanduiding is not none %}
 					<vt:divisieaanduiding>
 						<vt:DivisietekstRef xlink:href="{{ annotatie.tekstdeel.divisie }}"/>
 					</vt:divisieaanduiding>
