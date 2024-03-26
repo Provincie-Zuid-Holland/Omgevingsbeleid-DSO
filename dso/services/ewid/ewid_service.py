@@ -17,23 +17,19 @@ class EWIDService:
     def __init__(
         self,
         wid_prefix: str,
-        known_wid_group: Optional[str] = None,
         known_wid_map: Dict[str, str] = {},
         known_wids: List[str] = [],
         werkingsgebied_repository: Optional[WerkingsgebiedRepository] = None,
-        eid_counters=defaultdict(lambda: defaultdict(int)),
-        wid_counters=defaultdict(lambda: defaultdict(int)),
     ):
         self._werkingsgebied_repository: Optional[WerkingsgebiedRepository] = werkingsgebied_repository
-        self._known_wid_group: Optional[str] = known_wid_group
         self._wid_prefix: str = wid_prefix
         self._known_wid_map: Dict[str, str] = known_wid_map
         # Make it a map for faster lookup
         self._known_wids: Dict[str, bool] = {wid: True for wid in known_wids}
 
         self._element_refs: Dict[str, str] = {e.name: e.value for e in ELEMENT_REF}
-        self._eid_counters = eid_counters
-        self._wid_counters = wid_counters
+        self._eid_counters = defaultdict(lambda: defaultdict(int))
+        self._wid_counters = defaultdict(lambda: defaultdict(int))
 
         # wId's used by indentifiers, for example beleidskeuze-4 by that object
         # Although it should be possible to add custom identifiers
@@ -100,10 +96,6 @@ class EWIDService:
         # By default, we will generate a new wId based on the eId
         # Then we might override the wId if we think that a previous Act Version already generated it
         wid = f"{self._wid_prefix}__{eid}"
-        child_parent_wid = (
-            ""  # settins the wId parent to empty, will force the next child to use the eId unless the ifs below match
-        )
-        wid_resolved: bool = False
 
         wid_lookup_object_code = element.get("data-hint-wid-code", None)
         if wid_lookup_object_code:
@@ -111,8 +103,11 @@ class EWIDService:
             # Like for our api objects
             if wid_lookup_object_code in self._known_wid_map:
                 wid = self._known_wid_map[wid_lookup_object_code]
-                child_parent_wid = wid if tag_name in self._element_refs else ""
-                wid_resolved = True
+
+            # If you are forced (via data-wid-code) and we are in a Divisietekst
+            # Then we pretty much sure that it
+            if tag_name in ["Divisietekst"]:
+                parent_wid = wid if tag_name in self._element_refs else ""
         elif parent_wid != "":
             potential_wid: str = self._generate_wid(tag_name, parent_wid, parent_tag_name)
             # This is mosly the result of parents being forced to a wId (parents matched the previous if)
@@ -121,14 +116,7 @@ class EWIDService:
             if self._known_wids.get(potential_wid, False):
                 # The wid from another act version is valid
                 wid = potential_wid
-                child_parent_wid = wid if tag_name in self._element_refs else ""
-                wid_resolved = True
-
-        if not wid_resolved:
-            # It could be that the eId that we created was used in a wId previously.
-            # Then we are quite certain that we can reuse that one
-            # @note: Can we really?
-            pass
+                parent_wid = wid if tag_name in self._element_refs else ""
 
         if tag_name in self._element_refs:
             element.set("eId", eid)
@@ -156,6 +144,6 @@ class EWIDService:
             self._fill_ewid(
                 child,
                 child_parent_eid,
-                child_parent_wid,
+                parent_wid,
                 tag_name,
             )
