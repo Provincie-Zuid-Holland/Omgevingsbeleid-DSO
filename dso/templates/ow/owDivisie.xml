@@ -12,7 +12,7 @@
             </sl:objectTypen>
         </sl:inhoud>
         {% for annotatie in data.annotaties %}
-		{% if annotatie.divisie_aanduiding %}
+		{% if annotatie.divisie_aanduiding is not none %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisie wId="{{ annotatie.divisie_aanduiding.wid }}">
@@ -23,7 +23,7 @@
 				</vt:Divisie>
 			</ow-dc:owObject>
 		</sl:stand>
-		{% elif annotatie.divisietekst_aanduiding %}
+		{% elif annotatie.divisietekst_aanduiding is not none %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisietekst wId="{{ annotatie.divisietekst_aanduiding.wid }}">
