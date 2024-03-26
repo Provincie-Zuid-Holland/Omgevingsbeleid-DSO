@@ -27,7 +27,7 @@ class EWIDService:
         # Make it a map for faster lookup
         self._known_wids: Dict[str, bool] = {wid: True for wid in known_wids}
 
-        self._element_refs: Dict[str, str] = {e.name: e.value for e in ELEMENT_REF}
+        self._element_refs: Dict[str, str] = ELEMENT_REF
         self._eid_counters = defaultdict(lambda: defaultdict(int))
         self._wid_counters = defaultdict(lambda: defaultdict(int))
 

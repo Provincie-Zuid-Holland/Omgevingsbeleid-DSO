@@ -1,7 +1,15 @@
 from typing import Dict, List, Optional
 
 from ....models import OwData
-from ....services.ow.models import OWDivisie, OWDivisieTekst, OWGebied, OWGebiedenGroep, OWAmbtsgebied, OWRegelingsgebied, OWTekstDeel
+from ....services.ow.models import (
+    OWAmbtsgebied,
+    OWDivisie,
+    OWDivisieTekst,
+    OWGebied,
+    OWGebiedenGroep,
+    OWRegelingsgebied,
+    OWTekstDeel,
+)
 
 
 class OWStateRepository:
@@ -67,7 +75,7 @@ class OWStateRepository:
             if isinstance(obj, OWTekstDeel):
                 created_ow_objects_map["tekstdeel_mapping"][obj.OW_ID] = {
                     "divisie": obj.divisie,
-                    "location": obj.locations[0], # gebiedengroep
+                    "location": obj.locations[0],  # gebiedengroep
                 }
 
         return created_ow_objects_map

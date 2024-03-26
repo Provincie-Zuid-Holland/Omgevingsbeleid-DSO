@@ -3,7 +3,6 @@ from ....services.ow.enums import IMOWTYPES, OwProcedureStatus, OwRegelingsgebie
 from ....services.ow.models import OWRegelingsgebied
 from ....services.ow.ow_id import generate_ow_id
 from ....services.utils.helpers import load_template
-from ...state_manager.input_data.ambtsgebied import Ambtsgebied
 from ...state_manager.models import OutputFile, StrContentData
 
 

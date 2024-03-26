@@ -1,45 +1,46 @@
-from enum import Enum
+from typing import Dict
+
+FIXED_ELEMENT_REF: Dict[str, str] = {
+    "Aanhef": "formula_1",
+    "AlgemeneToelichting": "genrecital",
+    "ArtikelgewijzeToelichting": "artrecital",
+    "Inhoudsopgave": "toc",
+    "Lichaam": "body",
+    "Motivering": "acc",
+    "RegelingOpschrift": "longTitle",
+    "Sluiting": "formula_2",
+    "Toelichting": "recital",
+}
 
 
-class FIXED_ELEMENT_REF(str, Enum):
-    Aanhef = "formula_1"
-    AlgemeneToelichting = "genrecital"
-    ArtikelgewijzeToelichting = "artrecital"
-    Inhoudsopgave = "toc"
-    Lichaam = "body"
-    Motivering = "acc"
-    RegelingOpschrift = "longTitle"
-    Sluiting = "formula_2"
-    Toelichting = "recital"
-
-
-class ELEMENT_REF(str, Enum):
-    Afdeling = "subchp"
-    Artikel = "art"
-    Begrip = "item"
-    Begrippenlijst = "list"
-    Bijlage = "cmp"
-    Boek = "book"
-    Citaat = "cit"
-    Deel = "part"
-    Divisie = "div"
-    Divisietekst = "content"
-    ExtIoRef = "ref"
-    Figuur = "img"
-    Formule = "math"
-    Hoofdstuk = "chp"
-    InleidendeTekst = "intro"
-    IntIoRef = "ref"
-    InwerkingtredingArtikel = "art"
-    Kadertekst = "recital"
-    Li = "item"
-    Lid = "para"
-    Lijst = "list"
-    Paragraaf = "subsec"
-    Rectificatietekst = "content"
-    Subparagraaf = "subsec"
-    Subsubparagraaf = "subsec"
-    table = "table"
-    Titel = "title"
-    WijzigArtikel = "art"
-    WijzigBijlage = "cmp"
+ELEMENT_REF: Dict[str, str] = {
+    "Afdeling": "subchp",
+    "Artikel": "art",
+    "Begrip": "item",
+    "Begrippenlijst": "list",
+    "Bijlage": "cmp",
+    "Boek": "book",
+    "Citaat": "cit",
+    "Deel": "part",
+    "Divisie": "div",
+    "Divisietekst": "content",
+    "ExtIoRef": "ref",
+    "Figuur": "img",
+    "Formule": "math",
+    "Hoofdstuk": "chp",
+    "InleidendeTekst": "intro",
+    "IntIoRef": "ref",
+    "InwerkingtredingArtikel": "art",
+    "Kadertekst": "recital",
+    "Li": "item",
+    "Lid": "para",
+    "Lijst": "list",
+    "Paragraaf": "subsec",
+    "Rectificatietekst": "content",
+    "Subparagraaf": "subsec",
+    "Subsubparagraaf": "subsec",
+    "table": "table",
+    "Titel": "title",
+    "WijzigArtikel": "art",
+    "WijzigBijlage": "cmp",
+}
