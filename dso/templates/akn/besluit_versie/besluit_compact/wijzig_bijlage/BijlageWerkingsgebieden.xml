@@ -4,15 +4,15 @@
         <Nummer>A</Nummer>
         <Opschrift>Overzicht informatieobjecten</Opschrift>
     </Kop>
-    <Divisietekst>
+    <Divisietekst data-hint-wid-code="bijlage-werkingsgebieden-divisietekst">
         <Inhoud>
-            <Begrippenlijst data-hint-wid-code="bijlage-werkingsgebieden-referenties">
+            <Begrippenlijst data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referenties">
                 {% for werkingsgebied in werkingsgebieden %}
-                <Begrip data-hint-wid-code="bijlage-werkingsgebieden-referentie-{{ werkingsgebied.Code }}">
+                <Begrip data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ werkingsgebied.Code }}">
                     <Term>{{ werkingsgebied.Title }}</Term>
                     <Definitie>
                         <Al>
-                            <ExtIoRef data-hint-wid-code="bijlage-werkingsgebieden-referentie-{{ werkingsgebied.Code }}-ref" data-hint-werkingsgebied-uuid="{{ werkingsgebied.UUID }}" ref="{{ werkingsgebied.Frbr.get_expression() }}">{{ werkingsgebied.Frbr.get_expression() }}</ExtIoRef>
+                            <ExtIoRef data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ werkingsgebied.Code }}-ref" data-hint-werkingsgebied-uuid="{{ werkingsgebied.UUID }}" ref="{{ werkingsgebied.Frbr.get_expression() }}">{{ werkingsgebied.Frbr.get_expression() }}</ExtIoRef>
                         </Al>
                     </Definitie>
                 </Begrip>
