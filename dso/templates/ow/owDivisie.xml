@@ -17,7 +17,7 @@
 			<ow-dc:owObject>
 				<vt:Divisie wId="{{ annotatie.divisie_aanduiding.wid }}">
                     {% if annotatie.divisie_aanduiding.procedure_status is not none %}
-                    <ow:procedurestatus>{{ annotatie.divisie_aanduiding.procedure_status.value }}</ow:procedurestatus>
+                    <op:procedurestatus>{{ annotatie.divisie_aanduiding.procedure_status.value }}</op:procedurestatus>
                     {% endif %}
 					<vt:identificatie>{{ annotatie.divisie_aanduiding.OW_ID }}</vt:identificatie>
 				</vt:Divisie>
@@ -28,7 +28,7 @@
 			<ow-dc:owObject>
 				<vt:Divisietekst wId="{{ annotatie.divisietekst_aanduiding.wid }}">
                     {% if annotatie.divisietekst_aanduiding.procedure_status is not none %}
-                    <ow:procedurestatus>{{ annotatie.divisietekst_aanduiding.procedure_status.value }}</ow:procedurestatus>
+                    <op:procedurestatus>{{ annotatie.divisietekst_aanduiding.procedure_status.value }}</op:procedurestatus>
                     {% endif %}
 					<vt:identificatie>{{ annotatie.divisietekst_aanduiding.OW_ID }}</vt:identificatie>
 				</vt:Divisietekst>
