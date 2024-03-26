@@ -45,6 +45,7 @@ class OwBuilder(BuilderService):
         state_manager.ow_repository.store_locaties_content(locaties_state)
 
         divisie_content = OwDivisieContent(
+            provincie_id=provincie_id,
             object_tekst_lookup=state_manager.ewid_service.get_state_object_tekst_lookup(),
             levering_id=leveringid,
             ow_procedure_status=ow_procedure_status,

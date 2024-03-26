@@ -1,7 +1,10 @@
+from typing import Optional
+
 from ....models import ContentType
 from ....services.ow.enums import OwDivisieObjectType, OwProcedureStatus
 from ....services.ow.exceptions import OWObjectGenerationError
-from ....services.ow.models import Annotation, OWDivisie, OWDivisieTekst, OWTekstDeel
+from ....services.ow.models import IMOWTYPES, Annotation, OWDivisie, OWDivisieTekst, OWTekstDeel
+from ....services.ow.ow_id import generate_ow_id
 from ....services.utils.helpers import load_template
 from ...state_manager.models import OutputFile, StrContentData
 
@@ -13,10 +16,12 @@ class OwDivisieContent:
 
     def __init__(
         self,
+        provincie_id: str,
         object_tekst_lookup: dict,
         levering_id: str,
-        ow_procedure_status: OwProcedureStatus,
+        ow_procedure_status: Optional[OwProcedureStatus],
     ):
+        self.provincie_id: str = provincie_id
         self.object_tekst_lookup = object_tekst_lookup
         self.levering_id = levering_id
         self.ow_procedure_status = ow_procedure_status
@@ -50,18 +55,27 @@ class OwDivisieContent:
 
             ow_div = None
             ow_text_mapping = OWTekstDeel(
+                OW_ID=generate_ow_id(IMOWTYPES.TEKSTDEEL, self.provincie_id),
                 divisie=None,
                 locations=[values["ow_location_id"]],
                 procedure_status=self.ow_procedure_status,
             )
 
             if values["tag"] == "Divisietekst":
-                ow_div = OWDivisieTekst(wid=values["wid"], procedure_status=self.ow_procedure_status)
+                ow_div = OWDivisieTekst(
+                    OW_ID=generate_ow_id(IMOWTYPES.DIVISIETEKST, self.provincie_id),
+                    wid=values["wid"],
+                    procedure_status=self.ow_procedure_status,
+                )
                 object_type = OwDivisieObjectType.DIVISIETEKST.value
                 ow_text_mapping.divisie = ow_div.OW_ID
                 annotations.append(Annotation(divisietekst_aanduiding=ow_div, tekstdeel=ow_text_mapping))
             elif values["tag"] == "Divisie":
-                ow_div = OWDivisie(wid=values["wid"], procedure_status=self.ow_procedure_status)
+                ow_div = OWDivisie(
+                    OW_ID=generate_ow_id(IMOWTYPES.DIVISIE, self.provincie_id),
+                    wid=values["wid"],
+                    procedure_status=self.ow_procedure_status,
+                )
                 object_type = OwDivisieObjectType.DIVISIE.value
                 ow_text_mapping.divisie = ow_div.OW_ID
                 annotations.append(Annotation(divisie_aanduiding=ow_div, tekstdeel=ow_text_mapping))

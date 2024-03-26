@@ -1,3 +1,5 @@
+from typing import Optional
+
 from ....models import ContentType
 from ....services.ow.enums import IMOWTYPES, OwProcedureStatus, OwRegelingsgebiedObjectType
 from ....services.ow.models import OWRegelingsgebied
@@ -19,7 +21,7 @@ class OwRegelingsgebiedContent:
         self,
         provincie_id: str,
         levering_id,
-        ow_procedure_status: OwProcedureStatus,
+        ow_procedure_status: Optional[OwProcedureStatus],
         ambtsgebied_ow_id: str,
     ):
         self.provincie_id: str = provincie_id
@@ -51,8 +53,8 @@ class OwRegelingsgebiedContent:
         regelingsgebied = OWRegelingsgebied(
             OW_ID=ow_id,
             ambtsgebied=self.ambtsgebied,
+            procedure_status=self.ow_procedure_status,
         )
-        regelingsgebied.procedure_status = self.ow_procedure_status
         return regelingsgebied
 
     def create_file(self):

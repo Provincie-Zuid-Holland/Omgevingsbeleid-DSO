@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 
 from ....models import ContentType
@@ -26,7 +26,7 @@ class OwLocatiesContent:
         werkingsgebieden: List[Werkingsgebied],
         object_tekst_lookup: dict,
         levering_id: str,
-        ow_procedure_status: OwProcedureStatus,
+        ow_procedure_status: Optional[OwProcedureStatus],
         ambtsgebied_data: Ambtsgebied,
     ):
         self._provincie_id: str = provincie_id
@@ -67,7 +67,7 @@ class OwLocatiesContent:
         for werkingsgebied in self.werkingsgebieden:
             ow_locations = [
                 OWGebied(
-                    OW_ID=generate_ow_id(ow_type=IMOWTYPES.GEBIED),
+                    OW_ID=generate_ow_id(IMOWTYPES.GEBIED, self._provincie_id),
                     geo_uuid=loc.UUID,
                     noemer=loc.Title,
                     procedure_status=self.ow_procedure_status,
@@ -76,7 +76,7 @@ class OwLocatiesContent:
                 for loc in werkingsgebied.Locaties
             ]
             ow_group = OWGebiedenGroep(
-                OW_ID=generate_ow_id(ow_type=IMOWTYPES.GEBIEDENGROEP),
+                OW_ID=generate_ow_id(IMOWTYPES.GEBIEDENGROEP, self._provincie_id),
                 geo_uuid=werkingsgebied.UUID,
                 noemer=werkingsgebied.Title,
                 locations=ow_locations,

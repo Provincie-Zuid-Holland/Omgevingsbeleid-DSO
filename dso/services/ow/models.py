@@ -1,10 +1,9 @@
 from typing import List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
-from .enums import IMOWTYPES, OwProcedureStatus
-from .ow_id import generate_ow_id
+from .enums import OwProcedureStatus
 
 
 class OWObject(BaseModel):
@@ -35,26 +34,26 @@ class OWLocation(OWObject):
 
 
 class OWGebied(OWLocation):
-    OW_ID: str = Field(default_factory=lambda: generate_ow_id(IMOWTYPES.GEBIED))
+    OW_ID: str
 
 
 class OWGebiedenGroep(OWLocation):
-    OW_ID: str = Field(default_factory=lambda: generate_ow_id(IMOWTYPES.GEBIEDENGROEP))
+    OW_ID: str
     locations: List[OWGebied] = []
 
 
 class OWDivisie(OWObject):
-    OW_ID: str = Field(default_factory=lambda: generate_ow_id(IMOWTYPES.DIVISIE))
+    OW_ID: str
     wid: str
 
 
 class OWDivisieTekst(OWObject):
-    OW_ID: str = Field(default_factory=lambda: generate_ow_id(IMOWTYPES.DIVISIETEKST))
+    OW_ID: str
     wid: str
 
 
 class OWTekstDeel(OWObject):
-    OW_ID: str = Field(default_factory=lambda: generate_ow_id(IMOWTYPES.TEKSTDEEL))
+    OW_ID: str
     divisie: Optional[str]  # is divisie(tekst) OW_ID
     locations: List[str]  # OWlocation OW_ID list
 
