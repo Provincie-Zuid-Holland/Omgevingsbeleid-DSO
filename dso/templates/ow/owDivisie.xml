@@ -16,10 +16,10 @@
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisie wId="{{ annotatie.divisie_aanduiding.wid }}">
-					<vt:identificatie>{{ annotatie.divisie_aanduiding.OW_ID }}</vt:identificatie>
-                    {% if annotatie.divisie_aanduiding.procedure_status %}
+                    {% if annotatie.divisie_aanduiding.procedure_status is not none %}
                     <ow:procedurestatus>{{ annotatie.divisie_aanduiding.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
+					<vt:identificatie>{{ annotatie.divisie_aanduiding.OW_ID }}</vt:identificatie>
 				</vt:Divisie>
 			</ow-dc:owObject>
 		</sl:stand>
@@ -27,10 +27,10 @@
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisietekst wId="{{ annotatie.divisietekst_aanduiding.wid }}">
-					<vt:identificatie>{{ annotatie.divisietekst_aanduiding.OW_ID }}</vt:identificatie>
-                    {% if annotatie.divisie_aanduiding.procedure_status %}
+                    {% if annotatie.divisie_aanduiding.procedure_status is not none %}
                     <ow:procedurestatus>{{ annotatie.divisie_aanduiding.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
+					<vt:identificatie>{{ annotatie.divisietekst_aanduiding.OW_ID }}</vt:identificatie>
 				</vt:Divisietekst>
 			</ow-dc:owObject>
 		</sl:stand>
@@ -39,10 +39,10 @@
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Tekstdeel>
-					<vt:identificatie>{{ annotatie.tekstdeel.OW_ID }}</vt:identificatie>
-                    {% if annotatie.tekstdeel.procedure_status %}
+                    {% if annotatie.tekstdeel.procedure_status is not none %}
                     <ow:procedurestatus>{{ annotatie.tekstdeel.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
+					<vt:identificatie>{{ annotatie.tekstdeel.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
 					{% if annotatie.divisie_aanduiding %}
 					<vt:divisieaanduiding>

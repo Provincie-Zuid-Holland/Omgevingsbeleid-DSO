@@ -28,10 +28,10 @@
 		<sl:stand>
 			<ow-dc:owObject>
 				<rg:Regelingsgebied>
-					<rg:identificatie>{{ gebied.OW_ID }}</rg:identificatie>
-                    {% if gebied.procedure_status %}
+                    {% if gebied.procedure_status is not none %}
                     <ow:procedurestatus>{{ gebied.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
+					<rg:identificatie>{{ gebied.OW_ID }}</rg:identificatie>
 					<rg:locatieaanduiding>
 						<l:LocatieRef xlink:href="{{ gebied.ambtsgebied }}" />
 					</rg:locatieaanduiding>

@@ -31,11 +31,11 @@
 		<sl:stand>
             <ow-dc:owObject>
                 <l:Gebied>
+                    {% if owgebied.procedure_status is not none %}
+                    <ow:procedurestatus>{{ owgebied.procedure_status.value }}</ow:procedurestatus>
+                    {% endif %}
                     <l:identificatie>{{ owgebied.OW_ID }}</l:identificatie>
                     <l:noemer>{{ owgebied.noemer }}</l:noemer>
-                    {% if owgebied.procedure_status %}
-                    <l:procedurestatus>{{ owgebied.procedure_status.value }}</l:procedurestatus>
-                    {% endif %}
                     <l:geometrie>
                         <l:GeometrieRef xlink:href="{{ owgebied.geo_uuid }}" />
                     </l:geometrie>
@@ -48,11 +48,11 @@
 		<sl:stand>
             <ow-dc:owObject>
                 <l:Gebiedengroep>
+                    {% if group.procedure_status is not none %}
+                    <ow:procedurestatus>{{ group.procedure_status.value }}</ow:procedurestatus>
+                    {% endif %}
                     <l:identificatie>{{ group.OW_ID }}</l:identificatie>
                     <l:noemer>{{ group.noemer }}</l:noemer>
-                    {% if group.procedure_status %}
-                    <l:procedurestatus>{{ group.procedure_status.value }}</l:procedurestatus>
-                    {% endif %}
                     <l:groepselement>
                         {% for location in group.locations %}
                         <l:GebiedRef xlink:href="{{ location.OW_ID }}"/>
@@ -67,10 +67,10 @@
         <sl:stand>
             <ow-dc:owObject>
                 <l:Ambtsgebied>
-                    <l:identificatie>{{ gebied.OW_ID }}</l:identificatie>
-                    {% if gebied.procedure_status %}
-                    <l:procedurestatus>{{ gebied.procedure_status.value }}</l:procedurestatus>
+                    {% if gebied.procedure_status is not none %}
+                    <ow:procedurestatus>{{ gebied.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
+                    <l:identificatie>{{ gebied.OW_ID }}</l:identificatie>
                     <l:bestuurlijkeGrenzenVerwijzing>
                         <l:BestuurlijkeGrenzenVerwijzing>
                             <l:bestuurlijkeGrenzenID>{{ gebied.bestuurlijke_genzenverwijzing.bestuurlijke_grenzen_id }}</l:bestuurlijkeGrenzenID>
