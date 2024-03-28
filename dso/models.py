@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field, root_validator, validator
 
-from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappenDefinitief, Provincie
+from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappen, Provincie
 
 
 class FRBR(BaseModel, metaclass=ABCMeta):
@@ -110,13 +110,13 @@ class DoelFRBR(FRBR):
 
 
 class ProcedureStap(BaseModel):
-    soort_stap: ProcedureStappenDefinitief
+    soort_stap: ProcedureStappen
     voltooid_op: str
 
     @validator("soort_stap", pre=True)
     def map_enum_value(cls, v):
         try:
-            return ProcedureStappenDefinitief[v].value
+            return ProcedureStappen[v].value
         except KeyError:
             raise ValueError(f"{v} is geen valide ProcedureStap uit de waardelijst")
 

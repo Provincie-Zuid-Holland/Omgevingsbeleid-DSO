@@ -29,6 +29,20 @@ class ProcedureStappenOntwerp(str, Enum):
     Begin_inzagetermijn = "/join/id/stop/procedure/stap_014"
 
 
+class ProcedureStappen(str, Enum):
+    Vaststelling = "/join/id/stop/procedure/stap_002"
+    Ondertekening = "/join/id/stop/procedure/stap_003"
+    Publicatie = "/join/id/stop/procedure/stap_004"
+    Einde_inzagetermijn = "/join/id/stop/procedure/stap_005"
+    Begin_inzagetermijn = "/join/id/stop/procedure/stap_014"
+    Einde_bezwaartermijn = "/join/id/stop/procedure/stap_015"
+    Einde_beroepstermijn = "/join/id/stop/procedure/stap_016"
+    Start_beroepsprocedure = "/join/id/stop/procedure/stap_018"
+    Schorsing = "/join/id/stop/procedure/stap_019"
+    Opheffing_schorsing = "/join/id/stop/procedure/stap_020"
+    Einde_beroepsprocedures = "/join/id/stop/procedure/stap_021"
+
+
 # https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/blob/1.2.0/waardelijsten/provincie.xml?ref_type=tags
 class Provincie(str, Enum):
     Drenthe = "/tooi/id/provincie/pv22"
