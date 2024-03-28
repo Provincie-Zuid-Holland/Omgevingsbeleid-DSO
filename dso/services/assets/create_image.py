@@ -2,7 +2,7 @@ import base64
 import re
 from zipfile import ZipFile
 
-from ...builder.state_manager.input_data.resource.asset.asset import Asset
+from ...act_builder.state_manager.input_data.resource.asset.asset import Asset
 
 
 def decode_image_data(asset: Asset):

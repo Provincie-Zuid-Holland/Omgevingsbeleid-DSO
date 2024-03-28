@@ -2,8 +2,8 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 from typing import Dict, List, Optional
 
-from ...builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
-from ...builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
+from ...act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
+from ...act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
     WerkingsgebiedRepository,
 )
 from . import ELEMENT_REF, EIDGenerationError

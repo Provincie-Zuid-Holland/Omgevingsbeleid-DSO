@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AanleveringKennisgeving schemaversie="1.2.0"
+  xmlns="https://standaarden.overheid.nl/lvbb/stop/aanlevering/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://standaarden.overheid.nl/lvbb/stop/aanlevering/
+  https://standaarden.overheid.nl/lvbb/1.2.0/lvbb-stop-aanlevering.xsd">
+  <KennisgevingVersie>
+	  {{ expression_identificatie }}
+    {{ kennisgeving_metadata }}
+    {{ procedureverloop }}
+    {{ kennisgeving }}
+  </KennisgevingVersie>
+</AanleveringKennisgeving>

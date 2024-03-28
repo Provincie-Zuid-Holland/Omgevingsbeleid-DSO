@@ -78,6 +78,22 @@ class GioFRBR(FRBR):
         return expression_part
 
 
+# <FRBRWork>/akn/nl/doc/pv28/2023/kennisgeving-omgevingsvisie-1</FRBRWork>
+# <FRBRExpression>/akn/nl/doc/pv28/2023/kennisgeving-omgevingsvisie-1/nld@2024-09-29;2</FRBRExpression>
+class DocFRBR(FRBR):
+    Work_Country: str
+
+    def get_work(self) -> str:
+        work: str = f"/akn/{self.Work_Country}/doc/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        return work
+
+    def get_expression_part(self) -> str:
+        expression_part: str = f"{self.Expression_Language}@{self.Expression_Date}"
+        if self.Expression_Version is not None:
+            expression_part = f"{expression_part};{self.Expression_Version}"
+        return expression_part
+
+
 # /join/id/proces/pv28/2024/instelling-programma-1
 class DoelFRBR(FRBR):
     # Removing these base fields by declaring a default value
