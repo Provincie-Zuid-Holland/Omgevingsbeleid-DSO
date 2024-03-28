@@ -115,6 +115,8 @@ class ProcedureStap(BaseModel):
 
     @validator("soort_stap", pre=True)
     def map_enum_value(cls, v):
+        if v in ProcedureStappen.__members__.values():
+            return v
         try:
             return ProcedureStappen[v].value
         except KeyError:
@@ -177,6 +179,8 @@ class PublicatieOpdracht(BaseModel):
 
     @validator("opdracht_type", pre=True, always=True)
     def _format_opdracht_type(cls, v):
+        if v in OpdrachtType.__members__.values():
+            return v
         return OpdrachtType[v]
 
 
