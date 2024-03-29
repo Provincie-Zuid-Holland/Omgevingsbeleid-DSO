@@ -44,7 +44,7 @@ class EWIDService:
     def add_ewids(self, xml_source: str) -> str:
         root = self._parse_xml(xml_source)
         self._fill_ewid(root)
-        result_xml: str = ET.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
+        result_xml: str = ET.tostring(root, encoding="utf-8").decode("utf-8")
         return result_xml
 
     def get_state_used_wid_map(self) -> Dict[str, str]:
