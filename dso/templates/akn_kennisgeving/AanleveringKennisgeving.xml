@@ -6,7 +6,7 @@
   https://standaarden.overheid.nl/lvbb/1.2.0/lvbb-stop-aanlevering.xsd">
   <KennisgevingVersie>
 	  {{ expression_identificatie }}
-    {{ kennisgeving_metadata }}
+    {{ metadata }}
     {{ procedureverloop }}
     {{ kennisgeving }}
   </KennisgevingVersie>

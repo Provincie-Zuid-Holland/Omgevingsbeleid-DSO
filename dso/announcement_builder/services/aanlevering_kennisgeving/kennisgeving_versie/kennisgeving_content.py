@@ -14,7 +14,7 @@ class KennisgevingContent:
 
         content = load_template(
             "akn_kennisgeving/kennisgeving_versie/Kennisgeving.xml",
-            kennisgeving=self._state_manager.input_data.kennisgeving.officiele_titel,
-            tekst=tekst,
+            officiele_titel=self._state_manager.input_data.kennisgeving.officiele_titel,
+            tekst=tekst.encode("utf-8"),
         )
         return content

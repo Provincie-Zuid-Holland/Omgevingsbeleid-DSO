@@ -1,6 +1,6 @@
 <Kennisgeving xmlns="https://standaarden.overheid.nl/stop/imop/tekst/">
     <RegelingOpschrift eId="longTitle_o_1" wId="longTitle_o_1">
-      <Al>{{ title }}</Al>
+      <Al>{{ officiele_titel }}</Al>
     </RegelingOpschrift>
     {{ tekst }}
 </Kennisgeving>
