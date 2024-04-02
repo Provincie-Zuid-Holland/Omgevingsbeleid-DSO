@@ -3,6 +3,14 @@
     <maker>{{ provincie_ref }}</maker>
     <soortBestuursorgaan>{{ soort_bestuursorgaan.value }}</soortBestuursorgaan>
     <officieleTitel>{{ besluit.officiele_titel }}</officieleTitel>
+    {% of besluit.citeertitel is not none %}
+    <heeftCiteertitelInformatie>
+        <CiteertitelInformatie>
+            <citeertitel>{{ besluit.citeertitel }}</citeertitel>
+            <isOfficieel>{{ regeling_is_officieel }}</isOfficieel>
+        </CiteertitelInformatie>
+    </heeftCiteertitelInformatie>
+    {% endif %}
     <onderwerpen>
         {% for onderwerp in besluit.onderwerpen %}
         <onderwerp>{{ onderwerp.value }}</onderwerp>

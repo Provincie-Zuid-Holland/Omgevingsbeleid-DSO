@@ -12,6 +12,7 @@ class Artikel(BaseModel):
 
 class Besluit(BaseModel):
     officiele_titel: str
+    citeertitel: Optional[str]
     aanhef: str
     wijzig_artikel: Artikel
     tekst_artikelen: List[Artikel]
