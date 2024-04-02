@@ -1,0 +1,11 @@
+<RegelingVersieInformatie>
+    <ExpressionIdentificatie xmlns="https://standaarden.overheid.nl/stop/imop/data/">
+        <FRBRWork>{{ regeling_frbr.get_work() }}</FRBRWork>
+        <FRBRExpression>{{ regeling_frbr.get_expression() }}</FRBRExpression>
+        <soortWork>/join/id/stop/work_019</soortWork>
+    </ExpressionIdentificatie>
+    <RegelingVersieMetadata xmlns="https://standaarden.overheid.nl/stop/imop/data/">
+        <versienummer>{{ regeling.versienummer }}</versienummer>
+    </RegelingVersieMetadata>
+    {{ regeling_metadata }}
+</RegelingVersieInformatie>

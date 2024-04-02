@@ -1,0 +1,5 @@
+<RegelingMutatie componentnaam="{{ componentnaam }}" was="{{ was }}" wordt="{{ wordt }}">
+    <VervangRegeling>
+        {{ regeling_vrijetekst }}
+    </VervangRegeling>
+</RegelingMutatie>

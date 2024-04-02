@@ -6,3 +6,4 @@ isort
 devtools
 autoflake
 bandit
+mypy-extensions

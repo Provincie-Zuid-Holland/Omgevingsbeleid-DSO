@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ow-dc:owBestand xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:r="http://www.geostandaarden.nl/imow/regels" xmlns:vt="http://www.geostandaarden.nl/imow/vrijetekst" xmlns:rol="http://www.geostandaarden.nl/imow/regelsoplocatie" xmlns:p="http://www.geostandaarden.nl/imow/pons" xmlns:l="http://www.geostandaarden.nl/imow/locatie" xmlns:k="http://www.geostandaarden.nl/imow/kaart" xmlns:op="http://www.geostandaarden.nl/imow/opobject" xmlns:ga="http://www.geostandaarden.nl/imow/gebiedsaanwijzing" xmlns:sl="http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek" xmlns:da="http://www.geostandaarden.nl/imow/datatypenalgemeen" xmlns:ow="http://www.geostandaarden.nl/imow/owobject" xmlns:rg="http://www.geostandaarden.nl/imow/regelingsgebied" xmlns:ow-dc="http://www.geostandaarden.nl/imow/bestanden/deelbestand">
+	<sl:standBestand>
+		<sl:dataset>provincie Zuid-holland</sl:dataset>
+        <sl:inhoud>
+            <sl:gebied>provincie Zuid-holland</sl:gebied>
+            <sl:leveringsId>{{ data.leveringsId }}</sl:leveringsId>
+            <sl:objectTypen>
+                {% for objectType in data.objectTypen %}
+                <sl:objectType>{{ objectType }}</sl:objectType>
+                {% endfor %}
+            </sl:objectTypen>
+        </sl:inhoud>
+        {% for annotatie in data.annotaties %}
+		{% if annotatie.divisie_aanduiding is not none %}
+		<sl:stand>
+			<ow-dc:owObject>
+				<vt:Divisie wId="{{ annotatie.divisie_aanduiding.wid }}">
+                    {% if annotatie.divisie_aanduiding.procedure_status is not none %}
+                    <op:procedurestatus>{{ annotatie.divisie_aanduiding.procedure_status.value }}</op:procedurestatus>
+                    {% endif %}
+					<vt:identificatie>{{ annotatie.divisie_aanduiding.OW_ID }}</vt:identificatie>
+				</vt:Divisie>
+			</ow-dc:owObject>
+		</sl:stand>
+		{% elif annotatie.divisietekst_aanduiding is not none %}
+		<sl:stand>
+			<ow-dc:owObject>
+				<vt:Divisietekst wId="{{ annotatie.divisietekst_aanduiding.wid }}">
+                    {% if annotatie.divisietekst_aanduiding.procedure_status is not none %}
+                    <op:procedurestatus>{{ annotatie.divisietekst_aanduiding.procedure_status.value }}</op:procedurestatus>
+                    {% endif %}
+					<vt:identificatie>{{ annotatie.divisietekst_aanduiding.OW_ID }}</vt:identificatie>
+				</vt:Divisietekst>
+			</ow-dc:owObject>
+		</sl:stand>
+		{% endif %}
+
+		<sl:stand>
+			<ow-dc:owObject>
+				<vt:Tekstdeel>
+                    {% if annotatie.tekstdeel.procedure_status is not none %}
+                    <ow:procedurestatus>{{ annotatie.tekstdeel.procedure_status.value }}</ow:procedurestatus>
+                    {% endif %}
+					<vt:identificatie>{{ annotatie.tekstdeel.OW_ID }}</vt:identificatie>
+					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
+					{% if annotatie.divisie_aanduiding is not none %}
+					<vt:divisieaanduiding>
+						<vt:DivisieRef xlink:href="{{ annotatie.tekstdeel.divisie }}"/>
+					</vt:divisieaanduiding>
+					{% elif annotatie.divisietekst_aanduiding is not none %}
+					<vt:divisieaanduiding>
+						<vt:DivisietekstRef xlink:href="{{ annotatie.tekstdeel.divisie }}"/>
+					</vt:divisieaanduiding>
+					{% endif %}
+					<vt:locatieaanduiding>
+						{% for loc in annotatie.tekstdeel.locations %}
+						<l:LocatieRef xlink:href="{{ loc }}"/>
+						{% endfor %}
+						</vt:locatieaanduiding>
+					</vt:Tekstdeel>
+			</ow-dc:owObject>
+		</sl:stand>
+        {% endfor %}
+	</sl:standBestand>
+</ow-dc:owBestand>

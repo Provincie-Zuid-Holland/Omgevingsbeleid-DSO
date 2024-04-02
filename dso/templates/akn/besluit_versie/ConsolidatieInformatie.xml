@@ -1,0 +1,32 @@
+<ConsolidatieInformatie xmlns="https://standaarden.overheid.nl/stop/imop/data/">
+    <BeoogdeRegelgeving>
+        <BeoogdeRegeling>
+            <doelen>
+                <doel>{{ instelling_doel }}</doel>
+            </doelen>
+            <instrumentVersie>{{ beoogde_regeling.instrument_versie }}</instrumentVersie>
+            <eId>{{ beoogde_regeling.eid }}</eId>
+        </BeoogdeRegeling>
+        {% for beoogd_informatieobject in beoogd_informatieobjecten %}
+        <BeoogdInformatieobject>
+            <doelen>
+                <doel>{{ instelling_doel }}</doel>
+            </doelen>
+            <instrumentVersie>{{ beoogd_informatieobject.instrument_versie }}</instrumentVersie>
+            <eId>{{ beoogd_informatieobject.eid }}</eId>
+        </BeoogdInformatieobject>
+        {% endfor %}
+    </BeoogdeRegelgeving>
+    {% if tijdstempels | length %}
+    <Tijdstempels>
+        {% for tijdstempel in tijdstempels %}
+        <Tijdstempel>
+            <doel>{{ tijdstempel.doel }}</doel>
+            <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
+            <datum>{{ tijdstempel.datum }}</datum>
+            <eId>{{ tijdstempel.eid }}</eId>
+        </Tijdstempel>
+        {% endfor %}
+    </Tijdstempels>
+    {% endif %}
+</ConsolidatieInformatie>

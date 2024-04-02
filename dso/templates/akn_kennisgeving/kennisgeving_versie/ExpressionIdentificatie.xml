@@ -1,0 +1,5 @@
+<ExpressionIdentificatie xmlns="https://standaarden.overheid.nl/stop/imop/data/">
+    <FRBRWork>{{ work }}</FRBRWork>
+    <FRBRExpression>{{ expression }}</FRBRExpression>
+    <soortWork>{{ soort_work }}</soortWork>
+</ExpressionIdentificatie>

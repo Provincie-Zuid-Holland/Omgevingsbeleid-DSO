@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Aanleveringen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.geostandaarden.nl/bestanden-ow/manifest-ow" xsi:schemaLocation="http://www.geostandaarden.nl/bestanden-ow/manifest-ow https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/bestanden-ow/generiek/manifest-ow.xsd">
+	<domein>omgevingswet</domein>
+	<Aanlevering>
+		<WorkIDRegeling>{{ act_work }}</WorkIDRegeling>
+		<DoelID>{{ doel_id }}</DoelID>
+        {% for file in files %}
+        <Bestand>
+            <naam>{{ file.naam }}</naam>
+            {% for objecttype in file.objecttypes %}
+            <objecttype>{{ objecttype }}</objecttype>
+            {% endfor %}
+        </Bestand>
+        {% endfor %}
+	</Aanlevering>
+</Aanleveringen>
