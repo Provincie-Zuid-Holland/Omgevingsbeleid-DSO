@@ -28,7 +28,7 @@ executing==2.0.1
     # via
     #   devtools
     #   stack-data
-ipython==8.22.2
+ipython==8.23.0
     # via -r requirements-dev.in
 isort==5.13.2
     # via -r requirements-dev.in
@@ -89,7 +89,9 @@ traitlets==5.14.2
     #   ipython
     #   matplotlib-inline
 typing-extensions==4.10.0
-    # via black
+    # via
+    #   black
+    #   ipython
 vulture==2.11
     # via -r requirements-dev.in
 wcwidth==0.2.13
