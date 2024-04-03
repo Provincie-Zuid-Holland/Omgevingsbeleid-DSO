@@ -1,6 +1,6 @@
 <BesluitCompact xmlns="https://standaarden.overheid.nl/stop/imop/tekst/">
     <RegelingOpschrift eId="longTitle" wId="longTitle">
-        <Al>{{ besluit.regeling_opschrift }}</Al>
+        <Al>{{ besluit.officiele_titel }}</Al>
     </RegelingOpschrift>
     <Aanhef eId="formula_1" wId="formula_1">
         {{ aanhef_xml }}
