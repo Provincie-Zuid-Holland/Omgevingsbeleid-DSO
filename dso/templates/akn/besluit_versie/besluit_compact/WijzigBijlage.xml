@@ -2,7 +2,7 @@
     <Kop>
         <Label>Bijlage</Label>
         <Nummer>A</Nummer>
-        <Opschrift>Bijlage bij Artikel I</Opschrift>
+        <Opschrift>bij Artikel I</Opschrift>
     </Kop>
     {{ regeling_content }}
 </WijzigBijlage>
