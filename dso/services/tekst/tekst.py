@@ -274,6 +274,37 @@ class Figuur(SimpleElement):
         return figuur
 
 
+class ExtRef(SimpleElement):
+    akn_pattern = r"^/akn/"
+
+    def __init__(self, tag: Optional[Tag] = None):
+        super().__init__()
+        self._asset_uuid: str = ""
+
+        href: str = tag.attrs.get("href", "")
+        soort: str = "URL"
+        if not href:
+            raise RuntimeError("Missing required attribute href for `a`")
+        akn_match = re.match(self.akn_pattern, href)
+        if akn_match:
+            soort = "AKN"
+
+        self._ref = href
+        self._soort = soort
+
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+        result = SimpleElement.as_xml(
+            self,
+            soup=soup,
+            tag_name_overwrite="ExtRef",
+            tag_attrs_overwrite={
+                "ref": self._ref,
+                "soort": self._soort,
+            },
+        )
+        return result
+
+
 class Kop(SimpleElement):
     def __init__(self, tag: Optional[Tag] = None):
         super().__init__()
@@ -756,6 +787,7 @@ element_h3_tussenkop_handler = SimpleGenerator("h3", TussenKop)
 element_h4_tussenkop_handler = SimpleGenerator("h4", TussenKop)
 element_h5_tussenkop_handler = SimpleGenerator("h5", TussenKop)
 element_h6_tussenkop_handler = SimpleGenerator("h6", TussenKop)
+a_handler = SimpleGenerator("a", ExtRef)
 
 
 I.element_generators = [
@@ -765,6 +797,7 @@ I.element_generators = [
     element_sup_handler,
     element_strong_handler,
     element_br_handler,
+    a_handler,
 ]
 B.element_generators = [
     element_i_handler,
@@ -774,6 +807,7 @@ B.element_generators = [
     element_sup_handler,
     element_strong_handler,
     element_br_handler,
+    a_handler,
 ]
 U.element_generators = [
     element_i_handler,
@@ -783,6 +817,7 @@ U.element_generators = [
     element_sup_handler,
     element_strong_handler,
     element_br_handler,
+    a_handler,
 ]
 Sub.element_generators = []
 Sup.element_generators = []
@@ -794,6 +829,7 @@ Strong.element_generators = [
     element_sub_handler,
     element_sup_handler,
     element_br_handler,
+    a_handler,
 ]
 Al.element_generators = [
     element_i_handler,
@@ -804,6 +840,7 @@ Al.element_generators = [
     element_sup_handler,
     element_strong_handler,
     element_br_handler,
+    a_handler,
 ]
 Kop.element_generators = [
     element_i_handler,
