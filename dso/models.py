@@ -276,4 +276,4 @@ class RegelingMutatie(BaseModel):
 
 class OwData(BaseModel):
     object_ids: List[str] = Field([])
-    object_map: Dict[str, Dict[str, str]] = Field({})
+    object_map: Dict[str, Dict[str, Dict[str, str]]] = Field({})
