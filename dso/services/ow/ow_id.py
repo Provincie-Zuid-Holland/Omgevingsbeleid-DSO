@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 from uuid import uuid4
 
 from .enums import IMOWTYPES
@@ -6,7 +7,7 @@ from .enums import IMOWTYPES
 OW_REGEX = r"nl\.imow-(gm|pv|ws|mn|mnre)[0-9]{1,6}\.(regeltekst|gebied|gebiedengroep|lijn|lijnengroep|punt|puntengroep|activiteit|gebiedsaanwijzing|omgevingswaarde|omgevingsnorm|pons|kaart|tekstdeel|hoofdlijn|divisie|kaartlaag|juridischeregel|activiteitlocatieaanduiding|normwaarde|regelingsgebied|ambtsgebied|divisietekst)\.[A-Za-z0-9]{1,32}"
 
 
-def generate_ow_id(ow_type: IMOWTYPES, organisation_id: str = "pv28", unique_code: str = None):
+def generate_ow_id(ow_type: IMOWTYPES, organisation_id: str = "pv28", unique_code: Optional[str] = None):
     prefix = f"nl.imow-{organisation_id}"
     if not unique_code:
         unique_code = uuid4().hex
