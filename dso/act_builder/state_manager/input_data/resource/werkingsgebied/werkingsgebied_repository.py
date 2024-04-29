@@ -38,6 +38,9 @@ class WerkingsgebiedRepository:
             raise RuntimeError(f"Can not find werkingsgebied {code}")
         return werkingsgebied
 
+    def get_new(self) -> List[Werkingsgebied]:
+        return [w for w in self._werkingsgebieden.values() if w.New]
+
     def all(self) -> List[Werkingsgebied]:
         return list(self._werkingsgebieden.values())
 
