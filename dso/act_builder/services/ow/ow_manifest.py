@@ -3,7 +3,7 @@ from ....services.utils.helpers import load_template
 from ...state_manager.models import OutputFile, StrContentData
 
 
-class ManifestContent:
+class ManifestBuilder:
     def __init__(self, act_work: str, doel: DoelFRBR):
         self._act_work = act_work
         self._doel = doel
