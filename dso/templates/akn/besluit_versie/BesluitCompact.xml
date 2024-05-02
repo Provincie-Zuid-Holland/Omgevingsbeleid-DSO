@@ -8,9 +8,11 @@
     {{ artikelen_lichaam }}
     <Sluiting eId="formula_2" wId="formula_2">
         {{ sluiting_xml }}
+        {% if ondertekening_xml is not none %}
         <Ondertekening>
             {{ ondertekening_xml }}
         </Ondertekening>
+        {% endif %}
     </Sluiting>
     {{ wijzig_bijlage }}
 </BesluitCompact>
