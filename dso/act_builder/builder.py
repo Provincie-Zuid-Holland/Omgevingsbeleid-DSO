@@ -7,13 +7,15 @@ from ..services.utils.os import empty_directory
 from .services import BuilderService
 from .services.aanlevering_besluit.aanlevering_besluit_builder import AanleveringBesluitBuilder
 from .services.asset.asset_builder import AssetBuilder
+from .services.pdf.pdf_builder import PdfBuilder
+from .services.pdf.pdf_aanlevering_informatie_object_builder import PdfAanleveringInformatieObjectBuilder
 from .services.geo.geo_informatie_object_vaststelling_builder import GeoInformatieObjectVaststellingBuilder
 from .services.geo.gio_aanlevering_informatie_object_builder import GioAanleveringInformatieObjectBuilder
 from .services.lvbb.manifest_builder import ManifestBuilder
 from .services.lvbb.opdracht_builder import OpdrachtBuilder
 from .services.ow.ow_builder import OwBuilder
 from .state_manager.input_data.input_data_loader import InputData
-from .state_manager.models import AssetContentData, StrContentData
+from .state_manager.models import AssetContentData, StrContentData, PdfContentData
 from .state_manager.state_manager import StateManager
 
 
@@ -26,6 +28,8 @@ class Builder:
             OwBuilder(),
             GeoInformatieObjectVaststellingBuilder(),
             GioAanleveringInformatieObjectBuilder(),
+            PdfBuilder(),
+            PdfAanleveringInformatieObjectBuilder(),
             AssetBuilder(),
             ManifestBuilder(),
         ]
@@ -47,6 +51,10 @@ class Builder:
                 case AssetContentData():
                     create_image(output_file.content.asset, destination_path)
 
+                case PdfContentData():
+                    with open(destination_path, "wb") as f:
+                        f.write(output_file.content.pdf.binary)
+
     def zip_files(self) -> io.BytesIO:
         zip_buffer = io.BytesIO()
         with ZipFile(zip_buffer, "a", ZIP_DEFLATED, False) as zip_file:
@@ -58,22 +66,17 @@ class Builder:
                     case AssetContentData():
                         create_image_in_zip(output_file.content.asset, zip_file, output_file.filename)
 
+                    case PdfContentData():
+                        zip_file.write(output_file.filename, output_file.content.pdf.binary)
+
         zip_buffer.seek(0)
         return zip_buffer
 
-    def export_json_state(self) -> str:
-        """
-        Export a JSON representation of the state to archive
-        the inpurt/output of the builder and handle new objects created.
-        """
-        state = self._state_manager.build_state_export()
-        return state.json()
-
     def get_used_wid_map(self) -> Dict[str, str]:
-        return self._state_manager.ewid_service.get_state_used_wid_map()
+        return self._state_manager.act_ewid_service.get_state_used_wid_map()
 
     def get_used_wids(self) -> List[str]:
-        return self._state_manager.ewid_service.get_state_used_wids()
+        return self._state_manager.act_ewid_service.get_state_used_wids()
 
     def get_regeling_vrijetekst(self) -> Optional[str]:
         return self._state_manager.regeling_vrijetekst

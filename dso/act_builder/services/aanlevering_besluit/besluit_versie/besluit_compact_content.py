@@ -8,6 +8,7 @@ from ....state_manager.input_data.besluit import Besluit
 from ....state_manager.state_manager import StateManager
 from .besluit_compact.artikelen_content import ArtikelenContent
 from .besluit_compact.wijzig_bijlage_content import WijzigBijlageContent
+from .besluit_compact.motivering_content import MotiveringContent
 
 
 class BesluitCompactContent:
@@ -25,6 +26,8 @@ class BesluitCompactContent:
         ondertekening_xml: Optional[str] = None
         if besluit.ondertekening != "":
             ondertekening_xml = self._html_to_xml_without_root(besluit.ondertekening)
+        
+        motivering_xml: str = MotiveringContent(self._state_manager).create()
 
         content = load_template(
             "akn/besluit_versie/BesluitCompact.xml",
@@ -34,6 +37,7 @@ class BesluitCompactContent:
             aanhef_xml=aanhef_xml,
             sluiting_xml=sluiting_xml,
             ondertekening_xml=ondertekening_xml,
+            motivering_xml=motivering_xml,
         )
         return content
 

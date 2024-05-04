@@ -26,11 +26,16 @@ class StateManager:
 
         # Service is in the state manager
         # As we use it on multiple places, and the internal state should be updates for each use
-        self.ewid_service: EWIDService = EWIDService(
+        # @note: act_ewid_service is used within:
+        #           <RegelingVrijetekst componentnaam="nieuweregeling"
+        self.act_ewid_service: EWIDService = EWIDService(
             wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.Expression_Version}",
             known_wid_map=input_data.get_known_wid_map(),
             known_wids=input_data.get_known_wids(),
             werkingsgebied_repository=input_data.resources.werkingsgebied_repository,
+        )
+        self.bill_ewid_service: EWIDService = EWIDService(
+            wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.Expression_Version}",
         )
 
     def add_output_file(self, output_file: OutputFile):

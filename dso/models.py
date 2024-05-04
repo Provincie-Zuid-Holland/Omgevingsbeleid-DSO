@@ -78,6 +78,25 @@ class GioFRBR(FRBR):
         return expression_part
 
 
+# <FRBRWork>/join/id/pubdata/pv28/2024/3</FRBRWork>
+# <FRBRExpression>/join/id/pubdata/pv28/2024/3/nld@2024-01-30;1855</FRBRExpression>
+#
+# @todo: This can be merged with GioFRBR, where should be set what the publication instruction is
+#           which determines the `collection` (pubdata/regdata)
+# @see: https://koop.gitlab.io/STOP/standaard/1.3.0/identificatie_niet-tekst.html
+# @see: https://koop.gitlab.io/STOP/standaard/1.3.0/EA_EC4DE25BFB1341e6B632337DAF9C2791.html#Pkg__9058BA66AF9F44fbA43752F65A2654AF
+class PubdataFRBR(FRBR):
+    def get_work(self) -> str:
+        work: str = f"/join/id/pubdata/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        return work
+
+    def get_expression_part(self) -> str:
+        expression_part: str = f"{self.Expression_Language}@{self.Expression_Date}"
+        if self.Expression_Version is not None:
+            expression_part = f"{expression_part};{self.Expression_Version}"
+        return expression_part
+
+
 # <FRBRWork>/akn/nl/doc/pv28/2023/kennisgeving-omgevingsvisie-1</FRBRWork>
 # <FRBRExpression>/akn/nl/doc/pv28/2023/kennisgeving-omgevingsvisie-1/nld@2024-09-29;2</FRBRExpression>
 class DocFRBR(FRBR):
@@ -131,6 +150,7 @@ class ProcedureVerloop(BaseModel):
 class ContentType(str, Enum):
     GML = "application/gml+xml"
     XML = "application/xml"
+    PDF = "application/pdf"
     JPG = "image/jpeg"
     PNG = "image/png"
 

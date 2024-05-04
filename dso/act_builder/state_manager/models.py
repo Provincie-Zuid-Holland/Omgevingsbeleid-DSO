@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 
 from ...models import ContentType
 from .input_data.resource.asset.asset import Asset
+from .input_data.resource.pdf.pdf import Pdf
 
 
 class ContentData(ABC):
@@ -17,6 +18,11 @@ class StrContentData(ContentData):
 class AssetContentData(ContentData):
     def __init__(self, asset: Asset):
         self.asset: Asset = asset
+
+
+class PdfContentData(ContentData):
+    def __init__(self, pdf: Pdf):
+        self.pdf: Pdf = pdf
 
 
 @dataclass

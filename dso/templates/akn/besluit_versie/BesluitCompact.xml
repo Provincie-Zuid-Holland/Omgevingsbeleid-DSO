@@ -15,4 +15,5 @@
         {% endif %}
     </Sluiting>
     {{ wijzig_bijlage }}
+    {{ motivering_xml }}
 </BesluitCompact>

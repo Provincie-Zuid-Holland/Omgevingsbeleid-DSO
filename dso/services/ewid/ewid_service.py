@@ -41,9 +41,9 @@ class EWIDService:
         # wId lookup used by OW files
         self._state_object_tekst_lookup: dict = {}
 
-    def add_ewids(self, xml_source: str) -> str:
+    def add_ewids(self, xml_source: str, parent_eid="", parent_wid="", parent_tag_name="") -> str:
         root = self._parse_xml(xml_source)
-        self._fill_ewid(root)
+        self._fill_ewid(root, parent_eid, parent_wid, parent_tag_name)
         result_xml: str = ET.tostring(root, encoding="utf-8").decode("utf-8")
         return result_xml
 
