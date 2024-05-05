@@ -67,7 +67,7 @@ class Builder:
                         create_image_in_zip(output_file.content.asset, zip_file, output_file.filename)
 
                     case PdfContentData():
-                        zip_file.write(output_file.filename, output_file.content.pdf.binary)
+                        zip_file.writestr(output_file.filename, output_file.content.pdf.binary)
 
         zip_buffer.seek(0)
         return zip_buffer
