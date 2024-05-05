@@ -3,7 +3,7 @@ from typing import Optional
 from bs4 import BeautifulSoup
 
 from ......models import PublicationSettings
-from ......services.tekst.tekst import Inhoud
+from ......services.tekst.tekst import Divisietekst
 from ......services.utils.helpers import load_template
 from .....state_manager.input_data.besluit import Motivering
 from .....state_manager.state_manager import StateManager
@@ -43,7 +43,7 @@ class MotiveringContent:
 
     def _html_to_xml_inhoud(self, html: str) -> str:
         input_soup = BeautifulSoup(html, "html.parser")
-        lichaam = Inhoud()
+        lichaam = Divisietekst()
         lichaam.consume_children(input_soup.children)
 
         output_soup = BeautifulSoup(features="xml")

@@ -3,7 +3,7 @@ from typing import List
 from bs4 import BeautifulSoup
 
 from ......models import PublicationSettings
-from ......services.tekst.tekst import Inhoud
+from ......services.tekst.tekst import Divisietekst
 from ......services.utils.helpers import load_template
 from .....state_manager.input_data.besluit import Bijlage
 from .....state_manager.state_manager import StateManager
@@ -50,9 +50,9 @@ class BijlagenContent:
 
         return content
 
-    def _html_to_xml_inhoud(self, html: str) -> str:
+    def _html_to_xml_divisietekst(self, html: str) -> str:
         input_soup = BeautifulSoup(html, "html.parser")
-        lichaam = Inhoud()
+        lichaam = Divisietekst()
         lichaam.consume_children(input_soup.children)
 
         output_soup = BeautifulSoup(features="xml")
