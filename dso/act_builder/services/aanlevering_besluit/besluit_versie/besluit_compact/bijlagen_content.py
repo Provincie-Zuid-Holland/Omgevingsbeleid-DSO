@@ -72,7 +72,7 @@ class BijlagenContent:
             pdf: Pdf = self._pdf_repository.get(int(pdf_id))
             frbr: str = pdf.frbr.get_expression()
             search = f"[REF_BILL_PDF:{pdf_id}]"
-            replacement = f"""<ExtIoRef ref="{frbr}">{frbr}</ExtIoRef>"""
+            replacement = f"""<ExtRef soort="JOIN" ref="{frbr}">{frbr}</ExtRef>"""
             content = content.replace(search, replacement)
 
         return content
