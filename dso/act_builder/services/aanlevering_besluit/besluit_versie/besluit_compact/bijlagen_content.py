@@ -69,7 +69,7 @@ class BijlagenContent:
     def _replace_ref_bill_pdf(self, content: str) -> str:
         matches = re.findall(self._ref_bill_pdf_pattern, content)
         for pdf_id in matches:
-            pdf: Pdf = self._pdf_repository.get(pdf_id)
+            pdf: Pdf = self._pdf_repository.get(int(pdf_id))
             frbr: str = pdf.frbr.get_expression()
             search = f"[REF_BILL_PDF:{pdf_id}]"
             replacement = f"""<ExtIoRef ref="{frbr}">{frbr}</ExtIoRef>"""
