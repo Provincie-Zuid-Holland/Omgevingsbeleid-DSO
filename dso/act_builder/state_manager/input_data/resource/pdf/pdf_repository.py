@@ -16,7 +16,7 @@ class PdfRepository:
             self.add(pdf)
 
     def get_optional(self, idx: int) -> Optional[Pdf]:
-        pdf: Optional[Pdf] = self._pdfs.get(str(idx))
+        pdf: Optional[Pdf] = self._pdfs.get(idx)
         return pdf
 
     def get(self, idx: int) -> Pdf:
