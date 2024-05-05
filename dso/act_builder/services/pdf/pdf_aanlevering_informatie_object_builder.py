@@ -29,7 +29,7 @@ class PdfAanleveringInformatieObjectBuilder(BuilderService):
         pdf_hash = compute_sha512_of_output_file(output_file)
 
         content = load_template(
-            "geo/AanleveringInformatieObject.xml",
+            "pdf/AanleveringInformatieObject.xml",
             pretty_print=True,
             pdf_frbr=pdf.frbr,
             pdf_filename=pdf_filename,
