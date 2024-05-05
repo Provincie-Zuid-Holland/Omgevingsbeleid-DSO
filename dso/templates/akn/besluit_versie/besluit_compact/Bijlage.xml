@@ -2,7 +2,7 @@
     <Kop>
         <Label>Bijlage</Label>
         <Nummer>{{ nummer }}</Nummer>
-        <Opschrift>{{ opschrift }}</Opschrift>
+        <Opschrift>{{ opschrift | e }}</Opschrift>
     </Kop>
     {{ inhoud }}
 </Bijlage>
