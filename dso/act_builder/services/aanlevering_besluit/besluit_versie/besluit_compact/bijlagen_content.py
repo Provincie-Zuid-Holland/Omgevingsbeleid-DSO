@@ -31,7 +31,7 @@ class BijlagenContent:
         bijlage_eid: str = f"cmp_{bijlage.nummer}"
         bijlage_wid: str = f"{wid_prefix}{bijlage_eid}"
 
-        xml_content: str = self._html_to_xml_inhoud(bijlage.content)
+        xml_content: str = self._html_to_xml_divisietekst(bijlage.content)
         motivering_content: str = self._state_manager.act_ewid_service.add_ewids(
             xml_content,
             bijlage_eid,

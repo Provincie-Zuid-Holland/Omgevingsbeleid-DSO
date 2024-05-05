@@ -23,7 +23,7 @@ class MotiveringContent:
         motivering_eid: str = "acc"
         motivering_wid: str = f"{wid_prefix}{motivering_eid}"
 
-        xml_content: str = self._html_to_xml_inhoud(motivering.content)
+        xml_content: str = self._html_to_xml_divisietekst(motivering.content)
         motivering_content: str = self._state_manager.act_ewid_service.add_ewids(
             xml_content,
             motivering_eid,
@@ -41,7 +41,7 @@ class MotiveringContent:
 
         return content
 
-    def _html_to_xml_inhoud(self, html: str) -> str:
+    def _html_to_xml_divisietekst(self, html: str) -> str:
         input_soup = BeautifulSoup(html, "html.parser")
         lichaam = Divisietekst()
         lichaam.consume_children(input_soup.children)
