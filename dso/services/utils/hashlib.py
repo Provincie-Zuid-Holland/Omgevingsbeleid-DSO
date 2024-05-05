@@ -1,6 +1,6 @@
 import hashlib
 
-from ...act_builder.state_manager.models import AssetContentData, OutputFile, StrContentData, PdfContentData
+from ...act_builder.state_manager.models import AssetContentData, OutputFile, PdfContentData, StrContentData
 
 
 def compute_sha512(file_path):

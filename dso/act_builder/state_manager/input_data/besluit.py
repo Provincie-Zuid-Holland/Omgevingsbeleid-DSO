@@ -6,10 +6,15 @@ from ....services.utils.waardelijsten import OnderwerpType, ProcedureType, Recht
 
 
 class Artikel(BaseModel):
-    label: str = Field("Artikel") # @deprecated
+    label: str = Field("Artikel")  # @deprecated
     nummer: str
     inhoud: str
 
+
+class Bijlage(BaseModel):
+    nummer: str
+    opschrift: str
+    content: str
 
 
 class Motivering(BaseModel):
@@ -33,7 +38,8 @@ class Besluit(BaseModel):
     rechtsgebieden: List[RechtsgebiedType]
     onderwerpen: List[OnderwerpType]
     soort_procedure: ProcedureType
-    motivering: Optional[Motivering]
+    bijlagen: List[Bijlage] = Field([])
+    motivering: Optional[Motivering] = Field(None)
 
     @validator("rechtsgebieden", pre=True, always=True)
     def _format_rechtsgebieden(cls, v):

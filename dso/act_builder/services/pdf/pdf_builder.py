@@ -1,11 +1,11 @@
 from typing import List
 
+from ....models import ContentType
 from ...services import BuilderService
 from ...state_manager.input_data.resource.pdf.pdf import Pdf
 from ...state_manager.input_data.resource.pdf.pdf_repository import PdfRepository
-from ...state_manager.models import PdfContentData, OutputFile
+from ...state_manager.models import OutputFile, PdfContentData
 from ...state_manager.state_manager import StateManager
-from ....models import ContentType
 
 
 class PdfBuilder(BuilderService):
