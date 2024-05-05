@@ -40,7 +40,7 @@ class ArtikelenContent:
             artikel_dict: dict = self._create_article(tekst_artikel.nummer, inhoud)
 
             tekst_artikelen.append(artikel_dict)
-            self._state_manager.artikel_eid.add(tekst_artikel["eId"], ArtikelEidType.TEKST)
+            self._state_manager.artikel_eid.add(artikel_dict["eId"], ArtikelEidType.TEKST)
 
         content = load_template(
             "akn/besluit_versie/besluit_compact/Artikelen.xml",
