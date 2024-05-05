@@ -1,3 +1,4 @@
+import re
 from typing import Optional
 
 from bs4 import BeautifulSoup
@@ -13,6 +14,7 @@ from .....state_manager.states.artikel_eid_repository import ArtikelEidType
 class ArtikelenContent:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
+        self._ref_appendix_pattern = r"\[REF_APPENDIX:([^\]]+)\]"
 
     def create(self) -> str:
         besluit: Besluit = self._state_manager.input_data.besluit
@@ -37,6 +39,7 @@ class ArtikelenContent:
         tekst_artikelen = []
         for tekst_artikel in besluit.tekst_artikelen:
             inhoud = self._html_to_xml_inhoud(tekst_artikel.inhoud)
+            inhoud = self._replace_ref_appendices(inhoud)
             artikel_dict: dict = self._create_article(tekst_artikel.nummer, inhoud)
 
             tekst_artikelen.append(artikel_dict)
@@ -74,3 +77,12 @@ class ArtikelenContent:
         output = lichaam.as_xml(output_soup)
         output_xml = str(output)
         return output_xml
+
+    def _replace_ref_appendices(self, content: str) -> str:
+        matches = re.findall(self._ref_appendix_pattern, content)
+        for ref_id in matches:
+            search = f"[REF_APPENDIX:{ref_id}]"
+            replacement = f"""<IntRef ref="cmp_{ref_id}">Bijlage {ref_id}</IntRef>"""
+            content = content.replace(search, replacement)
+
+        return content

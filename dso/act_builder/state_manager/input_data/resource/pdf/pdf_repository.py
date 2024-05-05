@@ -1,4 +1,3 @@
-import uuid
 from typing import Dict, List, Optional
 
 from .pdf import Pdf
@@ -20,7 +19,7 @@ class PdfRepository:
         pdf: Optional[Pdf] = self._pdfs.get(str(idx))
         return pdf
 
-    def get(self, idx: uuid.UUID) -> Pdf:
+    def get(self, idx: int) -> Pdf:
         pdf: Optional[Pdf] = self.get_optional(idx)
         if pdf is None:
             raise RuntimeError(f"Can not find pdf {idx}")
