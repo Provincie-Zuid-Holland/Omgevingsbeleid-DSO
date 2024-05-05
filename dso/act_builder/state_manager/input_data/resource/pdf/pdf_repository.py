@@ -9,7 +9,7 @@ class PdfRepository:
         self._pdfs: Dict[str, Pdf] = {}
 
     def add(self, pdf: dict):
-        pdf_id = pdf["ID"]
+        pdf_id = pdf["id"]
         self._pdfs[pdf_id] = Pdf.parse_obj(pdf)
 
     def add_list(self, pdfs: List[dict]):
