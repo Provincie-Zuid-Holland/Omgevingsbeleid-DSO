@@ -35,7 +35,6 @@ class MotiveringContent:
             "akn/besluit_versie/besluit_compact/Motivering.xml",
             motivering_eid=motivering_eid,
             motivering_wid=motivering_wid,
-            nummer=motivering.nummer,
             opschrift=motivering.opschrift,
             inhoud=motivering_content,
         )

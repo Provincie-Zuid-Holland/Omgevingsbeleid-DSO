@@ -18,7 +18,6 @@ class Bijlage(BaseModel):
 
 
 class Motivering(BaseModel):
-    nummer: str
     opschrift: str
     content: str
 

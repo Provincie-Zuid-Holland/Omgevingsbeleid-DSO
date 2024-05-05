@@ -1,7 +1,6 @@
 <Motivering eId="{{ motivering_eid }}" wId="{{ motivering_wid }}">
     <Kop>
         <Label>Motivering</Label>
-        <Nummer>{{ nummer }}</Nummer>
         <Opschrift>{{ opschrift }}</Opschrift>
     </Kop>
     {{ inhoud }}
