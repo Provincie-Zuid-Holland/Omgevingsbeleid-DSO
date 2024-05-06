@@ -50,8 +50,10 @@ class WijzigBijlageContent:
         # We store the regelingvrijetekst for the future mutation in case we implemented Renvooi
         self._state_manager.regeling_vrijetekst = regeling_vrijetekst
 
+        wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__"
         content = load_template(
             "akn/besluit_versie/besluit_compact/WijzigBijlage.xml",
             regeling_content=regeling_content,
+            wId_prefix=wId_prefix,
         )
         return content

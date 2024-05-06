@@ -1,4 +1,4 @@
-<WijzigBijlage eId="cmp_A" wId="{{ wid_prefix }}cmp_A">
+<WijzigBijlage eId="cmp_A" wId="{{ wId_prefix }}cmp_A">
     <Kop>
         <Label>Bijlage</Label>
         <Nummer>A</Nummer>

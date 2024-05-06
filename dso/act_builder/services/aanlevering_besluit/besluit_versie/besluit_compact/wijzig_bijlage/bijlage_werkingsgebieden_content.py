@@ -23,7 +23,7 @@ class BijlageWerkingsgebiedenContent:
             werkingsgebieden=werkingsgebieden,
         )
 
-        content = self._state_manager.ewid_service.add_ewids(content)
+        content = self._state_manager.act_ewid_service.add_ewids(content)
         content = self._create_werkingsgebieden_wid_lookup(content)
         content = self._remove_hints(content)
 

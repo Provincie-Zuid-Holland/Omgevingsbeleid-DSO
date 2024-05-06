@@ -1,29 +1,33 @@
 <Lichaam eId="body" wId="body">
     <WijzigArtikel eId="{{ wijzig_artikel.eId }}" wId="{{ wijzig_artikel.wId }}">
         <Kop>
-            <Label>{{ wijzig_artikel.label }}</Label>
+            <Label>Artikel</Label>
             <Nummer>{{ wijzig_artikel.nummer }}</Nummer>
         </Kop>
         <Wat>{{ wijzig_artikel.inhoud }}</Wat>
     </WijzigArtikel>
+    {% if tijd_artikel is not none %}
+    <Artikel eId="{{ tijd_artikel.eId }}" wId="{{ tijd_artikel.wId }}">
+        <Kop>
+            <Label>Artikel</Label>
+            <Nummer>{{ tijd_artikel.nummer }}</Nummer>
+        </Kop>
+        {% if tijd_artikel.inhoud %}
+        <Inhoud>
+            {{ tijd_artikel.inhoud }}
+        </Inhoud>
+        {% else %}
+            <Gereserveerd/>
+        {% endif %}
+    </Artikel>
+    {% endif %}
     {% for tekst_artikel in tekst_artikelen %}
     <Artikel eId="{{ tekst_artikel.eId }}" wId="{{ tekst_artikel.wId }}">
         <Kop>
-            <Label>{{ tekst_artikel.label }}</Label>
+            <Label>Artikel</Label>
             <Nummer>{{ tekst_artikel.nummer }}</Nummer>
         </Kop>
         {{ tekst_artikel.inhoud }}
     </Artikel>
     {% endfor %}
-    {% if tijd_artikel is not none %}
-    <Artikel eId="{{ tijd_artikel.eId }}" wId="{{ tijd_artikel.wId }}">
-        <Kop>
-            <Label>{{ tijd_artikel.label }}</Label>
-            <Nummer>{{ tijd_artikel.nummer }}</Nummer>
-        </Kop>
-        <Inhoud>
-            {{ tijd_artikel.inhoud }}
-        </Inhoud>
-    </Artikel>
-    {% endif %}
 </Lichaam>

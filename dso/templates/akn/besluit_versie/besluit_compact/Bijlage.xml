@@ -1,0 +1,8 @@
+<Bijlage eId="{{ bijlage_eid }}" wId="{{ bijlage_wid }}">
+    <Kop>
+        <Label>Bijlage</Label>
+        <Nummer>{{ nummer }}</Nummer>
+        <Opschrift>{{ opschrift | e }}</Opschrift>
+    </Kop>
+    {{ inhoud }}
+</Bijlage>

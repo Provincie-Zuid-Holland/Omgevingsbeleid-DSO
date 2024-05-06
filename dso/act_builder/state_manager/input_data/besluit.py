@@ -1,13 +1,25 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, Field, validator
 
 from ....services.utils.waardelijsten import OnderwerpType, ProcedureType, RechtsgebiedType
 
 
 class Artikel(BaseModel):
-    label: str
+    label: str = Field("Artikel")  # @deprecated
+    nummer: str
     inhoud: str
+
+
+class Bijlage(BaseModel):
+    nummer: str
+    opschrift: str
+    content: str
+
+
+class Motivering(BaseModel):
+    opschrift: str
+    content: str
 
 
 class Besluit(BaseModel):
@@ -17,7 +29,7 @@ class Besluit(BaseModel):
     wijzig_artikel: Artikel
     tekst_artikelen: List[Artikel]
 
-    # tijd_artikel does not exist on drafts
+    # tijd_artikel does not exist on drafts and should then be set to reserved
     tijd_artikel: Optional[Artikel]
 
     sluiting: str
@@ -25,6 +37,8 @@ class Besluit(BaseModel):
     rechtsgebieden: List[RechtsgebiedType]
     onderwerpen: List[OnderwerpType]
     soort_procedure: ProcedureType
+    bijlagen: List[Bijlage] = Field([])
+    motivering: Optional[Motivering] = Field(None)
 
     @validator("rechtsgebieden", pre=True, always=True)
     def _format_rechtsgebieden(cls, v):

@@ -1,0 +1,7 @@
+<Motivering eId="{{ motivering_eid }}" wId="{{ motivering_wid }}">
+    <Kop>
+        <Label>Motivering</Label>
+        <Opschrift>{{ opschrift }}</Opschrift>
+    </Kop>
+    {{ inhoud }}
+</Motivering>

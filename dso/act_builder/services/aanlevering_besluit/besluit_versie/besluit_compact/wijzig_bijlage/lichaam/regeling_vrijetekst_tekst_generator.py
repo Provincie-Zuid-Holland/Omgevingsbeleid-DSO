@@ -70,7 +70,7 @@ class RegelingVrijetekstTekstGenerator:
         return output
 
     def _add_ewids(self, xml_data: str) -> str:
-        result: str = self._state_manager.ewid_service.add_ewids(xml_data)
+        result: str = self._state_manager.act_ewid_service.add_ewids(xml_data)
         return result
 
     def _remove_hints(self, xml_data: str) -> str:

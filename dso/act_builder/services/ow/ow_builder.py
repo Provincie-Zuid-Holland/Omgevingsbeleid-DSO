@@ -36,7 +36,7 @@ class OwBuilder(BuilderService):
         locaties_content = OwLocatiesContent(
             provincie_id=provincie_id,
             werkingsgebieden=werkingsgebieden,
-            object_tekst_lookup=state_manager.ewid_service.get_state_object_tekst_lookup(),
+            object_tekst_lookup=state_manager.act_ewid_service.get_state_object_tekst_lookup(),
             levering_id=leveringid,
             ow_procedure_status=ow_procedure_status,
             ambtsgebied_data=ambtsgebied,
@@ -46,7 +46,7 @@ class OwBuilder(BuilderService):
 
         divisie_content = OwDivisieContent(
             provincie_id=provincie_id,
-            object_tekst_lookup=state_manager.ewid_service.get_state_object_tekst_lookup(),
+            object_tekst_lookup=state_manager.act_ewid_service.get_state_object_tekst_lookup(),
             levering_id=leveringid,
             ow_procedure_status=ow_procedure_status,
         )

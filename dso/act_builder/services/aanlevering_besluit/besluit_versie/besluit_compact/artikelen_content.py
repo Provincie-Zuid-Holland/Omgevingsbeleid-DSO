@@ -1,6 +1,6 @@
-from typing import List, Optional
+import re
+from typing import Optional
 
-import roman
 from bs4 import BeautifulSoup
 
 from ......models import PublicationSettings
@@ -14,47 +14,36 @@ from .....state_manager.states.artikel_eid_repository import ArtikelEidType
 class ArtikelenContent:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
+        self._ref_appendix_pattern = r"\[REF_APPENDIX:([^\]]+)\]"
 
     def create(self) -> str:
-        settings: PublicationSettings = self._state_manager.input_data.publication_settings
         besluit: Besluit = self._state_manager.input_data.besluit
 
-        wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__"
-        eId_prefix: str = "art_"
-        eId_counter: List[int] = [1]  # List allows us to modify it, as it goes by reference
+        # Wijziging Artikel
+        wijzig_artikel = self._create_article(
+            besluit.wijzig_artikel.nummer,
+            besluit.wijzig_artikel.inhoud,
+        )
+        self._state_manager.artikel_eid.add(wijzig_artikel["eId"], ArtikelEidType.WIJZIG)
 
-        def create_article(label, inhoud):
-            nonlocal eId_counter
-            eId = f"{eId_prefix}{roman.toRoman(eId_counter[0])}"
-            wId = f"{wId_prefix}{eId}"
-            artikel = {
-                "eId": eId,
-                "wId": wId,
-                "label": label,
-                "nummer": roman.toRoman(eId_counter[0]),
-                "inhoud": inhoud,
-            }
-            eId_counter[0] += 1
-            return artikel
+        # Tijds Artikel
+        tijd_artikel: Optional[dict] = None
+        if besluit.tijd_artikel is not None:
+            tijd_artikel = self._create_article(
+                besluit.tijd_artikel.nummer,
+                besluit.tijd_artikel.inhoud,
+            )
+            self._state_manager.artikel_eid.add(tijd_artikel["eId"], ArtikelEidType.BESLUIT_INWERKINGSTIJD)
 
-        wijzig_artikel = create_article(besluit.wijzig_artikel.label, besluit.wijzig_artikel.inhoud)
-
+        # Tekst Artikelen
         tekst_artikelen = []
         for tekst_artikel in besluit.tekst_artikelen:
             inhoud = self._html_to_xml_inhoud(tekst_artikel.inhoud)
-            tekst_artikelen.append(create_article(tekst_artikel.label, inhoud))
+            inhoud = self._replace_ref_appendices(inhoud)
+            artikel_dict: dict = self._create_article(tekst_artikel.nummer, inhoud)
 
-        tijd_artikel: Optional[dict] = None
-        if besluit.tijd_artikel is not None:
-            tijd_artikel = create_article(besluit.tijd_artikel.label, besluit.tijd_artikel.inhoud)
-
-        # Store the eId's as we need them later
-        self._state_manager.artikel_eid.add(wijzig_artikel["eId"], ArtikelEidType.WIJZIG)
-        for tekst_artikel in tekst_artikelen:
-            self._state_manager.artikel_eid.add(tekst_artikel["eId"], ArtikelEidType.TEKST)
-
-        if tijd_artikel is not None:
-            self._state_manager.artikel_eid.add(tijd_artikel["eId"], ArtikelEidType.BESLUIT_INWERKINGSTIJD)
+            tekst_artikelen.append(artikel_dict)
+            self._state_manager.artikel_eid.add(artikel_dict["eId"], ArtikelEidType.TEKST)
 
         content = load_template(
             "akn/besluit_versie/besluit_compact/Artikelen.xml",
@@ -63,6 +52,21 @@ class ArtikelenContent:
             tijd_artikel=tijd_artikel,
         )
         return content
+
+    def _create_article(self, nummer, inhoud):
+        settings: PublicationSettings = self._state_manager.input_data.publication_settings
+        wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__"
+        eId_prefix: str = "art_"
+
+        eId = f"{eId_prefix}{nummer}"
+        wId = f"{wId_prefix}{eId}"
+        artikel = {
+            "eId": eId,
+            "wId": wId,
+            "nummer": nummer,
+            "inhoud": inhoud,
+        }
+        return artikel
 
     def _html_to_xml_inhoud(self, html: str) -> str:
         input_soup = BeautifulSoup(html, "html.parser")
@@ -73,3 +77,12 @@ class ArtikelenContent:
         output = lichaam.as_xml(output_soup)
         output_xml = str(output)
         return output_xml
+
+    def _replace_ref_appendices(self, content: str) -> str:
+        matches = re.findall(self._ref_appendix_pattern, content)
+        for ref_id in matches:
+            search = f"[REF_APPENDIX:{ref_id}]"
+            replacement = f"""<IntRef ref="cmp_{ref_id}">Bijlage {ref_id}</IntRef>"""
+            content = content.replace(search, replacement)
+
+        return content

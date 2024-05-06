@@ -1,6 +1,7 @@
 from typing import List
 
 from .....services.utils.helpers import load_template
+from ....state_manager.input_data.resource.pdf.pdf import Pdf
 from ....state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from ....state_manager.state_manager import StateManager
 
@@ -10,13 +11,18 @@ class BesluitMetadataContent:
         self._state_manager: StateManager = state_manager
 
     def create(self) -> str:
+        informatieobject_refs: List[str] = []
+
         werkingsgebieden: List[Werkingsgebied] = (
             self._state_manager.input_data.resources.werkingsgebied_repository.all()
         )
-        informatieobject_refs: List[str] = []
         for werkingsgebied in werkingsgebieden:
             if werkingsgebied.New:
                 informatieobject_refs.append(werkingsgebied.Frbr.get_expression())
+
+        pdfs: List[Pdf] = self._state_manager.input_data.resources.pdf_repository.all()
+        for pdf in pdfs:
+            informatieobject_refs.append(pdf.frbr.get_expression())
 
         content = load_template(
             "akn/besluit_versie/BesluitMetadata.xml",
