@@ -38,7 +38,7 @@ class BijlagenContent:
 
         xml_content: str = self._html_to_xml_divisietekst(bijlage.content)
         xml_content = self._replace_ref_bill_pdf(xml_content)
-        motivering_content: str = self._state_manager.act_ewid_service.add_ewids(
+        bijlage_content: str = self._state_manager.act_ewid_service.add_ewids(
             xml_content,
             bijlage_eid,
             bijlage_wid,
@@ -51,7 +51,7 @@ class BijlagenContent:
             bijlage_wid=bijlage_wid,
             nummer=bijlage.nummer,
             opschrift=bijlage.opschrift,
-            inhoud=motivering_content,
+            inhoud=bijlage_content,
         )
 
         return content
