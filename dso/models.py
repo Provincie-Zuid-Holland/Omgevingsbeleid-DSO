@@ -274,6 +274,24 @@ class RegelingMutatie(BaseModel):
     bekend_wids: List[str]
 
 
+class OwIdMapping(BaseModel):
+    gebieden: Dict[str, str] = Field(default_factory=dict)
+    gebiedengroep: Dict[str, str] = Field(default_factory=dict)
+    ambtsgebied: Dict[str, str] = Field(default_factory=dict)
+    wid: Dict[str, str] = Field(default_factory=dict)
+    regelingsgebied: Dict[str, str] = Field(default_factory=dict)
+
+
+class OwTekstdeelMap(BaseModel):
+    divisie: str = ""
+    location: str = ""
+
+
+class OwObjectMap(BaseModel):
+    id_mapping: OwIdMapping = Field(default_factory=OwIdMapping)
+    tekstdeel_mapping: Dict[str, OwTekstdeelMap] = Field(default_factory=dict)
+
+
 class OwData(BaseModel):
-    object_ids: List[str] = Field([])
-    object_map: Dict[str, Dict[str, Dict[str, str]]] = Field({})
+    object_ids: List[str] = Field(default_factory=list)
+    object_map: OwObjectMap = Field(default_factory=OwObjectMap)
