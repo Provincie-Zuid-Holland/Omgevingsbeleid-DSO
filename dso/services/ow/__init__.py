@@ -1,14 +1,20 @@
-from .enums import IMOWTYPES, OwDivisieObjectType, OwLocatieObjectType, OwProcedureStatus, OwRegelingsgebiedObjectType
+from .enums import (
+    IMOWTYPES,
+    OwDivisieObjectType,
+    OwLocatieObjectType,
+    OwProcedureStatus,
+    OwRegelingsgebiedObjectType,
+    OwObjectStatus,
+)
 from .exceptions import OWObjectGenerationError
 from .models import (
-    Annotation,
     BestuurlijkeGrenzenVerwijzing,
     OWAmbtsgebied,
     OWDivisie,
     OWDivisieTekst,
     OWGebied,
     OWGebiedenGroep,
-    OWLocation,
+    OWLocatie,
     OWObject,
     OWRegelingsgebied,
     OWTekstDeel,

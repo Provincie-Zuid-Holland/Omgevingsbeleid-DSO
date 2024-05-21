@@ -1,12 +1,9 @@
 from typing import List, Optional
 
 from ...services.ewid.ewid_service import EWIDService
-from ..state_manager.states.artikel_eid_repository import ArtikelEidRepository
-from ..state_manager.states.ow_repository import OWStateRepository
 from .input_data.input_data_loader import InputData
 from .models import OutputFile
-from .states.artikel_eid_repository import ArtikelEidRepository
-from .states.ow_repository import OWStateRepository
+from .states import ArtikelEidRepository, OWRepository
 
 
 class StateManager:
@@ -14,15 +11,15 @@ class StateManager:
         self.input_data: InputData = input_data
         self.werkingsgebied_eid_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
-        self.ow_repository: OWStateRepository = OWStateRepository(input_data.ow_data)
+        self.ow_repository: OWRepository = OWRepository(input_data.ow_data)
         self.output_files: List[OutputFile] = []
         self.debug: dict = {}
         self.regeling_vrijetekst: Optional[str] = None
 
-        # All OW IDS for export purposes
-        self.created_ow_object_ids: List[str] = []
-        # Mapping of created OW IDS to input identifiers for export state reference
-        self.created_ow_objects_map: dict = {}
+        # result state of ow object data after processing
+        self.used_ow_object_ids: List[str] = []
+        self.terminated_ow_object_ids: List[str] = []
+        self.used_ow_objects_map: dict = {}
 
         # Service is in the state manager
         # As we use it on multiple places, and the internal state should be updates for each use
@@ -35,6 +32,9 @@ class StateManager:
 
     def add_output_file(self, output_file: OutputFile):
         self.output_files.append(output_file)
+
+    def add_output_files(self, output_files: List[OutputFile]):
+        self.output_files.extend(output_files)
 
     def get_output_files(self) -> List[OutputFile]:
         output_files = sorted(self.output_files, key=lambda o: o.filename)
