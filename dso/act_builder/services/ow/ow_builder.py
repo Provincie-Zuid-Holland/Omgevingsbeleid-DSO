@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Optional
+from typing import List, Optional, Tuple
 
 from ....services.ow.enums import OwProcedureStatus
 from ....services.utils.waardelijsten import ProcedureType
@@ -27,7 +27,7 @@ class OwBuilder(BuilderService):
 
     def apply(self, state_manager: StateManager) -> StateManager:
         provincie_id: str = state_manager.input_data.publication_settings.provincie_id
-        leveringid = state_manager.input_data.publication_settings.opdracht.id_levering
+        levering_id = state_manager.input_data.publication_settings.opdracht.id_levering
         ow_procedure_status: Optional[OwProcedureStatus] = None
 
         if state_manager.input_data.besluit.soort_procedure == ProcedureType.Ontwerpbesluit:
@@ -36,8 +36,19 @@ class OwBuilder(BuilderService):
         annotation_lookup_map = deepcopy(state_manager.ewid_service.get_state_object_tekst_lookup())
         werkingsgebieden = state_manager.input_data.resources.werkingsgebied_repository.all()
 
+        # compare wid maps to find policy objects that are not used anymore
+        known_wid_map = state_manager.input_data.get_known_wid_map()
+        used_wid_map = state_manager.ewid_service.get_state_used_wid_map()
+        known_ow_wid_list = state_manager.ow_repository.get_existing_wid_list()
+
+        terminated_object_wids = self.find_terminated_wids(known_wid_map, used_wid_map, known_ow_wid_list)
+        terminated_wids: List[str] = [wid[1] for wid in terminated_object_wids]
+        terminated_object_codes: List[str] = [wid[0] for wid in terminated_object_wids]
+        # terminated_werkingsgebieden = [wid for wid in terminated_wids if wid[0] == "werkingsgebied"]
+
         locatie_builder = OwLocatieBuilder(
             provincie_id=provincie_id,
+            levering_id=levering_id,
             ambtsgebied=state_manager.input_data.ambtsgebied,
             werkingsgebieden=werkingsgebieden,
             ow_repository=state_manager.ow_repository,
@@ -49,66 +60,60 @@ class OwBuilder(BuilderService):
         # updates OW state for text section annotations
         divisie_builder = OwDivisieBuilder(
             provincie_id=provincie_id,
+            levering_id=levering_id,
             ow_repository=state_manager.ow_repository,
             annotation_lookup_map=annotation_lookup_map,
+            terminated_wids=terminated_wids,
             ow_procedure_status=ow_procedure_status,
         )
-        divisie_state = divisie_builder.handle_divisie_changes()
+        divisie_builder.handle_ow_object_changes()
 
-        # TODO: for new version ensure if no new ambtsgebied created, same regelingsgebied is used
-        ambtsgebied_id = state_manager.ow_repository.get_active_ambtsgebied_ow_id(
-            ambtsgebied_uuid=state_manager.input_data.ambtsgebied.UUID
-        )
-        regelinggebied_builder = OwRegelingsgebiedBuilder(
-            provincie_id=provincie_id,
-            levering_id=leveringid,
-            ow_procedure_status=ow_procedure_status,
-            ow_repository=state_manager.ow_repository,
-            ambtsgebied_ow_id=str(ambtsgebied_id),
-        )
-        regelinggebied_state = regelinggebied_builder.create_regelingsgebieden()
+        # changed_ambtsgebied = state_manager.ow_repository.get_changed_ambtsgebied()
+        # if changed_ambtsgebied:
+        #     regelinggebied_builder = OwRegelingsgebiedBuilder(
+        #         provincie_id=provincie_id,
+        #         ow_procedure_status=ow_procedure_status,
+        #         ow_repository=state_manager.ow_repository,
+        #         ambtsgebied_ow_id=changed_ambtsgebied.OW_ID,
+        #     )
+        #     regelinggebied_builder.handle_ow_object_changes()
 
-        # todo fill using repo or skip if not needed
-        locaties_file = {
-            "filename": "owLocaties.xml",
-            "leveringsId": leveringid,
-            "objectTypen": [],
-            "gebiedengroepen": [],
-            "gebieden": [],
-            "ambtsgebieden": [],
-        }
-        divisies_files = {
-            "filename": "owDivisie.xml",
-            "leveringsId": leveringid,
-            "objectTypen": [],
-            "annotaties": [],
-        }
-        regelinggebied_file = {
-            "filename": "owRegelingsgebied.xml",
-            "leveringsId": leveringid,
-            "objectTypen": [],
-            "regelingsgebieden": [],
-        }
-        state_manager.created_ow_object_ids = state_manager.ow_repository.get_created_objects_id_list()
-        state_manager.created_ow_objects_map = state_manager.ow_repository.get_ow_object_mapping()
+        # get all locatie ow objects pending for output
+        # state_manager.created_ow_object_ids = state_manager.ow_repository.get_created_objects_id_list()
+        # state_manager.created_ow_objects_map = state_manager.ow_repository.get_ow_object_mapping()
 
-        state_manager.ow_repository.store_locaties_content(locaties_state)
-        state_manager.ow_repository.store_divisie_content(divisie_state)
-        state_manager.ow_repository.store_regelingsgebied_content(regelinggebied_state)
+        # ow_manifest_builder = ManifestBuilder(
+        #     act_work=str(state_manager.input_data.publication_settings.regeling_frbr.get_work()),
+        #     doel=state_manager.input_data.publication_settings.instelling_doel.frbr,
+        # )
+        # ow_manifest_builder.create_manifest(
+        #     state_manager.ow_repository.divisie_content,
+        #     state_manager.ow_repository.locaties_content,
+        #     state_manager.ow_repository.regelingsgebied_content,
+        # )
 
-        ow_manifest_builder = ManifestBuilder(
-            act_work=str(state_manager.input_data.publication_settings.regeling_frbr.get_work()),
-            doel=state_manager.input_data.publication_settings.instelling_doel.frbr,
-        )
-        manifest_file = ow_manifest_builder.create_manifest(
-            state_manager.ow_repository.divisie_content,
-            state_manager.ow_repository.locaties_content,
-            state_manager.ow_repository.regelingsgebied_content,
-        )
+        # create files
+        locatie_file_data = locatie_builder.build_file_data()
+        ow_locatie_file = locatie_builder.create_file(locatie_file_data)
 
-        state_manager.add_output_file(owlocaties)
-        state_manager.add_output_file(owdivisies)
-        state_manager.add_output_file(owregelinggebied)
-        state_manager.add_output_file(ow_manifest_file)
+        divisie_file_data = divisie_builder.build_file_data()
+        ow_divisie_file = divisie_builder.create_file(divisie_file_data)
+
+        # regelingsgbied
+        # manifest
+
+        # store created files
+        state_manager.add_output_files([ow_locatie_file, ow_divisie_file])
 
         return state_manager
+
+    def find_terminated_wids(self, known_wid_map, current_wid_map, known_ow_wid_map) -> List[Tuple[str, str]]:
+        """
+        Compares the current wids used to the previous known state, to find objects that
+        are no longer used and should be terminated.
+        """
+        removed_wids = []
+        for obj_code, wid in known_wid_map.items():
+            if obj_code not in current_wid_map and wid in known_ow_wid_map:
+                removed_wids.append((obj_code, wid))
+        return removed_wids

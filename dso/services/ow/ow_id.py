@@ -16,6 +16,19 @@ def generate_ow_id(ow_type: IMOWTYPES, organisation_id: str = "pv28", unique_cod
 
     imow_pattern = re.compile(OW_REGEX)
     if not imow_pattern.match(generated_id):
-        raise Exception("generated IMOW ID does not match official regex")
+        raise ValueError(f"Generated IMOW ID: '{generated_id}' does not match official regex")
 
     return generated_id
+
+
+def check_ow_id_imowtype(ow_id: str) -> IMOWTYPES:
+    imow_pattern = re.compile(OW_REGEX)
+    if not imow_pattern.match(ow_id):
+        raise ValueError(f"Provided ow_id: '{ow_id}' does not match ow_regex pattern")
+
+    try:
+        imow_type = IMOWTYPES(ow_id.split(".")[2])
+    except ValueError as e:
+        raise ValueError(f"Invalid IMOWTYPES value in ow_id: '{ow_id}'. Error: {str(e)}")
+
+    return imow_type
