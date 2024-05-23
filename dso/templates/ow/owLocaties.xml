@@ -19,68 +19,148 @@
         <sl:dataset>provincie Zuid-holland</sl:dataset>
         <sl:inhoud>
             <sl:gebied>provincie Zuid-holland</sl:gebied>
-            <sl:leveringsId>{{ data.leveringsId }}</sl:leveringsId>
+            <sl:leveringsId>{{ data.levering_id }}</sl:leveringsId>
             <sl:objectTypen>
-                {% for objectType in data.objectTypen %}
-                <sl:objectType>{{ objectType }}</sl:objectType>
+                {% for object_type in data.object_types %}
+                <sl:objectType>{{ object_type.value }}</sl:objectType>
                 {% endfor %}
             </sl:objectTypen>
         </sl:inhoud>
 
-        {% for owgebied in data.gebieden %}
-		<sl:stand>
+        <!-- nieuwe locaties -->
+        {% for ow_object in data.new_ow_objects %}
+        {% if ow_object is OWGebied %}
+        <sl:stand>
             <ow-dc:owObject>
                 <l:Gebied>
-                    {% if owgebied.procedure_status is not none %}
-                    <ow:procedurestatus>{{ owgebied.procedure_status.value }}</ow:procedurestatus>
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
-                    <l:identificatie>{{ owgebied.OW_ID }}</l:identificatie>
-                    <l:noemer>{{ owgebied.noemer }}</l:noemer>
+                    <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
+                    <l:noemer>{{ ow_object.noemer }}</l:noemer>
                     <l:geometrie>
-                        <l:GeometrieRef xlink:href="{{ owgebied.geo_uuid }}" />
+                        <l:GeometrieRef xlink:href="{{ ow_object.mapped_uuid }}" />
                     </l:geometrie>
                 </l:Gebied>
             </ow-dc:owObject>
         </sl:stand>
-        {% endfor %}
-
-        {% for group in data.gebiedengroepen %}
+        {% elif ow_object is OWGebiedenGroep %}
 		<sl:stand>
             <ow-dc:owObject>
                 <l:Gebiedengroep>
-                    {% if group.procedure_status is not none %}
-                    <ow:procedurestatus>{{ group.procedure_status.value }}</ow:procedurestatus>
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
-                    <l:identificatie>{{ group.OW_ID }}</l:identificatie>
-                    <l:noemer>{{ group.noemer }}</l:noemer>
+                    <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
+                    <l:noemer>{{ ow_object.noemer }}</l:noemer>
                     <l:groepselement>
-                        {% for location in group.locations %}
-                        <l:GebiedRef xlink:href="{{ location.OW_ID }}"/>
+                        {% for gebied in ow_object.gebieden %}
+                        <l:GebiedRef xlink:href="{{ gebied.OW_ID }}"/>
                         {% endfor %}
                     </l:groepselement>
                 </l:Gebiedengroep>
             </ow-dc:owObject>
         </sl:stand>
-        {% endfor %}
-
-        {% for gebied in data.ambtsgebieden %}
+        {% elif ow_object is OWAmbtsgebied %}
         <sl:stand>
             <ow-dc:owObject>
                 <l:Ambtsgebied>
-                    {% if gebied.procedure_status is not none %}
-                    <ow:procedurestatus>{{ gebied.procedure_status.value }}</ow:procedurestatus>
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
-                    <l:identificatie>{{ gebied.OW_ID }}</l:identificatie>
+                    <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
                     <l:bestuurlijkeGrenzenVerwijzing>
                         <l:BestuurlijkeGrenzenVerwijzing>
-                            <l:bestuurlijkeGrenzenID>{{ gebied.bestuurlijke_genzenverwijzing.bestuurlijke_grenzen_id }}</l:bestuurlijkeGrenzenID>
-                            <l:domein>{{ gebied.bestuurlijke_genzenverwijzing.domein }}</l:domein>
-                            <l:geldigOp>{{ gebied.bestuurlijke_genzenverwijzing.geldig_op }}</l:geldigOp>
+                            <l:bestuurlijkeGrenzenID>{{ ow_object.bestuurlijke_genzenverwijzing.bestuurlijke_grenzen_id }}</l:bestuurlijkeGrenzenID>
+                            <l:domein>{{ ow_object.bestuurlijke_genzenverwijzing.domein }}</l:domein>
+                            <l:geldigOp>{{ ow_object.bestuurlijke_genzenverwijzing.geldig_op }}</l:geldigOp>
                         </l:BestuurlijkeGrenzenVerwijzing>
                     </l:bestuurlijkeGrenzenVerwijzing>
                 </l:Ambtsgebied>
             </ow-dc:owObject>
         </sl:stand>
+        {% endif %}
         {% endfor %}
+
+        <!-- gemuteerde locaties -->
+        {% for ow_object in data.mutated_ow_objects %}
+        {% if ow_object is OWGebied %}
+        <sl:stand>
+            <ow-dc:owObject>
+                <l:Gebied>
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+                    {% endif %}
+                    <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
+                    <l:noemer>{{ ow_object.noemer }}</l:noemer>
+                    <l:geometrie>
+                        <l:GeometrieRef xlink:href="{{ ow_object.mapped_uuid }}" />
+                    </l:geometrie>
+                </l:Gebied>
+            </ow-dc:owObject>
+        </sl:stand>
+        {% elif ow_object is OWGebiedenGroep %}
+		<sl:stand>
+            <ow-dc:owObject>
+                <l:Gebiedengroep>
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+                    {% endif %}
+                    <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
+                    <l:noemer>{{ ow_object.noemer }}</l:noemer>
+                    <l:groepselement>
+                        {% for gebied in ow_object.gebieden %}
+                        <l:GebiedRef xlink:href="{{ gebied.OW_ID }}"/>
+                        {% endfor %}
+                    </l:groepselement>
+                </l:Gebiedengroep>
+            </ow-dc:owObject>
+        </sl:stand>
+        {% endif %}
+        {% endfor %}
+
+        <!-- beeindigde locaties -->
+        {% for ow_object in data.terminated_ow_objects %}
+        {% if ow_object is OWGebied %}
+        <sl:stand>
+            <ow-dc:owObject>
+                <l:Gebied>
+                    {% if ow_object.status is not none %}
+                    <ow:status>{{ ow_object.status.value }}</ow:status>
+                    {% endif %}
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+                    {% endif %}
+                    <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
+                    <l:noemer>{{ ow_object.noemer }}</l:noemer>
+                    <l:geometrie>
+                        <l:GeometrieRef xlink:href="{{ ow_object.mapped_uuid }}" />
+                    </l:geometrie>
+                </l:Gebied>
+            </ow-dc:owObject>
+        </sl:stand>
+        {% elif ow_object is OWGebiedenGroep %}
+		<sl:stand>
+            <ow-dc:owObject>
+                <l:Gebiedengroep>
+                    {% if ow_object.status is not none %}
+                    <ow:status>{{ ow_object.status.value }}</ow:status>
+                    {% endif %}
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+                    {% endif %}
+                    <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
+                    <l:noemer>{{ ow_object.noemer }}</l:noemer>
+                    <l:groepselement>
+                        {% for gebied in ow_object.gebieden %}
+                        <l:GebiedRef xlink:href="{{ gebied.OW_ID }}"/>
+                        {% endfor %}
+                    </l:groepselement>
+                </l:Gebiedengroep>
+            </ow-dc:owObject>
+        </sl:stand>
+        {% endif %}
+        {% endfor %}
+
     </sl:standBestand>
 </ow-dc:owBestand>
