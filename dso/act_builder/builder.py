@@ -2,6 +2,7 @@ import io
 from typing import Dict, List, Optional
 from zipfile import ZIP_DEFLATED, ZipFile
 
+from ..models import OwData
 from ..services.assets.create_image import create_image, create_image_in_zip
 from ..services.utils.os import empty_directory
 from .services import BuilderService
@@ -81,8 +82,7 @@ class Builder:
     def get_regeling_vrijetekst(self) -> Optional[str]:
         return self._state_manager.regeling_vrijetekst
 
-    def get_created_ow_object_ids(self) -> List[str]:
-        return self._state_manager.created_ow_object_ids
-
-    def get_created_ow_object_map(self) -> Dict[str, Dict[str, str]]:
-        return self._state_manager.created_ow_objects_map
+    def get_ow_object_state(self) -> OwData:
+        if self._state_manager.ow_object_state is None:
+            raise RuntimeError("Expected OW object state result to be set in state manager.")
+        return self._state_manager.ow_object_state
