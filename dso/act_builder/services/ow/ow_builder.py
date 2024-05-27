@@ -20,16 +20,11 @@ class OwManifestBestand(BaseModel):
 
 class OwBuilder(BuilderService):
     """
-    TODO:
-    - Add 'last step state validation/cleanup' ow_repository that checks the lvvb rules:
-        - No isolated/dangling objects,
-        - No werkingsgebied_code with multiple gebiedgroep / gebied objects in reference
-        - other OW specific rules etc.
-    - If validation is false due to dangling OW objects
-        - Add terminate dangling IDs (all content is needed or partial is okay?)
-    - Make OWstate typed
-    - Merge old input ow state with new and rewrite the owstate export to not so horrible
-    - Ambtsgebied object mutations low prio but should work anyways
+    BuilderService that uses our previous state and the OWStateRepository to:
+    - Handle any required OW object changes by running ow file builders
+        for every file type (new, mutated, terminated).
+    - Prepares the output template data and create each output file.
+    - Patch a new ow data state.
     """
 
     def apply(self, state_manager: StateManager) -> StateManager:
@@ -75,6 +70,7 @@ class OwBuilder(BuilderService):
         )
         divisie_builder.handle_ow_object_changes()
 
+        # updates OW state for area of jurisdiction
         regelinggebied_builder = OwRegelingsgebiedBuilder(
             provincie_id=provincie_id,
             levering_id=levering_id,
@@ -83,12 +79,8 @@ class OwBuilder(BuilderService):
         )
         regelinggebied_builder.handle_ow_object_changes()
 
-        # get all locatie ow objects pending for output
-        # state_manager.created_ow_object_ids = state_manager.ow_repository.get_created_objects_id_list()
-        # state_manager.created_ow_objects_map = state_manager.ow_repository.get_ow_object_mapping()
-
         manifest = []
-        # create files
+        # create output files + owmanifest
         locatie_template_data = locatie_builder.build_template_data()
         ow_locatie_file = locatie_builder.create_file(locatie_template_data.dict())
         manifest.append(
@@ -113,7 +105,7 @@ class OwBuilder(BuilderService):
             )
             state_manager.add_output_file(ow_regelingsgebied_file)
 
-        # manifest file build
+        # manifest file builder runs last to only include used ow files.
         ow_manifest_builder = OwManifestBuilder(
             act_work=str(state_manager.input_data.publication_settings.regeling_frbr.get_work()),
             doel=state_manager.input_data.publication_settings.instelling_doel.frbr,
@@ -123,7 +115,9 @@ class OwBuilder(BuilderService):
         ow_manifest_file = ow_manifest_builder.create_file(ow_manifest_template_data.dict())
         state_manager.add_output_file(ow_manifest_file)
 
-        # state_manager.add_output_files([ow_locatie_file, ow_divisie_file, ow_regelingsgebied_file])
+        # Set the result patched state
+        patched_state = state_manager.ow_repository.create_patched_ow_state()
+        state_manager.ow_object_state = patched_state
 
         return state_manager
 

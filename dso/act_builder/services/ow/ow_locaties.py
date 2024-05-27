@@ -14,7 +14,7 @@ from ....services.ow.models import (
 from ....services.ow.ow_id import generate_ow_id
 from ...state_manager.input_data.ambtsgebied import Ambtsgebied
 from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Locatie, Werkingsgebied
-from ...state_manager.states.ow_repository import OWRepository
+from ...state_manager.states.ow_repository import OWStateRepository
 from .ow_file_builder import OwFileBuilder
 
 
@@ -41,7 +41,7 @@ class OwLocatieBuilder(OwFileBuilder):
         levering_id: str,
         ambtsgebied: Ambtsgebied,
         werkingsgebieden: List[Werkingsgebied],
-        ow_repository: OWRepository,
+        ow_repository: OWStateRepository,
         ow_procedure_status: Optional[OwProcedureStatus],
     ) -> None:
         super().__init__()
