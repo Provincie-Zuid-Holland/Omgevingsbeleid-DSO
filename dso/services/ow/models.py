@@ -12,6 +12,12 @@ class OWObject(BaseModel):
     status: Optional[OwObjectStatus] = None
     procedure_status: Optional[OwProcedureStatus] = None
 
+    def dict(self, **kwargs):
+        # Add ow_type to dict for template level checks
+        base_dict = super().dict(**kwargs)
+        base_dict["ow_type"] = self.__class__.__name__
+        return base_dict
+
 
 class BestuurlijkeGrenzenVerwijzing(BaseModel):
     bestuurlijke_grenzen_id: str
@@ -20,7 +26,7 @@ class BestuurlijkeGrenzenVerwijzing(BaseModel):
 
 
 class OWRegelingsgebied(OWObject):
-    ambtsgebied: str
+    ambtsgebied: str  # OW id ref
 
 
 class OWLocatie(OWObject):

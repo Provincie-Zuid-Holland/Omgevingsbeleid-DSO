@@ -14,7 +14,7 @@
 
 		<!-- new -->
 		{% for ow_object in data.new_ow_objects %}
-		{% if ow_object is OWDivisie %}
+		{% if ow_object.ow_type == "OWDivisie" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisie wId="{{ ow_object.wid }}">
@@ -25,7 +25,7 @@
 				</vt:Divisie>
 			</ow-dc:owObject>
 		</sl:stand>
-		{% elif ow_object is OWDivisieTekst %}
+		{% elif ow_object.ow_type == "OWDivisieTekst" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisietekst wId="{{ ow_object.wid }}">
@@ -36,7 +36,7 @@
 				</vt:Divisietekst>
 			</ow-dc:owObject>
 		</sl:stand>
-		{% elif ow_object is OWTekstdeel %}
+		{% elif ow_object.ow_type == "OWTekstDeel" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Tekstdeel>
@@ -46,9 +46,9 @@
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
 					<vt:divisieaanduiding>
-						{% if ow_object.divisie_type == 'divisie' %}
+						{% if ow_object.divisie_type == "divisie" %}
 							<vt:DivisieRef xlink:href="{{ ow_object.divisie }}"/>
-						{% elif ow_object.divisie_type == 'divisietekst' %}
+						{% elif ow_object.divisie_type == "divisietekst" %}
 							<vt:DivisietekstRef xlink:href="{{ ow_object.divisie }}"/>
 						{% endif %}
 					</vt:divisieaanduiding>
@@ -65,41 +65,41 @@
 
 		<!-- mutated -->
 		{% for ow_object in data.mutated_ow_objects %}
-		{% if ow_object is OWDivisie %}
+		{% if ow_object.ow_type == "OWDivisie" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisie wId="{{ ow_object.wid }}">
-                    {% if ow_object.procedure_status is not none %}
-                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
-                    {% endif %}
+					{% if ow_object.procedure_status is not none %}
+					<ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 				</vt:Divisie>
 			</ow-dc:owObject>
 		</sl:stand>
-		{% elif ow_object is OWDivisieTekst %}
+		{% elif ow_object.ow_type == "OWDivisieTekst" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisietekst wId="{{ ow_object.wid }}">
-                    {% if ow_object.procedure_status is not none %}
-                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
-                    {% endif %}
+					{% if ow_object.procedure_status is not none %}
+					<ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 				</vt:Divisietekst>
 			</ow-dc:owObject>
 		</sl:stand>
-		{% elif ow_object is OWTekstdeel %}
+		{% elif ow_object.ow_type == "OWTekstdeel" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Tekstdeel>
-                    {% if ow_object.procedure_status is not none %}
-                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
-                    {% endif %}
+					{% if ow_object.procedure_status is not none %}
+					<ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
 					<vt:divisieaanduiding>
-						{% if ow_object.divisie_type == 'divisie' %}
+						{% if ow_object.divisie_type == "divisie" %}
 							<vt:DivisieRef xlink:href="{{ ow_object.divisie }}"/>
-						{% elif ow_object.divisie_type == 'divisietekst' %}
+						{% elif ow_object.divisie_type == "divisietekst" %}
 							<vt:DivisietekstRef xlink:href="{{ ow_object.divisie }}"/>
 						{% endif %}
 					</vt:divisieaanduiding>
@@ -116,50 +116,50 @@
 
 		<!-- terminated -->
 		{% for ow_object in data.terminated_ow_objects %}
-		{% if ow_object is OWDivisie %}
+		{% if ow_object.ow_type == "OWDivisie" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisie wId="{{ ow_object.wid }}">
-                    {% if ow_object.status is not none %}
-                    <ow:status>{{ ow_object.status.value }}</ow:status>
-                    {% endif %}
-                    {% if ow_object.procedure_status is not none %}
-                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
-                    {% endif %}
+					{% if ow_object.status is not none %}
+					<ow:status>{{ ow_object.status.value }}</ow:status>
+					{% endif %}
+					{% if ow_object.procedure_status is not none %}
+					<ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 				</vt:Divisie>
 			</ow-dc:owObject>
 		</sl:stand>
-		{% elif ow_object is OWDivisieTekst %}
+		{% elif ow_object.ow_type == "OWDivisieTekst" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Divisietekst wId="{{ ow_object.wid }}">
-                    {% if ow_object.status is not none %}
-                    <ow:status>{{ ow_object.status.value }}</ow:status>
-                    {% endif %}
-                    {% if ow_object.procedure_status is not none %}
-                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
-                    {% endif %}
+					{% if ow_object.status is not none %}
+					<ow:status>{{ ow_object.status.value }}</ow:status>
+					{% endif %}
+					{% if ow_object.procedure_status is not none %}
+					<ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 				</vt:Divisietekst>
 			</ow-dc:owObject>
 		</sl:stand>
-		{% elif ow_object is OWTekstdeel %}
+		{% elif ow_object.ow_type == "OWTekstdeel" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Tekstdeel>
-                    {% if ow_object.status is not none %}
-                    <ow:status>{{ ow_object.status.value }}</ow:status>
-                    {% endif %}
-                    {% if ow_object.procedure_status is not none %}
-                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
-                    {% endif %}
+					{% if ow_object.status is not none %}
+					<ow:status>{{ ow_object.status.value }}</ow:status>
+					{% endif %}
+					{% if ow_object.procedure_status is not none %}
+					<ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
 					<vt:divisieaanduiding>
-						{% if ow_object.divisie_type == 'divisie' %}
+						{% if ow_object.divisie_type == "divisie" %}
 							<vt:DivisieRef xlink:href="{{ ow_object.divisie }}"/>
-						{% elif ow_object.divisie_type == 'divisietekst' %}
+						{% elif ow_object.divisie_type == "divisietekst" %}
 							<vt:DivisietekstRef xlink:href="{{ ow_object.divisie }}"/>
 						{% endif %}
 					</vt:divisieaanduiding>
