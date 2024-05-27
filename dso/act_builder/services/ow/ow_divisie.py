@@ -14,7 +14,7 @@ from ....services.ow import (
     generate_ow_id,
     OwObjectStatus,
 )
-from ...state_manager import OWObjectStateException, OWRepository
+from ...state_manager import OWObjectStateException, OWStateRepository
 from .ow_file_builder import OwFileBuilder
 
 
@@ -41,7 +41,7 @@ class OwDivisieBuilder(OwFileBuilder):
         levering_id: str,
         annotation_lookup_map: dict,
         terminated_wids: List[str],
-        ow_repository: OWRepository,
+        ow_repository: OWStateRepository,
         ow_procedure_status: Optional[OwProcedureStatus],
     ) -> None:
         super().__init__()
@@ -90,8 +90,8 @@ class OwDivisieBuilder(OwFileBuilder):
         # terminate removed object wids
         for wid in self._terminated_wids:
             known_divisie = self._ow_repository.get_existing_divisie(wid)
-            if not known_tekstdeel:
-                raise OWObjectStateException(f"missing existing divisie id for terminated wid: {wid}")
+            if not known_divisie:
+                raise OWObjectStateException(f"missing existing divisie ow id for terminated wid: {wid}")
             if known_divisie:
                 known_tekstdeel = self._ow_repository.get_existing_tekstdeel_by_divisie(known_divisie.OW_ID)
                 if not known_tekstdeel:

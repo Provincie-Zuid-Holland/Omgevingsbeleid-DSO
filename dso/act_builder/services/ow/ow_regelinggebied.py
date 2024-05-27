@@ -14,7 +14,7 @@ from ....services.ow import (
 )
 from ....services.utils.helpers import load_template
 from ...state_manager.models import OutputFile, StrContentData
-from ...state_manager.states.ow_repository import OWRepository
+from ...state_manager.states.ow_repository import OWStateRepository
 from ...state_manager.exceptions import OWStateError
 from .ow_file_builder import OwFileBuilder
 
@@ -49,7 +49,7 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         self,
         provincie_id: str,
         levering_id: str,
-        ow_repository: OWRepository,
+        ow_repository: OWStateRepository,
         ow_procedure_status: Optional[OwProcedureStatus],
     ):
         super().__init__()

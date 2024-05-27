@@ -1,9 +1,10 @@
 from typing import List, Optional
 
+from ...models import OwData
 from ...services.ewid.ewid_service import EWIDService
 from .input_data.input_data_loader import InputData
 from .models import OutputFile
-from .states import ArtikelEidRepository, OWRepository
+from .states import ArtikelEidRepository, OWStateRepository
 
 
 class StateManager:
@@ -11,15 +12,13 @@ class StateManager:
         self.input_data: InputData = input_data
         self.werkingsgebied_eid_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
-        self.ow_repository: OWRepository = OWRepository(input_data.ow_data)
+        self.ow_repository: OWStateRepository = OWStateRepository(input_data.ow_data)
         self.output_files: List[OutputFile] = []
         self.debug: dict = {}
         self.regeling_vrijetekst: Optional[str] = None
 
         # result state of ow object data after processing
-        self.used_ow_object_ids: List[str] = []
-        self.terminated_ow_object_ids: List[str] = []
-        self.used_ow_objects_map: dict = {}
+        self.ow_object_state: Optional[OwData] = None
 
         # Service is in the state manager
         # As we use it on multiple places, and the internal state should be updates for each use
