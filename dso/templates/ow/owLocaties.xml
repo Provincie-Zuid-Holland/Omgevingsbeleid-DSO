@@ -29,7 +29,7 @@
 
         <!-- nieuwe locaties -->
         {% for ow_object in data.new_ow_objects %}
-        {% if ow_object is OWGebied %}
+		{% if ow_object.ow_type == "OWGebied" %}
         <sl:stand>
             <ow-dc:owObject>
                 <l:Gebied>
@@ -44,7 +44,7 @@
                 </l:Gebied>
             </ow-dc:owObject>
         </sl:stand>
-        {% elif ow_object is OWGebiedenGroep %}
+		{% elif ow_object.ow_type == "OWGebiedenGroep" %}
 		<sl:stand>
             <ow-dc:owObject>
                 <l:Gebiedengroep>
@@ -61,7 +61,7 @@
                 </l:Gebiedengroep>
             </ow-dc:owObject>
         </sl:stand>
-        {% elif ow_object is OWAmbtsgebied %}
+		{% elif ow_object.ow_type == "OWAmbtsgebied" %}
         <sl:stand>
             <ow-dc:owObject>
                 <l:Ambtsgebied>
@@ -84,7 +84,7 @@
 
         <!-- gemuteerde locaties -->
         {% for ow_object in data.mutated_ow_objects %}
-        {% if ow_object is OWGebied %}
+		{% if ow_object.ow_type == "OWGebied" %}
         <sl:stand>
             <ow-dc:owObject>
                 <l:Gebied>
@@ -99,7 +99,7 @@
                 </l:Gebied>
             </ow-dc:owObject>
         </sl:stand>
-        {% elif ow_object is OWGebiedenGroep %}
+		{% elif ow_object.ow_type == "OWGebiedenGroep" %}
 		<sl:stand>
             <ow-dc:owObject>
                 <l:Gebiedengroep>
@@ -121,7 +121,7 @@
 
         <!-- beeindigde locaties -->
         {% for ow_object in data.terminated_ow_objects %}
-        {% if ow_object is OWGebied %}
+		{% if ow_object.ow_type == "OWGebied" %}
         <sl:stand>
             <ow-dc:owObject>
                 <l:Gebied>
@@ -139,7 +139,7 @@
                 </l:Gebied>
             </ow-dc:owObject>
         </sl:stand>
-        {% elif ow_object is OWGebiedenGroep %}
+		{% elif ow_object.ow_type == "OWGebiedenGroep" %}
 		<sl:stand>
             <ow-dc:owObject>
                 <l:Gebiedengroep>
