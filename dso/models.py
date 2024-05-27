@@ -263,8 +263,8 @@ class OwIdMapping(BaseModel):
 
 
 class OwTekstdeelMap(BaseModel):
-    divisie: str = ""
-    location: str = ""
+    divisie: str = Field(default="")
+    location: str = Field(default="")
 
 
 class OwObjectMap(BaseModel):
