@@ -95,6 +95,15 @@ class OWRepository:
     def get_terminated_div(self) -> List[OWObject]:
         return [obj for obj in self._terminated_ow_objects if isinstance(obj, (OWDivisie, OWDivisieTekst, OWTekstDeel))]
 
+    def get_new_regelingsgebied(self) -> List[OWObject]:
+        return [obj for obj in self._new_ow_objects if isinstance(obj, OWRegelingsgebied)]
+
+    def get_mutated_regelingsgebied(self) -> List[OWObject]:
+        return [obj for obj in self._mutated_ow_objects if isinstance(obj, OWRegelingsgebied)]
+
+    def get_terminated_regelingsgebied(self) -> List[OWObject]:
+        return [obj for obj in self._terminated_ow_objects if isinstance(obj, OWRegelingsgebied)]
+
     def get_gebiedengroep_by_code(self, werkingsgebied_code: str) -> Optional[OWGebiedenGroep]:
         # Search current state used objects
         for ow_obj in self.pending_ow_objects:

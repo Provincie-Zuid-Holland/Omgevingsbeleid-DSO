@@ -1,31 +1,34 @@
-from typing import List, Optional, Set
+from typing import Any, Dict, List, Optional, Set
 
-from dso.services.ow import OWObject
-from isort import file
+from pydantic.main import BaseModel
 
 from ....models import ContentType
 from ....services.ow.enums import IMOWTYPES, OwProcedureStatus, OwLocatieObjectType
 from ....services.ow.models import (
     BestuurlijkeGrenzenVerwijzing,
+    OWObject,
     OWAmbtsgebied,
     OWGebied,
     OWGebiedenGroep,
-    OWLocatie,
 )
 from ....services.ow.ow_id import generate_ow_id
-from ....services.utils.helpers import load_template
 from ...state_manager.input_data.ambtsgebied import Ambtsgebied
 from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Locatie, Werkingsgebied
-from ...state_manager.models import OutputFile, StrContentData
 from ...state_manager.states.ow_repository import OWRepository
-from .ow_file_builder import OwTemplateData, OwFileBuilder
+from .ow_file_builder import OwFileBuilder
 
 
-class OwLocatieTemplateData(OwTemplateData):
+class OwLocatieTemplateData(BaseModel):
+    levering_id: str
+    procedure_status: Optional[OwProcedureStatus]
     object_types: List[OwLocatieObjectType]
     new_ow_objects: List[OWObject] = []
     mutated_ow_objects: List[OWObject] = []
     terminated_ow_objects: List[OWObject] = []
+
+    @property
+    def object_type_list(self) -> List[str]:
+        return [obj.value for obj in self.object_types]
 
 
 class OwLocatieBuilder(OwFileBuilder):
@@ -170,7 +173,7 @@ class OwLocatieBuilder(OwFileBuilder):
             elif isinstance(obj, OWAmbtsgebied):
                 self._used_object_types.add(OwLocatieObjectType.AMBTSGEBIED)
 
-    def build_file_data(self) -> OwLocatieTemplateData:
+    def build_template_data(self) -> OwLocatieTemplateData:
         new_locations = self._ow_repository.get_new_locations()
         mutated_locations = self._ow_repository.get_mutated_locations()
         terminated_locations = self._ow_repository.get_terminated_locations()
@@ -178,8 +181,7 @@ class OwLocatieBuilder(OwFileBuilder):
         # find all used object types in this file
         self.add_used_ow_object_types(new_locations + mutated_locations + terminated_locations)
 
-        file_data = OwLocatieTemplateData(
-            filename=self.file_name,
+        template_data = OwLocatieTemplateData(
             levering_id=self._levering_id,
             object_types=self.get_used_object_types(),
             new_ow_objects=new_locations,
@@ -187,18 +189,5 @@ class OwLocatieBuilder(OwFileBuilder):
             terminated_ow_objects=terminated_locations,
             procedure_status=self._ow_procedure_status,
         )
-        self.file_data = file_data
-        return file_data
-
-    def create_file(self, file_data: OwTemplateData) -> OutputFile:
-        content = load_template(
-            template_name=self.template_path,
-            pretty_print=True,
-            data=file_data,
-        )
-        output_file = OutputFile(
-            filename=self.file_name,
-            content_type=ContentType.XML,
-            content=StrContentData(content),
-        )
-        return output_file
+        self.template_data = template_data
+        return template_data

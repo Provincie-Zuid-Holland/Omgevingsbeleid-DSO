@@ -1,19 +1,35 @@
-from typing import Optional, List
+from typing import Any, Dict, Optional, List
+
+from pydantic.main import BaseModel
 
 from ....models import ContentType
-from ....services.ow.enums import IMOWTYPES, OwProcedureStatus, OwRegelingsgebiedObjectType
-from ....services.ow.models import OWRegelingsgebied, OWLocatie, OWObject
-from ....services.ow.ow_id import generate_ow_id
+from ....services.ow import (
+    IMOWTYPES,
+    OwProcedureStatus,
+    OwRegelingsgebiedObjectType,
+    OWRegelingsgebied,
+    OWObject,
+    OWAmbtsgebied,
+    generate_ow_id,
+)
 from ....services.utils.helpers import load_template
 from ...state_manager.models import OutputFile, StrContentData
 from ...state_manager.states.ow_repository import OWRepository
 from ...state_manager.exceptions import OWStateError
-from .ow_file_builder import OwTemplateData, OwFileBuilder
+from .ow_file_builder import OwFileBuilder
 
 
-class OwRegelingsgebiedFileData(OwTemplateData):
-    object_typen: List[OwRegelingsgebiedObjectType]
-    ow_objecten: List[OWObject]
+class OwRegelingsgebiedFileData(BaseModel):
+    levering_id: str
+    procedure_status: Optional[OwProcedureStatus]
+    object_types: List[OwRegelingsgebiedObjectType]
+    new_ow_objects: List[OWObject] = []
+    mutated_ow_objects: List[OWObject] = []
+    terminated_ow_objects: List[OWObject] = []
+
+    @property
+    def object_type_list(self) -> List[str]:
+        return [obj.value for obj in self.object_types]
 
 
 class OwRegelingsgebiedBuilder(OwFileBuilder):
@@ -32,35 +48,46 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
     def __init__(
         self,
         provincie_id: str,
+        levering_id: str,
         ow_repository: OWRepository,
-        ambtsgebied_ow_id: str,
         ow_procedure_status: Optional[OwProcedureStatus],
     ):
         super().__init__()
         self._provincie_id = provincie_id
+        self._levering_id = levering_id
         self._ow_procedure_status = ow_procedure_status
         self._ow_repository = ow_repository
-        self._ambtsgebied = ambtsgebied_ow_id
+        self._used_object_types = [OwRegelingsgebiedObjectType.REGELINGSGEBIED]
+        self._ambtsgebied: Optional[OWAmbtsgebied] = None
 
     def handle_ow_object_changes(self) -> None:
-        # if provided with existing ambtsgebied, mutation required.
-        known_ambtsgebied_id = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied_data.UUID)
-        if known_ambtsgebied_id:
+        """
+        Either create a new regelingsgebied for a new ambtsgebied given or
+        if existing ambtsgebied was mutated, mutate the matching regelingsgebied reference.
+        """
+        self._ambtsgebied = self._ow_repository.get_active_ambtsgebied()
+        if not self._ambtsgebied:
+            # no changes to regelingsgebied needed so exit
+            return
+
+        known_ambtsgebied_id = self._ow_repository.get_existing_ambtsgebied_id(str(self._ambtsgebied.mapped_uuid))
+        if not known_ambtsgebied_id:
+            # new ambtsgebied so new regelingsgebied
+            self._create_regelingsgebied()
+        else:
+            # existing ambtsgebied so mutating regelingsgebied
             known_regelingsgebied_id = self._ow_repository.get_existing_regelingsgebied_id(known_ambtsgebied_id)
             if not known_regelingsgebied_id:
                 raise OWStateError("Ambtsgebied known, but no regelingsgebied found in state.")
             self._mutate_regelingsgebied(
                 known_regelingsgebied_id=known_regelingsgebied_id, new_ambtsgebied_id=known_ambtsgebied_id
             )
-        else:
-            # or assume inital version and create new regelingsgebied.
-            self._create_regelingsgebied()
 
     def _create_regelingsgebied(self):
         ow_id: str = generate_ow_id(IMOWTYPES.REGELINGSGEBIED, self._provincie_id)
         regelingsgebied = OWRegelingsgebied(
             OW_ID=ow_id,
-            ambtsgebied=self._ambtsgebied,
+            ambtsgebied=self._ambtsgebied.OW_ID,
             procedure_status=self._ow_procedure_status,
         )
         self._ow_repository.add_new_ow(regelingsgebied)
@@ -75,22 +102,19 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         self._ow_repository.add_mutated_ow(regelingsgebied)
         return regelingsgebied
 
-    def create_file(self, levering_id: str, ow_objects: List[OWLocatie]) -> OutputFile:
-        file_data = OwRegelingsgebiedFileData(
+    def build_template_data(self) -> OwRegelingsgebiedFileData:
+        new_regelingsgebieden = self._ow_repository.get_new_regelingsgebied()
+        mutated_regelingsgebieden = self._ow_repository.get_mutated_regelingsgebied()
+        terminated_regelingsgebieden = self._ow_repository.get_terminated_regelingsgebied()
+
+        template_data = OwRegelingsgebiedFileData(
             filename=self.file_name,
-            levering_id=levering_id,
-            object_typen=self.get_used_ow_object_types(ow_objects),
-            ow_objecten=ow_objects,
-            ow_procedure_status=self._ow_procedure_status,
+            levering_id=self._levering_id,
+            object_types=self._used_object_types,
+            new_ow_objects=new_regelingsgebieden,
+            mutated_ow_objects=mutated_regelingsgebieden,
+            terminated_ow_objects=terminated_regelingsgebieden,
+            procedure_status=self._ow_procedure_status,
         )
-        content = load_template(
-            template_name=self.template_path,
-            pretty_print=True,
-            data=file_data,
-        )
-        output_file = OutputFile(
-            filename=self.file_name,
-            content_type=ContentType.XML,
-            content=StrContentData(content),
-        )
-        return output_file
+        self.template_data = template_data
+        return template_data

@@ -1,14 +1,21 @@
 from copy import deepcopy
 from typing import List, Optional, Tuple
 
+from pydantic import BaseModel
+
 from ....services.ow.enums import OwProcedureStatus
 from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
 from ...services.ow.ow_divisie import OwDivisieBuilder
 from ...services.ow.ow_locaties import OwLocatieBuilder
-from ...services.ow.ow_manifest import ManifestBuilder
+from ...services.ow.ow_manifest import OwManifestBuilder
 from ...services.ow.ow_regelinggebied import OwRegelingsgebiedBuilder
 from ...state_manager.state_manager import StateManager
+
+
+class OwManifestBestand(BaseModel):
+    naam: str
+    objecttypes: List[str]
 
 
 class OwBuilder(BuilderService):
@@ -68,42 +75,55 @@ class OwBuilder(BuilderService):
         )
         divisie_builder.handle_ow_object_changes()
 
-        # changed_ambtsgebied = state_manager.ow_repository.get_changed_ambtsgebied()
-        # if changed_ambtsgebied:
-        #     regelinggebied_builder = OwRegelingsgebiedBuilder(
-        #         provincie_id=provincie_id,
-        #         ow_procedure_status=ow_procedure_status,
-        #         ow_repository=state_manager.ow_repository,
-        #         ambtsgebied_ow_id=changed_ambtsgebied.OW_ID,
-        #     )
-        #     regelinggebied_builder.handle_ow_object_changes()
+        regelinggebied_builder = OwRegelingsgebiedBuilder(
+            provincie_id=provincie_id,
+            levering_id=levering_id,
+            ow_procedure_status=ow_procedure_status,
+            ow_repository=state_manager.ow_repository,
+        )
+        regelinggebied_builder.handle_ow_object_changes()
 
         # get all locatie ow objects pending for output
         # state_manager.created_ow_object_ids = state_manager.ow_repository.get_created_objects_id_list()
         # state_manager.created_ow_objects_map = state_manager.ow_repository.get_ow_object_mapping()
 
-        # ow_manifest_builder = ManifestBuilder(
-        #     act_work=str(state_manager.input_data.publication_settings.regeling_frbr.get_work()),
-        #     doel=state_manager.input_data.publication_settings.instelling_doel.frbr,
-        # )
-        # ow_manifest_builder.create_manifest(
-        #     state_manager.ow_repository.divisie_content,
-        #     state_manager.ow_repository.locaties_content,
-        #     state_manager.ow_repository.regelingsgebied_content,
-        # )
-
+        manifest = []
         # create files
-        locatie_file_data = locatie_builder.build_file_data()
-        ow_locatie_file = locatie_builder.create_file(locatie_file_data)
+        locatie_template_data = locatie_builder.build_template_data()
+        ow_locatie_file = locatie_builder.create_file(locatie_template_data.dict())
+        manifest.append(
+            OwManifestBestand(naam=locatie_builder.FILE_NAME, objecttypes=locatie_template_data.object_type_list)
+        )
+        state_manager.add_output_file(ow_locatie_file)
 
-        divisie_file_data = divisie_builder.build_file_data()
-        ow_divisie_file = divisie_builder.create_file(divisie_file_data)
+        divisie_template_data = divisie_builder.build_template_data()
+        ow_divisie_file = divisie_builder.create_file(divisie_template_data.dict())
+        manifest.append(
+            OwManifestBestand(naam=divisie_builder.FILE_NAME, objecttypes=divisie_template_data.object_type_list)
+        )
+        state_manager.add_output_file(ow_divisie_file)
 
-        # regelingsgbied
-        # manifest
+        if regelinggebied_builder._ambtsgebied:
+            regelingsgebied_template_data = regelinggebied_builder.build_template_data()
+            ow_regelingsgebied_file = regelinggebied_builder.create_file(regelingsgebied_template_data.dict())
+            manifest.append(
+                OwManifestBestand(
+                    naam=regelinggebied_builder.FILE_NAME, objecttypes=regelingsgebied_template_data.object_type_list
+                )
+            )
+            state_manager.add_output_file(ow_regelingsgebied_file)
 
-        # store created files
-        state_manager.add_output_files([ow_locatie_file, ow_divisie_file])
+        # manifest file build
+        ow_manifest_builder = OwManifestBuilder(
+            act_work=str(state_manager.input_data.publication_settings.regeling_frbr.get_work()),
+            doel=state_manager.input_data.publication_settings.instelling_doel.frbr,
+            manifest=manifest,
+        )
+        ow_manifest_template_data = ow_manifest_builder.build_template_data()
+        ow_manifest_file = ow_manifest_builder.create_file(ow_manifest_template_data.dict())
+        state_manager.add_output_file(ow_manifest_file)
+
+        # state_manager.add_output_files([ow_locatie_file, ow_divisie_file, ow_regelingsgebied_file])
 
         return state_manager
 
