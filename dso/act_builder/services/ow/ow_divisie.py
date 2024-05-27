@@ -1,5 +1,7 @@
-from typing import List, Optional, Set
-from ....models import ContentType
+from typing import Any, Dict, List, Optional, Set
+
+from pydantic.main import BaseModel
+
 from ....services.ow import (
     IMOWTYPES,
     OWObject,
@@ -12,16 +14,21 @@ from ....services.ow import (
     generate_ow_id,
     OwObjectStatus,
 )
-from ....services.utils.helpers import load_template
-from ...state_manager import OutputFile, OWObjectStateException, OWRepository, StrContentData
-from .ow_file_builder import OwTemplateData, OwFileBuilder
+from ...state_manager import OWObjectStateException, OWRepository
+from .ow_file_builder import OwFileBuilder
 
 
-class OwDivisieFileData(OwTemplateData):
+class OwDivisieFileData(BaseModel):
+    levering_id: str
+    procedure_status: Optional[OwProcedureStatus]
     object_types: List[OwDivisieObjectType]
     new_ow_objects: List[OWObject] = []
     mutated_ow_objects: List[OWObject] = []
     terminated_ow_objects: List[OWObject] = []
+
+    @property
+    def object_type_list(self) -> List[str]:
+        return [obj.value for obj in self.object_types]
 
 
 class OwDivisieBuilder(OwFileBuilder):
@@ -140,7 +147,7 @@ class OwDivisieBuilder(OwFileBuilder):
             elif isinstance(obj, OWTekstDeel):
                 self._used_object_types.add(OwDivisieObjectType.TEKSTDEEL)
 
-    def build_file_data(self) -> OwDivisieFileData:
+    def build_template_data(self) -> OwDivisieFileData:
         new_divisies = self._ow_repository.get_new_div()
         mutated_divisies = self._ow_repository.get_mutated_div()
         terminated_divisies = self._ow_repository.get_terminated_div()
@@ -148,8 +155,7 @@ class OwDivisieBuilder(OwFileBuilder):
         # find all used object types for this file
         self.add_used_ow_object_types(new_divisies + mutated_divisies + terminated_divisies)
 
-        file_data = OwDivisieFileData(
-            filename=self.file_name,
+        template_data = OwDivisieFileData(
             levering_id=self._levering_id,
             object_types=self.get_used_object_types(),
             new_ow_objects=new_divisies,
@@ -157,18 +163,5 @@ class OwDivisieBuilder(OwFileBuilder):
             terminated_ow_objects=terminated_divisies,
             procedure_status=self._ow_procedure_status,
         )
-        self.file_data = file_data
-        return file_data
-
-    def create_file(self, file_data: OwTemplateData) -> OutputFile:
-        content = load_template(
-            template_name=self.template_path,
-            pretty_print=True,
-            data=file_data,
-        )
-        output_file = OutputFile(
-            filename=self.file_name,
-            content_type=ContentType.XML,
-            content=StrContentData(content),
-        )
-        return output_file
+        self.template_data = template_data
+        return template_data

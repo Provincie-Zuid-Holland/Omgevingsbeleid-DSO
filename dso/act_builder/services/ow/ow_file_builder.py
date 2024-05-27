@@ -1,23 +1,14 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import List, Optional, Any, Dict
 from pydantic import BaseModel
 
-from dso.act_builder.state_manager.models import OutputFile
-from dso.services.ow.models import OWObject
-from dso.services.ow.enums import OwProcedureStatus
+from ...state_manager.models import OutputFile, StrContentData
+from ....services.utils.helpers import load_template
+from ....models import ContentType
+from ....services.ow.models import OWObject
+from ....services.ow.enums import OwProcedureStatus
 
 
-class OwTemplateData(BaseModel):
-    filename: str
-    levering_id: str
-    procedure_status: Optional[OwProcedureStatus]
-    object_types: List[str]
-    new_ow_objects: List[OWObject] = []
-    mutated_ow_objects: List[OWObject] = []
-    terminated_ow_objects: List[OWObject] = []
-
-
-# add base class instead of only ABC?
 class OwFileBuilder(ABC):
     FILE_NAME = "owFileName.xml"
     TEMPLATE_PATH = "ow/template.xml"
@@ -25,11 +16,25 @@ class OwFileBuilder(ABC):
     def __init__(self):
         self.file_name = self.FILE_NAME
         self.template_path = self.TEMPLATE_PATH
+        self.template_data = None
 
     @abstractmethod
     def handle_ow_object_changes(self) -> None:
         pass
 
     @abstractmethod
-    def create_file(self, file_data: OwTemplateData) -> OutputFile:
+    def build_template_data(self) -> Any:
         pass
+
+    def create_file(self, template_data: Dict[str, Any]) -> OutputFile:
+        content = load_template(
+            template_name=self.template_path,
+            pretty_print=True,
+            data=template_data,
+        )
+        output_file = OutputFile(
+            filename=self.file_name,
+            content_type=ContentType.XML,
+            content=StrContentData(content),
+        )
+        return output_file
