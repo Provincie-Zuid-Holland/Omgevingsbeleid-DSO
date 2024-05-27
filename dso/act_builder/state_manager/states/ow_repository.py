@@ -227,6 +227,7 @@ class OWStateRepository:
 
         # Update the object_ids list with new entries
         patched_ow_state.object_ids = list(set(self._known_ow_state.object_ids + self.pending_ow_object_ids))
+        # TODO: remove terminated from list
 
         # Update the object map
         patched_object_map = self._merge_ow_object_map(patched_ow_state.object_map)
