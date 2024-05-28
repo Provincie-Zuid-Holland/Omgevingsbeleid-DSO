@@ -1,7 +1,7 @@
-from typing import List, Optional, Type
+from typing import List, Optional
 from uuid import UUID
 
-from ....models import OwData, OwObjectMap, OwTekstdeelMap, OwIdMapping
+from ....models import OwData, OwObjectMap
 from ....services.ow import (
     OWAmbtsgebied,
     OWDivisie,
