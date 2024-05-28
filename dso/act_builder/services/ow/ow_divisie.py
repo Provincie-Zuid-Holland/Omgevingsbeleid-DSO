@@ -10,7 +10,7 @@ from ....services.ow import (
     OWObjectGenerationError,
     OwProcedureStatus,
     OwDivisieObjectType,
-    OWTekstDeel,
+    OWTekstdeel,
     generate_ow_id,
     OwObjectStatus,
 )
@@ -121,8 +121,8 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ow_repository.add_new_ow(ow_div)
         return ow_div
 
-    def _new_text_mapping(self, ow_div_id: str, ow_location_id: str) -> OWTekstDeel:
-        ow_text_mapping = OWTekstDeel(
+    def _new_text_mapping(self, ow_div_id: str, ow_location_id: str) -> OWTekstdeel:
+        ow_text_mapping = OWTekstdeel(
             OW_ID=generate_ow_id(IMOWTYPES.TEKSTDEEL, self._provincie_id),
             divisie=ow_div_id,
             locaties=[ow_location_id],
@@ -144,7 +144,7 @@ class OwDivisieBuilder(OwFileBuilder):
                 self._used_object_types.add(OwDivisieObjectType.DIVISIE)
             elif isinstance(obj, OWDivisieTekst):
                 self._used_object_types.add(OwDivisieObjectType.DIVISIETEKST)
-            elif isinstance(obj, OWTekstDeel):
+            elif isinstance(obj, OWTekstdeel):
                 self._used_object_types.add(OwDivisieObjectType.TEKSTDEEL)
 
     def build_template_data(self) -> OwDivisieFileData:

@@ -36,7 +36,7 @@
 				</vt:Divisietekst>
 			</ow-dc:owObject>
 		</sl:stand>
-		{% elif ow_object.ow_type == "OWTekstDeel" %}
+		{% elif ow_object.ow_type == "OWTekstdeel" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<vt:Tekstdeel>

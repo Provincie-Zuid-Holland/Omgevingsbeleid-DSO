@@ -55,7 +55,7 @@ class OWDivisieTekst(OWObject):
     wid: str
 
 
-class OWTekstDeel(OWObject):
+class OWTekstdeel(OWObject):
     """
     note: divisietekstref is used as single item list
     for now but IMOW spec allows listing multiple.

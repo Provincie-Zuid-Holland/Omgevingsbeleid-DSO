@@ -1,4 +1,8 @@
-from ..ow.models import OWGebied, OWGebiedenGroep, OWAmbtsgebied, OWLocatie, OWDivisie, OWDivisieTekst, OWTekstDeel
+from ..ow.models import OWGebied, OWGebiedenGroep, OWAmbtsgebied, OWLocatie, OWDivisie, OWDivisieTekst, OWTekstdeel
+
+#
+# TODO: NO longer used using jinja tests
+#
 
 
 def is_OWAmbtsgebied(obj):
@@ -17,8 +21,8 @@ def is_OWDivisieTekst(obj):
     return isinstance(obj, OWDivisieTekst)
 
 
-def is_OWTekstDeel(obj):
-    return isinstance(obj, OWTekstDeel)
+def is_OWTekstdeel(obj):
+    return isinstance(obj, OWTekstdeel)
 
 
 def is_OWGebied(obj):
@@ -36,5 +40,5 @@ template_tests = {
     "OWGebiedenGroep": is_OWGebiedenGroep,
     "OWDivisie": is_OWDivisie,
     "OWDivisieTekst": is_OWDivisieTekst,
-    "OWTekstdeel": is_OWTekstDeel,
+    "OWTekstdeel": is_OWTekstdeel,
 }

@@ -11,7 +11,7 @@ from ....services.ow import (
     OWLocatie,
     OWObject,
     OWRegelingsgebied,
-    OWTekstDeel,
+    OWTekstdeel,
 )
 from ..exceptions import OWStateMutationError
 
@@ -83,13 +83,13 @@ class OWStateRepository:
         return [obj for obj in self._terminated_ow_objects if isinstance(obj, OWLocatie)]
 
     def get_new_div(self) -> List[OWObject]:
-        return [obj for obj in self._new_ow_objects if isinstance(obj, (OWDivisie, OWDivisieTekst, OWTekstDeel))]
+        return [obj for obj in self._new_ow_objects if isinstance(obj, (OWDivisie, OWDivisieTekst, OWTekstdeel))]
 
     def get_mutated_div(self) -> List[OWObject]:
-        return [obj for obj in self._mutated_ow_objects if isinstance(obj, (OWDivisie, OWDivisieTekst, OWTekstDeel))]
+        return [obj for obj in self._mutated_ow_objects if isinstance(obj, (OWDivisie, OWDivisieTekst, OWTekstdeel))]
 
     def get_terminated_div(self) -> List[OWObject]:
-        return [obj for obj in self._terminated_ow_objects if isinstance(obj, (OWDivisie, OWDivisieTekst, OWTekstDeel))]
+        return [obj for obj in self._terminated_ow_objects if isinstance(obj, (OWDivisie, OWDivisieTekst, OWTekstdeel))]
 
     def get_new_regelingsgebied(self) -> List[OWObject]:
         return [obj for obj in self._new_ow_objects if isinstance(obj, OWRegelingsgebied)]
@@ -144,11 +144,11 @@ class OWStateRepository:
         ow_divisie_id = wid_map.get(wid, None)
         return OWDivisieTekst(OW_ID=ow_divisie_id, wid=wid) if ow_divisie_id else None
 
-    def get_existing_tekstdeel_by_divisie(self, divisie_ow_id: str) -> Optional[OWTekstDeel]:
+    def get_existing_tekstdeel_by_divisie(self, divisie_ow_id: str) -> Optional[OWTekstdeel]:
         existing_tekstdeel_map = self._known_ow_state.object_map.tekstdeel_mapping
         for tekstdeel_ow_id, values in existing_tekstdeel_map.items():
             if values.divisie == divisie_ow_id:
-                return OWTekstDeel(OW_ID=tekstdeel_ow_id, locaties=[values.location], divisie=divisie_ow_id)
+                return OWTekstdeel(OW_ID=tekstdeel_ow_id, locaties=[values.location], divisie=divisie_ow_id)
         return None
 
     def get_existing_wid_list(self) -> List[str]:
@@ -195,7 +195,7 @@ class OWStateRepository:
                 input_obj_map.id_mapping.regelingsgebied[ow_obj.ambtsgebied] = ow_obj.OW_ID
             if isinstance(ow_obj, OWDivisie) or isinstance(ow_obj, OWDivisieTekst):
                 input_obj_map.id_mapping.wid[ow_obj.wid] = ow_obj.OW_ID
-            if isinstance(ow_obj, OWTekstDeel):
+            if isinstance(ow_obj, OWTekstdeel):
                 input_obj_map.tekstdeel_mapping[ow_obj.OW_ID] = {
                     "divisie": ow_obj.divisie,
                     "location": ow_obj.locaties[0],
@@ -213,7 +213,7 @@ class OWStateRepository:
                 del input_obj_map.id_mapping.regelingsgebied[ow_obj.ambtsgebied]
             if isinstance(ow_obj, OWDivisie) or isinstance(ow_obj, OWDivisieTekst):
                 del input_obj_map.id_mapping.wid[ow_obj.wid]
-            if isinstance(ow_obj, OWTekstDeel):
+            if isinstance(ow_obj, OWTekstdeel):
                 del input_obj_map.tekstdeel_mapping[ow_obj.OW_ID]
 
         return input_obj_map
