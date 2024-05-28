@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict
 
-
 from ....models import ContentType
 from ....services.utils.helpers import load_template
 from ...state_manager.models import OutputFile, StrContentData
