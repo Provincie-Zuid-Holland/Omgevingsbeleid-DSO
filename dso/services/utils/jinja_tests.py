@@ -1,4 +1,4 @@
-from ..ow.models import OWGebied, OWGebiedenGroep, OWAmbtsgebied, OWLocatie, OWDivisie, OWDivisieTekst, OWTekstdeel
+from ..ow.models import OWAmbtsgebied, OWDivisie, OWDivisieTekst, OWGebied, OWGebiedenGroep, OWLocatie, OWTekstdeel
 
 #
 # TODO: NO longer used using jinja tests

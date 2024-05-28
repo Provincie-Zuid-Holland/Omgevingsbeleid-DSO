@@ -1,21 +1,18 @@
-from typing import Any, Dict, Optional, List
+from typing import List, Optional
 
 from pydantic.main import BaseModel
 
-from ....models import ContentType
 from ....services.ow import (
     IMOWTYPES,
-    OwProcedureStatus,
-    OwRegelingsgebiedObjectType,
-    OWRegelingsgebied,
-    OWObject,
     OWAmbtsgebied,
+    OWObject,
+    OwProcedureStatus,
+    OWRegelingsgebied,
+    OwRegelingsgebiedObjectType,
     generate_ow_id,
 )
-from ....services.utils.helpers import load_template
-from ...state_manager.models import OutputFile, StrContentData
-from ...state_manager.states.ow_repository import OWStateRepository
 from ...state_manager.exceptions import OWStateError
+from ...state_manager.states.ow_repository import OWStateRepository
 from .ow_file_builder import OwFileBuilder
 
 

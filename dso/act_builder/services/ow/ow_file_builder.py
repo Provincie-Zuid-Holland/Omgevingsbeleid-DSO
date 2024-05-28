@@ -1,12 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional, Any, Dict
-from pydantic import BaseModel
+from typing import Any, Dict
 
-from ...state_manager.models import OutputFile, StrContentData
-from ....services.utils.helpers import load_template
+
 from ....models import ContentType
-from ....services.ow.models import OWObject
-from ....services.ow.enums import OwProcedureStatus
+from ....services.utils.helpers import load_template
+from ...state_manager.models import OutputFile, StrContentData
 
 
 class OwFileBuilder(ABC):

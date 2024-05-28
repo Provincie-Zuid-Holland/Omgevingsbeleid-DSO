@@ -2,9 +2,9 @@ from .enums import (
     IMOWTYPES,
     OwDivisieObjectType,
     OwLocatieObjectType,
+    OwObjectStatus,
     OwProcedureStatus,
     OwRegelingsgebiedObjectType,
-    OwObjectStatus,
 )
 from .exceptions import OWObjectGenerationError
 from .models import (

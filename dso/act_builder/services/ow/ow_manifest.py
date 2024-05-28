@@ -1,8 +1,8 @@
-from typing import Any, List, Dict
+from typing import List
 
 from pydantic import BaseModel
 
-from ....models import DoelFRBR, ActFRBR
+from ....models import ActFRBR, DoelFRBR
 from .ow_file_builder import OwFileBuilder
 
 

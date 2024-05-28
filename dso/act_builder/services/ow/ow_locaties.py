@@ -1,16 +1,9 @@
-from typing import Any, Dict, List, Optional, Set
+from typing import List, Optional, Set
 
 from pydantic.main import BaseModel
 
-from ....models import ContentType
-from ....services.ow.enums import IMOWTYPES, OwProcedureStatus, OwLocatieObjectType
-from ....services.ow.models import (
-    BestuurlijkeGrenzenVerwijzing,
-    OWObject,
-    OWAmbtsgebied,
-    OWGebied,
-    OWGebiedenGroep,
-)
+from ....services.ow.enums import IMOWTYPES, OwLocatieObjectType, OwProcedureStatus
+from ....services.ow.models import BestuurlijkeGrenzenVerwijzing, OWAmbtsgebied, OWGebied, OWGebiedenGroep, OWObject
 from ....services.ow.ow_id import generate_ow_id
 from ...state_manager.input_data.ambtsgebied import Ambtsgebied
 from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Locatie, Werkingsgebied

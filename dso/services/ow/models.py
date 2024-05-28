@@ -1,10 +1,10 @@
-from typing import List, Optional, Union
+from typing import List, Optional
 from uuid import UUID
 
 from pydantic import BaseModel
 
-from .enums import OwProcedureStatus, OwObjectStatus
-from .ow_id import check_ow_id_imowtype, IMOWTYPES
+from .enums import OwObjectStatus, OwProcedureStatus
+from .ow_id import check_ow_id_imowtype
 
 
 class OWObject(BaseModel):
