@@ -1,7 +1,6 @@
 from copy import deepcopy
 from typing import List, Optional
 
-from pydantic import BaseModel
 
 from ....services.ow.enums import OwProcedureStatus
 from ....services.utils.waardelijsten import ProcedureType
@@ -11,11 +10,6 @@ from ...services.ow.ow_locaties import OwLocatieBuilder
 from ...services.ow.ow_manifest import OwManifestBuilder
 from ...services.ow.ow_regelinggebied import OwRegelingsgebiedBuilder
 from ...state_manager.state_manager import StateManager
-
-
-class OwManifestBestand(BaseModel):
-    naam: str
-    objecttypes: List[str]
 
 
 class OwBuilder(BuilderService):
