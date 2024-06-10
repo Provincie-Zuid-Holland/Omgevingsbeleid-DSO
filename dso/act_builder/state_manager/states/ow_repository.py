@@ -1,7 +1,9 @@
 from typing import List, Optional
 from uuid import UUID
 
-from ....models import OwData, OwObjectMap
+from dso.act_builder.state_manager import OWObjectStateException
+
+from ....models import OwData, OwObjectMap, OwTekstdeelMap
 from ....services.ow import (
     OWAmbtsgebied,
     OWDivisie,
@@ -186,29 +188,45 @@ class OWStateRepository:
         # For each new or mutated OWObject, add or updateit to the object_map
         for ow_obj in changed_objs:
             if isinstance(ow_obj, OWGebied):
+                if not ow_obj.mapped_geo_code:
+                    raise OWObjectStateException(
+                        message="Used OWGebied object missing required mapped_geo_code.",
+                        action="_merge_ow_object_map",
+                        ow_object=ow_obj,
+                    )
                 input_obj_map.id_mapping.gebieden[ow_obj.mapped_geo_code] = ow_obj.OW_ID
             if isinstance(ow_obj, OWGebiedenGroep):
+                if not ow_obj.mapped_geo_code:
+                    raise OWObjectStateException(
+                        message="Used OWGebiedenGroep object missing required mapped_geo_code.",
+                        action="_merge_ow_object_map",
+                        ow_object=ow_obj,
+                    )
                 input_obj_map.id_mapping.gebiedengroep[ow_obj.mapped_geo_code] = ow_obj.OW_ID
             if isinstance(ow_obj, OWAmbtsgebied):
-                input_obj_map.id_mapping.ambtsgebied[ow_obj.mapped_uuid] = ow_obj.OW_ID
+                if not ow_obj.mapped_uuid:
+                    raise OWObjectStateException(
+                        message="Used OWAmbtsgebied object missing required mapped_uuid.",
+                        action="_merge_ow_object_map",
+                        ow_object=ow_obj,
+                    )
+                input_obj_map.id_mapping.ambtsgebied[str(ow_obj.mapped_uuid)] = ow_obj.OW_ID
             if isinstance(ow_obj, OWRegelingsgebied):
                 input_obj_map.id_mapping.regelingsgebied[ow_obj.ambtsgebied] = ow_obj.OW_ID
             if isinstance(ow_obj, OWDivisie) or isinstance(ow_obj, OWDivisieTekst):
                 input_obj_map.id_mapping.wid[ow_obj.wid] = ow_obj.OW_ID
             if isinstance(ow_obj, OWTekstdeel):
-                input_obj_map.tekstdeel_mapping[ow_obj.OW_ID] = {
-                    "divisie": ow_obj.divisie,
-                    "location": ow_obj.locaties[0],
-                }
+                tekstdeel_map = OwTekstdeelMap(divisie=ow_obj.divisie, location=ow_obj.locaties[0])
+                input_obj_map.tekstdeel_mapping[ow_obj.OW_ID] = tekstdeel_map
 
         # For each terminated OWObject, remove the corresponding entry from the object_map
         for ow_obj in terminated_objs:
             if isinstance(ow_obj, OWGebied):
-                del input_obj_map.id_mapping.gebieden[ow_obj.mapped_geo_code]
+                del input_obj_map.id_mapping.gebieden[str(ow_obj.mapped_geo_code)]
             if isinstance(ow_obj, OWGebiedenGroep):
-                del input_obj_map.id_mapping.gebiedengroep[ow_obj.mapped_geo_code]
+                del input_obj_map.id_mapping.gebiedengroep[str(ow_obj.mapped_geo_code)]
             if isinstance(ow_obj, OWAmbtsgebied):
-                del input_obj_map.id_mapping.ambtsgebied[ow_obj.mapped_uuid]
+                del input_obj_map.id_mapping.ambtsgebied[str(ow_obj.mapped_uuid)]
             if isinstance(ow_obj, OWRegelingsgebied):
                 del input_obj_map.id_mapping.regelingsgebied[ow_obj.ambtsgebied]
             if isinstance(ow_obj, OWDivisie) or isinstance(ow_obj, OWDivisieTekst):
