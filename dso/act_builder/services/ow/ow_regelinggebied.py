@@ -57,6 +57,14 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         self._used_object_types = [OwRegelingsgebiedObjectType.REGELINGSGEBIED]
         self._ambtsgebied: Optional[OWAmbtsgebied] = None
 
+    @property
+    def ambtsgebied(self) -> Optional[OWAmbtsgebied]:
+        return self._ambtsgebied
+
+    @property
+    def used_object_types(self) -> List[str]:
+        return [obj.value for obj in self._used_object_types]
+
     def handle_ow_object_changes(self) -> None:
         """
         Either create a new regelingsgebied for a new ambtsgebied given or
@@ -67,7 +75,7 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
             # no changes to regelingsgebied needed so exit
             return
 
-        known_ambtsgebied_id = self._ow_repository.get_existing_ambtsgebied_id(str(self._ambtsgebied.mapped_uuid))
+        known_ambtsgebied_id = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied.mapped_uuid)
         if not known_ambtsgebied_id:
             # new ambtsgebied so new regelingsgebied
             self._create_regelingsgebied()
@@ -80,7 +88,10 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
                 known_regelingsgebied_id=known_regelingsgebied_id, new_ambtsgebied_id=known_ambtsgebied_id
             )
 
-    def _create_regelingsgebied(self):
+    def _create_regelingsgebied(self) -> OWRegelingsgebied:
+        if not self._ambtsgebied:
+            raise OWStateError("Ambtsgebied is required to create a new regelingsgebied.")
+
         ow_id: str = generate_ow_id(IMOWTYPES.REGELINGSGEBIED, self._provincie_id)
         regelingsgebied = OWRegelingsgebied(
             OW_ID=ow_id,
@@ -90,7 +101,7 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         self._ow_repository.add_new_ow(regelingsgebied)
         return regelingsgebied
 
-    def _mutate_regelingsgebied(self, known_regelingsgebied_id: str, new_ambtsgebied_id: str):
+    def _mutate_regelingsgebied(self, known_regelingsgebied_id: str, new_ambtsgebied_id: str) -> OWRegelingsgebied:
         regelingsgebied = OWRegelingsgebied(
             OW_ID=known_regelingsgebied_id,
             ambtsgebied=new_ambtsgebied_id,
@@ -105,7 +116,6 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         terminated_regelingsgebieden = self._ow_repository.get_terminated_regelingsgebied()
 
         template_data = OwRegelingsgebiedFileData(
-            filename=self.file_name,
             levering_id=self._levering_id,
             object_types=self._used_object_types,
             new_ow_objects=new_regelingsgebieden,

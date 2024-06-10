@@ -1,7 +1,6 @@
 from copy import deepcopy
 from typing import List, Optional
 
-
 from ....services.ow.enums import OwProcedureStatus
 from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
@@ -90,6 +89,7 @@ class OwBuilder(BuilderService):
         regelingsgebied_template_data = regelinggebied_builder.build_template_data()
 
         # create output files + owmanifest
+        # TODO: ensure empty files are not created for locaties / divisies
         ow_locatie_file = locatie_builder.create_file(locatie_template_data.dict())
         ow_manifest_builder.add_manifest_item(locatie_builder.FILE_NAME, locatie_template_data.object_type_list)
         state_manager.add_output_file(ow_locatie_file)
@@ -98,10 +98,10 @@ class OwBuilder(BuilderService):
         ow_manifest_builder.add_manifest_item(divisie_builder.FILE_NAME, divisie_template_data.object_type_list)
         state_manager.add_output_file(ow_divisie_file)
 
-        if regelinggebied_builder._ambtsgebied:
+        if regelinggebied_builder.ambtsgebied:
             ow_regelingsgebied_file = regelinggebied_builder.create_file(regelingsgebied_template_data.dict())
             ow_manifest_builder.add_manifest_item(
-                regelinggebied_builder.FILE_NAME, regelinggebied_builder.object_type_list
+                regelinggebied_builder.FILE_NAME, regelinggebied_builder.used_object_types
             )
             state_manager.add_output_file(ow_regelingsgebied_file)
 
