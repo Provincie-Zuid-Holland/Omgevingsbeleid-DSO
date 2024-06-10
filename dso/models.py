@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field, root_validator, validator
 
@@ -295,3 +295,8 @@ class OwObjectMap(BaseModel):
 class OwData(BaseModel):
     object_ids: List[str] = Field(default_factory=list)
     object_map: OwObjectMap = Field(default_factory=OwObjectMap)
+
+
+class OwDataFull(BaseModel):
+    object_ids: List[str] = Field(default_factory=list)
+    object_map: Dict[Any, Any] = Field(default_factory=dict)
