@@ -34,22 +34,25 @@ class OwBuilder(BuilderService):
         # terminated_object_codes: List[str] = [wid[0] for wid in removed_wids]
         return terminated_wids
 
+    def _get_ow_procedure_status(self, soort_procedure: ProcedureType) -> Optional[OwProcedureStatus]:
+        if soort_procedure == ProcedureType.Ontwerpbesluit:
+            return OwProcedureStatus.ONTWERP
+        elif soort_procedure == ProcedureType.Definitief_besluit:
+            return None
+        else:
+            return None
+
     def apply(self, state_manager: StateManager) -> StateManager:
         provincie_id = state_manager.input_data.publication_settings.provincie_id
         levering_id = state_manager.input_data.publication_settings.opdracht.id_levering
-        ow_procedure_status: Optional[OwProcedureStatus] = None
-
-        if state_manager.input_data.besluit.soort_procedure == ProcedureType.Ontwerpbesluit:
-            ow_procedure_status = OwProcedureStatus.ONTWERP
-
+        ow_procedure_status = self._get_ow_procedure_status(state_manager.input_data.besluit.soort_procedure)
         annotation_lookup_map = deepcopy(state_manager.ewid_service.get_state_object_tekst_lookup())
         werkingsgebieden = state_manager.input_data.resources.werkingsgebied_repository.all()
-
-        # compare wid maps to find policy objects that are not used anymore
-        known_wid_map = state_manager.input_data.get_known_wid_map()
-        used_wid_map = state_manager.ewid_service.get_state_used_wid_map()
-        known_ow_wid_list = state_manager.ow_repository.get_existing_wid_list()
-        terminated_wids = self._find_terminated_wids(known_wid_map, used_wid_map, known_ow_wid_list)
+        terminated_wids = self._find_terminated_wids(
+            state_manager.input_data.get_known_wid_map(),
+            state_manager.ewid_service.get_state_used_wid_map(),
+            state_manager.ow_repository.get_existing_wid_list(),
+        )
 
         # setup file builders
         locatie_builder = OwLocatieBuilder(
