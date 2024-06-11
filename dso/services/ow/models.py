@@ -18,6 +18,9 @@ class OWObject(BaseModel):
         base_dict["ow_type"] = self.__class__.__name__
         return base_dict
 
+    def set_status_beeindig(self):
+        self.status = OwObjectStatus.BEEINDIG
+
 
 class BestuurlijkeGrenzenVerwijzing(BaseModel):
     bestuurlijke_grenzen_id: str
