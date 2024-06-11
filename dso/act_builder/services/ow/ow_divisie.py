@@ -98,8 +98,8 @@ class OwDivisieBuilder(OwFileBuilder):
                     raise OWObjectStateException(
                         message="Expected to find tekstdeel for existing divisie", ref_ow_id=known_divisie.OW_ID
                     )
-                known_tekstdeel.status = OwObjectStatus.BEEINDIG
-                known_divisie.status = OwObjectStatus.BEEINDIG
+                known_tekstdeel.set_status_beeindig()
+                known_divisie.set_status_beeindig()
                 self._ow_repository.add_terminated_ow(known_tekstdeel)
                 self._ow_repository.add_terminated_ow(known_divisie)
 
