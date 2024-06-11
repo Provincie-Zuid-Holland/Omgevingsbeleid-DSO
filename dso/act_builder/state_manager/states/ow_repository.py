@@ -268,3 +268,37 @@ class OWStateRepository:
             self.merge_ow_state()
 
         return self._merged_ow_state
+
+    def test_full_ow_state_output(self):
+        ow_objects_state = []
+
+        # begin with existing OWObjects from known state OwData
+        for ow_id, ow_tekstdeel_map in self._known_ow_state.object_map.tekstdeel_mgdapping.items():
+            ow_obj = OWTekstdeel(OW_ID=ow_id, locaties=[ow_tekstdeel_map.location], divisie=ow_tekstdeel_map.divisie)
+            ow_objects_state.append(ow_obj)
+
+        for werkingsgebied_code, ow_id in self._known_ow_state.object_map.id_mapping.gebieden.items():
+            ow_obj = OWGebied(OW_ID=ow_id, mapped_geo_code=werkingsgebied_code)
+            ow_objects_state.append(ow_obj)
+
+        for werkingsgebied_code, ow_id in self._known_ow_state.object_map.id_mapping.gebiedengroep.items():
+            ow_obj = OWGebiedenGroep(OW_ID=ow_id, mapped_geo_code=werkingsgebied_code)
+            ow_objects_state.append(ow_obj)
+
+        for uuid, ow_id in self._known_ow_state.object_map.id_mapping.ambtsgebied.items():
+            ow_obj = OWAmbtsgebied(OW_ID=ow_id, mapped_uuid=uuid)
+            ow_objects_state.append(ow_obj)
+
+        for ambtsgebied_ow_id, ow_id in self._known_ow_state.object_map.id_mapping.regelingsgebied.items():
+            ow_obj = OWRegelingsgebied(OW_ID=ow_id, ambtsgebied=ambtsgebied_ow_id)
+            ow_objects_state.append(ow_obj)
+
+        for wid, ow_id in self._known_ow_state.object_map.id_mapping.wid.items():
+            ow_obj = OWDivisieTekst(OW_ID=ow_id, wid=wid)
+            ow_objects_state.append(ow_obj)
+
+        # Merge mutated owObjects with known state objects by replacing objects with matching ow id
+        for ow_obj in self.changed_ow_objects:
+            for idx, known_obj in enumerate(ow_objects_state):
+                if known_obj.OW_ID == ow_obj.OW_ID:
+                    ow_objects_state[idx] = ow_obj
