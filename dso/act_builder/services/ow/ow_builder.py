@@ -114,5 +114,6 @@ class OwBuilder(BuilderService):
         state_manager.add_output_file(ow_manifest_file)
 
         # Set the result patched state
-        state_manager.ow_object_state = state_manager.ow_repository.get_merged_ow_state()
+        state_manager.ow_object_state = state_manager.ow_repository.merge_ow_state()
+        state_manager.ow_object_state_v2 = state_manager.ow_repository.merge_ow_state_v2()
         return state_manager

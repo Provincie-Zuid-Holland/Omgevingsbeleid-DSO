@@ -1,10 +1,12 @@
+from hmac import new
 from typing import List, Optional
 from uuid import UUID
 
 from dso.act_builder.state_manager import OWObjectStateException
 
-from ....models import OwData, OwObjectMap, OwTekstdeelMap
+from ....models import OwData, OwDataV2, OwObjectMap, OwTekstdeelMap
 from ....services.ow import (
+    BestuurlijkeGrenzenVerwijzing,
     OWAmbtsgebied,
     OWDivisie,
     OWDivisieTekst,
@@ -16,6 +18,7 @@ from ....services.ow import (
     OWTekstdeel,
 )
 from ..exceptions import OWStateMutationError
+from dso.services import ow
 
 
 class OWStateRepository:
@@ -236,7 +239,7 @@ class OWStateRepository:
 
         return input_obj_map
 
-    def merge_ow_state(self) -> None:
+    def merge_ow_state(self) -> OwData:
         """
         Merge the previous OW state with our changes to create a new patched ow object state.
         New objects are added, mutated objects are updated, and terminated objects are removed.
@@ -262,43 +265,65 @@ class OWStateRepository:
         new_ow_state.object_map = new_obj_map
 
         self._merged_ow_state = new_ow_state
+        return new_ow_state
 
-    def get_merged_ow_state(self) -> OwData:
-        if self._merged_ow_state is None:
-            self.merge_ow_state()
-
-        return self._merged_ow_state
-
-    def test_full_ow_state_output(self):
-        ow_objects_state = []
+    def migrate_previous_ow_state(self) -> OwDataV2:
+        """
+        Simulate new ow state output format using v1 state for development purposes.
+        Previous state owbjects are created from known state map in OWdata and is not
+        complete.
+        """
+        # TODO: migrate API input state to provide full ow objects in same format and delete this method.
+        ow_objects_state = OwDataV2(used_ow_ids=self._known_ow_state.object_ids, ow_objects={}, terminated_ow_ids=[])
 
         # begin with existing OWObjects from known state OwData
-        for ow_id, ow_tekstdeel_map in self._known_ow_state.object_map.tekstdeel_mgdapping.items():
+        for ow_id, ow_tekstdeel_map in self._known_ow_state.object_map.tekstdeel_mapping.items():
             ow_obj = OWTekstdeel(OW_ID=ow_id, locaties=[ow_tekstdeel_map.location], divisie=ow_tekstdeel_map.divisie)
-            ow_objects_state.append(ow_obj)
+            ow_objects_state.ow_objects[ow_obj.OW_ID] = ow_obj
 
         for werkingsgebied_code, ow_id in self._known_ow_state.object_map.id_mapping.gebieden.items():
-            ow_obj = OWGebied(OW_ID=ow_id, mapped_geo_code=werkingsgebied_code)
-            ow_objects_state.append(ow_obj)
+            ow_obj = OWGebied(OW_ID=ow_id, mapped_geo_code=werkingsgebied_code, mapped_uuid=None)
+            ow_objects_state.ow_objects[ow_obj.OW_ID] = ow_obj
 
         for werkingsgebied_code, ow_id in self._known_ow_state.object_map.id_mapping.gebiedengroep.items():
-            ow_obj = OWGebiedenGroep(OW_ID=ow_id, mapped_geo_code=werkingsgebied_code)
-            ow_objects_state.append(ow_obj)
+            related_gebied_id = self._known_ow_state.object_map.id_mapping.gebieden[werkingsgebied_code]
+            ow_obj = OWGebiedenGroep(
+                OW_ID=ow_id,
+                mapped_geo_code=werkingsgebied_code,
+                mapped_uuid=None,
+                gebieden=[],
+            )
+            ow_objects_state.ow_objects[ow_obj.OW_ID] = ow_obj
 
-        for uuid, ow_id in self._known_ow_state.object_map.id_mapping.ambtsgebied.items():
-            ow_obj = OWAmbtsgebied(OW_ID=ow_id, mapped_uuid=uuid)
-            ow_objects_state.append(ow_obj)
+        for uuid_str, ow_id in self._known_ow_state.object_map.id_mapping.ambtsgebied.items():
+            bg = BestuurlijkeGrenzenVerwijzing(bestuurlijke_grenzen_id="", domein="", geldig_op="")
+            ow_obj = OWAmbtsgebied(OW_ID=ow_id, mapped_uuid=UUID(uuid_str), bestuurlijke_genzenverwijzing=bg)
+            ow_objects_state.ow_objects[ow_obj.OW_ID] = ow_obj
 
         for ambtsgebied_ow_id, ow_id in self._known_ow_state.object_map.id_mapping.regelingsgebied.items():
             ow_obj = OWRegelingsgebied(OW_ID=ow_id, ambtsgebied=ambtsgebied_ow_id)
-            ow_objects_state.append(ow_obj)
+            ow_objects_state.ow_objects[ow_obj.OW_ID] = ow_obj
 
         for wid, ow_id in self._known_ow_state.object_map.id_mapping.wid.items():
             ow_obj = OWDivisieTekst(OW_ID=ow_id, wid=wid)
-            ow_objects_state.append(ow_obj)
+            ow_objects_state.ow_objects[ow_obj.OW_ID] = ow_obj
 
-        # Merge mutated owObjects with known state objects by replacing objects with matching ow id
+        return ow_objects_state
+
+    def merge_ow_state_v2(self) -> OwDataV2:
+        ow_objects_state = self.migrate_previous_ow_state()
+
+        # Merge changed owObjects by replacing objects with matching ow id
         for ow_obj in self.changed_ow_objects:
-            for idx, known_obj in enumerate(ow_objects_state):
-                if known_obj.OW_ID == ow_obj.OW_ID:
-                    ow_objects_state[idx] = ow_obj
+            ow_objects_state.ow_objects[ow_obj.OW_ID] = ow_obj
+
+        for ow_obj in self._terminated_ow_objects:
+            del ow_objects_state.ow_objects[ow_obj.OW_ID]
+            ow_objects_state.used_ow_ids.remove(ow_obj.OW_ID)
+            ow_objects_state.terminated_ow_ids.append(ow_obj.OW_ID)
+
+        return ow_objects_state
+
+    def get_merged_ow_state(self) -> OwDataV2:
+        # return self.merge_ow_state()
+        return self.merge_ow_state_v2()

@@ -1,6 +1,6 @@
-from typing import List, Optional
+from typing import List, Optional, Any
 
-from ...models import OwData
+from ...models import OwData, OwDataV2
 from ...services.ewid.ewid_service import EWIDService
 from .input_data.input_data_loader import InputData
 from .models import OutputFile
@@ -19,6 +19,7 @@ class StateManager:
 
         # result state of ow object data after processing
         self.ow_object_state: Optional[OwData] = None
+        self.ow_object_state_v2: Optional[OwDataV2] = None
 
         # Service is in the state manager
         # As we use it on multiple places, and the internal state should be updates for each use

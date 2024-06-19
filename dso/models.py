@@ -297,6 +297,7 @@ class OwData(BaseModel):
     object_map: OwObjectMap = Field(default_factory=OwObjectMap)
 
 
-class OwDataFull(BaseModel):
-    object_ids: List[str] = Field(default_factory=list)
-    object_map: Dict[Any, Any] = Field(default_factory=dict)
+class OwDataV2(BaseModel):
+    used_ow_ids: List[str] = Field(default_factory=list)
+    ow_objects: Dict[str, Any] = Field(default_factory=dict)
+    terminated_ow_ids: List[str] = Field(default_factory=list)
