@@ -1,7 +1,7 @@
 import click
 
-from dso.act_builder.builder import Builder
-from dso.act_builder.state_manager.input_data.input_data_loader import InputData, InputDataLoader
+from .act_builder.builder import Builder
+from .act_builder.state_manager.input_data.input_data_loader import InputData, InputDataLoader
 
 
 @click.group()
@@ -10,17 +10,16 @@ def cli():
 
 
 @click.command()
-@click.argument("main_file")
+@click.argument("input_dir")
 @click.argument("output_dir")
-def generate(main_file: str, output_dir: str):
+def generate(input_dir: str, output_dir: str):
+    main_file = f"{input_dir}/main.json"
     loader = InputDataLoader(main_file)
     data: InputData = loader.load()
 
     builder = Builder(data)
     builder.build_publication_files()
     builder.save_files(output_dir)
-
-    a = True
 
 
 cli.add_command(generate)
