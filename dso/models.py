@@ -239,7 +239,12 @@ class PublicationSettings(BaseModel):
 
     @validator("document_type", pre=True, always=True)
     def _format_document_type(cls, v):
-        return DocumentType[v]
+        if v in DocumentType.__members__.values():
+            return v
+        try:
+            return DocumentType[v]
+        except KeyError:
+            raise ValueError(f"{v} is not a valid DocumentType")
 
     @validator("soort_bestuursorgaan", pre=True)
     def _format_soort_bestuursorgaan(cls, v):
@@ -296,8 +301,16 @@ class OwData(BaseModel):
     object_ids: List[str] = Field(default_factory=list)
     object_map: OwObjectMap = Field(default_factory=OwObjectMap)
 
+    @classmethod
+    def from_json(cls, json_data):
+        return cls(**json_data)
+
 
 class OwDataV2(BaseModel):
     used_ow_ids: List[str] = Field(default_factory=list)
     ow_objects: Dict[str, Any] = Field(default_factory=dict)
     terminated_ow_ids: List[str] = Field(default_factory=list)
+
+    @classmethod
+    def from_json(cls, json_data):
+        return cls(**json_data)
