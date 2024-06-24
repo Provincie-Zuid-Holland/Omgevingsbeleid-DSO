@@ -1,8 +1,7 @@
 from typing import List, Optional
 from uuid import UUID
 
-from dso.act_builder.state_manager import OWObjectStateException
-
+from ....act_builder.state_manager import OWObjectStateException
 from ....models import OwData, OwDataV2, OwObjectMap, OwTekstdeelMap
 from ....services.ow import (
     BestuurlijkeGrenzenVerwijzing,
