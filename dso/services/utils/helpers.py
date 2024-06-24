@@ -76,6 +76,14 @@ def load_json_data(file_path):
         return json.load(f)
 
 
+def load_xml_file(file_path) -> str:
+    with open(file_path, "r") as f:
+        xml_content = f.read()
+        # Remove newlines and extra spaces
+        xml_content = xml_content.replace("\n", "").replace("  ", "")
+        return xml_content
+
+
 # def load_werkingsgebieden(path="./input/werkingsgebieden/*.json") -> List[Werkingsgebied]:
 #     return [Werkingsgebied(**load_json_data(wg_json)) for wg_json in glob.glob(path)]
 
@@ -104,3 +112,12 @@ def is_html_valid(html_content) -> bool:
         return True
     except etree.XMLSyntaxError:
         return False
+
+
+def to_lowercase_keys(data):
+    if isinstance(data, dict):
+        return {k.lower(): to_lowercase_keys(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [to_lowercase_keys(i) for i in data]
+    else:
+        return data
