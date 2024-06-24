@@ -54,7 +54,7 @@ class OwDivisieBuilder(OwFileBuilder):
         self._used_object_types: Set[OwDivisieObjectType] = set()
 
     def handle_ow_object_changes(self):
-        # split to smaller methods
+        # TODO: split to smaller unit methods
         for object_code, values in self._annotation_lookup.items():
             known_divisie = self._ow_repository.get_existing_divisie(values["wid"])
             if known_divisie:

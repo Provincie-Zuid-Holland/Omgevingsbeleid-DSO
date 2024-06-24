@@ -85,9 +85,10 @@ class OwLocatieBuilder(OwFileBuilder):
         return gebied
 
     def new_ow_gebiedengroep(self, werkingsgebied: Werkingsgebied) -> OWGebiedenGroep:
-        gebieden: List[OWGebied] = []
+        gebieden: List[str] = []
         for locatie in werkingsgebied.Locaties:
-            gebieden.append(self.new_ow_gebied(locatie, werkingsgebied.Code))
+            new_gebied = self.new_ow_gebied(locatie, werkingsgebied.Code)
+            gebieden.append(new_gebied.OW_ID)
 
         new_group_ow_id = generate_ow_id(IMOWTYPES.GEBIEDENGROEP, self._provincie_id)
         new_gebiedengroep = OWGebiedenGroep(
@@ -134,7 +135,7 @@ class OwLocatieBuilder(OwFileBuilder):
                 raise NotImplementedError("Multiple locations in group not supported yet.")
 
             mutated_gebied = self.mutate_ow_gebied(locatie, existing_gebied_owid, werkingsgebied.Code)
-            mutated_gebiedengroep.gebieden.append(mutated_gebied)
+            mutated_gebiedengroep.gebieden.append(mutated_gebied.OW_ID)
 
         self._ow_repository.add_mutated_ow(mutated_gebiedengroep)
         return mutated_gebiedengroep

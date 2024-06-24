@@ -47,7 +47,7 @@ class OWGebied(OWLocatie):
 
 class OWGebiedenGroep(OWLocatie):
     mapped_geo_code: Optional[str]
-    gebieden: List[OWGebied] = []
+    gebieden: List[str] = []
 
 
 class OWDivisie(OWObject):

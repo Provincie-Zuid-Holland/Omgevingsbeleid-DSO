@@ -1,4 +1,3 @@
-from hmac import new
 from typing import List, Optional
 from uuid import UUID
 
@@ -18,7 +17,6 @@ from ....services.ow import (
     OWTekstdeel,
 )
 from ..exceptions import OWStateMutationError
-from dso.services import ow
 
 
 class OWStateRepository:
@@ -291,7 +289,7 @@ class OWStateRepository:
                 OW_ID=ow_id,
                 mapped_geo_code=werkingsgebied_code,
                 mapped_uuid=None,
-                gebieden=[],
+                gebieden=[related_gebied_id],
             )
             ow_objects_state.ow_objects[ow_obj.OW_ID] = ow_obj
 
