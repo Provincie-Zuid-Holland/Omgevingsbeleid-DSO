@@ -71,9 +71,9 @@
                     <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
                     <l:bestuurlijkeGrenzenVerwijzing>
                         <l:BestuurlijkeGrenzenVerwijzing>
-                            <l:bestuurlijkeGrenzenID>{{ ow_object.bestuurlijke_genzenverwijzing.bestuurlijke_grenzen_id }}</l:bestuurlijkeGrenzenID>
-                            <l:domein>{{ ow_object.bestuurlijke_genzenverwijzing.domein }}</l:domein>
-                            <l:geldigOp>{{ ow_object.bestuurlijke_genzenverwijzing.geldig_op }}</l:geldigOp>
+                            <l:bestuurlijkeGrenzenID>{{ ow_object.bestuurlijke_grenzen_verwijzing.bestuurlijke_grenzen_id }}</l:bestuurlijkeGrenzenID>
+                            <l:domein>{{ ow_object.bestuurlijke_grenzen_verwijzing.domein }}</l:domein>
+                            <l:geldigOp>{{ ow_object.bestuurlijke_grenzen_verwijzing.geldig_op }}</l:geldigOp>
                         </l:BestuurlijkeGrenzenVerwijzing>
                     </l:bestuurlijkeGrenzenVerwijzing>
                 </l:Ambtsgebied>

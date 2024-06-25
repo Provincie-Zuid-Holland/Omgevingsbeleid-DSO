@@ -294,7 +294,7 @@ class OWStateRepository:
 
         for uuid_str, ow_id in self._known_ow_state.object_map.id_mapping.ambtsgebied.items():
             bg = BestuurlijkeGrenzenVerwijzing(bestuurlijke_grenzen_id="", domein="", geldig_op="")
-            ow_obj = OWAmbtsgebied(OW_ID=ow_id, mapped_uuid=UUID(uuid_str), bestuurlijke_genzenverwijzing=bg)
+            ow_obj = OWAmbtsgebied(OW_ID=ow_id, mapped_uuid=UUID(uuid_str), bestuurlijke_grenzen_verwijzing=bg)
             ow_objects_state.ow_objects[ow_obj.OW_ID] = ow_obj
 
         for ambtsgebied_ow_id, ow_id in self._known_ow_state.object_map.id_mapping.regelingsgebied.items():

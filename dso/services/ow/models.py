@@ -1,8 +1,6 @@
 from typing import List, Optional
 from uuid import UUID
-
 from pydantic import BaseModel
-
 from .enums import OwObjectStatus, OwProcedureStatus
 from .ow_id import check_ow_id_imowtype
 
@@ -33,40 +31,37 @@ class OWRegelingsgebied(OWObject):
 
 
 class OWLocatie(OWObject):
-    mapped_uuid: Optional[UUID]
+    mapped_uuid: Optional[UUID] = None
     noemer: Optional[str] = None
 
 
 class OWAmbtsgebied(OWLocatie):
-    bestuurlijke_genzenverwijzing: BestuurlijkeGrenzenVerwijzing
+    bestuurlijke_grenzen_verwijzing: BestuurlijkeGrenzenVerwijzing
 
 
 class OWGebied(OWLocatie):
-    mapped_geo_code: Optional[str]
+    mapped_geo_code: Optional[str] = None
 
 
 class OWGebiedenGroep(OWLocatie):
-    mapped_geo_code: Optional[str]
+    mapped_geo_code: Optional[str] = None
     gebieden: List[str] = []
 
 
 class OWDivisie(OWObject):
     wid: str
+    # mapped_policy_object_code: Optional[str] = None
 
 
 class OWDivisieTekst(OWObject):
     wid: str
+    # mapped_policy_object_code: Optional[str] = None
 
 
 class OWTekstdeel(OWObject):
     """
-    note: divisietekstref is used as single item list
+    Divisietekstref is used as single item list
     for now but IMOW spec allows listing multiple.
-
-    TODO:
-    - Using str ow_id ref with "type" now, better to make full object,
-    for consistency, but change to state map needed first.
-
     Not yet supported:
     - thema
     - kaartaanduiding

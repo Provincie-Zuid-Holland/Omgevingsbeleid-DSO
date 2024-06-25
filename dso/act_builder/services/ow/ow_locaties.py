@@ -144,7 +144,7 @@ class OwLocatieBuilder(OwFileBuilder):
         gebied_ow_id = generate_ow_id(IMOWTYPES.AMBTSGEBIED, self._provincie_id)
         new_ambtsgebied: OWAmbtsgebied = OWAmbtsgebied(
             OW_ID=gebied_ow_id,
-            bestuurlijke_genzenverwijzing=BestuurlijkeGrenzenVerwijzing(
+            bestuurlijke_grenzen_verwijzing=BestuurlijkeGrenzenVerwijzing(
                 bestuurlijke_grenzen_id=self._provincie_id.upper(),
                 domein=ambtsgebied_data.domein,
                 geldig_op=ambtsgebied_data.geldig_op,
