@@ -1,10 +1,12 @@
 from abc import ABCMeta, abstractmethod
 from enum import Enum
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Type
+from typing_extensions import deprecated
 
 from pydantic import BaseModel, Field, root_validator, validator
 
 from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappen, Provincie
+from .services.ow.models import OWObject
 
 
 class FRBR(BaseModel, metaclass=ABCMeta):
@@ -297,7 +299,7 @@ class OwObjectMap(BaseModel):
     tekstdeel_mapping: Dict[str, OwTekstdeelMap] = Field(default_factory=dict)
 
 
-class OwData(BaseModel):
+class OwDataV1(BaseModel):
     object_ids: List[str] = Field(default_factory=list)
     object_map: OwObjectMap = Field(default_factory=OwObjectMap)
 
@@ -306,11 +308,33 @@ class OwData(BaseModel):
         return cls(**json_data)
 
 
-class OwDataV2(BaseModel):
+def build_ow_type_mapping(base_class: Type[BaseModel]) -> Dict[str, Type[BaseModel]]:
+    subclasses = base_class.__subclasses__()
+    mapping = {subclass.__name__: subclass for subclass in subclasses}
+    for subclass in subclasses:
+        mapping.update(build_ow_type_mapping(subclass))
+    return mapping
+
+
+class OwData(BaseModel):
     used_ow_ids: List[str] = Field(default_factory=list)
-    ow_objects: Dict[str, Any] = Field(default_factory=dict)
+    ow_objects: Dict[str, OWObject] = Field(default_factory=dict)
     terminated_ow_ids: List[str] = Field(default_factory=list)
 
     @classmethod
-    def from_json(cls, json_data):
-        return cls(**json_data)
+    def from_json(cls, json_data: Dict[str, Any]) -> "OwData":
+        OW_TYPE_MAPPING = build_ow_type_mapping(OWObject)
+        ow_objects = {}
+        for ow_id, ow_obj_data in json_data.get("ow_objects", {}).items():
+            ow_type = ow_obj_data.get("ow_type")
+            ow_class = OW_TYPE_MAPPING.get(ow_type)
+            if ow_class:
+                ow_objects[ow_id] = ow_class(**ow_obj_data)
+            else:
+                raise ValueError(f"Unknown ow_type '{ow_type}' encountered in JSON data.")
+
+        return cls(
+            used_ow_ids=json_data.get("used_ow_ids", []),
+            ow_objects=ow_objects,
+            terminated_ow_ids=json_data.get("terminated_ow_ids", []),
+        )

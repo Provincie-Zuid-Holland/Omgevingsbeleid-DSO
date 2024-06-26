@@ -1,6 +1,8 @@
+from ast import In
 from copy import deepcopy
 from typing import List, Optional
 
+from ....act_builder.state_manager.input_data.development_export import export_dev_json
 from ....services.ow.enums import OwProcedureStatus
 from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
@@ -114,6 +116,6 @@ class OwBuilder(BuilderService):
         state_manager.add_output_file(ow_manifest_file)
 
         # Set the result patched state
-        state_manager.ow_object_state = state_manager.ow_repository.merge_ow_state()
-        state_manager.ow_object_state_v2 = state_manager.ow_repository.merge_ow_state_v2()
+        state_manager.ow_object_state = state_manager.ow_repository.get_merged_ow_state()
+
         return state_manager
