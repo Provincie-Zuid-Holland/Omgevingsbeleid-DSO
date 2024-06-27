@@ -20,7 +20,6 @@ class OWStateRepository:
     def __init__(self, ow_input_data: OwData) -> None:
         # Previous ow state from input
         self._known_ow_state = ow_input_data
-        self._merged_ow_state: Optional[OwData] = None
 
         self._new_ow_objects: List[OWObject] = []
         self._mutated_ow_objects: List[OWObject] = []
@@ -31,12 +30,8 @@ class OWStateRepository:
         return self._new_ow_objects + self._mutated_ow_objects
 
     @property
-    def changed_ow_object_ids(self) -> List[str]:
-        return [ow.OW_ID for ow in self.changed_ow_objects]
-
-    @property
-    def terminated_ow_object_ids(self) -> List[str]:
-        return [ow.OW_ID for ow in self._terminated_ow_objects]
+    def terminated_ow_objects(self) -> List[OWObject]:
+        return self._terminated_ow_objects
 
     def add_new_ow(self, ow_object: OWObject) -> None:
         new_ow_id = ow_object.OW_ID
@@ -44,13 +39,13 @@ class OWStateRepository:
             raise OWStateMutationError(
                 message="Cannot create ow object, already existing as new state object.",
                 action="add_new_ow",
-                ow_object=ow_object,
+                ow_object=ow_object.dict(),
             )
         if any(obj.OW_ID == new_ow_id for obj in self._mutated_ow_objects):
             raise OWStateMutationError(
                 message="Cannot create ow object, already added as mutated state object.",
                 action="add_new_ow",
-                ow_object=ow_object,
+                ow_object=ow_object.dict(),
             )
         self._new_ow_objects.append(ow_object)
 
@@ -59,7 +54,7 @@ class OWStateRepository:
             raise OWStateMutationError(
                 message="Cannot create ow object, already added as mutated state object.",
                 action="add_mutated_ow",
-                ow_object=ow_object,
+                ow_object=ow_object.dict(),
             )
         # TODO: maybe add exception if mutating but no values changed? to prevent lvbb errors
         self._mutated_ow_objects.append(ow_object)
@@ -69,10 +64,11 @@ class OWStateRepository:
             raise OWStateMutationError(
                 message="Cannot terminate ow object as it did not exist in input state.",
                 action="add_terminated_ow",
-                ow_object=ow_object,
+                ow_object=ow_object.dict(),
             )
         self._terminated_ow_objects.append(ow_object)
 
+    # TODO: Refactor this block more efficiently when certain of mapping logic
     def get_new_locations(self) -> List[OWObject]:
         return [obj for obj in self._new_ow_objects if isinstance(obj, OWLocatie)]
 
@@ -174,35 +170,3 @@ class OWStateRepository:
             if isinstance(ow_obj, OWGebiedenGroep) and ow_obj.OW_ID in ow_tekstdeel.locaties:
                 return ow_obj.mapped_geo_code
         return None
-
-    def _merge_ow_object_ids(
-        self, input_obj_ids: List[str], changed_obj_ids: List[str], terminated_obj_ids: List[str]
-    ) -> List[str]:
-        updated_object_list = set(input_obj_ids)
-        updated_object_list.update(changed_obj_ids)
-        updated_object_list.difference_update(terminated_obj_ids)
-        return list(updated_object_list)
-
-    def get_merged_ow_state(self) -> OwData:
-        if self._merged_ow_state:
-            return self._merged_ow_state
-
-        ow_objects_state = self._known_ow_state.copy(deep=True)
-
-        # calc used ow ids
-        ow_objects_state.used_ow_ids = self._merge_ow_object_ids(
-            ow_objects_state.used_ow_ids,
-            self.changed_ow_object_ids,
-            self.terminated_ow_object_ids,
-        )
-
-        # update active ow_objects
-        for ow_obj in self.changed_ow_objects:
-            ow_objects_state.ow_objects[ow_obj.OW_ID] = ow_obj
-
-        for ow_obj in self._terminated_ow_objects:
-            del ow_objects_state.ow_objects[ow_obj.OW_ID]
-            ow_objects_state.terminated_ow_ids.append(ow_obj.OW_ID)
-
-        self._merged_ow_state = ow_objects_state
-        return ow_objects_state

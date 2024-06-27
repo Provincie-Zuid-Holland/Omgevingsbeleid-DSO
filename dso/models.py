@@ -1,7 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from enum import Enum
 from typing import Dict, List, Optional, Any, Type
-from typing_extensions import deprecated
 
 from pydantic import BaseModel, Field, root_validator, validator
 
