@@ -1,6 +1,6 @@
-from typing import List, Optional, Dict, Set
-
+from typing import Dict, List, Optional, Set
 from uuid import UUID
+
 from pydantic import BaseModel
 
 from .enums import OwObjectStatus, OwProcedureStatus

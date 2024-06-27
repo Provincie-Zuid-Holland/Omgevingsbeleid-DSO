@@ -1,7 +1,7 @@
 from typing import List, Optional
 
-from .models import OWObject
 from ...models import OwData
+from .models import OWObject
 
 
 class OWStatePatcher:

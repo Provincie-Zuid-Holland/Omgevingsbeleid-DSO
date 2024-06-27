@@ -9,7 +9,6 @@ from ....services.ow import (
     OWDivisieTekst,
     OWObject,
     OWObjectGenerationError,
-    OwObjectStatus,
     OwProcedureStatus,
     OWTekstdeel,
     generate_ow_id,

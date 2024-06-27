@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from ......models import PublicationSettings
 from ......services.utils.helpers import load_json_data

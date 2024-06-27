@@ -1,5 +1,4 @@
 import uuid
-from urllib.parse import quote
 from typing import Dict, List, Optional
 
 from .werkingsgebied import Werkingsgebied

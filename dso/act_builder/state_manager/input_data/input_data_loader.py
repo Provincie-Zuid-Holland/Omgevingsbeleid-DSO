@@ -6,15 +6,14 @@ from pydantic import BaseModel, Field
 from ....models import OwData, ProcedureStap, ProcedureVerloop, PublicationSettings, RegelingMutatie
 from ....services.utils.helpers import load_json_data, load_xml_file
 from ....services.utils.os import create_normalized_path
-
 from .ambtsgebied import Ambtsgebied
 from .besluit import Besluit
 from .object_template_repository import ObjectTemplateRepository
 from .regeling import Regeling
-from .resource.resources import Resources
-from .resource.resource_loader import ResourceLoader
 from .resource.asset.asset_repository import AssetRepository
 from .resource.policy_object.policy_object_repository import PolicyObjectRepository
+from .resource.resource_loader import ResourceLoader
+from .resource.resources import Resources
 from .resource.werkingsgebied.werkingsgebied_repository import WerkingsgebiedRepository
 
 

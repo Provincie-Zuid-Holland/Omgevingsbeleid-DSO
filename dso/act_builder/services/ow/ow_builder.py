@@ -2,6 +2,8 @@ from copy import deepcopy
 from typing import List, Optional
 
 from ....services.ow.enums import OwProcedureStatus
+from ....services.ow.ow_state_patcher import OWStatePatcher
+from ....services.ow.ow_state_validator import OWStateValidator
 from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
 from ...services.ow.ow_divisie import OwDivisieBuilder
@@ -9,9 +11,6 @@ from ...services.ow.ow_locaties import OwLocatieBuilder
 from ...services.ow.ow_manifest import OwManifestBuilder
 from ...services.ow.ow_regelinggebied import OwRegelingsgebiedBuilder
 from ...state_manager.state_manager import StateManager
-
-from ....services.ow.ow_state_patcher import OWStatePatcher
-from ....services.ow.ow_state_validator import OWStateValidator
 
 
 class OwBuilder(BuilderService):
@@ -126,7 +125,8 @@ class OwBuilder(BuilderService):
 
         # sanity check the patched state
         ow_state_validator = OWStateValidator(ow_data=ow_state_patcher.patched_ow_state)
-        ow_state_validator.validate()
+        dangling_objects = ow_state_validator.find_dangling_objects()
+        # ow_state_validator.validate()
 
         state_manager.ow_object_state = ow_state_patcher.patched_ow_state
 

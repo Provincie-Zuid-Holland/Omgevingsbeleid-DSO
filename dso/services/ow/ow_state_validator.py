@@ -2,10 +2,9 @@ from typing import Dict, List, Set
 
 from dso.act_builder.services.ow.ow_regelinggebied import OWRegelingsgebied
 
-
-from .models import OWTekstdeel, OWObject, OWGebiedenGroep
-from ...act_builder.state_manager.states.ow_repository import OwData
 from ...act_builder.state_manager.exceptions import OWStateDanglingObjectsException
+from ...act_builder.state_manager.states.ow_repository import OwData
+from .models import OWGebiedenGroep, OWObject, OWTekstdeel
 
 
 class OWStateValidator:

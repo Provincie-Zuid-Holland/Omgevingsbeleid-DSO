@@ -1,11 +1,11 @@
 from abc import ABCMeta, abstractmethod
 from enum import Enum
-from typing import Dict, List, Optional, Any, Type
+from typing import Any, Dict, List, Optional, Type
 
 from pydantic import BaseModel, Field, root_validator, validator
 
-from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappen, Provincie
 from .services.ow.models import OWObject
+from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappen, Provincie
 
 
 class FRBR(BaseModel, metaclass=ABCMeta):

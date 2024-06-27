@@ -1,13 +1,14 @@
 from uuid import UUID
+
 from ...models import OwData, OwDataV1
 from .models import (
+    BestuurlijkeGrenzenVerwijzing,
     OWAmbtsgebied,
     OWDivisieTekst,
     OWGebied,
     OWGebiedenGroep,
     OWRegelingsgebied,
     OWTekstdeel,
-    BestuurlijkeGrenzenVerwijzing,
 )
 
 

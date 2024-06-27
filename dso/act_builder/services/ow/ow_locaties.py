@@ -50,11 +50,6 @@ class OwLocatieBuilder(OwFileBuilder):
         """
         Compares werkingsgebied objects with previous OW state and
         determines if new, mutation or termination action is needed.
-
-        Create: werkingsgebied code that was not in previous ow state
-        Mutation: existing werkingsgebied values MUST be different from existing OW obj
-            or LVBB will not accept.
-        Terminate: Only if specifically added in input_data, other terminations calc later
         """
         existing_ambtsgebied = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied_data.UUID)
         if not existing_ambtsgebied:
@@ -65,8 +60,9 @@ class OwLocatieBuilder(OwFileBuilder):
         for werkingsgebied in self._werkingsgebieden:
             existing_gebied_id = self._ow_repository.get_existing_gebied_id(werkingsgebied.Code)
             if not existing_gebied_id:
-                self.new_ow_gebiedengroep(werkingsgebied)
+                self.new_ow_gebiedengroep(werkingsgebied)  # werkingsgebied code that was not in previous state
             else:
+                # existing werkingsgebied code in state, mutate
                 self.mutate_ow_gebied(werkingsgebied.Locaties[0], existing_gebied_id, werkingsgebied.Code)
                 # since we dont support adding new locations to existing groups yet, we only need to
                 # mutate the owgebied as the group still references the same gebied ID>
