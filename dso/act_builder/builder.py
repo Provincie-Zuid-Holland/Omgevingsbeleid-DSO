@@ -18,6 +18,7 @@ from .services.pdf.pdf_builder import PdfBuilder
 from .state_manager.input_data.input_data_loader import InputData
 from .state_manager.models import AssetContentData, PdfContentData, StrContentData
 from .state_manager.state_manager import StateManager
+import os
 
 
 class Builder:
@@ -40,10 +41,11 @@ class Builder:
             self._state_manager = service.apply(self._state_manager)
 
     def save_files(self, output_dir: str):
-        empty_directory(output_dir)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
         for output_file in self._state_manager.get_output_files():
-            destination_path = f"{output_dir}/{output_file.filename}"
+            destination_path = os.path.join(output_dir, output_file.filename)
             match output_file.content:
                 case StrContentData():
                     with open(destination_path, "w") as f:

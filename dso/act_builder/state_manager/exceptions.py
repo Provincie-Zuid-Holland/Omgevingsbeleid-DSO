@@ -21,7 +21,9 @@ class OWStateMutationError(OWStateError):
 class OWObjectStateException(OWStateError):
     """Indicates OW State inconsistency when an object is missing expected references or is dangling."""
 
-    def __init__(self, message: str, ow_object: Optional[dict], ref_ow_id: Optional[str] = None, *args, **kwargs):
+    def __init__(
+        self, message: str, ow_object: Optional[dict] = None, ref_ow_id: Optional[str] = None, *args, **kwargs
+    ):
         super().__init__(message, *args, **kwargs)
         self.ow_object = ow_object
         self.ref_ow_id = ref_ow_id
