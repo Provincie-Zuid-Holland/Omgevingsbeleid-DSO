@@ -54,8 +54,8 @@
                     <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
                     <l:noemer>{{ ow_object.noemer }}</l:noemer>
                     <l:groepselement>
-                        {% for gebied in ow_object.gebieden %}
-                        <l:GebiedRef xlink:href="{{ gebied.OW_ID }}"/>
+                        {% for gebied_ow_id in ow_object.gebieden %}
+                        <l:GebiedRef xlink:href="{{ gebied_ow_id }}"/>
                         {% endfor %}
                     </l:groepselement>
                 </l:Gebiedengroep>
@@ -109,8 +109,8 @@
                     <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
                     <l:noemer>{{ ow_object.noemer }}</l:noemer>
                     <l:groepselement>
-                        {% for gebied in ow_object.gebieden %}
-                        <l:GebiedRef xlink:href="{{ gebied.OW_ID }}"/>
+                        {% for gebied_ow_id in ow_object.gebieden %}
+                        <l:GebiedRef xlink:href="{{ gebied_ow_id }}"/>
                         {% endfor %}
                     </l:groepselement>
                 </l:Gebiedengroep>
@@ -152,8 +152,8 @@
                     <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
                     <l:noemer>{{ ow_object.noemer }}</l:noemer>
                     <l:groepselement>
-                        {% for gebied in ow_object.gebieden %}
-                        <l:GebiedRef xlink:href="{{ gebied.OW_ID }}"/>
+                        {% for gebied_ow_id in ow_object.gebieden %}
+                        <l:GebiedRef xlink:href="{{ gebied_ow_id }}"/>
                         {% endfor %}
                     </l:groepselement>
                 </l:Gebiedengroep>

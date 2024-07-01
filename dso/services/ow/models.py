@@ -104,7 +104,8 @@ class OWTekstdeel(OWObject):
 
     @property
     def divisie_type(self) -> str:
-        return check_ow_id_imowtype(self.divisie).value
+        result = check_ow_id_imowtype(self.divisie).value
+        return result
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
         if self.divisie not in used_ow_ids:
@@ -112,3 +113,8 @@ class OWTekstdeel(OWObject):
         if not all(locatie_id in used_ow_ids for locatie_id in self.locaties):
             return False
         return True
+
+    def dict(self, **kwargs):
+        base_dict = super().dict(**kwargs)
+        base_dict["divisie_type"] = self.divisie_type
+        return base_dict
