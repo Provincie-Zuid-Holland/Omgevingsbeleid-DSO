@@ -125,8 +125,7 @@ class OwBuilder(BuilderService):
 
         # sanity check the patched state
         ow_state_validator = OWStateValidator(ow_data=ow_state_patcher.patched_ow_state)
-        dangling_objects = ow_state_validator.find_dangling_objects()
-        # ow_state_validator.validate()
+        ow_state_validator.validate()
 
         state_manager.ow_object_state = ow_state_patcher.patched_ow_state
 

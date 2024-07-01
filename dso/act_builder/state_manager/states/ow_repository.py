@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 from uuid import UUID
 
 from ....models import OwData
@@ -13,7 +13,7 @@ from ....services.ow import (
     OWRegelingsgebied,
     OWTekstdeel,
 )
-from ..exceptions import OWStateMutationError
+from ..exceptions import OWObjectStateException, OWStateMutationError
 
 
 class OWStateRepository:
@@ -130,6 +130,33 @@ class OWStateRepository:
                 return ow_obj.OW_ID
         return None
 
+    def get_existing_gebied(self, ow_id: str) -> OWGebied:
+        ow_obj = self._known_ow_state.ow_objects.get(ow_id, None)
+        if not ow_obj or not isinstance(ow_obj, OWGebied):
+            raise OWObjectStateException(
+                message=f"Expected OWGebied type object in existing state OW_ID: {ow_id}.",
+                ref_ow_id=ow_id,
+            )
+        return ow_obj
+
+    def get_existing_gebiedengroep(self, ow_id: str) -> OWGebiedenGroep:
+        ow_obj = self._known_ow_state.ow_objects.get(ow_id, None)
+        if not ow_obj or not isinstance(ow_obj, OWGebiedenGroep):
+            raise OWObjectStateException(
+                message=f"Expected OWGebiedenGroep type object in existing state OW_ID: {ow_id}.",
+                ref_ow_id=ow_id,
+            )
+        return ow_obj
+
+    def get_existing_locatie(self, ow_id: str) -> Union[OWGebied, OWGebiedenGroep]:
+        ow_obj = self._known_ow_state.ow_objects.get(ow_id, None)
+        if not ow_obj or not isinstance(ow_obj, (OWGebied, OWGebiedenGroep)):
+            raise OWObjectStateException(
+                message=f"Expected OWGebied or OWGebiedenGroep type object in existing state OW_ID: {ow_id}.",
+                ref_ow_id=ow_id,
+            )
+        return ow_obj
+
     def get_existing_ambtsgebied_id(self, uuid: UUID) -> Optional[str]:
         for ow_obj in self._known_ow_state.ow_objects.values():
             if isinstance(ow_obj, OWAmbtsgebied) and ow_obj.mapped_uuid == uuid:
@@ -142,21 +169,29 @@ class OWStateRepository:
                 return ow_obj.OW_ID
         return None
 
-    def get_existing_divisie(self, wid: str) -> Optional[OWDivisieTekst]:
+    def get_existing_divisie(self, wid: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
         for ow_obj in self._known_ow_state.ow_objects.values():
-            if isinstance(ow_obj, OWDivisieTekst) and ow_obj.wid == wid:
+            if isinstance(ow_obj, (OWDivisie, OWDivisieTekst)) and ow_obj.wid == wid:
                 return ow_obj
         return None
 
     def get_existing_tekstdeel_by_divisie(self, divisie_ow_id: str) -> Optional[OWTekstdeel]:
-        for ow_obj in self._known_ow_state.ow_objects.values():
-            if isinstance(ow_obj, OWTekstdeel) and ow_obj.divisie == divisie_ow_id:
-                return ow_obj
-        return None
+        if divisie_ow_id not in self._known_ow_state.used_ow_ids:
+            return None
+
+        return next(
+            (
+                ow_obj
+                for ow_obj in self._known_ow_state.ow_objects.values()
+                if isinstance(ow_obj, OWTekstdeel) and ow_obj.divisie == divisie_ow_id
+            )
+        )
 
     def get_existing_wid_list(self) -> List[str]:
         wid_list = []
         for ow_obj in self._known_ow_state.ow_objects.values():
+            if isinstance(ow_obj, OWDivisie):
+                wid_list.append(ow_obj.wid)
             if isinstance(ow_obj, OWDivisieTekst):
                 wid_list.append(ow_obj.wid)
         return wid_list
