@@ -26,8 +26,13 @@ New:
 
 Mutations:
     - OWTekstdeel bk-1 <-> wg1: change locatieref to new OWGebiedenGroep wg2
+        'nl.imow-pv28.tekstdeel.bb7264bf2df541c997f548f61daa3b45'
  
  Terminations:
     - OWDivisietekst (bk-2)
+        'nl.imow-pv28.divisietekst.b6bce5badb1c43ab9a5acd5918dec8ec'
     - OWTekstdeel (bk-2 <-> wg-1)
-    - OWGebied + OWGebiedengroep wg-1
+        'nl.imow-pv28.tekstdeel.b701ed96086548f3a3422f9e54501161'
+    - OWGebied + OWGebiedengroep wg-1 
+        nl.imow-pv28.gebiedengroep.e1adff3019b84520a9dfa4fa358a852f
+        nl.imow-pv28.gebied.660de48c96634921b95fd040ea8625b5
