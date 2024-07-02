@@ -1,33 +1,48 @@
-from ....models import ContentType, DoelFRBR
-from ....services.utils.helpers import load_template
-from ...state_manager.models import OutputFile, StrContentData
+from typing import List
+
+from pydantic import BaseModel
+
+from ....models import ActFRBR, DoelFRBR
+from .ow_file_builder import OwFileBuilder
 
 
-class ManifestContent:
-    def __init__(self, act_work: str, doel: DoelFRBR):
-        self._act_work = act_work
+class OwManifestBestand(BaseModel):
+    naam: str
+    objecttypes: List[str]
+
+
+class OwManifestTemplateData(BaseModel):
+    act_work: str
+    doel: str
+    files: List[OwManifestBestand]
+
+
+class OwManifestBuilder(OwFileBuilder):
+    FILE_NAME = "manifest-ow.xml"
+    TEMPLATE_PATH = "ow/manifest-ow.xml"
+
+    def __init__(
+        self,
+        act: ActFRBR,
+        doel: DoelFRBR,
+        manifest: List[OwManifestBestand] = [],
+    ):
+        super().__init__()
+        self._act = act
         self._doel = doel
+        self._manifest = manifest
 
-    def create_manifest(self, divisie_data, locaties_data, regelingsgebied_data) -> OutputFile:
-        file_data = []
-        file_data.append({"naam": divisie_data["filename"], "objecttypes": divisie_data["objectTypen"]})
-        file_data.append({"naam": regelingsgebied_data["filename"], "objecttypes": regelingsgebied_data["objectTypen"]})
-        file_data.append({"naam": locaties_data["filename"], "objecttypes": locaties_data["objectTypen"]})
+    def add_manifest_item(self, file_name: str, object_types: List[str]) -> None:
+        manifest_entry = OwManifestBestand(naam=file_name, objecttypes=object_types)
+        self._manifest.append(manifest_entry)
 
-        output_file: OutputFile = self._create_manifest_file(file_data)
-        return output_file
+    def handle_ow_object_changes(self) -> None:
+        # No changes made in manifest
+        pass
 
-    def _create_manifest_file(self, file_data) -> OutputFile:
-        content = load_template(
-            "ow/manifest-ow.xml",
-            pretty_print=True,
-            act_work=self._act_work,
-            doel_id=self._doel.get_work(),
-            files=file_data,
+    def build_template_data(self) -> OwManifestTemplateData:
+        template_data = OwManifestTemplateData(
+            act_work=self._act.get_work(), doel=self._doel.get_work(), files=self._manifest
         )
-        output_file = OutputFile(
-            filename="manifest-ow.xml",
-            content_type=ContentType.XML,
-            content=StrContentData(content),
-        )
-        return output_file
+        self.template_data = template_data
+        return template_data

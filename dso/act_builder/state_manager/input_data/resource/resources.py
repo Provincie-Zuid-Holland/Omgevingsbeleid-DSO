@@ -14,8 +14,3 @@ class Resources(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True
-        json_encoders = {
-            PolicyObjectRepository: lambda v: v.to_dict() if v is not None else None,
-            AssetRepository: lambda v: v.to_dict() if v is not None else None,
-            WerkingsgebiedRepository: lambda v: v.to_dict() if v is not None else None,
-        }

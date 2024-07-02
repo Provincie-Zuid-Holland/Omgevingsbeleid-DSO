@@ -27,8 +27,12 @@ class Meta(BaseModel):
 
     @root_validator(pre=True)
     def generate_formaat(cls, values: dict):
-        values["Formaat"] = IllustratieFormaat[values["ext"]]
+        if "Formaat" not in values:
+            values["Formaat"] = IllustratieFormaat[values.get("ext", values.get("Ext"))]
         return values
+
+    class Config:
+        allow_population_by_field_name = True
 
 
 class Asset(BaseModel):
@@ -40,7 +44,5 @@ class Asset(BaseModel):
         filename: str = f"img_{self.UUID}.{self.Meta.Ext}"
         return filename
 
-    def json(self, *args, **kwargs):
-        # do not include the content in a json export
-        exclude_fields = {"Content"}
-        return super().json(exclude=exclude_fields, *args, **kwargs)
+    class Config:
+        allow_population_by_field_name = True

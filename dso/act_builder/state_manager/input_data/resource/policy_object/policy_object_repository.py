@@ -17,6 +17,10 @@ class PolicyObjectRepository:
                 policy_object,
             )
 
+    def add_from_dict(self, policy_objects: Dict[str, dict]) -> None:
+        for object_code, policy_object in policy_objects.items():
+            self.add(object_code, policy_object)
+
     def get_optional(self, object_type: str, object_id: int) -> Optional[PolicyObject]:
         code: str = f"{object_type}-{object_id}"
         result: Optional[PolicyObject] = self._data.get(code, None)

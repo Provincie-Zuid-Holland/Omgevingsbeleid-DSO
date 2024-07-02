@@ -17,27 +17,71 @@
 		<sl:dataset>provincie Zuid-holland</sl:dataset>
 		<sl:inhoud>
 			<sl:gebied>provincie Zuid-holland</sl:gebied>
-			<sl:leveringsId>{{ data.leveringsId }}</sl:leveringsId>
+			<sl:leveringsId>{{ data.levering_id }}</sl:leveringsId>
 			<sl:objectTypen>
-				{% for type in data.objectTypen %}
+				{% for type in data.object_types %}
 				<sl:objectType>{{ type }}</sl:objectType>
 				{% endfor %}
 			</sl:objectTypen>
 		</sl:inhoud>
-        {% for gebied in data.regelingsgebieden %}
+		<!-- nieuwe regelingsgebieden -->
+		{% for ow_object in data.new_ow_objects %}
+		{% if ow_object.ow_type == "OWRegelingsgebied" %}
 		<sl:stand>
 			<ow-dc:owObject>
 				<rg:Regelingsgebied>
-                    {% if gebied.procedure_status is not none %}
-                    <ow:procedurestatus>{{ gebied.procedure_status.value }}</ow:procedurestatus>
+					<rg:identificatie>{{ ow_object.OW_ID }}</rg:identificatie>
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
-					<rg:identificatie>{{ gebied.OW_ID }}</rg:identificatie>
 					<rg:locatieaanduiding>
-						<l:LocatieRef xlink:href="{{ gebied.ambtsgebied }}" />
+						<l:LocatieRef xlink:href="{{ ow_object.ambtsgebied }}" />
 					</rg:locatieaanduiding>
 				</rg:Regelingsgebied>
 			</ow-dc:owObject>
 		</sl:stand>
+		{% endif %}
+        {% endfor %}
+
+		<!-- gemuteerde regelingsgebieden -->
+		{% for ow_object in data.mutated_ow_objects %}
+		{% if ow_object.ow_type == "OWRegelingsgebied" %}
+		<sl:stand>
+			<ow-dc:owObject>
+				<rg:Regelingsgebied>
+					<rg:identificatie>{{ ow_object.OW_ID }}</rg:identificatie>
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+                    {% endif %}
+					<rg:locatieaanduiding>
+						<l:LocatieRef xlink:href="{{ ow_object.ambtsgebied }}" />
+					</rg:locatieaanduiding>
+				</rg:Regelingsgebied>
+			</ow-dc:owObject>
+		</sl:stand>
+		{% endif %}
+        {% endfor %}
+
+		<!-- beeindigede regelingsgebieden -->
+		{% for ow_object in data.terminated_ow_objects %}
+		{% if ow_object.ow_type == "OWRegelingsgebied" %}
+		<sl:stand>
+			<ow-dc:owObject>
+				<rg:Regelingsgebied>
+					<rg:identificatie>{{ ow_object.OW_ID }}</rg:identificatie>
+                    {% if ow_object.status is not none %}
+                    <ow:status>{{ ow_object.status.value }}</ow:status>
+                    {% endif %}
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+                    {% endif %}
+					<rg:locatieaanduiding>
+						<l:LocatieRef xlink:href="{{ ow_object.ambtsgebied }}" />
+					</rg:locatieaanduiding>
+				</rg:Regelingsgebied>
+			</ow-dc:owObject>
+		</sl:stand>
+		{% endif %}
         {% endfor %}
 	</sl:standBestand>
 </ow-dc:owBestand>
