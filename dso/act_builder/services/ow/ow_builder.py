@@ -48,11 +48,11 @@ class OwBuilder(BuilderService):
         provincie_id = state_manager.input_data.publication_settings.provincie_id
         levering_id = state_manager.input_data.publication_settings.opdracht.id_levering
         ow_procedure_status = self._get_ow_procedure_status(state_manager.input_data.besluit.soort_procedure)
-        annotation_lookup_map = deepcopy(state_manager.ewid_service.get_state_object_tekst_lookup())
+        annotation_lookup_map = deepcopy(state_manager.act_ewid_service.get_state_object_tekst_lookup())
         werkingsgebieden = state_manager.input_data.resources.werkingsgebied_repository.all()
         terminated_wids = self._find_terminated_wids(
             state_manager.input_data.get_known_wid_map(),
-            state_manager.ewid_service.get_state_used_wid_map(),
+            state_manager.act_ewid_service.get_state_used_wid_map(),
             state_manager.ow_repository.get_existing_wid_list(),
         )
 

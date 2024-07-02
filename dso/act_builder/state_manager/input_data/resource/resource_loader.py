@@ -1,6 +1,7 @@
 from .....models import PublicationSettings
 from .asset.asset_resource_loader import AssetResourceLoader
 from .policy_object.policy_object_resource_loader import PolicyObjectResourceLoader
+from .pdf.pdf_repository import PdfRepository
 from .resources import Resources
 from .werkingsgebied.werkingsgebied_resource_loader import WerkingsgebiedResourceLoader
 
@@ -38,5 +39,6 @@ class ResourceLoader:
             policy_object_repository=policy_object_repository,
             asset_repository=asset_repository,
             werkingsgebied_repository=werkingsgebied_repository,
+            pdf_repository=PdfRepository(),
         )
         return resources
