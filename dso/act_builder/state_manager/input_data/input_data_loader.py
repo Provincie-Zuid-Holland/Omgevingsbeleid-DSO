@@ -1,16 +1,18 @@
+import json
 import os
 from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
 from ....models import OwData, ProcedureStap, ProcedureVerloop, PublicationSettings, RegelingMutatie
-from ....services.utils.helpers import load_json_data, load_xml_file
+from ....services.utils.helpers import load_json_data, load_xml_file, pretty_print_template_xml
 from ....services.utils.os import create_normalized_path
 from .ambtsgebied import Ambtsgebied
 from .besluit import Besluit
 from .object_template_repository import ObjectTemplateRepository
 from .regeling import Regeling
 from .resource.asset.asset_repository import AssetRepository
+from .resource.pdf.pdf_repository import PdfRepository
 from .resource.policy_object.policy_object_repository import PolicyObjectRepository
 from .resource.resource_loader import ResourceLoader
 from .resource.resources import Resources
@@ -33,9 +35,10 @@ class InputData(BaseModel):
         arbitrary_types_allowed = True
         json_encoders = {
             PolicyObjectRepository: lambda v: v.to_dict() if v is not None else None,
-            AssetRepository: lambda v: v.to_dict() if v is not None else None,
-            WerkingsgebiedRepository: lambda v: v.to_dict() if v is not None else None,
+            AssetRepository: lambda v: {k: w.dict() for k, w in v.to_dict().items()},
+            WerkingsgebiedRepository: lambda v: {k: w.dict() for k, w in v.to_dict().items()},
             ObjectTemplateRepository: lambda v: v.to_dict() if v is not None else None,
+            PdfRepository: lambda v: v.to_dict() if v is not None else None,
         }
 
     def get_known_wid_map(self) -> Dict[str, str]:
@@ -60,7 +63,12 @@ class InputDataLoader:
         publication_settings = PublicationSettings.from_json(main_config["publication_settings"])
         besluit = self._create_besluit(main_config["besluit"])
         regeling = self._create_regeling(main_config["regeling"])
-        regeling_mutatie = self._create_regeling_mutation(main_config["regeling_mutatie"])
+
+        if not main_config.get("regeling_mutatie"):
+            regeling_mutatie = None
+        else:
+            regeling_mutatie = self._create_regeling_mutation(main_config["regeling_mutatie"])
+
         regeling_vrijetekst_content = self._create_regeling_vrijetekst(main_config["regeling_vrijetekst"])
 
         procedure_verloop = self._create_procedure_verloop(
@@ -129,3 +137,64 @@ class InputDataLoader:
         path = create_normalized_path(self._base_dir, xml_file_path)
         loaded_content = load_xml_file(path)
         return loaded_content
+
+
+class InputDataExporter:
+    def __init__(self, input_data: InputData, output_dir: str = "output"):
+        self._input_data: InputData = input_data
+        self._output_dir: str = output_dir
+
+    def to_dict(self) -> dict:
+        return self._input_data.dict()
+
+    def to_json(self) -> str:
+        return self._input_data.json()
+
+    def export_regelingvrijetekst_template(self, filename: str = "regelingvrijetekst_template.xml") -> None:
+        # TODO: remove <root>
+        xml_content = self._input_data.regeling_vrijetekst
+        xml_file_path = os.path.join(self._output_dir, filename)
+        pretty_print_template_xml(xml_content, xml_file_path)
+
+    def export_policy_objects(self, filename: str = "policy_objects.json") -> None:
+        policy_objects_dict = self._input_data.resources.policy_object_repository.to_dict()
+        policy_objects_file_path = os.path.join(self._output_dir, filename)
+        with open(policy_objects_file_path, "w") as file:
+            json.dump(policy_objects_dict, file, indent=2)
+
+    def export_assets(self, filename: str = "assets.json") -> None:
+        asset_dict = self._input_data.resources.asset_repository.to_dict()
+        asset_file_path = os.path.join(self._output_dir, filename)
+        with open(asset_file_path, "w") as file:
+            json.dump(asset_dict, file, indent=2)
+
+    def export_werkingsgebieden(self, filename: str = "werkingsgebieden.json") -> None:
+        werkingsgebied_dict = self._input_data.resources.werkingsgebied_repository.to_dict()
+        werkingsgebied_file_path = os.path.join(self._output_dir, filename)
+        with open(werkingsgebied_file_path, "w") as file:
+            json.dump(werkingsgebied_dict, file, indent=2)
+
+    def create_scenario_main_file(self, file_name: str = "main.json") -> None:
+        os.makedirs(self._output_dir, exist_ok=True)
+        main_file_path = os.path.join(self._output_dir, file_name)
+
+        self.export_regelingvrijetekst_template()
+
+        # Export resource files
+        self.export_policy_objects()
+        self.export_assets()
+        self.export_werkingsgebieden()
+
+        regeling_vrijetekst_ref = f"./regelingvrijetekst_template.xml"
+        resources_ref = {
+            "policy_object_repository": "./policy_objects.json",
+            "asset_repository": "./assets.json",
+            "werkingsgebied_repository": "./werkingsgebieden.json",
+        }
+
+        new_import_data = self._input_data.copy(
+            update={"resources": resources_ref, "regeling_vrijetekst": regeling_vrijetekst_ref}
+        )
+
+        with open(main_file_path, "w") as file:
+            file.write(new_import_data.json())
