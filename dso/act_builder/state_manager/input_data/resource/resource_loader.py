@@ -1,7 +1,7 @@
 from .....models import PublicationSettings
 from .asset.asset_resource_loader import AssetResourceLoader
-from .policy_object.policy_object_resource_loader import PolicyObjectResourceLoader
 from .pdf.pdf_repository import PdfRepository
+from .policy_object.policy_object_resource_loader import PolicyObjectResourceLoader
 from .resources import Resources
 from .werkingsgebied.werkingsgebied_resource_loader import WerkingsgebiedResourceLoader
 

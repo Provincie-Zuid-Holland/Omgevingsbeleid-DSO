@@ -1,10 +1,10 @@
 import io
+import os
 from typing import Dict, List, Optional
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from ..models import OwData
 from ..services.assets.create_image import create_image, create_image_in_zip
-from ..services.utils.os import empty_directory
 from .services import BuilderService
 from .services.aanlevering_besluit.aanlevering_besluit_builder import AanleveringBesluitBuilder
 from .services.asset.asset_builder import AssetBuilder
@@ -18,7 +18,6 @@ from .services.pdf.pdf_builder import PdfBuilder
 from .state_manager.input_data.input_data_loader import InputData
 from .state_manager.models import AssetContentData, PdfContentData, StrContentData
 from .state_manager.state_manager import StateManager
-import os
 
 
 class Builder:

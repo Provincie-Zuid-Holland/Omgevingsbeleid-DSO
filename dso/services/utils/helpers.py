@@ -1,7 +1,6 @@
 import hashlib
 import json
 import os
-import xml.etree.ElementTree as ET
 import zipfile
 from io import StringIO
 from xml.dom import minidom
