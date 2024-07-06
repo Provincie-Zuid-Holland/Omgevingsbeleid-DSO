@@ -19,6 +19,8 @@ module_obj_context:
 - new beleidsdoel-2 
 - new beleidskeuze-1 - annotation: werkingsgebied-1
 - new beleidskeuze-2 - annotation: werkingsgebied-1
+- visie_algemeen-1
+- visie_algemeen-2
 
 # Expected OW state
 
