@@ -87,12 +87,13 @@ def load_xml_file(file_path) -> str:
 
 
 def pretty_print_template_xml(content, output_file):
-    # Wrap the content in a root element
+    # Wrap the content in a root element to allow parsing
     wrapped_content = f"<root>{content}</root>"
     dom = minidom.parseString(wrapped_content)
-    pretty_xml = dom.toprettyxml(indent="  ")
+    pretty_xml = dom.toprettyxml(indent="   ")
+    # Remove the root element tag added in wrapper
+    pretty_xml = pretty_xml.replace("\n<root>\n", "").replace("\n</root>\n", "")
 
-    # Remove the root element tags and any empty lines
     pretty_lines = pretty_xml.split("\n")
     result_lines = [line for line in pretty_lines[1:-1] if line.strip()]
     result = "\n".join(result_lines)
