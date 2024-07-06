@@ -1,8 +1,10 @@
 import hashlib
 import json
 import os
+import xml.etree.ElementTree as ET
 import zipfile
 from io import StringIO
+from xml.dom import minidom
 
 import pkg_resources
 from jinja2 import Environment, FileSystemLoader
@@ -81,7 +83,23 @@ def load_xml_file(file_path) -> str:
         xml_content = f.read()
         # Remove newlines and extra spaces
         xml_content = xml_content.replace("\n", "").replace("  ", "")
+
         return xml_content
+
+
+def pretty_print_template_xml(content, output_file):
+    # Wrap the content in a root element
+    wrapped_content = f"<root>{content}</root>"
+    dom = minidom.parseString(wrapped_content)
+    pretty_xml = dom.toprettyxml(indent="  ")
+
+    # Remove the root element tags and any empty lines
+    pretty_lines = pretty_xml.split("\n")
+    result_lines = [line for line in pretty_lines[1:-1] if line.strip()]
+    result = "\n".join(result_lines)
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(result)
 
 
 # def load_werkingsgebieden(path="./input/werkingsgebieden/*.json") -> List[Werkingsgebied]:

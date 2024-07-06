@@ -1,3 +1,4 @@
+import json
 import uuid
 from typing import Dict, List, Optional
 
@@ -37,10 +38,4 @@ class AssetRepository:
         return not self._assets
 
     def to_dict(self):
-        serializable_data = {str(k): self._modify_asset_content_for_development(v) for k, v in self._assets.items()}
-        return serializable_data
-
-    def _modify_asset_content_for_development(self, asset: Asset):
-        # truncate image for dev export
-        asset.Content = "content example"
-        return asset
+        return {str(k): json.loads(v.json()) for k, v in self._assets.items()}

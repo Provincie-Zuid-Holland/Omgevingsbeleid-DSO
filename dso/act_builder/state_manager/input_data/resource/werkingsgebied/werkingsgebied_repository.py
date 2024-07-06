@@ -1,3 +1,4 @@
+import json
 import uuid
 from typing import Dict, List, Optional
 
@@ -61,5 +62,4 @@ class WerkingsgebiedRepository:
         return not self._werkingsgebieden
 
     def to_dict(self):
-        serializable_data = {str(k): v for k, v in self._werkingsgebieden.items()}
-        return serializable_data
+        return {str(k): json.loads(v.json()) for k, v in self._werkingsgebieden.items()}

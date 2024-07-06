@@ -7,6 +7,7 @@ from ....services.utils.helpers import jinja2_env
 
 class ObjectTemplateRepository:
     def __init__(self, template_data: Dict[str, Union[str, List[str]]]):
+        self._template_source: Dict[str, Union[str, List[str]]] = template_data
         self._template_data: Dict[str, Template] = self._resolve_template_data(template_data)
 
     def get_by_code(self, object_code: str) -> Template:
@@ -28,5 +29,8 @@ class ObjectTemplateRepository:
 
         return result
 
+    def get_source_data(self) -> Dict[str, Union[str, List[str]]]:
+        return self._template_source
+
     def to_dict(self):
-        return {i: k for i, k in enumerate(self._template_data.keys())}
+        return self.get_source_data()
