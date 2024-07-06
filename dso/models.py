@@ -321,19 +321,32 @@ class OwData(BaseModel):
     terminated_ow_ids: List[str] = Field(default_factory=list)
 
     @classmethod
-    def from_json(cls, json_data: Dict[str, Any]) -> "OwData":
+    def load_ow_objects(cls, ow_objects_data: Dict[str, Any]) -> Dict[str, OWObject]:
         OW_TYPE_MAPPING = build_ow_type_mapping(OWObject)
         ow_objects = {}
-        for ow_id, ow_obj_data in json_data.get("ow_objects", {}).items():
+        for ow_id, ow_obj_data in ow_objects_data.items():
             ow_type = ow_obj_data.get("ow_type")
             ow_class = OW_TYPE_MAPPING.get(ow_type)
             if ow_class:
                 ow_objects[ow_id] = ow_class(**ow_obj_data)
             else:
-                raise ValueError(f"Unknown ow_type '{ow_type}' encountered in JSON data.")
+                raise ValueError(f"Unknown ow_type '{ow_type}' encountered in data.")
+        return ow_objects
 
+    @classmethod
+    def from_json(cls, json_data: Dict[str, Any]) -> "OwData":
+        ow_objects = cls.load_ow_objects(json_data.get("ow_objects", {}))
         return cls(
             used_ow_ids=json_data.get("used_ow_ids", []),
             ow_objects=ow_objects,
             terminated_ow_ids=json_data.get("terminated_ow_ids", []),
+        )
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "OwData":
+        ow_objects = cls.load_ow_objects(data.get("ow_objects", {}))
+        return cls(
+            used_ow_ids=data.get("used_ow_ids", []),
+            ow_objects=ow_objects,
+            terminated_ow_ids=data.get("terminated_ow_ids", []),
         )
