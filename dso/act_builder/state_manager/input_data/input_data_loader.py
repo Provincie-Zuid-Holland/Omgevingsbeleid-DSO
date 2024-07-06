@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 from pydantic import BaseModel, Field
 
 from ....models import OwData, ProcedureStap, ProcedureVerloop, PublicationSettings, RegelingMutatie
-from ....services.utils.helpers import load_json_data, load_xml_file, pretty_print_template_xml
+from ....services.utils.helpers import load_json_data, load_xml_file
 from ....services.utils.os import create_normalized_path
 from .ambtsgebied import Ambtsgebied
 from .besluit import Besluit
