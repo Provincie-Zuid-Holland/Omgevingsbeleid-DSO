@@ -14,9 +14,9 @@
         "besluit_frbr": {
             "Work_Province_ID": "pv28",
             "Work_Date": "2024",
-            "Work_Other": "omgevingsvisie-1",
+            "Work_Other": "omgevingsvisie-2",
             "Expression_Language": "nld",
-            "Expression_Date": "2024-07-06",
+            "Expression_Date": "2024-07-08",
             "Expression_Version": 1,
             "Work_Country": "nl"
         },
@@ -25,23 +25,23 @@
             "Work_Date": "2024",
             "Work_Other": "omgevingsvisie-1",
             "Expression_Language": "nld",
-            "Expression_Date": "2024-07-06",
-            "Expression_Version": 1,
+            "Expression_Date": "2024-07-08",
+            "Expression_Version": 2,
             "Work_Country": "nl"
         },
         "opdracht": {
             "opdracht_type": "PUBLICATIE",
-            "id_levering": "51957963-6cb1-4293-abd0-e27194946234",
+            "id_levering": "bf08a662-653d-472d-b098-75134b918b57",
             "id_bevoegdgezag": "00000001002306608000",
             "id_aanleveraar": "00000001002306608000",
-            "publicatie_bestand": "akn_nl_bill_pv28-pub-2024-omgevingsvisie-1-1.xml",
+            "publicatie_bestand": "akn_nl_bill_pv28-pub-2024-omgevingsvisie-2-1.xml",
             "datum_bekendmaking": "2024-07-10"
         },
         "instelling_doel": {
             "frbr": {
                 "Work_Province_ID": "pv28",
                 "Work_Date": "2024",
-                "Work_Other": "instelling-omgevingsvisie-1-1",
+                "Work_Other": "instelling-omgevingsvisie-1-2",
                 "Expression_Language": "",
                 "Expression_Date": "",
                 "Expression_Version": 1
@@ -84,7 +84,7 @@
         "motivering": null
     },
     "regeling": {
-        "versienummer": "1",
+        "versienummer": "2",
         "officiele_titel": "Omgevingsvisie van Zuid-Holland",
         "citeertitel": "Omgevingsvisie van Zuid-Holland",
         "is_officieel": "true",
@@ -125,7 +125,6 @@
         "new": true
     },
     "ow_data": {
-        "used_ow_ids": [],
         "ow_objects": {},
         "terminated_ow_ids": []
     }

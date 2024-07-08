@@ -19,14 +19,14 @@
         "Modified_Date": "2022-02-02T03:03:03"
     },
     "ambitie-2": {
-        "Module_ID": 2,
-        "UUID": "4d0a0e44-be3a-4cdb-a4ce-123a840213c4",
+        "Module_ID": 0,
+        "UUID": "4fd8f90b-a70c-4d74-be38-bea675151dfd",
         "Object_Type": "ambitie",
         "Object_ID": 2,
         "Code": "ambitie-2",
         "Hierarchy_Code": null,
         "Werkingsgebied_Code": null,
-        "Title": "bewwerkt door module 2",
+        "Title": "Y:MOD: Titel van de tweede ambitie",
         "Description": "<p>Description of Ambitie 2</p>",
         "Cause": null,
         "Provincial_Interest": null,
@@ -35,11 +35,30 @@
         "Effect": null,
         "Area_UUID": null,
         "Created_Date": "2023-02-02T03:03:03",
-        "Modified_Date": "2023-02-02T03:03:03"
+        "Modified_Date": "2024-07-08T12:55:46.489304"
+    },
+    "ambitie-3": {
+        "Module_ID": 0,
+        "UUID": "283d8c29-ca1e-44e1-9da9-93be3646d256",
+        "Object_Type": "ambitie",
+        "Object_ID": 3,
+        "Code": "ambitie-3",
+        "Hierarchy_Code": null,
+        "Werkingsgebied_Code": null,
+        "Title": "N:MOD: Titel van de derde ambitie",
+        "Description": "<p>Description of Ambitie 3</p>",
+        "Cause": null,
+        "Provincial_Interest": null,
+        "Explanation": null,
+        "Role": null,
+        "Effect": null,
+        "Area_UUID": null,
+        "Created_Date": "2023-02-02T03:03:03",
+        "Modified_Date": "2024-07-08T12:55:46.489304"
     },
     "ambitie-4": {
         "Module_ID": 0,
-        "UUID": "a188ff6a-2383-4c7b-bf7a-195ae2d0f2fa",
+        "UUID": "1007b326-3b1e-4a99-8fa0-ce376f3d4b49",
         "Object_Type": "ambitie",
         "Object_ID": 4,
         "Code": "ambitie-4",
@@ -54,11 +73,11 @@
         "Effect": null,
         "Area_UUID": null,
         "Created_Date": "2023-02-02T03:03:03",
-        "Modified_Date": "2024-04-22T16:28:49.713007"
+        "Modified_Date": "2024-07-08T12:55:46.489304"
     },
     "ambitie-5": {
         "Module_ID": 0,
-        "UUID": "3d9299c3-a50a-480b-ba6b-1aef7dff5a5d",
+        "UUID": "1984c4ac-bdf3-40b4-a546-8fb3f2cb3699",
         "Object_Type": "ambitie",
         "Object_ID": 5,
         "Code": "ambitie-5",
@@ -73,17 +92,17 @@
         "Effect": null,
         "Area_UUID": null,
         "Created_Date": "2023-02-04T00:00:00",
-        "Modified_Date": "2024-04-22T16:28:49.713007"
+        "Modified_Date": "2024-07-08T12:55:46.489304"
     },
     "beleidsdoel-1": {
-        "Module_ID": 2,
-        "UUID": "41a02f8a-7583-44d9-bbd1-b7eee1bb913b",
+        "Module_ID": 0,
+        "UUID": "a5f39b2b-5aaf-402c-8edf-60a0db179210",
         "Object_Type": "beleidsdoel",
         "Object_ID": 1,
         "Code": "beleidsdoel-1",
         "Hierarchy_Code": null,
         "Werkingsgebied_Code": null,
-        "Title": "Bewerkt door module 2",
+        "Title": "Titel van het eerste beleidsdoel",
         "Description": "<p>Description of beleidsdoel 1</p>",
         "Cause": null,
         "Provincial_Interest": null,
@@ -92,11 +111,11 @@
         "Effect": null,
         "Area_UUID": null,
         "Created_Date": "2023-02-02T03:03:03",
-        "Modified_Date": "2023-02-02T03:03:03"
+        "Modified_Date": "2024-07-08T12:55:46.489304"
     },
     "beleidsdoel-2": {
         "Module_ID": 0,
-        "UUID": "7be705a0-3743-4db6-9e57-5af624e859a7",
+        "UUID": "3ee8d765-be73-4e07-af08-fb5588553942",
         "Object_Type": "beleidsdoel",
         "Object_ID": 2,
         "Code": "beleidsdoel-2",
@@ -111,17 +130,17 @@
         "Effect": null,
         "Area_UUID": null,
         "Created_Date": "2023-02-02T03:03:03",
-        "Modified_Date": "2024-04-22T16:28:49.713007"
+        "Modified_Date": "2024-07-08T12:55:46.489304"
     },
     "beleidskeuze-1": {
         "Module_ID": 2,
-        "UUID": "78198bd5-de1a-4259-a12b-ffcaec53899e",
+        "UUID": "905bf00b-480c-4c13-a7af-c752cb892f9f",
         "Object_Type": "beleidskeuze",
         "Object_ID": 1,
         "Code": "beleidskeuze-1",
         "Hierarchy_Code": "beleidsdoel-1",
         "Werkingsgebied_Code": "werkingsgebied-2",
-        "Title": "Bewerkt door module 2",
+        "Title": "Titel gemuteerd in scenario 02",
         "Description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eleifend lobortis libero, sit amet vestibulum lorem molestie sed.</p><img src=\"[ASSET:00000000-AAAA-0000-0000-000000000001]\"/><p>Cras felis mi, finibus eget dignissim id, pretium egestas elit. Cras sodales eleifend velit vel aliquet. Nulla dapibus sem at velit suscipit, at varius augue porttitor. Morbi tempor vel est id dictum. Donec ante eros, rutrum eu quam non, interdum tristique turpis. Donec odio ipsum, tincidunt ut dignissim vel, scelerisque ut ex. Sed sit amet molestie tellus. Vestibulum porta condimentum molestie. Praesent non facilisis nisi, in egestas mi.<p>",
         "Cause": null,
         "Provincial_Interest": null,
@@ -129,27 +148,27 @@
         "Role": null,
         "Effect": null,
         "Area_UUID": null,
-        "Created_Date": "2023-02-02T03:03:03",
-        "Modified_Date": "2023-02-02T03:03:03"
+        "Created_Date": "2024-06-06T04:04:04",
+        "Modified_Date": "2024-06-06T04:04:04"
     },
     "beleidskeuze-3": {
         "Module_ID": 2,
-        "UUID": "d108c205-2478-4648-acd9-5f6721d8caad",
+        "UUID": "7e075bdf-4428-4349-9cf0-9a77a8f2afbf",
         "Object_Type": "beleidskeuze",
         "Object_ID": 3,
         "Code": "beleidskeuze-3",
         "Hierarchy_Code": "beleidsdoel-1",
         "Werkingsgebied_Code": "werkingsgebied-2",
-        "Title": "Titel van het 3d beleidskeuze",
-        "Description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eleifend lobortis libero, sit amet vestibulum lorem molestie sed. Cras felis mi, finibus eget dignissim id, pretium egestas elit. Cras sodales eleifend velit vel aliquet. Nulla dapibus sem at velit suscipit, at varius augue porttitor. Morbi tempor vel est id dictum. Donec ante eros, rutrum eu quam non, interdum tristique turpis. Donec odio ipsum, tincidunt ut dignissim vel, scelerisque ut ex. Sed sit amet molestie tellus. Vestibulum porta condimentum molestie. Praesent non facilisis nisi, in egestas mi. \n\nCurabitur porta dolor libero, auctor laoreet magna imperdiet tempus. Mauris at metus sit amet urna malesuada bibendum. Nulla ut tortor ut justo venenatis luctus nec vitae purus. Aliquam eget arcu sed ligula feugiat auctor. Integer at commodo turpis, id cursus enim. Pellentesque mattis posuere libero ut volutpat. Sed sagittis magna ac neque aliquam, eget scelerisque erat efficitur. Vivamus at erat rhoncus metus venenatis laoreet. Aliquam at pharetra leo. Vestibulum metus purus, molestie vel iaculis quis, suscipit nec velit. Nunc finibus felis quis iaculis posuere.</p>",
+        "Title": "herziening beleidskeuze nieuw",
+        "Description": null,
         "Cause": null,
         "Provincial_Interest": null,
         "Explanation": null,
         "Role": null,
         "Effect": null,
         "Area_UUID": null,
-        "Created_Date": "2023-02-02T03:03:03",
-        "Modified_Date": "2023-02-02T03:03:03"
+        "Created_Date": "2024-06-06T04:04:04",
+        "Modified_Date": "2024-06-06T04:04:04"
     },
     "visie_algemeen-1": {
         "Module_ID": 0,
@@ -179,7 +198,7 @@
         "Hierarchy_Code": null,
         "Werkingsgebied_Code": null,
         "Title": "Sturingsfilosofie",
-        "Description": "\n<h6>Ruimte voor ontwikkeling, met waarborg voor kwaliteit: 8 sturingsprincipes voor de fysieke leefomgeving</h6>\n<p>De provincie Zuid-Holland heeft met haar uitgebreide instrumentarium grote\nmeerwaarde bij het oplossen van de maatschappelijke opgaven van vandaag en\nmorgen. En met inbreng van kennis en creativiteit vanuit de samenleving kan nog\nmeer worden bereikt. De kunst is het oplossend vermogen van de maatschappij\nte stimuleren en te benutten. Alleen ga je sneller, samen kom je verder</p>\n\n<h6>Doel en opzet</h6>\n<p>Zuid-Holland biedt daarom ruimte en vertrouwen aan maatschappelijke\ninitiatieven. Maar ruimte en vrijheid gedijen alleen binnen grenzen. Daarom werkt\nde provincie Zuid-Holland vanuit een aantal principes en kaders, voor haarzelf \\u00e9n\nhaar partners, als waarborg voor de kwaliteit van de fysieke leefomgeving.</p>",
+        "Description": "\n<h6>Ruimte voor ontwikkeling, met waarborg voor kwaliteit: 8 sturingsprincipes voor de fysieke leefomgeving</h6>\n<p>De provincie Zuid-Holland heeft met haar uitgebreide instrumentarium grote\nmeerwaarde bij het oplossen van de maatschappelijke opgaven van vandaag en\nmorgen. En met inbreng van kennis en creativiteit vanuit de samenleving kan nog\nmeer worden bereikt. De kunst is het oplossend vermogen van de maatschappij\nte stimuleren en te benutten. Alleen ga je sneller, samen kom je verder</p>\n\n<h6>Doel en opzet</h6>\n<p>Zuid-Holland biedt daarom ruimte en vertrouwen aan maatschappelijke\ninitiatieven. Maar ruimte en vrijheid gedijen alleen binnen grenzen. Daarom werkt\nde provincie Zuid-Holland vanuit een aantal principes en kaders, voor haarzelf \u00e9n\nhaar partners, als waarborg voor de kwaliteit van de fysieke leefomgeving.</p>",
         "Cause": null,
         "Provincial_Interest": null,
         "Explanation": null,
