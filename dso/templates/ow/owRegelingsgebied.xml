@@ -19,8 +19,8 @@
 			<sl:gebied>provincie Zuid-holland</sl:gebied>
 			<sl:leveringsId>{{ data.levering_id }}</sl:leveringsId>
 			<sl:objectTypen>
-				{% for type in data.object_types %}
-				<sl:objectType>{{ type }}</sl:objectType>
+				{% for object_type in data.object_types %}
+				<sl:objectType>{{ object_type.value }}</sl:objectType>
 				{% endfor %}
 			</sl:objectTypen>
 		</sl:inhoud>
