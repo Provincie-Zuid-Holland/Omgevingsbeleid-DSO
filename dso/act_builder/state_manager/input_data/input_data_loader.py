@@ -158,6 +158,12 @@ class InputDataExporter:
         with open(xml_file_path, "w", encoding="utf-8") as f:
             f.write(xml_content)
 
+    def export_was_regelingvrijetekst(self, filename: str = "was_regelingvrijetekst.xml") -> None:
+        xml_content = self._input_data.regeling_mutatie.was_regeling_vrijetekst
+        xml_file_path = os.path.join(self._output_dir, filename)
+        with open(xml_file_path, "w", encoding="utf-8") as f:
+            f.write(xml_content)
+
     def export_policy_objects(self, filename: str = "policy_objects.json") -> None:
         policy_objects_dict = self._input_data.resources.policy_object_repository.to_dict()
         file_path = os.path.join(self._output_dir, filename)
@@ -209,9 +215,17 @@ class InputDataExporter:
             "werkingsgebied_repository": "./werkingsgebieden.json",
         }
 
-        updated_input_data = self._input_data.copy(
-            update={"resources": resources_ref, "regeling_vrijetekst": regeling_vrijetekst_ref}
-        )
+        file_path_map = {
+            "resources": resources_ref,
+            "regeling_vrijetekst": regeling_vrijetekst_ref,
+        }
+        if self._input_data.regeling_mutatie:
+            self.export_was_regelingvrijetekst(filename="was_regelingvrijetekst.xml")
+            file_path_map["regeling_mutatie"] = self._input_data.regeling_mutatie.dict()
+            file_path_map["regeling_mutatie"]["was_regeling_vrijetekst"] = "./was_regelingvrijetekst.xml"
+
+        # replace the values for split file path refs in main.json
+        updated_input_data = self._input_data.copy(update=file_path_map)
 
         file_path = os.path.join(self._output_dir, "main.json")
         with open(file_path, "w") as file:
