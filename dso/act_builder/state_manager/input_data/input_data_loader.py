@@ -1,5 +1,6 @@
 import json
 import os
+from textwrap import indent
 from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
@@ -152,41 +153,39 @@ class InputDataExporter:
         return self._input_data.json()
 
     def export_regelingvrijetekst_template(self, filename: str = "regelingvrijetekst_template.xml") -> None:
-        # TODO: remove <root> elements that are still present
         xml_content = self._input_data.regeling_vrijetekst
         xml_file_path = os.path.join(self._output_dir, filename)
         with open(xml_file_path, "w", encoding="utf-8") as f:
             f.write(xml_content)
-        # pretty_print_template_xml(xml_content, xml_file_path)
 
     def export_policy_objects(self, filename: str = "policy_objects.json") -> None:
         policy_objects_dict = self._input_data.resources.policy_object_repository.to_dict()
         file_path = os.path.join(self._output_dir, filename)
         with open(file_path, "w") as file:
-            json.dump(policy_objects_dict, file, indent=2)
+            json.dump(policy_objects_dict, file, indent=4)
 
     def export_assets(self, filename: str = "assets.json") -> None:
         asset_dict = self._input_data.resources.asset_repository.to_dict()
         file_path = os.path.join(self._output_dir, filename)
         with open(file_path, "w") as file:
-            json.dump(asset_dict, file, indent=2)
+            json.dump(asset_dict, file, indent=4)
 
     def export_werkingsgebieden(self, filename: str = "werkingsgebieden.json") -> None:
         werkingsgebied_dict = self._input_data.resources.werkingsgebied_repository.to_dict()
         file_path = os.path.join(self._output_dir, filename)
         with open(file_path, "w") as file:
-            json.dump(werkingsgebied_dict, file, indent=2)
+            json.dump(werkingsgebied_dict, file, indent=4)
 
     def export_main_json(self, file_name: str = "main.json") -> None:
         """
         Export a single main.json file with all inputdata values.
         """
         file_path = os.path.join(self._output_dir, file_name)
-        json_data = self._input_data.json()
+        json_data = self._input_data.json(indent=4)
         with open(file_path, "w") as file:
             file.write(json_data)
 
-    def export_full_scenario(self) -> None:
+    def export_dev_scenario(self) -> None:
         """
         Export the inputdata scenario as a dir with multiple files splitting:
             - templates
@@ -216,4 +215,4 @@ class InputDataExporter:
 
         file_path = os.path.join(self._output_dir, "main.json")
         with open(file_path, "w") as file:
-            file.write(updated_input_data.json())
+            file.write(updated_input_data.json(indent=4))
