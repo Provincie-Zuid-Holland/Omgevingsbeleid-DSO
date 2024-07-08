@@ -17,6 +17,7 @@ class OWStatePatcher:
             raise ValueError("OW state not patched yet.")
         return self._patched_ow_state
 
+    # TODO: Remove since used_ow_ids is now computed property instead of stored in OwDatac:w
     def _patch_used_ow_ids(
         self, input_obj_ids: List[str], changed_obj_ids: List[str], terminated_obj_ids: List[str]
     ) -> List[str]:
@@ -28,16 +29,7 @@ class OWStatePatcher:
 
     def patch(self) -> None:
         """merge changed and terminated ow objects into the known ow state"""
-        changed_obj_ids = [obj.OW_ID for obj in self._changed_ow_objects]
-        terminated_obj_ids = [obj.OW_ID for obj in self._terminated_ow_objects]
-
         new_ow_state: OwData = self._known_ow_state.copy(deep=True)
-
-        new_ow_state.used_ow_ids = self._patch_used_ow_ids(
-            new_ow_state.used_ow_ids,
-            changed_obj_ids=changed_obj_ids,
-            terminated_obj_ids=terminated_obj_ids,
-        )
 
         # update active ow_objects
         for ow_obj in self._changed_ow_objects:

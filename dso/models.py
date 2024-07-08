@@ -316,9 +316,12 @@ def build_ow_type_mapping(base_class: Type[BaseModel]) -> Dict[str, Type[BaseMod
 
 
 class OwData(BaseModel):
-    used_ow_ids: List[str] = Field(default_factory=list)
     ow_objects: Dict[str, OWObject] = Field(default_factory=dict)
     terminated_ow_ids: List[str] = Field(default_factory=list)
+
+    @property
+    def used_ow_ids(self) -> List[str]:
+        return list(self.ow_objects.keys())
 
     @classmethod
     def load_ow_objects(cls, ow_objects_data: Dict[str, Any]) -> Dict[str, OWObject]:
@@ -337,7 +340,6 @@ class OwData(BaseModel):
     def from_json(cls, json_data: Dict[str, Any]) -> "OwData":
         ow_objects = cls.load_ow_objects(json_data.get("ow_objects", {}))
         return cls(
-            used_ow_ids=json_data.get("used_ow_ids", []),
             ow_objects=ow_objects,
             terminated_ow_ids=json_data.get("terminated_ow_ids", []),
         )
@@ -346,7 +348,6 @@ class OwData(BaseModel):
     def from_dict(cls, data: Dict[str, Any]) -> "OwData":
         ow_objects = cls.load_ow_objects(data.get("ow_objects", {}))
         return cls(
-            used_ow_ids=data.get("used_ow_ids", []),
             ow_objects=ow_objects,
             terminated_ow_ids=data.get("terminated_ow_ids", []),
         )
