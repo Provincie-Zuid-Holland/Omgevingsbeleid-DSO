@@ -62,8 +62,11 @@ class OwLocatieBuilder(OwFileBuilder):
             if not existing_gebied_id:
                 self.new_ow_gebiedengroep(werkingsgebied)  # werkingsgebied code that was not in previous state
             else:
-                # existing werkingsgebied code in state, mutate
-                self.mutate_ow_gebied(werkingsgebied.Locaties[0], existing_gebied_id, werkingsgebied.Code)
+                existing_gebied = self._ow_repository.get_existing_gebied(ow_id=existing_gebied_id)
+                if existing_gebied.mapped_uuid != werkingsgebied.UUID:
+                    # if existing werkingsgebied code in state, with a new external UUID, mutate
+                    self.mutate_ow_gebied(werkingsgebied.Locaties[0], existing_gebied_id, werkingsgebied.Code)
+
                 # since we dont support adding new locations to existing groups yet, we only need to
                 # mutate the owgebied as the group still references the same gebied ID>
                 # self.mutate_ow_gebiedengroep(werkingsgebied, existing_gebiedengroep_id)
