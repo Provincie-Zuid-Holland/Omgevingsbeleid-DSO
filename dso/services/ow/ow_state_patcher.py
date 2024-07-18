@@ -17,7 +17,8 @@ class OWStatePatcher:
             raise ValueError("OW state not patched yet.")
         return self._patched_ow_state
 
-    # TODO: Remove since used_ow_ids is now computed property instead of stored in OwDatac:w
+    # Unused since used_ow_ids is now computed property instead of stored in OwData
+    # TODO: Remove this method
     def _patch_used_ow_ids(
         self, input_obj_ids: List[str], changed_obj_ids: List[str], terminated_obj_ids: List[str]
     ) -> List[str]:

@@ -92,15 +92,16 @@ class OWTekstdeel(OWObject):
     """
     Divisietekstref is used as single item list
     for now but IMOW spec allows listing multiple.
-    Not yet supported:
-    - thema
-    - kaartaanduiding
-    - hoofdlijnaanduiding
-    - gebiedsaanwijzing
     """
 
     divisie: str  # imow DivisieRef / DivisieTekstRef
     locaties: List[str]  # imow LocatieRef
+    # gebiedsaanwijzingen: Optional[List[str]]  # imow GebiedsaanwijzingRef
+
+    # idealisatie: Optional[str]
+    # thema: Optional[str] = None
+    # kaartaanduiding: Optional[str] = None
+    # hoofdlijnaanduiding: Optional[str] = None
 
     @property
     def divisie_type(self) -> str:
@@ -118,3 +119,10 @@ class OWTekstdeel(OWObject):
         base_dict = super().dict(**kwargs)
         base_dict["divisie_type"] = self.divisie_type
         return base_dict
+
+
+# class OWGebiedsaanwijzing(OWObject):
+#     type_: str = Field(alias="type")  # TypeGebiedsaanwijzing waarde
+#     groep: str  # gebiedsaanwijzinggroep waarde
+#     naam: str  # locatie/gio noemer
+#     locaties: List[str]  # locatieaanduiding + LocatieRefs

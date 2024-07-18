@@ -19,7 +19,7 @@ def migrate_previous_ow_state(known_ow_state_dict: dict) -> OwData:
     """
     known_ow_state = OwDataV1(**known_ow_state_dict)
 
-    ow_objects_state = OwData(used_ow_ids=known_ow_state.object_ids, ow_objects={}, terminated_ow_ids=[])
+    ow_objects_state = OwData(ow_objects={}, terminated_ow_ids=[])
 
     # begin with existing OWObjects from known state OwData
     for ow_id, ow_tekstdeel_map in known_ow_state.object_map.tekstdeel_mapping.items():
