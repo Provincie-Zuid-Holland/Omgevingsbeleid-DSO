@@ -57,12 +57,10 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         self._used_object_types = [OwRegelingsgebiedObjectType.REGELINGSGEBIED]
         self._ambtsgebied: Optional[OWAmbtsgebied] = None
 
-    @property
-    def ambtsgebied(self) -> Optional[OWAmbtsgebied]:
+    def get_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
         return self._ambtsgebied
 
-    @property
-    def used_object_types(self) -> List[str]:
+    def get_used_object_types(self) -> List[str]:
         return [obj.value for obj in self._used_object_types]
 
     def handle_ow_object_changes(self) -> None:

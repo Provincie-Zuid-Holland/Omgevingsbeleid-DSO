@@ -25,12 +25,11 @@ class OWStateRepository:
         self._mutated_ow_objects: List[OWObject] = []
         self._terminated_ow_objects: List[OWObject] = []
 
-    @property
-    def changed_ow_objects(self) -> List[OWObject]:
+    def get_changed_ow_objects(self) -> List[OWObject]:
+        """Changed == Actively used in the current state"""
         return self._new_ow_objects + self._mutated_ow_objects
 
-    @property
-    def terminated_ow_objects(self) -> List[OWObject]:
+    def get_terminated_ow_objects(self) -> List[OWObject]:
         return self._terminated_ow_objects
 
     def add_new_ow(self, ow_object: OWObject) -> None:
@@ -98,21 +97,21 @@ class OWStateRepository:
 
     def get_gebiedengroep_by_code(self, werkingsgebied_code: str) -> Optional[OWGebiedenGroep]:
         # Search current state used objects
-        for ow_obj in self.changed_ow_objects:
+        for ow_obj in self.get_changed_ow_objects():
             if isinstance(ow_obj, OWGebiedenGroep) and ow_obj.mapped_geo_code == werkingsgebied_code:
                 return ow_obj
         return None
 
     def get_active_ow_location_id(self, werkingsgebied_code: str) -> Optional[str]:
         # checks BOTH current state and input state for existing location id
-        for obj in self.changed_ow_objects:
+        for obj in self.get_changed_ow_objects():
             if isinstance(obj, OWGebiedenGroep) and obj.mapped_geo_code == werkingsgebied_code:
                 return obj.OW_ID
 
         return self.get_existing_gebiedengroep_id(werkingsgebied_code)
 
     def get_active_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
-        for ow_obj in self.changed_ow_objects:
+        for ow_obj in self.get_changed_ow_objects():
             if isinstance(ow_obj, OWAmbtsgebied):
                 return ow_obj
         return None

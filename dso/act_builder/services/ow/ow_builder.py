@@ -103,10 +103,10 @@ class OwBuilder(BuilderService):
         ow_manifest_builder.add_manifest_item(divisie_builder.FILE_NAME, divisie_template_data.object_type_list)
         state_manager.add_output_file(ow_divisie_file)
 
-        if regelinggebied_builder.ambtsgebied:
+        if regelinggebied_builder.get_ambtsgebied():
             ow_regelingsgebied_file = regelinggebied_builder.create_file(regelingsgebied_template_data.dict())
             ow_manifest_builder.add_manifest_item(
-                regelinggebied_builder.FILE_NAME, regelinggebied_builder.used_object_types
+                regelinggebied_builder.FILE_NAME, regelinggebied_builder.get_used_object_types()
             )
             state_manager.add_output_file(ow_regelingsgebied_file)
 
@@ -118,8 +118,8 @@ class OwBuilder(BuilderService):
         # Patch to get new ow data state
         ow_state_patcher = OWStatePatcher(
             ow_data=state_manager.input_data.ow_data.copy(deep=True),
-            changed_ow_objects=state_manager.ow_repository.changed_ow_objects,
-            terminated_ow_objects=state_manager.ow_repository.terminated_ow_objects,
+            changed_ow_objects=state_manager.ow_repository.get_changed_ow_objects(),
+            terminated_ow_objects=state_manager.ow_repository.get_terminated_ow_objects(),
         )
         ow_state_patcher.patch()
 
