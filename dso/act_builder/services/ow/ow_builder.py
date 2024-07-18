@@ -94,14 +94,15 @@ class OwBuilder(BuilderService):
         regelingsgebied_template_data = regelinggebied_builder.build_template_data()
 
         # create output files + owmanifest
-        # TODO: ensure empty files are not created for locaties / divisies
-        ow_locatie_file = locatie_builder.create_file(locatie_template_data.dict())
-        ow_manifest_builder.add_manifest_item(locatie_builder.FILE_NAME, locatie_template_data.object_type_list)
-        state_manager.add_output_file(ow_locatie_file)
+        if locatie_template_data:
+            ow_locatie_file = locatie_builder.create_file(locatie_template_data.dict())
+            ow_manifest_builder.add_manifest_item(locatie_builder.FILE_NAME, locatie_template_data.object_type_list)
+            state_manager.add_output_file(ow_locatie_file)
 
-        ow_divisie_file = divisie_builder.create_file(divisie_template_data.dict())
-        ow_manifest_builder.add_manifest_item(divisie_builder.FILE_NAME, divisie_template_data.object_type_list)
-        state_manager.add_output_file(ow_divisie_file)
+        if divisie_template_data:
+            ow_divisie_file = divisie_builder.create_file(divisie_template_data.dict())
+            ow_manifest_builder.add_manifest_item(divisie_builder.FILE_NAME, divisie_template_data.object_type_list)
+            state_manager.add_output_file(ow_divisie_file)
 
         if regelinggebied_builder.get_ambtsgebied():
             ow_regelingsgebied_file = regelinggebied_builder.create_file(regelingsgebied_template_data.dict())

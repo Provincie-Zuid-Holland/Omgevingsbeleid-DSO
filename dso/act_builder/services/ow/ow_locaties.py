@@ -166,10 +166,13 @@ class OwLocatieBuilder(OwFileBuilder):
             elif isinstance(obj, OWAmbtsgebied):
                 self._used_object_types.add(OwLocatieObjectType.AMBTSGEBIED)
 
-    def build_template_data(self) -> OwLocatieTemplateData:
+    def build_template_data(self) -> Optional[OwLocatieTemplateData]:
         new_locations = self._ow_repository.get_new_locations()
         mutated_locations = self._ow_repository.get_mutated_locations()
         terminated_locations = self._ow_repository.get_terminated_locations()
+
+        if not (new_locations or mutated_locations or terminated_locations):
+            return None
 
         # find all used object types in this file
         self.add_used_ow_object_types(new_locations + mutated_locations + terminated_locations)

@@ -172,10 +172,13 @@ class OwDivisieBuilder(OwFileBuilder):
             elif isinstance(obj, OWTekstdeel):
                 self._used_object_types.add(OwDivisieObjectType.TEKSTDEEL)
 
-    def build_template_data(self) -> OwDivisieFileData:
+    def build_template_data(self) -> Optional[OwDivisieFileData]:
         new_divisies = self._ow_repository.get_new_div()
         mutated_divisies = self._ow_repository.get_mutated_div()
         terminated_divisies = self._ow_repository.get_terminated_div()
+
+        if not (new_divisies or mutated_divisies or terminated_divisies):
+            return None
 
         # find all used object types for this file
         self.add_used_ow_object_types(new_divisies + mutated_divisies + terminated_divisies)
