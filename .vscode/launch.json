@@ -1,0 +1,51 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "DSO: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "DSO 01-initial-visie",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "dso.cmds",
+            "args": [
+                "generate",
+                "./input/01-initial-visie",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "DSO 02 Mutaties",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "dso.cmds",
+            "args": [
+                "generate",
+                "./input/02-1-wijziging-visie-full",
+            ],
+            "console": "internalConsole",
+            "justMyCode": true
+        },
+        {
+            "name": "DSO 02-2 mutatie zonder OW",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "dso.cmds",
+            "args": [
+                "generate",
+                "./input/02-2-wijziging-geen-ow",
+                "--json-file",
+                "main.json"
+            ],
+            "console": "internalConsole",
+            "justMyCode": true
+        },
+    ]
+}
