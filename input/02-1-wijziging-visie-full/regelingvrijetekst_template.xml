@@ -4,6 +4,9 @@
 <div data-hint-wid-code="omgevingsvisie-custom-ambities-wrapper">
     <h1>Ambities van Zuid-Holland</h1>
     <div data-hint-element="divisietekst">
+        <object code="ambitie-3" template="ambitie" />
+    </div>
+    <div data-hint-element="divisietekst">
         <object code="ambitie-2" template="ambitie" />
     </div>
     <div data-hint-element="divisietekst">
@@ -26,10 +29,10 @@
         <div data-hint-wid-code="omgevingsvisie-custom-beleidskeuze-beleidsdoel-1-wrapper">
             <h1>Beleidskeuzes van Titel van het eerste beleidsdoel</h1>
             <div data-hint-element="divisietekst">
-                <object code="beleidskeuze-1" template="beleidskeuze" />
+                <object code="beleidskeuze-3" template="beleidskeuze" />
             </div>
             <div data-hint-element="divisietekst">
-                <object code="beleidskeuze-2" template="beleidskeuze" />
+                <object code="beleidskeuze-1" template="beleidskeuze" />
             </div>
         </div>
     </div>

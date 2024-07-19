@@ -25,8 +25,8 @@ module_obj_context:
 # Expected OW state
 
 New:
-    - OWGebied (werkingsgebied-2)
-    - OWGebiedenGroep (werkingsgebied-2)
+    - OWGebied (werkingsgebied-1)
+    - OWGebiedenGroep (werkingsgebied-1)
     - OWdivisietekst beleidskeuze-1
     - OWdivisietekst beleidskeuze-2
     - OWTekstdeel (OWGebiedengroep wg-1 + OWDivisietekst bk-1)
