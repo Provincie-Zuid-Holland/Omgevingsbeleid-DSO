@@ -66,7 +66,10 @@ class OwDivisieBuilder(OwFileBuilder):
     def process_existing_divisie(self, known_divisie, values):
         known_gebied_code = self._ow_repository.get_existing_werkingsgebied_code_by_divisie(known_divisie.OW_ID)
         if not known_gebied_code:
-            return
+            raise OWObjectStateException(
+                message=f"Expected to find werkingsgebied code in input state for existing divisie: {values['wid']}",
+                ref_ow_id=known_divisie.OW_ID,
+            )
 
         if values["gebied_code"] != known_gebied_code:
             self.handle_gebied_code_mutation(known_divisie, values)
@@ -85,7 +88,9 @@ class OwDivisieBuilder(OwFileBuilder):
                 message=f"Expected gebiedengroep with werkingsgebied: {values['gebied_code']} in new state",
             )
 
-        self._mutate_text_mapping(known_tekstdeel, ow_gebiedengroep.OW_ID)
+        new_ow_tekstdeel = known_tekstdeel.copy(deep=True, exclude={"locaties"})
+        new_ow_tekstdeel.locaties = [ow_gebiedengroep.OW_ID]
+        self._ow_repository.add_mutated_ow(new_ow_tekstdeel)
 
     def process_new_divisie(self, values) -> OWTekstdeel:
         new_div = self._new_divisie(values["tag"], values["wid"])
@@ -156,9 +161,10 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ow_repository.add_new_ow(ow_text_mapping)
         return ow_text_mapping
 
-    def _mutate_text_mapping(self, ow_text_mapping, ow_location_id) -> None:
-        ow_text_mapping.locaties = [ow_location_id]
-        self._ow_repository.add_mutated_ow(ow_text_mapping)
+    def _update_tekstdeel_gebiedengroep(self, ow_tekstdeel: OWTekstdeel, ow_location_id: str) -> None:
+        new_ow_tekstdeel = ow_tekstdeel.copy(deep=True, exclude={"locaties"})
+        new_ow_tekstdeel.locaties = [ow_location_id]
+        self._ow_repository.add_mutated_ow(new_ow_tekstdeel)
 
     def get_used_object_types(self) -> List[OwDivisieObjectType]:
         return list(self._used_object_types)

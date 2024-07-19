@@ -55,7 +55,8 @@ class OWStateRepository:
                 action="add_mutated_ow",
                 ow_object=ow_object.dict(),
             )
-        # If ow_object OW_ID exists in known ow state and values are not different from existing, raise exception to prevent duplicate
+        # If ow_object OW_ID exists in known ow state and values are not
+        # different from existing, # raise exception to prevent duplicate
         existing_ow_object = self._known_ow_state.ow_objects[ow_object.OW_ID]
         if existing_ow_object == ow_object:
             raise OWStateMutationError(
