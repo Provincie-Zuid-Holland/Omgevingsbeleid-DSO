@@ -3,7 +3,6 @@ from typing import List, Optional
 
 from ....services.ow.enums import OwProcedureStatus
 from ....services.ow.ow_state_patcher import OWStatePatcher
-from ....services.ow.ow_state_validator import OWStateValidator
 from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
 from ...services.ow.ow_divisie import OwDivisieBuilder
@@ -89,6 +88,13 @@ class OwBuilder(BuilderService):
         divisie_builder.handle_ow_object_changes()
         regelinggebied_builder.handle_ow_object_changes()
 
+        # Patch to get new ow data state
+        ow_state_patcher = OWStatePatcher(
+            ow_data=state_manager.input_data.ow_data.copy(deep=True), ow_repository=state_manager.ow_repository
+        )
+        ow_state_patcher.patch()
+
+        # Start building output files
         locatie_template_data = locatie_builder.build_template_data()
         divisie_template_data = divisie_builder.build_template_data()
         regelingsgebied_template_data = regelinggebied_builder.build_template_data()
@@ -116,18 +122,6 @@ class OwBuilder(BuilderService):
         ow_manifest_file = ow_manifest_builder.create_file(ow_manifest_template_data.dict())
         state_manager.add_output_file(ow_manifest_file)
 
-        # Patch to get new ow data state
-        ow_state_patcher = OWStatePatcher(
-            ow_data=state_manager.input_data.ow_data.copy(deep=True),
-            changed_ow_objects=state_manager.ow_repository.get_changed_ow_objects(),
-            terminated_ow_objects=state_manager.ow_repository.get_terminated_ow_objects(),
-        )
-        ow_state_patcher.patch()
-
-        # sanity check the patched state
-        ow_state_validator = OWStateValidator(ow_data=ow_state_patcher.patched_ow_state)
-        ow_state_validator.validate()
-
-        state_manager.ow_object_state = ow_state_patcher.patched_ow_state
+        state_manager.ow_object_state = ow_state_patcher.get_patched_ow_state()
 
         return state_manager

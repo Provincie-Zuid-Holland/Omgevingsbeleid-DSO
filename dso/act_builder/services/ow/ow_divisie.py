@@ -127,31 +127,6 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ow_repository.add_terminated_ow(known_tekstdeel)
         self._ow_repository.add_terminated_ow(known_divisie)
 
-        # lookup locaties in tekstdeel, terminate the location
-        # TODO:only if no other owtekstdeel has reference to it. (dangling)
-        for ow_id in known_tekstdeel.locaties:
-            known_locatie = self._ow_repository.get_known_state_object(ow_id)
-            if not known_locatie:
-                raise OWObjectStateException(
-                    message=f"Expected to find locatie_ref from existing tekstdeel: {known_tekstdeel.OW_ID} in known state",
-                    ref_ow_id=ow_id,
-                )
-            if isinstance(known_locatie, OWGebiedenGroep):
-                # end sub locations of group
-                for gebied_id in known_locatie.gebieden:
-                    known_gebied: Optional[OWGebied] = self._ow_repository.get_known_state_object(gebied_id)
-                    if not known_gebied:
-                        raise OWObjectStateException(
-                            message=f"Expected to find gebied_ref from existing gebiedengroep: {known_locatie.OW_ID} in known state",
-                            ref_ow_id=gebied_id,
-                        )
-                    known_gebied.set_status_beeindig()
-                    self._ow_repository.add_terminated_ow(known_gebied)
-
-            # end the object
-            known_locatie.set_status_beeindig()
-            self._ow_repository.add_terminated_ow(known_locatie)
-
     def _new_divisie(self, tag: str, wid: str) -> OWDivisie | OWDivisieTekst:
         if tag == "Divisietekst":
             ow_div = OWDivisieTekst(

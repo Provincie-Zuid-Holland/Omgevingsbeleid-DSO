@@ -7,6 +7,7 @@ from ...act_builder.state_manager.states.ow_repository import OwData
 from .models import OWGebiedenGroep, OWObject, OWTekstdeel
 
 
+# TODO: remove as is kept in ow state patcher now instead
 class OWStateValidator:
     def __init__(self, ow_data: OwData):
         self._ow_data = ow_data.copy(deep=True)
