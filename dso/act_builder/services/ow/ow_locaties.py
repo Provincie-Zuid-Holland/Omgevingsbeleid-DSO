@@ -58,17 +58,21 @@ class OwLocatieBuilder(OwFileBuilder):
             # Requires storing full aoj data to ow state
 
         for werkingsgebied in self._werkingsgebieden:
-            existing_gebied_id = self._ow_repository.get_existing_gebied_id(werkingsgebied.Code)
-            if not existing_gebied_id:
-                self.new_ow_gebiedengroep(werkingsgebied)  # werkingsgebied code that was not in previous state
+            existing_ow_gebied: Optional[OWGebied] = self._ow_repository.get_known_gebied_by_code(
+                werkingsgebied_code=werkingsgebied.Code
+            )
+            if not existing_ow_gebied:
+                self.new_ow_gebiedengroep(werkingsgebied)
             else:
-                existing_gebied = self._ow_repository.get_existing_gebied(ow_id=existing_gebied_id)
-                if existing_gebied.mapped_uuid != werkingsgebied.UUID:
+                if existing_ow_gebied.mapped_uuid != werkingsgebied.UUID:
                     # if existing werkingsgebied code in state, with a new external UUID, mutate
-                    self.mutate_ow_gebied(werkingsgebied.Locaties[0], existing_gebied_id, werkingsgebied.Code)
+                    self.mutate_ow_gebied(
+                        locatie=werkingsgebied.Locaties[0],
+                        existing_gebied_id=existing_ow_gebied.OW_ID,
+                        code=werkingsgebied.Code,
+                    )
 
-                # since we dont support adding new locations to existing groups yet, we only need to
-                # mutate the owgebied as the group still references the same gebied ID>
+                # gebiedengroep mutation not yet needed
                 # self.mutate_ow_gebiedengroep(werkingsgebied, existing_gebiedengroep_id)
 
     def new_ow_gebied(self, locatie: Locatie, werkingsgebied_code: str) -> OWGebied:
@@ -125,15 +129,13 @@ class OwLocatieBuilder(OwFileBuilder):
             mapped_geo_code=werkingsgebied.Code,
         )
         for locatie in werkingsgebied.Locaties:
-            existing_gebied_owid = self._ow_repository.get_existing_gebied_id(werkingsgebied.Code)
-            if not existing_gebied_owid:
-                # Scenario where group is updated seperatly from locations, should not occur yet
-                # as support multiple locations are not supported for now
-                # new_gebied = self.new_ow_gebied(locatie, werkingsgebied.Code)
-                # mutated_gebiedengroep.locations.append(new_gebied)
-                raise NotImplementedError("Multiple locations in group not supported yet.")
+            existing_gebied = self._ow_repository.get_known_gebied_by_code(werkingsgebied.Code)
+            if not existing_gebied:
+                # Gebiedengroep and Gebied currently 1-1 matched
+                # Not supported to mutate a existing gebiedengroep with non existing gebied
+                raise NotImplementedError("Expected existing owgebied in state to apply to mutated gebiedengroep")
 
-            mutated_gebied = self.mutate_ow_gebied(locatie, existing_gebied_owid, werkingsgebied.Code)
+            mutated_gebied = self.mutate_ow_gebied(locatie, existing_gebied.OW_ID, werkingsgebied.Code)
             mutated_gebiedengroep.gebieden.append(mutated_gebied.OW_ID)
 
         self._ow_repository.add_mutated_ow(mutated_gebiedengroep)

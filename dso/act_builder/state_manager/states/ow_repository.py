@@ -116,7 +116,8 @@ class OWStateRepository:
             if isinstance(obj, OWGebiedenGroep) and obj.mapped_geo_code == werkingsgebied_code:
                 return obj.OW_ID
 
-        return self.get_existing_gebiedengroep_id(werkingsgebied_code)
+        known_state_location = self.get_known_gebied_by_code(werkingsgebied_code)
+        return known_state_location.OW_ID if known_state_location else None
 
     def get_active_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
         for ow_obj in self.get_changed_ow_objects():
@@ -125,26 +126,20 @@ class OWStateRepository:
         return None
 
     # KNOWN STATE MAP LOOKUPS
-    def get_existing_gebied_id(self, werkingsgebied_code: str) -> Optional[str]:
+    def get_known_state_object(self, ow_id: str) -> Optional[OWObject]:
+        return self._known_ow_state.ow_objects.get(ow_id, None)
+
+    def get_known_gebied_by_code(self, werkingsgebied_code: str) -> Optional[OWGebied]:
         for ow_obj in self._known_ow_state.ow_objects.values():
             if isinstance(ow_obj, OWGebied) and ow_obj.mapped_geo_code == werkingsgebied_code:
-                return ow_obj.OW_ID
+                return ow_obj
         return None
 
-    def get_existing_gebiedengroep_id(self, werkingsgebied_code: str) -> Optional[str]:
+    def get_known_gebiedengroep_by_code(self, werkingsgebied_code: str) -> Optional[OWGebiedenGroep]:
         for ow_obj in self._known_ow_state.ow_objects.values():
             if isinstance(ow_obj, OWGebiedenGroep) and ow_obj.mapped_geo_code == werkingsgebied_code:
-                return ow_obj.OW_ID
+                return ow_obj
         return None
-
-    def get_existing_gebied(self, ow_id: str) -> OWGebied:
-        ow_obj = self._known_ow_state.ow_objects.get(ow_id, None)
-        if not ow_obj or not isinstance(ow_obj, OWGebied):
-            raise OWObjectStateException(
-                message=f"Expected OWGebied type object in existing state OW_ID: {ow_id}.",
-                ref_ow_id=ow_id,
-            )
-        return ow_obj
 
     def get_existing_gebiedengroep(self, ow_id: str) -> OWGebiedenGroep:
         ow_obj = self._known_ow_state.ow_objects.get(ow_id, None)
