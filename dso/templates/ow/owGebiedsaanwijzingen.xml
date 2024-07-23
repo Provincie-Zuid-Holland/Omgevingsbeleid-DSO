@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ow-dc:owBestand xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:ga="http://www.geostandaarden.nl/imow/gebiedsaanwijzing"
+   xmlns:da="http://www.geostandaarden.nl/imow/datatypenalgemeen"
+   xmlns:sl="http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek"
+   xmlns:ow-dc="http://www.geostandaarden.nl/imow/bestanden/deelbestand"
+   xmlns:ow="http://www.geostandaarden.nl/imow/owobject"
+   xmlns:rol="http://www.geostandaarden.nl/imow/regelsoplocatie"
+   xmlns:rg="http://www.geostandaarden.nl/imow/regelingsgebied"
+   xmlns:p="http://www.geostandaarden.nl/imow/pons"
+   xmlns:l="http://www.geostandaarden.nl/imow/locatie"
+   xmlns:r="http://www.geostandaarden.nl/imow/regels"
+   xmlns:k="http://www.geostandaarden.nl/imow/kaart"
+   xmlns:s="http://www.geostandaarden.nl/imow/symbolisatie"
+   xmlns:op="http://www.geostandaarden.nl/imow/opobject"
+   xsi:schemaLocation="http://www.geostandaarden.nl/imow/bestanden/deelbestand https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/bestanden-ow/deelbestand-ow/IMOW_Deelbestand.xsd">
+   <sl:standBestand>
+      <sl:dataset>provincie Zuid-holland</sl:dataset>
+        <sl:inhoud>
+            <sl:gebied>provincie Zuid-holland</sl:gebied>
+            <sl:leveringsId>{{ data.levering_id }}</sl:leveringsId>
+            <sl:objectTypen>
+                {% for object_type in data.object_types %}
+                <sl:objectType>{{ object_type.value }}</sl:objectType>
+                {% endfor %}
+            </sl:objectTypen>
+        </sl:inhoud>
+         {% for ow_object in data.new_ow_objects %}
+         <sl:stand>
+            <ow-dc:owObject>
+               <ga:Gebiedsaanwijzing>
+                  {% if ow_object.procedure_status is not none %}
+                  <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+                  {% endif %}
+                  <ga:identificatie>{{ ow_object.OW_ID }}</ga:identificatie>
+                  <ga:type>http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Functie</ga:type>
+                  <ga:naam>{{ ow_object.naam }}</ga:naam>
+                  <ga:groep>http://standaarden.omgevingswet.overheid.nl/functie/id/concept/Bedrijf</ga:groep>
+                  <ga:locatieaanduiding>
+                     {% for locatie_ref in ow_object.locaties %}
+                     <l:LocatieRef xlink:href="{{ locatie_ref }}"/>
+                     {% endfor %}
+                  </ga:locatieaanduiding>
+               </ga:Gebiedsaanwijzing>
+            </ow-dc:owObject>
+         </sl:stand>
+         {% endfor %}
+   </sl:standBestand>
+</ow-dc:owBestand>
