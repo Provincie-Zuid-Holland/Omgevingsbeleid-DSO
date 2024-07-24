@@ -34,9 +34,9 @@
                   <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                   {% endif %}
                   <ga:identificatie>{{ ow_object.OW_ID }}</ga:identificatie>
-                  <ga:type>http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Functie</ga:type>
+                  <ga:type>{{ ow_object.type_.value }}</ga:type>
                   <ga:naam>{{ ow_object.naam }}</ga:naam>
-                  <ga:groep>http://standaarden.omgevingswet.overheid.nl/functie/id/concept/Bedrijf</ga:groep>
+                  <ga:groep>{{ ow_object.groep}}</ga:groep>
                   <ga:locatieaanduiding>
                      {% for locatie_ref in ow_object.locaties %}
                      <l:LocatieRef xlink:href="{{ locatie_ref }}"/>

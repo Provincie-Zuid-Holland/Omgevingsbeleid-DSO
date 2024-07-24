@@ -1,7 +1,8 @@
 from typing import Dict, List, Optional, Set
 from uuid import UUID
 
-from pydantic import BaseModel
+from .imow_waardelijsten import TypeGebiedsaanwijzingEnum, GEBIEDSAANWIJZING_TO_GROEP_MAPPING
+from pydantic import BaseModel, Field, root_validator, validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
 from .ow_id import check_ow_id_imowtype
@@ -89,14 +90,9 @@ class OWDivisieTekst(OWObject):
 
 
 class OWTekstdeel(OWObject):
-    """
-    Divisietekstref is used as single item list
-    for now but IMOW spec allows listing multiple.
-    """
-
     divisie: str  # imow DivisieRef / DivisieTekstRef
     locaties: List[str]  # imow LocatieRef
-    # gebiedsaanwijzingen: Optional[List[str]]  # imow GebiedsaanwijzingRef
+    gebiedsaanwijzingen: Optional[List[str]]  # imow GebiedsaanwijzingRef
 
     # idealisatie: Optional[str]
     # thema: Optional[str] = None
@@ -113,6 +109,10 @@ class OWTekstdeel(OWObject):
             return False
         if not all(locatie_id in used_ow_ids for locatie_id in self.locaties):
             return False
+        if self.gebiedsaanwijzingen and not all(
+            gebiedsaanwijzing_id in used_ow_ids for gebiedsaanwijzing_id in self.gebiedsaanwijzingen
+        ):
+            return False
         return True
 
     def dict(self, **kwargs):
@@ -121,8 +121,38 @@ class OWTekstdeel(OWObject):
         return base_dict
 
 
-# class OWGebiedsaanwijzing(OWObject):
-#     type_: str = Field(alias="type")  # TypeGebiedsaanwijzing waarde
-#     groep: str  # gebiedsaanwijzinggroep waarde
-#     naam: str  # locatie/gio noemer
-#     locaties: List[str]  # locatieaanduiding + LocatieRefs
+class OWGebiedsaanwijzing(OWObject):
+    naam: str  # locatie/gio noemer
+    type_: TypeGebiedsaanwijzingEnum  # TypeGebiedsaanwijzing waarde
+    groep: str  # gebiedsaanwijzinggroep waarde
+    locaties: List[str]  # locatieaanduiding + LocatieRefs
+
+    @validator("type_", pre=True)
+    def validate_type(cls, value):
+        if isinstance(value, str):
+            try:
+                return TypeGebiedsaanwijzingEnum[value]
+            except KeyError:
+                for enum_member in TypeGebiedsaanwijzingEnum:
+                    if enum_member.value == value:
+                        return enum_member
+        return value
+
+    @validator("groep", pre=True)
+    def validate_groep(cls, value, values):
+        if "type_" in values:
+            type_enum = values["type_"]
+            groep_enum_class = GEBIEDSAANWIJZING_TO_GROEP_MAPPING[type_enum]
+            if isinstance(value, str):
+                try:
+                    return groep_enum_class[value]
+                except KeyError:
+                    for enum_member in groep_enum_class:
+                        if enum_member.value == value:
+                            return enum_member
+        raise ValueError(f"'{value}' is not a valid value for the groep field")
+
+    def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
+        if not all(locatie_id in used_ow_ids for locatie_id in self.locaties):
+            return False
+        return True
