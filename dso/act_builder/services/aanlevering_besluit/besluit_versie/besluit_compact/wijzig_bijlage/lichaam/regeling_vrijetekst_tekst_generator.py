@@ -1,4 +1,5 @@
-from copy import copy
+from copy import copy, deepcopy
+import re
 from uuid import UUID
 
 from bs4 import BeautifulSoup
@@ -18,16 +19,18 @@ class RegelingVrijetekstTekstGenerator:
 
     def create(self, html: str):
         tekst: str = self._html_to_xml_lichaam(html)
-        self._state_manager.debug["tekst-part-1"] = copy(tekst)
+        # self._state_manager.debug["tekst-part-1"] = copy(tekst)
 
         tekst = self._enrich_illustratie(tekst)
-        self._state_manager.debug["tekst-part-2"] = copy(tekst)
+        # self._state_manager.debug["tekst-part-2"] = copy(tekst)
 
         tekst = self._add_ewids(tekst)
-        self._state_manager.debug["tekst-part-3"] = copy(tekst)
+        # self._state_manager.debug["tekst-part-3"] = copy(tekst)
+
+        tekst = self._handle_annotation_refs(tekst)
 
         tekst = self._remove_hints(tekst)
-        self._state_manager.debug["tekst-part-4"] = copy(tekst)
+        # self._state_manager.debug["tekst-part-4"] = copy(tekst)
 
         return tekst
 
@@ -36,7 +39,7 @@ class RegelingVrijetekstTekstGenerator:
             raise RuntimeError("Invalid html")
 
         html = middleware_enrich_table(html)
-        self._state_manager.debug["tekst-part-0"] = copy(html)
+        # self._state_manager.debug["tekst-part-0"] = copy(html)
 
         input_soup = BeautifulSoup(html, "html.parser")
         lichaam = Lichaam()
@@ -72,6 +75,45 @@ class RegelingVrijetekstTekstGenerator:
     def _add_ewids(self, xml_data: str) -> str:
         result: str = self._state_manager.act_ewid_service.add_ewids(xml_data)
         return result
+
+    def _handle_annotation_refs(self, xml_data: str) -> str:
+        # annotation tags/refs left in the xml data, require ewids to be generated first.
+        ewid_service = self._state_manager.act_ewid_service
+        state_used_wid_map = deepcopy(ewid_service.get_state_used_wid_map())
+        # state_object_tekst_lookup = deepcopy(ewid_service.get_state_object_tekst_lookup())
+        # annotation_map = {}
+        root = etree.fromstring(xml_data)
+
+        # Handle IntIoRef for Gebiedsaanwijzingen
+        for element in root.xpath("//IntIoRef"):
+            tag_wid = element.attrib["wId"]
+            werkingsgebied_code = element.attrib.pop("data-gebiedsaanwijzing")
+            gebiedsaanwijzing_groep = element.attrib.pop("data-gebiedengroep")
+            gebiedsaanwijzing_type = element.attrib.pop("data-type")
+
+            # retrieve the used bijlage WID for the werkingsgebied GIO extref
+            wid_ref_key_pattern = f"bijlage-werkingsgebieden-divisietekst-referentie-{werkingsgebied_code}-ref"
+            annotation_ref_wid = None
+            for key, value in state_used_wid_map.items():
+                if re.match(wid_ref_key_pattern, key):
+                    annotation_ref_wid = value
+                    break
+
+            # replace the element "ref" tag  with annotation_ref_wid
+            element.attrib["ref"] = annotation_ref_wid
+
+            # update state with data for gebiedsaanwijzing
+            self._state_manager.annotation_lookup_map[tag_wid] = {
+                "type_annotation": "OWGebiedsaanwijzing",
+                "gebiedsaanwijzing_ref": annotation_ref_wid,
+                "gebiedsaanwijzing_groep": gebiedsaanwijzing_groep,
+                "grebiedsaaanwijzing_type": gebiedsaanwijzing_type,
+                "werkingsgebied_code": werkingsgebied_code,
+            }
+
+        # Handle others? Extref? normal werkingsgebieden too?
+        output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
+        return output
 
     def _remove_hints(self, xml_data: str) -> str:
         xml_data = self._clean_attribute(xml_data, "data-hint-gebied-code")
