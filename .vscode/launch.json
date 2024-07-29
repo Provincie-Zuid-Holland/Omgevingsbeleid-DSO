@@ -47,5 +47,17 @@
             "console": "internalConsole",
             "justMyCode": true
         },
+        {
+            "name": "DSO Test gebiedaw",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "dso.cmds",
+            "args": [
+                "generate",
+                "./input/01-test-gebiedaw",
+            ],
+            "console": "internalConsole",
+            "justMyCode": true
+        },
     ]
 }
