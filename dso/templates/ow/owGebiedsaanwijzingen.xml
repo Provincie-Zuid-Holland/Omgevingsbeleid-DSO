@@ -26,6 +26,7 @@
                 {% endfor %}
             </sl:objectTypen>
         </sl:inhoud>
+        <!-- new -->
          {% for ow_object in data.new_ow_objects %}
          <sl:stand>
             <ow-dc:owObject>
@@ -46,5 +47,52 @@
             </ow-dc:owObject>
          </sl:stand>
          {% endfor %}
+
+        <!-- mutated -->
+         {% for ow_object in data.mutated_ow_objects %}
+         <sl:stand>
+            <ow-dc:owObject>
+               <ga:Gebiedsaanwijzing>
+                  {% if ow_object.procedure_status is not none %}
+                  <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+                  {% endif %}
+                  <ga:identificatie>{{ ow_object.OW_ID }}</ga:identificatie>
+                  <ga:type>{{ ow_object.type_.value }}</ga:type>
+                  <ga:naam>{{ ow_object.naam }}</ga:naam>
+                  <ga:groep>{{ ow_object.groep}}</ga:groep>
+                  <ga:locatieaanduiding>
+                     {% for locatie_ref in ow_object.locaties %}
+                     <l:LocatieRef xlink:href="{{ locatie_ref }}"/>
+                     {% endfor %}
+                  </ga:locatieaanduiding>
+               </ga:Gebiedsaanwijzing>
+            </ow-dc:owObject>
+         </sl:stand>
+         {% endfor %}
+
+         <!-- terminated -->
+        {% for ow_object in data.terminated_ow_objects %}
+         <sl:stand>
+            <ow-dc:owObject>
+               <ga:Gebiedsaanwijzing>
+                  {% if ow_object.status is not none %}
+                  <ow:status>{{ ow_object.status.value }}</ow:status>
+                  {% endif %}
+                  {% if ow_object.procedure_status is not none %}
+                  <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+                  {% endif %}
+                  <ga:identificatie>{{ ow_object.OW_ID }}</ga:identificatie>
+                  <ga:type>{{ ow_object.type_.value }}</ga:type>
+                  <ga:naam>{{ ow_object.naam }}</ga:naam>
+                  <ga:groep>{{ ow_object.groep}}</ga:groep>
+                  <ga:locatieaanduiding>
+                     {% for locatie_ref in ow_object.locaties %}
+                     <l:LocatieRef xlink:href="{{ locatie_ref }}"/>
+                     {% endfor %}
+                  </ga:locatieaanduiding>
+               </ga:Gebiedsaanwijzing>
+            </ow-dc:owObject>
+         </sl:stand>
+        {% endfor %}
    </sl:standBestand>
 </ow-dc:owBestand>
