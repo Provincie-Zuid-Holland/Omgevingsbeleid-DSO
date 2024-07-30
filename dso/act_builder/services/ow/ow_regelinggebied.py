@@ -68,7 +68,7 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         Either create a new regelingsgebied for a new ambtsgebied given or
         if existing ambtsgebied was mutated, mutate the matching regelingsgebied reference.
         """
-        self._ambtsgebied = self._ow_repository.get_active_ambtsgebied()
+        self._ambtsgebied = self._ow_repository.get_ambtsgebied()
         if not self._ambtsgebied:
             # no changes to regelingsgebied needed so exit
             return
