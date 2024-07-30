@@ -57,6 +57,13 @@
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
+                    {% if ow_object.gebiedsaanwijzingen is not none %}
+					<vt:gebiedsaanwijzing>
+						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
+						<l:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
+						{% endfor %}
+					</vt:gebiedsaanwijzing>
+                    {% endif %}
 				</vt:Tekstdeel>
 			</ow-dc:owObject>
 		</sl:stand>
@@ -108,6 +115,13 @@
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
+                    {% if ow_object.gebiedsaanwijzingen is not none %}
+					<vt:gebiedsaanwijzing>
+						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
+						<l:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
+						{% endfor %}
+					</vt:gebiedsaanwijzing>
+                    {% endif %}
 				</vt:Tekstdeel>
 			</ow-dc:owObject>
 		</sl:stand>
@@ -168,6 +182,13 @@
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
+                    {% if ow_object.gebiedsaanwijzingen is not none %}
+					<vt:gebiedsaanwijzing>
+						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
+						<l:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
+						{% endfor %}
+					</vt:gebiedsaanwijzing>
+                    {% endif %}
 				</vt:Tekstdeel>
 			</ow-dc:owObject>
 		</sl:stand>

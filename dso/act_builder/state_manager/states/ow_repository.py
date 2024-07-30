@@ -1,6 +1,7 @@
 from typing import List, Optional, Union
 from uuid import UUID
 
+
 from ....models import OwData
 from ....services.ow import (
     OWAmbtsgebied,
@@ -12,6 +13,7 @@ from ....services.ow import (
     OWObject,
     OWRegelingsgebied,
     OWTekstdeel,
+    OWGebiedsaanwijzing,
 )
 from ..exceptions import OWObjectStateException, OWStateMutationError
 
@@ -76,6 +78,7 @@ class OWStateRepository:
         self._terminated_ow_objects.append(ow_object)
 
     # TODO: Refactor this block more efficiently when certain of mapping logic
+
     def get_new_locations(self) -> List[OWObject]:
         return [obj for obj in self._new_ow_objects if isinstance(obj, OWLocatie)]
 
@@ -102,6 +105,18 @@ class OWStateRepository:
 
     def get_terminated_regelingsgebied(self) -> List[OWObject]:
         return [obj for obj in self._terminated_ow_objects if isinstance(obj, OWRegelingsgebied)]
+
+    def get_new_gebiedsaanwijzingen(self) -> List[OWObject]:
+        return [obj for obj in self._new_ow_objects if isinstance(obj, OWGebiedsaanwijzing)]
+
+    def get_mutated_gebiedsaanwijzingen(self) -> List[OWObject]:
+        return [obj for obj in self._mutated_ow_objects if isinstance(obj, OWGebiedsaanwijzing)]
+
+    def get_terminated_gebiedsaanwijzingen(self) -> List[OWObject]:
+        return [obj for obj in self._terminated_ow_objects if isinstance(obj, OWGebiedsaanwijzing)]
+
+    def get_new_tekstdeel(self) -> List[OWObject]:
+        return [obj for obj in self._new_ow_objects if isinstance(obj, OWTekstdeel)]
 
     def get_gebiedengroep_by_code(self, werkingsgebied_code: str) -> Optional[OWGebiedenGroep]:
         # Search current state used objects

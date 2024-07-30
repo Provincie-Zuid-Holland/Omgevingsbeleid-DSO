@@ -45,6 +45,10 @@ class OwRegelingsgebiedObjectType(str, Enum):
     REGELINGSGEBIED = "Regelingsgebied"
 
 
+class OwGebiedsaanwijzingObjectType(str, Enum):
+    GEBIEDSAANWIJZING = "Gebiedsaanwijzing"
+
+
 class OwProcedureStatus(str, Enum):
     """
     For OW objects the procedure status is not provided by default (for "Definitief")

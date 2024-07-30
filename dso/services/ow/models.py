@@ -1,10 +1,10 @@
 from typing import Dict, List, Optional, Set
 from uuid import UUID
 
-from .imow_waardelijsten import TypeGebiedsaanwijzingEnum, GEBIEDSAANWIJZING_TO_GROEP_MAPPING
-from pydantic import BaseModel, Field, root_validator, validator
+from pydantic import BaseModel, validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
+from .imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
 from .ow_id import check_ow_id_imowtype
 
 

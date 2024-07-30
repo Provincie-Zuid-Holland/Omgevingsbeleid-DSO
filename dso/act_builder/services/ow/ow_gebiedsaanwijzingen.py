@@ -3,15 +3,8 @@ from typing import List, Optional, Set
 from pydantic.main import BaseModel
 
 from ....services.ow.enums import IMOWTYPES, OwGebiedsaanwijzingObjectType, OwProcedureStatus
-from ....services.ow.models import (
-    OWGebied,
-    OWGebiedenGroep,
-    OWObject,
-    OWGebiedsaanwijzing,
-)
+from ....services.ow.models import OWGebiedsaanwijzing, OWObject, OWTekstdeel
 from ....services.ow.ow_id import generate_ow_id
-from ...state_manager.input_data.ambtsgebied import Ambtsgebied
-from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Locatie, Werkingsgebied
 from ...state_manager.states.ow_repository import OWStateRepository
 from .ow_file_builder import OwFileBuilder
 
@@ -51,17 +44,25 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
         """
         Handle all OW object changes in the state
         """
-        # gebiedsaw1 = self.new_ow_gebiedsaanwijzing()
-        pass
+        # check annotation map and create new gebiedsaanwijzingen
+        gebiedsaw1 = self.new_ow_gebiedsaanwijzing()
+
+        # retrieve matching tekstdeel and couple
+        tekstdeel_list = self._ow_repository.get_new_tekstdeel()
+        tekstdeel_1: OWTekstdeel = tekstdeel_list[0]
+        if not tekstdeel_1.gebiedsaanwijzingen:
+            tekstdeel_1.gebiedsaanwijzingen = []
+        tekstdeel_1.gebiedsaanwijzingen.append(gebiedsaw1.OW_ID)
 
     def new_ow_gebiedsaanwijzing(self):
         new_ow_id = generate_ow_id(IMOWTYPES.GEBIEDSAANWIJZING, self._provincie_id)
+        groep = self._ow_repository.get_gebiedengroep_by_code("werkingsgebied-1")
         input_dict = {
             "OW_ID": new_ow_id,
             "naam": "testgebied",
             "type_": "Bodem",
             "groep": "Bodembeheergebied",
-            "locaties": ["nl.imow-pv28.gebiedengroep.d171debcd2d947adb0beada8515c7495"],
+            "locaties": [groep.OW_ID],
         }
         gebiedawz = OWGebiedsaanwijzing(**input_dict)
         self._ow_repository.add_new_ow(gebiedawz)
@@ -79,7 +80,7 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
         template_data = OwGebiedsaanwijzingTemplateData(
             levering_id=self._levering_id,
             procedure_status=self._ow_procedure_status,
-            object_types=[OwGebiedsaanwijzingObjectType.Gebiedsaanwijzing],
+            object_types=[OwGebiedsaanwijzingObjectType.GEBIEDSAANWIJZING],
             new_ow_objects=new,
             mutated_ow_objects=mutated,
             terminated_ow_objects=terminated,
