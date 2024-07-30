@@ -1,5 +1,7 @@
 from typing import List, Optional, Set
 
+from dso.act_builder.state_manager.exceptions import OWStateError
+from dso.services import ow
 from pydantic.main import BaseModel
 
 from ....services.ow.enums import IMOWTYPES, OwGebiedsaanwijzingObjectType, OwProcedureStatus
@@ -31,6 +33,7 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
         provincie_id: str,
         levering_id: str,
         ow_repository: OWStateRepository,
+        annotation_lookup_map: dict,
         ow_procedure_status: Optional[OwProcedureStatus],
     ) -> None:
         super().__init__()
@@ -38,31 +41,61 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
         self._levering_id: str = levering_id
         self._ow_procedure_status = ow_procedure_status
         self._ow_repository = ow_repository
+        self._annotation_lookup_map = annotation_lookup_map
         self._used_object_types: Set[OwGebiedsaanwijzingTemplateData] = set()
 
     def handle_ow_object_changes(self) -> None:
         """
         Handle all OW object changes in the state
         """
-        # check annotation map and create new gebiedsaanwijzingen
-        gebiedsaw1 = self.new_ow_gebiedsaanwijzing()
+        for wid, annotation in self._annotation_lookup_map.items():
+            if annotation["type_annotation"] != "gebiedsaanwijzing":
+                continue
 
-        # retrieve matching tekstdeel and couple
-        tekstdeel_list = self._ow_repository.get_new_tekstdeel()
-        tekstdeel_1: OWTekstdeel = tekstdeel_list[0]
-        if not tekstdeel_1.gebiedsaanwijzingen:
-            tekstdeel_1.gebiedsaanwijzingen = []
-        tekstdeel_1.gebiedsaanwijzingen.append(gebiedsaw1.OW_ID)
+            locatie = self._ow_repository.get_gebiedengroep_by_code(annotation["werkingsgebied_code"])
+            if not locatie:
+                raise OWStateError(f"Locatie not found for code {annotation['werkingsgebied_code']}")
 
-    def new_ow_gebiedsaanwijzing(self):
+            new_gebiedawz = self.new_ow_gebiedsaanwijzing(
+                element_wid=wid,
+                type=annotation["type"],
+                groep=annotation["groep"],
+                locatie_ref=locatie.OW_ID,
+            )
+
+            # retrieve matching tekstdeel by divisie wid, and couple refs
+            parent_divisie = self._ow_repository.get_divisie_by_wid(annotation["parent_div"]["wid"])
+            if not parent_divisie:
+                raise OWStateError(
+                    f"Creating gebiedsaanwijzing for non existing divisie wid {annotation['parent_div']['wid']}"
+                )
+
+            ow_tekstdeel = self._ow_repository.get_tekstdeel_by_divisie(parent_divisie.OW_ID)
+            if not ow_tekstdeel:
+                raise OWStateError(
+                    f"Creating gebiedsaanwijzing for non existing tekstdeel. divisie owid: {parent_divisie.OW_ID}"
+                )
+
+            if not ow_tekstdeel.gebiedsaanwijzingen:
+                ow_tekstdeel.gebiedsaanwijzingen = []
+            ow_tekstdeel.gebiedsaanwijzingen.append(new_gebiedawz.OW_ID)
+
+            # update changes in state
+            self._ow_repository.update_state_tekstdeel(state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel)
+
+        return
+
+    def new_ow_gebiedsaanwijzing(
+        self, element_wid: str, type: str, groep: str, locatie_ref: str
+    ) -> OWGebiedsaanwijzing:
         new_ow_id = generate_ow_id(IMOWTYPES.GEBIEDSAANWIJZING, self._provincie_id)
-        groep = self._ow_repository.get_gebiedengroep_by_code("werkingsgebied-1")
         input_dict = {
             "OW_ID": new_ow_id,
-            "naam": "testgebied",
-            "type_": "Bodem",
-            "groep": "Bodembeheergebied",
-            "locaties": [groep.OW_ID],
+            "naam": "todo-gio-name",
+            "type_": type,
+            "groep": groep,
+            "locaties": [locatie_ref],
+            "wid": element_wid,
         }
         gebiedawz = OWGebiedsaanwijzing(**input_dict)
         self._ow_repository.add_new_ow(gebiedawz)

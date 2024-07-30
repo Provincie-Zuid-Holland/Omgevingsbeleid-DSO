@@ -126,6 +126,7 @@ class OWGebiedsaanwijzing(OWObject):
     type_: TypeGebiedsaanwijzingEnum  # TypeGebiedsaanwijzing waarde
     groep: str  # gebiedsaanwijzinggroep waarde
     locaties: List[str]  # locatieaanduiding + LocatieRefs
+    wid: str
 
     @validator("type_", pre=True)
     def validate_type(cls, value):

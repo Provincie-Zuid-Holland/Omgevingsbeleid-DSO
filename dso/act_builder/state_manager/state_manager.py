@@ -16,7 +16,7 @@ class StateManager:
         self.output_files: List[OutputFile] = []
         self.debug: dict = {}
         self.regeling_vrijetekst: Optional[str] = None
-        self.annotation_lookup_map: dict = {}
+        self.annotation_ref_lookup_map: dict = {}
         # result state of ow object data after processing
         self.ow_object_state: Optional[OwData] = None
 

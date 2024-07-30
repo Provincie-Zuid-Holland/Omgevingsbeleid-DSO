@@ -1,10 +1,8 @@
-from typing import Dict, List, Set, Optional
-
+from typing import Dict, List, Optional, Set
 
 from ...act_builder.state_manager.states.ow_repository import OWStateRepository
-from ...act_builder.state_manager.exceptions import OWStateDanglingObjectsException
 from ...models import OwData
-from .models import OWObject, OWGebiedenGroep, OWTekstdeel, OWRegelingsgebied, OWGebied
+from .models import OWGebied, OWGebiedenGroep, OWObject, OWRegelingsgebied, OWTekstdeel
 
 
 class OWStatePatcher:

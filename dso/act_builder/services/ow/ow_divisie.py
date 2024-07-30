@@ -7,8 +7,6 @@ from ....services.ow import (
     OWDivisie,
     OwDivisieObjectType,
     OWDivisieTekst,
-    OWGebied,
-    OWGebiedenGroep,
     OWObject,
     OWObjectGenerationError,
     OwProcedureStatus,

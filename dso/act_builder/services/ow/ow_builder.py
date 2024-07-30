@@ -6,6 +6,7 @@ from ....services.ow.ow_state_patcher import OWStatePatcher
 from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
 from ...services.ow.ow_divisie import OwDivisieBuilder
+from ...services.ow.ow_gebiedsaanwijzingen import OwGebiedsaanwijzingBuilder
 from ...services.ow.ow_locaties import OwLocatieBuilder
 from ...services.ow.ow_manifest import OwManifestBuilder
 from ...services.ow.ow_regelinggebied import OwRegelingsgebiedBuilder
@@ -47,7 +48,6 @@ class OwBuilder(BuilderService):
         provincie_id = state_manager.input_data.publication_settings.provincie_id
         levering_id = state_manager.input_data.publication_settings.opdracht.id_levering
         ow_procedure_status = self._get_ow_procedure_status(state_manager.input_data.besluit.soort_procedure)
-        annotation_lookup_map = deepcopy(state_manager.act_ewid_service.get_state_object_tekst_lookup())
         werkingsgebieden = state_manager.input_data.resources.werkingsgebied_repository.all()
         terminated_wids = self._find_terminated_wids(
             state_manager.input_data.get_known_wid_map(),
@@ -68,9 +68,16 @@ class OwBuilder(BuilderService):
             provincie_id=provincie_id,
             levering_id=levering_id,
             ow_repository=state_manager.ow_repository,
-            annotation_lookup_map=annotation_lookup_map,
+            annotation_lookup_map=state_manager.act_ewid_service.get_state_object_tekst_lookup(),
             terminated_wids=terminated_wids,
             ow_procedure_status=ow_procedure_status,
+        )
+        gb_aanwijzing_builder = OwGebiedsaanwijzingBuilder(
+            provincie_id=provincie_id,
+            levering_id=levering_id,
+            ow_repository=state_manager.ow_repository,
+            ow_procedure_status=ow_procedure_status,
+            annotation_lookup_map=state_manager.annotation_ref_lookup_map,
         )
         regelinggebied_builder = OwRegelingsgebiedBuilder(
             provincie_id=provincie_id,
@@ -86,6 +93,7 @@ class OwBuilder(BuilderService):
         # CRUD ow object
         locatie_builder.handle_ow_object_changes()
         divisie_builder.handle_ow_object_changes()
+        gb_aanwijzing_builder.handle_ow_object_changes()
         regelinggebied_builder.handle_ow_object_changes()
 
         # Patch to get new ow data state
@@ -97,6 +105,7 @@ class OwBuilder(BuilderService):
         # Start building output files
         locatie_template_data = locatie_builder.build_template_data()
         divisie_template_data = divisie_builder.build_template_data()
+        gebiedsaanwijzing_template_data = gb_aanwijzing_builder.build_template_data()
         regelingsgebied_template_data = regelinggebied_builder.build_template_data()
 
         # create output files + owmanifest
@@ -109,6 +118,13 @@ class OwBuilder(BuilderService):
             ow_divisie_file = divisie_builder.create_file(divisie_template_data.dict())
             ow_manifest_builder.add_manifest_item(divisie_builder.FILE_NAME, divisie_template_data.object_type_list)
             state_manager.add_output_file(ow_divisie_file)
+
+        if gebiedsaanwijzing_template_data:
+            ow_gb_aanwijzing_file = gb_aanwijzing_builder.create_file(gebiedsaanwijzing_template_data.dict())
+            ow_manifest_builder.add_manifest_item(
+                gb_aanwijzing_builder.FILE_NAME, gebiedsaanwijzing_template_data.object_type_list
+            )
+            state_manager.add_output_file(ow_gb_aanwijzing_file)
 
         if regelinggebied_builder.get_ambtsgebied():
             ow_regelingsgebied_file = regelinggebied_builder.create_file(regelingsgebied_template_data.dict())

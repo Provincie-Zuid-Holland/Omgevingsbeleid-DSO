@@ -1,5 +1,5 @@
-from copy import copy, deepcopy
 import re
+from copy import deepcopy
 from uuid import UUID
 
 from bs4 import BeautifulSoup
@@ -80,38 +80,40 @@ class RegelingVrijetekstTekstGenerator:
         # annotation tags/refs left in the xml data, require ewids to be generated first.
         ewid_service = self._state_manager.act_ewid_service
         state_used_wid_map = deepcopy(ewid_service.get_state_used_wid_map())
-        # state_object_tekst_lookup = deepcopy(ewid_service.get_state_object_tekst_lookup())
         # annotation_map = {}
         root = etree.fromstring(xml_data)
 
-        # Handle IntIoRef for Gebiedsaanwijzingen
+        # Handle IntIoRef tags
         for element in root.xpath("//IntIoRef"):
-            tag_wid = element.attrib["wId"]
-            werkingsgebied_code = element.attrib.pop("data-gebiedsaanwijzing")
-            gebiedsaanwijzing_groep = element.attrib.pop("data-gebiedengroep")
-            gebiedsaanwijzing_type = element.attrib.pop("data-type")
+            # find first parent element that is Divisietekst tag
+            parent = element.getparent()
+            while parent is not None and parent.tag != "Divisietekst":
+                parent = parent.getparent()
 
-            # retrieve the used bijlage WID for the werkingsgebied GIO extref
-            wid_ref_key_pattern = f"bijlage-werkingsgebieden-divisietekst-referentie-{werkingsgebied_code}-ref"
-            annotation_ref_wid = None
+            # retrieve the used inioref pointers WID from bijlage
+            wid_ref_key_pattern = (
+                f"bijlage-werkingsgebieden-divisietekst-referentie-{element.attrib['data-gebiedsaanwijzing']}-ref"
+            )
             for key, value in state_used_wid_map.items():
                 if re.match(wid_ref_key_pattern, key):
-                    annotation_ref_wid = value
+                    # replace the element "ref" tag  with annotation_ref_wid
+                    element.attrib["ref"] = value
                     break
 
-            # replace the element "ref" tag  with annotation_ref_wid
-            element.attrib["ref"] = annotation_ref_wid
-
             # update state with data for gebiedsaanwijzing
-            self._state_manager.annotation_lookup_map[tag_wid] = {
-                "type_annotation": "OWGebiedsaanwijzing",
-                "gebiedsaanwijzing_ref": annotation_ref_wid,
-                "gebiedsaanwijzing_groep": gebiedsaanwijzing_groep,
-                "grebiedsaaanwijzing_type": gebiedsaanwijzing_type,
-                "werkingsgebied_code": werkingsgebied_code,
+            self._state_manager.annotation_ref_lookup_map[element.attrib["wId"]] = {
+                "type_annotation": "gebiedsaanwijzing",
+                "ref": element.attrib["ref"],
+                "werkingsgebied_code": element.attrib.pop("data-gebiedsaanwijzing"),
+                "groep": element.attrib.pop("data-gebiedengroep"),
+                "type": element.attrib.pop("data-type"),
+                "parent_div": {
+                    "wid": parent.attrib["wId"],
+                    "object-code": parent.attrib["data-hint-object-code"],
+                    "gebied-code": parent.attrib["data-hint-gebied-code"],
+                },
             }
 
-        # Handle others? Extref? normal werkingsgebieden too?
         output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
         return output
 

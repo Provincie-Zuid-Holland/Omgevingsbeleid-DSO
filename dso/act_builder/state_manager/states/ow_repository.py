@@ -1,3 +1,4 @@
+import itertools
 from typing import List, Optional, Union
 from uuid import UUID
 
@@ -125,20 +126,54 @@ class OWStateRepository:
                 return ow_obj
         return None
 
-    def get_active_ow_location_id(self, werkingsgebied_code: str) -> Optional[str]:
-        # checks BOTH current state and input state for existing location id
-        for obj in self.get_changed_ow_objects():
-            if isinstance(obj, OWGebiedenGroep) and obj.mapped_geo_code == werkingsgebied_code:
-                return obj.OW_ID
-
-        known_state_location = self.get_known_gebied_by_code(werkingsgebied_code)
-        return known_state_location.OW_ID if known_state_location else None
-
-    def get_active_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
+    def get_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
         for ow_obj in self.get_changed_ow_objects():
             if isinstance(ow_obj, OWAmbtsgebied):
                 return ow_obj
         return None
+
+    def get_divisie_by_wid(self, wid: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
+        for ow_obj in self.get_changed_ow_objects():
+            if isinstance(ow_obj, OWDivisieTekst) and ow_obj.wid == wid:
+                return ow_obj
+        return None
+
+    def get_tekstdeel_by_divisie(self, divisie_ow_id: str) -> Optional[OWTekstdeel]:
+        for ow_obj in self.get_changed_ow_objects():
+            if isinstance(ow_obj, OWTekstdeel) and ow_obj.divisie == divisie_ow_id:
+                return ow_obj
+        return None
+
+    def update_state_tekstdeel(self, state_ow_id: str, updated_obj: OWTekstdeel) -> None:
+        for idx, ow_obj in enumerate(self._new_ow_objects):
+            if ow_obj.OW_ID == state_ow_id:
+                self._new_ow_objects[idx] = updated_obj
+                return
+        for idx, ow_obj in enumerate(self._mutated_ow_objects):
+            if ow_obj.OW_ID == state_ow_id:
+                self._mutated_ow_objects[idx] = updated_obj
+                return
+
+        raise OWStateMutationError(
+            message="Cannot update tekstdeel, not found in new or mutated state list.",
+            action="update_state_tekstdeel",
+            ow_object=updated_obj.dict(),
+        )
+
+    # active state lookups return either new/mutated or known state objects
+    def get_active_div_by_wid(self, wid: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
+        ow_objects = itertools.chain(self.get_changed_ow_objects(), self._known_ow_state.ow_objects.values())
+        return next(
+            (ow_obj for ow_obj in ow_objects if isinstance(ow_obj, (OWDivisie, OWDivisieTekst)) and ow_obj.wid == wid),
+            None,
+        )
+
+    def get_active_tekstdeel_by_div(self, divisie_ow_id: str) -> Optional[OWTekstdeel]:
+        ow_objects = itertools.chain(self.get_changed_ow_objects(), self._known_ow_state.ow_objects.values())
+        return next(
+            (ow_obj for ow_obj in ow_objects if isinstance(ow_obj, OWTekstdeel) and ow_obj.divisie == divisie_ow_id),
+            None,
+        )
 
     # KNOWN STATE MAP LOOKUPS
     def get_known_state_object(self, ow_id: str) -> Optional[OWObject]:
