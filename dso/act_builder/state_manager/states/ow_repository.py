@@ -160,6 +160,12 @@ class OWStateRepository:
             ow_object=updated_obj.dict(),
         )
 
+    def get_gebiedsaanwijzing_by_wid(self, wid: str) -> Optional[OWGebiedsaanwijzing]:
+        for ow_obj in self.get_changed_ow_objects():
+            if isinstance(ow_obj, OWGebiedsaanwijzing) and ow_obj.wid == wid:
+                return ow_obj
+        return None
+
     # active state lookups return either new/mutated or known state objects
     def get_active_div_by_wid(self, wid: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
         ow_objects = itertools.chain(self.get_changed_ow_objects(), self._known_ow_state.ow_objects.values())
@@ -174,6 +180,14 @@ class OWStateRepository:
             (ow_obj for ow_obj in ow_objects if isinstance(ow_obj, OWTekstdeel) and ow_obj.divisie == divisie_ow_id),
             None,
         )
+
+    def get_active_gebiedengroep_by_code(self, werkingsgebied_code: str) -> Optional[OWGebiedenGroep]:
+        # first check changed state objects, then existing state objects
+        active_gebiedengroep = self.get_gebiedengroep_by_code(werkingsgebied_code)
+        if not active_gebiedengroep:
+            active_gebiedengroep = self.get_known_gebiedengroep_by_code(werkingsgebied_code)
+
+        return active_gebiedengroep
 
     # KNOWN STATE MAP LOOKUPS
     def get_known_state_object(self, ow_id: str) -> Optional[OWObject]:
