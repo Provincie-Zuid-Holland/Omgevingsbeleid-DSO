@@ -502,9 +502,31 @@ GEBIEDSAANWIJZING_TO_GROEP_MAPPING = {
     TypeGebiedsaanwijzingEnum.WaterEnWatersysteem: WaterEnWatersysteemGroepEnum,
 }
 
+# Document type matrix from TPOD v3.0.0
+# https://docs.geostandaarden.nl/tpod/def-st-TPOD-OVI-20231215/#6F231895
+NON_ALLOWED_DOCUMENT_TYPE_MAPPING = {
+    "omgevingsvisie": [
+        TypeGebiedsaanwijzingEnum.Beperkingengebied,
+        TypeGebiedsaanwijzingEnum.Bouw,
+        TypeGebiedsaanwijzingEnum.Functie,
+    ],
+    "programma": [
+        TypeGebiedsaanwijzingEnum.Beperkingengebied,
+        TypeGebiedsaanwijzingEnum.Bouw,
+        TypeGebiedsaanwijzingEnum.Functie,
+    ],
+}
 
-def get_groep_options_for_gebiedsaanwijzing_type(aanwijzingtype_enum) -> Optional[List[Any]]:
+
+def get_groep_values_for_gebiedsaanwijzing_type(aanwijzingtype_enum) -> Optional[List[str]]:
     groep_enum = GEBIEDSAANWIJZING_TO_GROEP_MAPPING.get(aanwijzingtype_enum)
     if not groep_enum:
         return None
     return [e.value for e in groep_enum]
+
+
+def get_groep_options_for_gebiedsaanwijzing_type(aanwijzingtype_enum) -> Optional[List[str]]:
+    groep_enum = GEBIEDSAANWIJZING_TO_GROEP_MAPPING.get(aanwijzingtype_enum)
+    if not groep_enum:
+        return None
+    return [e.name for e in groep_enum]
