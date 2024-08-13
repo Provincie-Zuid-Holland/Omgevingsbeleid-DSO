@@ -194,7 +194,7 @@ class RefGenerator(ElementGenerator):
 
     def generate(self, tag: Tag, context: dict = {}) -> Element:
         tag_soort: Optional[str] = tag.get("soort", None)
-        tag_gebiedsaanwijzing: Optional[str] = tag.get("data-gebiedsaanwijzing", None)
+        tag_gebiedsaanwijzing: Optional[str] = tag.get("data-hint-locatie", None)
         if tag_gebiedsaanwijzing is not None:
             element = IntIoRef(tag)
             return element
@@ -203,7 +203,7 @@ class RefGenerator(ElementGenerator):
             element = ExtRef(tag)
             return element
 
-        raise RuntimeError("Missing required attribute soort or data-gebiedsaanwijzing for `a`")
+        raise RuntimeError("Missing required attribute soort or data-hint-locatie for `a`")
 
 
 class I(SimpleElement):
@@ -352,9 +352,9 @@ class IntIoRef(SimpleElement):
     def __init__(self, tag: Tag):
         super().__init__()
         self.href: str = tag.get("href")
-        self.type: Optional[str] = tag.get("data-type", None)
-        self.gebiedengroep: Optional[str] = tag.get("data-gebiedengroep", None)
-        self.gebiedsaanwijzing: Optional[str] = tag.get("data-gebiedsaanwijzing", None)
+        self.type: Optional[str] = tag.get("data-hint-gebiedsaanwijzingtype", None)
+        self.gebiedengroep: Optional[str] = tag.get("data-hint-gebiedengroep", None)
+        self.gebiedsaanwijzing: Optional[str] = tag.get("data-hint-locatie", None)
 
     def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
         result = SimpleElement.as_xml(
@@ -363,9 +363,9 @@ class IntIoRef(SimpleElement):
             tag_name_overwrite="IntIoRef",
             tag_attrs_overwrite={
                 "ref": self.href,
-                "data-type": self.type,
-                "data-gebiedengroep": self.gebiedengroep,
-                "data-gebiedsaanwijzing": self.gebiedsaanwijzing,
+                "data-hint-gebiedsaanwijzingtype": self.type,
+                "data-hint-gebiedengroep": self.gebiedengroep,
+                "data-hint-locatie": self.gebiedsaanwijzing,
             },
         )
         return result

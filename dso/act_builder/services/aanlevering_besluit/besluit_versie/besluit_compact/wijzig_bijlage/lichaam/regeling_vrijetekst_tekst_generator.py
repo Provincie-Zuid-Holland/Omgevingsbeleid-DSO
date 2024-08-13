@@ -92,7 +92,7 @@ class RegelingVrijetekstTekstGenerator:
 
             # retrieve the used inioref pointers WID from bijlage
             wid_ref_key_pattern = (
-                f"bijlage-werkingsgebieden-divisietekst-referentie-{element.attrib['data-gebiedsaanwijzing']}-ref"
+                f"bijlage-werkingsgebieden-divisietekst-referentie-{element.attrib['data-hint-locatie']}-ref"
             )
             for key, value in state_used_wid_map.items():
                 if re.match(wid_ref_key_pattern, key):
@@ -104,9 +104,9 @@ class RegelingVrijetekstTekstGenerator:
             self._state_manager.annotation_ref_lookup_map[element.attrib["wId"]] = {
                 "type_annotation": "gebiedsaanwijzing",
                 "ref": element.attrib["ref"],
-                "werkingsgebied_code": element.attrib.pop("data-gebiedsaanwijzing"),
-                "groep": element.attrib.pop("data-gebiedengroep"),
-                "type": element.attrib.pop("data-type"),
+                "werkingsgebied_code": element.attrib.pop("data-hint-locatie"),
+                "groep": element.attrib.pop("data-hint-gebiedengroep"),
+                "type": element.attrib.pop("data-hint-gebiedsaanwijzingtype"),
                 "parent_div": {
                     "wid": parent.attrib["wId"],
                     "object-code": parent.attrib["data-hint-object-code"],
