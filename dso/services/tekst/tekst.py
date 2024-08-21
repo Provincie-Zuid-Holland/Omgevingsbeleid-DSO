@@ -185,6 +185,27 @@ class LiGenerator(ElementGenerator):
         return element
 
 
+class RefGenerator(ElementGenerator):
+    def __init__(self, tag_name: str):
+        self._tag_name: str = tag_name
+
+    def can_consume_tag(self, tag: Tag) -> bool:
+        return tag.name == self._tag_name
+
+    def generate(self, tag: Tag, context: dict = {}) -> Element:
+        tag_soort: Optional[str] = tag.get("soort", None)
+        tag_gebiedsaanwijzing: Optional[str] = tag.get("data-hint-locatie", None)
+        if tag_gebiedsaanwijzing is not None:
+            element = IntIoRef(tag)
+            return element
+
+        if tag_soort:
+            element = ExtRef(tag)
+            return element
+
+        raise RuntimeError("Missing required attribute soort or data-hint-locatie for `a`")
+
+
 class I(SimpleElement):
     def __init__(self, tag: Optional[Tag] = None):
         super().__init__(xml_tag_name="i")
@@ -274,23 +295,22 @@ class Figuur(SimpleElement):
         return figuur
 
 
-class ExtRef(SimpleElement):
-    akn_pattern = r"^/akn/"
-
-    def __init__(self, tag: Optional[Tag] = None):
+class Ref(SimpleElement):
+    def __init__(self, tag: Tag):
         super().__init__()
-        self._asset_uuid: str = ""
 
-        href: str = tag.attrs.get("href", "")
-        soort: str = "URL"
-        if not href:
-            raise RuntimeError("Missing required attribute href for `a`")
-        akn_match = re.match(self.akn_pattern, href)
-        if akn_match:
-            soort = "AKN"
-
-        self._ref = href
-        self._soort = soort
+    def consume_tag(self, tag: Tag) -> LeftoverTag:
+        for element_generator in self.element_generators:
+            if not element_generator.can_consume_tag(tag):
+                continue
+            content: Element = element_generator.generate(
+                tag=tag,
+                context=self._get_generate_context(),
+            )
+            content.consume_children(tag.children)
+            self.contents.append(content)
+            return None
+        return tag
 
     def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
         result = SimpleElement.as_xml(
@@ -298,8 +318,54 @@ class ExtRef(SimpleElement):
             soup=soup,
             tag_name_overwrite="ExtRef",
             tag_attrs_overwrite={
-                "ref": self._ref,
-                "soort": self._soort,
+                "ref": self.href,
+                "soort": self.soort,
+            },
+        )
+        return result
+
+
+class ExtRef(SimpleElement):
+    AKN_PATTERN = r"^/akn/"
+
+    def __init__(self, tag: Optional[Tag] = None):
+        super().__init__()
+        self.href: str = tag.get("href")
+        self.soort: str = "URL"
+        if re.match(self.AKN_PATTERN, self.href):
+            self.soort = "AKN"
+
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+        result = SimpleElement.as_xml(
+            self,
+            soup=soup,
+            tag_name_overwrite="ExtRef",
+            tag_attrs_overwrite={
+                "ref": self.href,
+                "soort": self.soort,
+            },
+        )
+        return result
+
+
+class IntIoRef(SimpleElement):
+    def __init__(self, tag: Tag):
+        super().__init__()
+        self.href: str = tag.get("href")
+        self.type: Optional[str] = tag.get("data-hint-gebiedsaanwijzingtype", None)
+        self.gebiedengroep: Optional[str] = tag.get("data-hint-gebiedengroep", None)
+        self.gebiedsaanwijzing: Optional[str] = tag.get("data-hint-locatie", None)
+
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+        result = SimpleElement.as_xml(
+            self,
+            soup=soup,
+            tag_name_overwrite="IntIoRef",
+            tag_attrs_overwrite={
+                "ref": self.href,
+                "data-hint-gebiedsaanwijzingtype": self.type,
+                "data-hint-gebiedengroep": self.gebiedengroep,
+                "data-hint-locatie": self.gebiedsaanwijzing,
             },
         )
         return result
@@ -527,14 +593,9 @@ class Divisietekst(Element):
         self.gebied_code: Optional[str] = None
 
         if tag is not None:
-            self.test = tag.get("data-nummer", None)
             self.wid_code = tag.get("data-hint-wid-code", None)
             self.object_code = tag.get("data-hint-object-code", None)
             self.gebied_code = tag.get("data-hint-gebied-code", None)
-
-            oc = tag.get("data-hint-object-code", None)
-            if oc is not None:
-                print(f"\nWorking divisietekst for object: {oc}\n")
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         # A div requires a new Divisie which a Divisietekst can not create
@@ -606,10 +667,6 @@ class Divisie(Element):
         self.wid_code = tag.get("data-hint-wid-code", None)
         self.object_code = tag.get("data-hint-object-code", None)
         self.gebied_code = tag.get("data-hint-gebied-code", None)
-
-        oc = tag.get("data-hint-object-code", None)
-        if oc is not None:
-            print(f"\nWorking divisie for object: {oc}\n")
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         while True:
@@ -787,7 +844,7 @@ element_h3_tussenkop_handler = SimpleGenerator("h3", TussenKop)
 element_h4_tussenkop_handler = SimpleGenerator("h4", TussenKop)
 element_h5_tussenkop_handler = SimpleGenerator("h5", TussenKop)
 element_h6_tussenkop_handler = SimpleGenerator("h6", TussenKop)
-a_handler = SimpleGenerator("a", ExtRef)
+a_handler = RefGenerator("a")
 
 
 I.element_generators = [

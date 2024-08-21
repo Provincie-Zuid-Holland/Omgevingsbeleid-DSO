@@ -3,6 +3,7 @@ import json
 import os
 import zipfile
 from io import StringIO
+from xml.dom import minidom
 
 import pkg_resources
 from jinja2 import Environment, FileSystemLoader
@@ -10,6 +11,7 @@ from lxml import etree
 
 from ...exceptions import FileWriteError, TemplateError
 from .jinja_filters import jinja2_filter_has_text
+from .jinja_tests import template_tests
 
 # env = Environment(loader=FileSystemLoader("."))
 
@@ -18,7 +20,11 @@ template_path = pkg_resources.resource_filename("dso", "templates")
 jinja2_env = Environment(
     loader=FileSystemLoader(template_path),
 )
+# Add the filters to the environment
 jinja2_env.filters["has_text"] = jinja2_filter_has_text
+# Add the template tests to the environment
+for test_name, test_func in template_tests.items():
+    jinja2_env.tests[test_name] = test_func
 
 
 def load_template(template_name: str, pretty_print: bool = False, **context) -> str:
@@ -71,6 +77,31 @@ def load_json_data(file_path):
         return json.load(f)
 
 
+def load_xml_file(file_path) -> str:
+    with open(file_path, "r") as f:
+        xml_content = f.read()
+        # Remove newlines and extra spaces
+        xml_content = xml_content.replace("\n", "").replace("  ", "")
+
+        return xml_content
+
+
+def pretty_print_template_xml(content, output_file):
+    # Wrap the content in a root element to allow parsing
+    wrapped_content = f"<root>{content}</root>"
+    dom = minidom.parseString(wrapped_content)
+    pretty_xml = dom.toprettyxml(indent="   ")
+    # Remove the root element tag added in wrapper
+    pretty_xml = pretty_xml.replace("\n<root>\n", "").replace("\n</root>\n", "")
+
+    pretty_lines = pretty_xml.split("\n")
+    result_lines = [line for line in pretty_lines[1:-1] if line.strip()]
+    result = "\n".join(result_lines)
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(result)
+
+
 # def load_werkingsgebieden(path="./input/werkingsgebieden/*.json") -> List[Werkingsgebied]:
 #     return [Werkingsgebied(**load_json_data(wg_json)) for wg_json in glob.glob(path)]
 
@@ -99,3 +130,12 @@ def is_html_valid(html_content) -> bool:
         return True
     except etree.XMLSyntaxError:
         return False
+
+
+def to_lowercase_keys(data):
+    if isinstance(data, dict):
+        return {k.lower(): to_lowercase_keys(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [to_lowercase_keys(i) for i in data]
+    else:
+        return data

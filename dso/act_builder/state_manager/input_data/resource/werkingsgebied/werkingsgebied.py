@@ -2,7 +2,7 @@ import re
 import uuid
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, root_validator
+from pydantic import BaseModel, Field, root_validator, validator
 
 from ......models import GioFRBR
 
@@ -10,7 +10,6 @@ from ......models import GioFRBR
 class Locatie(BaseModel):
     UUID: uuid.UUID
     Title: str
-
     Gml: Optional[str] = Field(None)
     Geometry: Optional[str] = Field(None)
 
@@ -30,7 +29,13 @@ class Werkingsgebied(BaseModel):
     Geboorteregeling: str
     Achtergrond_Verwijzing: str
     Achtergrond_Actualiteit: str
-    Locaties: List[Locatie] = Field(..., alias="Onderverdelingen")
+    Locaties: List[Locatie] = Field(default_factory=list, alias="Onderverdelingen")
+
+    @validator("Locaties", pre=True, always=True)
+    def handle_locaties_alias(cls, v, values, **kwargs):
+        if not v and "Onderverdelingen" in values:
+            return values["Onderverdelingen"]
+        return v
 
     def get_name(self) -> str:
         s: str = self.Title.lower()
@@ -43,3 +48,7 @@ class Werkingsgebied(BaseModel):
 
     def get_gio_filename(self) -> str:
         return f"GIO_locaties_{self.get_name()}.xml"
+
+    class Config:
+        allow_population_by_field_name = True
+        json_encoders = {uuid.UUID: str}

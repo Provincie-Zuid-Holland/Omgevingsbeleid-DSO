@@ -30,3 +30,7 @@ class PdfRepository:
 
     def is_empty(self) -> bool:
         return not self._pdfs
+
+    def to_dict(self) -> Dict[str, str]:
+        serializable_data = {str(k): v.get_filename() for k, v in self._pdfs.items()}
+        return serializable_data
