@@ -60,7 +60,7 @@
                     {% if ow_object.gebiedsaanwijzingen is not none %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
-						<l:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
+						<ga:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
 						{% endfor %}
 					</vt:gebiedsaanwijzing>
                     {% endif %}
@@ -118,7 +118,7 @@
                     {% if ow_object.gebiedsaanwijzingen is not none %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
-						<l:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
+						<ga:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
 						{% endfor %}
 					</vt:gebiedsaanwijzing>
                     {% endif %}
@@ -185,7 +185,7 @@
                     {% if ow_object.gebiedsaanwijzingen is not none %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
-						<l:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
+						<ga:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
 						{% endfor %}
 					</vt:gebiedsaanwijzing>
                     {% endif %}
