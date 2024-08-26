@@ -195,7 +195,7 @@
     },
     "ambtsgebied": {
         "UUID": "90000004-0000-0000-0000-000000000001",
-        "identificatie_suffix": "002000000000000000009928",
+        "identificatie_suffix": "PV28",
         "domein": "NL.BI.BestuurlijkGebied",
         "geldig_op": "2023-09-29",
         "new": true
