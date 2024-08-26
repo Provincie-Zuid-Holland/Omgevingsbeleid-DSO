@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from enum import Enum
 from typing import Any, Dict, List, Optional, Type
 
-from pydantic import BaseModel, Field, root_validator, validator
+from pydantic import BaseModel, Field, ValidationError, root_validator, validator
 
 from .services.ow.models import OWObject
 from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappen, Provincie
@@ -267,8 +267,26 @@ class PublicationSettings(BaseModel):
         return cls(**json_data)
 
 
-class RegelingMutatie(BaseModel):
+class RegelingMutatie(BaseModel, metaclass=ABCMeta):
     was_regeling_frbr: ActFRBR
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "RegelingMutatie":
+        type_map = {"vervang": VervangRegelingMutatie, "renvooi": RenvooiRegelingMutatie}
+        try:
+            class_type: Type[RegelingMutatie] = type_map[data["type"]]
+            return class_type(**data)
+        except KeyError:
+            raise ValueError(f"Unknown type {data['type']}")
+        except ValidationError as e:
+            raise ValueError(f"Error validating data: {e}")
+
+
+class VervangRegelingMutatie(RegelingMutatie):
+    pass
+
+
+class RenvooiRegelingMutatie(RegelingMutatie):
     was_regeling_vrijetekst: str
 
     # wId's used by indentifiers, for example beleidskeuze-4 by that object
@@ -278,6 +296,9 @@ class RegelingMutatie(BaseModel):
     # All previously used wIds. Which are allowed to be used again
     # The main reason here is that we can not generate new wIds for old versions
     bekend_wids: List[str]
+
+    renvooi_api_url: str
+    renvooi_api_key: str
 
 
 class OwIdMapping(BaseModel):

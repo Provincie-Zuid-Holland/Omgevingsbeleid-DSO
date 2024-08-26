@@ -12,3 +12,5 @@ pyproj
 shapely
 beautifulsoup4
 roman
+requests
+requests-toolbelt

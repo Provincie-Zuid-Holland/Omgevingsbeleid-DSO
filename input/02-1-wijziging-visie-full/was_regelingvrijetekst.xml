@@ -1,6 +1,6 @@
-<RegelingVrijetekst xmlns="https://standaarden.overheid.nl/stop/imop/tekst/"
-    componentnaam="nieuweregeling"
-    wordt="/akn/nl/act/pv28/2024/omgevingsvisie-1/nld@2024-07-08;2">
+<RegelingVrijetekst xmlns="https://standaarden.overheid.nl/stop/imop/tekst/" 
+    componentnaam="nieuweregeling" 
+    wordt="/akn/nl/act/pv28/2024/omgevingsvisie-1/nld@2024-07-08;2" >
     <RegelingOpschrift eId="longTitle" wId="longTitle">
         <Al>Omgevingsvisie van Zuid-Holland</Al>
     </RegelingOpschrift>
@@ -84,8 +84,7 @@
                 <Kop>
                     <Opschrift>Beleidsdoel Titel van het eerste beleidsdoel met beleidskeuzes</Opschrift>
                 </Kop>
-                <Divisietekst eId="div_o_2__div_o_1__content_o_1"
-                    wId="pv28_2__div_o_2__div_o_1__content_o_1">
+                <Divisietekst eId="div_o_2__div_o_1__content_o_1" wId="pv28_2__div_o_2__div_o_1__content_o_1">
                     <Kop>
                         <Opschrift>Titel van het eerste beleidsdoel</Opschrift>
                     </Kop>
@@ -97,8 +96,7 @@
                     <Kop>
                         <Opschrift>Beleidskeuzes van Titel van het eerste beleidsdoel</Opschrift>
                     </Kop>
-                    <Divisietekst eId="div_o_2__div_o_1__div_o_1__content_o_1"
-                        wId="pv28_2__div_o_2__div_o_1__div_o_1__content_o_1">
+                    <Divisietekst eId="div_o_2__div_o_1__div_o_1__content_o_1" wId="pv28_2__div_o_2__div_o_1__div_o_1__content_o_1">
                         <Kop>
                             <Opschrift>Titel van het eerste beleidskeuze</Opschrift>
                         </Kop>
@@ -106,11 +104,8 @@
                             <Tussenkop>Wat wil de provincie bereiken?</Tussenkop>
                             <Al>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
                                 eleifend lobortis libero, sit amet vestibulum lorem molestie sed.</Al>
-                            <Figuur eId="div_o_2__div_o_1__div_o_1__content_o_1__img_o_1"
-                                wId="pv28_2__div_o_2__div_o_1__div_o_1__content_o_1__img_o_1">
-                                <Illustratie breedte="302" dpi="150" formaat="image/png"
-                                    hoogte="100" naam="img_00000000-aaaa-0000-0000-000000000001.png"
-                                    uitlijning="start" />
+                            <Figuur eId="div_o_2__div_o_1__div_o_1__content_o_1__img_o_1" wId="pv28_2__div_o_2__div_o_1__div_o_1__content_o_1__img_o_1">
+                                <Illustratie breedte="302" dpi="150" formaat="image/png" hoogte="100" naam="img_00000000-aaaa-0000-0000-000000000001.png" uitlijning="start" />
                             </Figuur>
                             <Al>Cras felis mi, finibus eget dignissim id, pretium egestas elit. Cras
                                 sodales eleifend velit vel aliquet. Nulla dapibus sem at velit
@@ -121,8 +116,7 @@
                                 Praesent non facilisis nisi, in egestas mi.</Al>
                         </Inhoud>
                     </Divisietekst>
-                    <Divisietekst eId="div_o_2__div_o_1__div_o_1__content_o_2"
-                        wId="pv28_2__div_o_2__div_o_1__div_o_1__content_o_2">
+                    <Divisietekst eId="div_o_2__div_o_1__div_o_1__content_o_2" wId="pv28_2__div_o_2__div_o_1__div_o_1__content_o_2">
                         <Kop>
                             <Opschrift>Titel van het tweede beleidskeuze</Opschrift>
                         </Kop>
@@ -190,22 +184,15 @@
         </Kop>
         <Divisietekst eId="cmp_o_1__content_o_1" wId="pv28_2__cmp_o_1__content_o_1">
             <Inhoud>
-                <Begrippenlijst eId="cmp_o_1__content_o_1__list_o_1"
-                    wId="pv28_2__cmp_o_1__content_o_1__list_o_1">
-
-                    <Begrip eId="cmp_o_1__content_o_1__list_o_1__item_o_1"
-                        wId="pv28_2__cmp_o_1__content_o_1__list_o_1__item_o_1">
+                <Begrippenlijst eId="cmp_o_1__content_o_1__list_o_1" wId="pv28_2__cmp_o_1__content_o_1__list_o_1">
+                    <Begrip eId="cmp_o_1__content_o_1__list_o_1__item_o_1" wId="pv28_2__cmp_o_1__content_o_1__list_o_1__item_o_1">
                         <Term>Maatwerkgebied glastuinbouw</Term>
                         <Definitie>
                             <Al>
-                                <ExtIoRef ref="/join/id/regdata/pv28/2024/2-1/nld@2024-07-08;1"
-                                    eId="cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1"
-                                    wId="pv28_2__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1">
-                                    /join/id/regdata/pv28/2024/2-1/nld@2024-07-08;1</ExtIoRef>
+                                <ExtIoRef ref="/join/id/regdata/pv28/2024/2-1/nld@2024-07-08;1" eId="cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1" wId="pv28_2__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1">/join/id/regdata/pv28/2024/2-1/nld@2024-07-08;1</ExtIoRef>
                             </Al>
                         </Definitie>
                     </Begrip>
-
                 </Begrippenlijst>
             </Inhoud>
         </Divisietekst>

@@ -160,7 +160,7 @@
         "Hierarchy_Code": "beleidsdoel-1",
         "Werkingsgebied_Code": "werkingsgebied-2",
         "Title": "herziening beleidskeuze nieuw",
-        "Description": null,
+        "Description": "<p>Super mooie tekst voor de herziening</p>",
         "Cause": null,
         "Provincial_Interest": null,
         "Explanation": null,
