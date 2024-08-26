@@ -14,10 +14,10 @@ from .models import (
     OWDivisieTekst,
     OWGebied,
     OWGebiedenGroep,
+    OWGebiedsaanwijzing,
     OWLocatie,
     OWObject,
     OWRegelingsgebied,
     OWTekstdeel,
-    OWGebiedsaanwijzing,
 )
 from .ow_id import generate_ow_id

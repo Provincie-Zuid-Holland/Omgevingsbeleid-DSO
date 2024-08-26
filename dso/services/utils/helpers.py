@@ -80,8 +80,6 @@ def load_json_data(file_path):
 def load_xml_file(file_path) -> str:
     with open(file_path, "r") as f:
         xml_content = f.read()
-        # Remove newlines and extra spaces
-        xml_content = xml_content.replace("\n", "").replace("  ", "")
 
         return xml_content
 

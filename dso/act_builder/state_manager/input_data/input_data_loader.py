@@ -4,7 +4,14 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
-from ....models import OwData, ProcedureStap, ProcedureVerloop, PublicationSettings, RegelingMutatie
+from ....models import (
+    OwData,
+    ProcedureStap,
+    ProcedureVerloop,
+    PublicationSettings,
+    RegelingMutatie,
+    RenvooiRegelingMutatie,
+)
 from ....services.utils.helpers import load_json_data, load_xml_file
 from ....services.utils.os import create_normalized_path
 from .ambtsgebied import Ambtsgebied
@@ -42,14 +49,18 @@ class InputData(BaseModel):
         }
 
     def get_known_wid_map(self) -> Dict[str, str]:
-        if self.regeling_mutatie is None:
-            return {}
-        return self.regeling_mutatie.bekend_wid_map
+        match self.regeling_mutatie:
+            case RenvooiRegelingMutatie(bekend_wid_map=bekend_wid_map):
+                return bekend_wid_map
+
+        return {}
 
     def get_known_wids(self) -> List[str]:
-        if self.regeling_mutatie is None:
-            return []
-        return self.regeling_mutatie.bekend_wids
+        match self.regeling_mutatie:
+            case RenvooiRegelingMutatie(bekend_wids=bekend_wids):
+                return bekend_wids
+
+        return {}
 
 
 class InputDataLoader:
@@ -114,11 +125,14 @@ class InputDataLoader:
         return regeling
 
     def _create_regeling_mutation(self, regeling_mutatie_config: dict):
-        mutatie = RegelingMutatie.parse_obj(regeling_mutatie_config)
-        xml_document_path = mutatie.was_regeling_vrijetekst
-        content = load_xml_file(create_normalized_path(self._base_dir, xml_document_path))
-        # overwrite input json with file content
-        mutatie.was_regeling_vrijetekst = content
+        mutatie = RegelingMutatie.from_dict(regeling_mutatie_config)
+        match mutatie:
+            case RenvooiRegelingMutatie():
+                xml_document_path = mutatie.was_regeling_vrijetekst
+                content = load_xml_file(create_normalized_path(self._base_dir, xml_document_path))
+                # overwrite input json with file content
+                mutatie.was_regeling_vrijetekst = content
+
         return mutatie
 
     def _create_procedure_verloop(

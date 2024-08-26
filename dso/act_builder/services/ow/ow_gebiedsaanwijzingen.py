@@ -1,12 +1,11 @@
-from hmac import new
 from typing import List, Optional, Set
 
-from dso.act_builder.state_manager.exceptions import OWStateError
-from dso.services import ow
 from pydantic.main import BaseModel
 
+from dso.act_builder.state_manager.exceptions import OWStateError
+
 from ....services.ow.enums import IMOWTYPES, OwGebiedsaanwijzingObjectType, OwProcedureStatus
-from ....services.ow.models import OWGebiedsaanwijzing, OWObject, OWTekstdeel
+from ....services.ow.models import OWGebiedsaanwijzing, OWObject
 from ....services.ow.ow_id import generate_ow_id
 from ...state_manager.states.ow_repository import OWStateRepository
 from .ow_file_builder import OwFileBuilder

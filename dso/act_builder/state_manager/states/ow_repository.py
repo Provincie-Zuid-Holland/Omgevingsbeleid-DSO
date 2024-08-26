@@ -2,7 +2,6 @@ import itertools
 from typing import List, Optional, Union
 from uuid import UUID
 
-
 from ....models import OwData
 from ....services.ow import (
     OWAmbtsgebied,
@@ -10,11 +9,11 @@ from ....services.ow import (
     OWDivisieTekst,
     OWGebied,
     OWGebiedenGroep,
+    OWGebiedsaanwijzing,
     OWLocatie,
     OWObject,
     OWRegelingsgebied,
     OWTekstdeel,
-    OWGebiedsaanwijzing,
 )
 from ..exceptions import OWObjectStateException, OWStateMutationError
 
