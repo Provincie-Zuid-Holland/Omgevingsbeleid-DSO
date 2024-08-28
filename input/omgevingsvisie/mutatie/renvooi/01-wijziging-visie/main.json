@@ -16,7 +16,7 @@
             "Work_Date": "2024",
             "Work_Other": "omgevingsvisie-3",
             "Expression_Language": "nld",
-            "Expression_Date": "2024-07-18",
+            "Expression_Date": "2024-07-08",
             "Expression_Version": 1,
             "Work_Country": "nl"
         },
@@ -25,13 +25,13 @@
             "Work_Date": "2024",
             "Work_Other": "omgevingsvisie-1",
             "Expression_Language": "nld",
-            "Expression_Date": "2024-07-18",
+            "Expression_Date": "2024-07-08",
             "Expression_Version": 3,
             "Work_Country": "nl"
         },
         "opdracht": {
             "opdracht_type": "PUBLICATIE",
-            "id_levering": "c8de7080-1969-4af3-a4eb-a7e610f743a5",
+            "id_levering": "d3a5ecc2-8d58-40a5-9124-1bd8c009c170",
             "id_bevoegdgezag": "00000001002306608000",
             "id_aanleveraar": "00000001002306608000",
             "publicatie_bestand": "akn_nl_bill_pv28-pub-2024-omgevingsvisie-3-1.xml",
@@ -116,7 +116,7 @@
     },
     "regeling_vrijetekst": "./regelingvrijetekst_template.xml",
     "regeling_mutatie": {
-        "type": "vervang",
+        "type": "renvooi",
         "was_regeling_frbr": {
             "Work_Province_ID": "pv28",
             "Work_Date": "2024",
@@ -127,8 +127,8 @@
             "Work_Country": "nl"
         },
         "was_regeling_vrijetekst": "./was_regelingvrijetekst.xml",
-        "renvooi_api_key": "abc",
-        "renvooi_api_url": "https://renvooiservice-eto.overheid.nl",
+        "renvooi_api_key": "placeholder",
+        "renvooi_api_url": "https://renvooiservice-eto.overheid.nl/regelingmutatie-maak",
         "bekend_wid_map": {
             "bijlage-werkingsgebieden": "pv28_2__cmp_o_1",
             "bijlage-werkingsgebieden-divisietekst": "pv28_2__cmp_o_1__content_o_1",
