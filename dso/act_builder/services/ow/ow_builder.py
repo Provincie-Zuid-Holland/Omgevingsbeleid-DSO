@@ -21,19 +21,25 @@ class OwBuilder(BuilderService):
     - Patch a new ow data state.
     """
 
-    def _find_terminated_wids(self, known_wid_map, current_wid_map, known_ow_wid_map) -> List[str]:
+    def __init__(self):
+        self.terminated_wids = []
+        self.terminated_object_codes = []
+
+    def _calc_terminated_policy_objs(self, known_wid_map, current_wid_map, known_ow_wids: List[str]) -> None:
         """
         Compares the current wids used to the previous known state, to find objects that
         are no longer used and should be terminated.
         """
-        removed_wids = []
+        terminated_wids = []
+        terminated_object_codes = []
         for obj_code, wid in known_wid_map.items():
-            if obj_code not in current_wid_map and wid in known_ow_wid_map:
-                removed_wids.append((obj_code, wid))
+            if obj_code not in current_wid_map and wid in known_ow_wids:
+                terminated_wids.append(wid)
+                terminated_object_codes.append(obj_code)
 
-        terminated_wids: List[str] = [wid[1] for wid in removed_wids]
-        # terminated_object_codes: List[str] = [wid[0] for wid in removed_wids]
-        return terminated_wids
+        self.terminated_wids = terminated_wids
+        self.terminated_object_codes = terminated_object_codes
+        return
 
     def _get_ow_procedure_status(self, soort_procedure: ProcedureType) -> Optional[OwProcedureStatus]:
         if soort_procedure == ProcedureType.Ontwerpbesluit:
@@ -48,10 +54,11 @@ class OwBuilder(BuilderService):
         levering_id = state_manager.input_data.publication_settings.opdracht.id_levering
         ow_procedure_status = self._get_ow_procedure_status(state_manager.input_data.besluit.soort_procedure)
         werkingsgebieden = state_manager.input_data.resources.werkingsgebied_repository.all()
-        terminated_wids = self._find_terminated_wids(
-            state_manager.input_data.get_known_wid_map(),
-            state_manager.act_ewid_service.get_state_used_wid_map(),
-            state_manager.ow_repository.get_existing_wid_list(),
+
+        self._calc_terminated_policy_objs(
+            known_wid_map=state_manager.input_data.get_known_wid_map(),
+            current_wid_map=state_manager.act_ewid_service.get_state_used_wid_map(),
+            known_ow_wids=state_manager.ow_repository.get_existing_wid_list(),
         )
 
         # setup file builders
@@ -68,7 +75,7 @@ class OwBuilder(BuilderService):
             levering_id=levering_id,
             ow_repository=state_manager.ow_repository,
             annotation_lookup_map=state_manager.act_ewid_service.get_state_object_tekst_lookup(),
-            terminated_wids=terminated_wids,
+            terminated_wids=self.terminated_wids,
             ow_procedure_status=ow_procedure_status,
         )
         gb_aanwijzing_builder = OwGebiedsaanwijzingBuilder(
