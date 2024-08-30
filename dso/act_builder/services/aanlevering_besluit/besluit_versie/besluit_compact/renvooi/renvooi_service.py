@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+
 import requests
 from lxml import etree
 from requests_toolbelt.multipart.encoder import MultipartEncoder
@@ -34,7 +36,7 @@ class RenvooiService:
             }
         )
         headers = {
-            "x-api-key": self._mutatie.renvooi_api_key,
+            "x-api-key": urljoin(self._mutatie.renvooi_api_key, "/regelingmutatie-maak"),
             "Content-Type": multipart_data.content_type,
         }
 
