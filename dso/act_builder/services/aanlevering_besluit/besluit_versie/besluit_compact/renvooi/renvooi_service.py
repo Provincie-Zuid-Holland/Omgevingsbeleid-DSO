@@ -36,12 +36,12 @@ class RenvooiService:
             }
         )
         headers = {
-            "x-api-key": urljoin(self._mutatie.renvooi_api_key, "/regelingmutatie-maak"),
+            "x-api-key": self._mutatie.renvooi_api_key,
             "Content-Type": multipart_data.content_type,
         }
 
         response = requests.post(
-            self._mutatie.renvooi_api_url,
+            urljoin(self._mutatie.renvooi_api_url, "/regelingmutatie-maak"),
             headers=headers,
             data=multipart_data,
         )
