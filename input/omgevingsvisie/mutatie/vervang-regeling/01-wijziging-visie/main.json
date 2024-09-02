@@ -128,7 +128,7 @@
         },
         "was_regeling_vrijetekst": "./was_regelingvrijetekst.xml",
         "renvooi_api_key": "not_required",
-        "renvooi_api_url": "https://renvooiservice-eto.overheid.nl/regelingmutatie-maak",
+        "renvooi_api_url": "https://renvooiservice-eto.overheid.nl",
         "bekend_wid_map": {
             "bijlage-werkingsgebieden": "pv28_2__cmp_o_1",
             "bijlage-werkingsgebieden-divisietekst": "pv28_2__cmp_o_1__content_o_1",
