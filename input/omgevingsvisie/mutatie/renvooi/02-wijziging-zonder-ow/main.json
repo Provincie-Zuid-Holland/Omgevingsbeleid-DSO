@@ -16,7 +16,7 @@
             "Work_Date": "2024",
             "Work_Other": "omgevingsvisie-3",
             "Expression_Language": "nld",
-            "Expression_Date": "2024-07-08",
+            "Expression_Date": "2024-07-18",
             "Expression_Version": 1,
             "Work_Country": "nl"
         },
@@ -25,13 +25,13 @@
             "Work_Date": "2024",
             "Work_Other": "omgevingsvisie-1",
             "Expression_Language": "nld",
-            "Expression_Date": "2024-07-08",
+            "Expression_Date": "2024-07-18",
             "Expression_Version": 3,
             "Work_Country": "nl"
         },
         "opdracht": {
             "opdracht_type": "PUBLICATIE",
-            "id_levering": "d3a5ecc2-8d58-40a5-9124-1bd8c009c170",
+            "id_levering": "c8de7080-1969-4af3-a4eb-a7e610f743a5",
             "id_bevoegdgezag": "00000001002306608000",
             "id_aanleveraar": "00000001002306608000",
             "publicatie_bestand": "akn_nl_bill_pv28-pub-2024-omgevingsvisie-3-1.xml",
@@ -116,7 +116,7 @@
     },
     "regeling_vrijetekst": "./regelingvrijetekst_template.xml",
     "regeling_mutatie": {
-        "type": "vervang",
+        "type": "renvooi",
         "was_regeling_frbr": {
             "Work_Province_ID": "pv28",
             "Work_Date": "2024",
@@ -127,7 +127,7 @@
             "Work_Country": "nl"
         },
         "was_regeling_vrijetekst": "./was_regelingvrijetekst.xml",
-        "renvooi_api_key": "abc",
+        "renvooi_api_key": "placeholder",
         "renvooi_api_url": "https://renvooiservice-eto.overheid.nl",
         "bekend_wid_map": {
             "bijlage-werkingsgebieden": "pv28_2__cmp_o_1",
@@ -202,8 +202,8 @@
     },
     "ow_data": {
         "ow_objects": {
-            "nl.imow-pv28.ambtsgebied.33c0706747cc4b70bd2a79c204cc6de6": {
-                "OW_ID": "nl.imow-pv28.ambtsgebied.33c0706747cc4b70bd2a79c204cc6de6",
+            "nl.imow-pv28.ambtsgebied.df3ee686e5e04b6eb8c740ea025b7dbd": {
+                "OW_ID": "nl.imow-pv28.ambtsgebied.df3ee686e5e04b6eb8c740ea025b7dbd",
                 "status": null,
                 "procedure_status": null,
                 "mapped_uuid": "90000004-0000-0000-0000-000000000001",
@@ -215,8 +215,8 @@
                 },
                 "ow_type": "OWAmbtsgebied"
             },
-            "nl.imow-pv28.gebied.906541aae6594543b2ee4984643d4158": {
-                "OW_ID": "nl.imow-pv28.gebied.906541aae6594543b2ee4984643d4158",
+            "nl.imow-pv28.gebied.6af6311754734a4d8ef177a277d02ecb": {
+                "OW_ID": "nl.imow-pv28.gebied.6af6311754734a4d8ef177a277d02ecb",
                 "status": null,
                 "procedure_status": null,
                 "mapped_uuid": "00000000-0000-0005-0000-000000000001",
@@ -224,76 +224,59 @@
                 "mapped_geo_code": "werkingsgebied-1",
                 "ow_type": "OWGebied"
             },
-            "nl.imow-pv28.gebiedengroep.ff6ff837d5204f81b67c24b397720fd8": {
-                "OW_ID": "nl.imow-pv28.gebiedengroep.ff6ff837d5204f81b67c24b397720fd8",
+            "nl.imow-pv28.gebiedengroep.3498437911d34ab4a8e6ba818226d699": {
+                "OW_ID": "nl.imow-pv28.gebiedengroep.3498437911d34ab4a8e6ba818226d699",
                 "status": null,
                 "procedure_status": null,
                 "mapped_uuid": "00000000-0000-0005-0000-000000000001",
                 "noemer": "Maatwerkgebied glastuinbouw",
                 "mapped_geo_code": "werkingsgebied-1",
                 "gebieden": [
-                    "nl.imow-pv28.gebied.906541aae6594543b2ee4984643d4158"
+                    "nl.imow-pv28.gebied.6af6311754734a4d8ef177a277d02ecb"
                 ],
                 "ow_type": "OWGebiedenGroep"
             },
-            "nl.imow-pv28.divisietekst.414b322da6c64f38917c6cba4d6a9c6e": {
-                "OW_ID": "nl.imow-pv28.divisietekst.414b322da6c64f38917c6cba4d6a9c6e",
+            "nl.imow-pv28.divisietekst.da7b73f36c41470aafa5ee3a0c4863cf": {
+                "OW_ID": "nl.imow-pv28.divisietekst.da7b73f36c41470aafa5ee3a0c4863cf",
                 "status": null,
                 "procedure_status": null,
                 "wid": "pv28_2__div_o_2__div_o_1__div_o_1__content_o_1",
                 "ow_type": "OWDivisieTekst"
             },
-            "nl.imow-pv28.tekstdeel.576e552bac0d4304a00a1afd2952ad62": {
-                "OW_ID": "nl.imow-pv28.tekstdeel.576e552bac0d4304a00a1afd2952ad62",
+            "nl.imow-pv28.tekstdeel.2aaa9dc1dc3a47ffb6e24682bf86a495": {
+                "OW_ID": "nl.imow-pv28.tekstdeel.2aaa9dc1dc3a47ffb6e24682bf86a495",
                 "status": null,
                 "procedure_status": null,
-                "divisie": "nl.imow-pv28.divisietekst.414b322da6c64f38917c6cba4d6a9c6e",
+                "divisie": "nl.imow-pv28.divisietekst.da7b73f36c41470aafa5ee3a0c4863cf",
                 "locaties": [
-                    "nl.imow-pv28.gebiedengroep.ff6ff837d5204f81b67c24b397720fd8"
+                    "nl.imow-pv28.gebiedengroep.3498437911d34ab4a8e6ba818226d699"
                 ],
-                "gebiedsaanwijzingen": null,
                 "ow_type": "OWTekstdeel",
                 "divisie_type": "divisietekst"
             },
-            "nl.imow-pv28.divisietekst.045c3e394fb34ca2876c2836faf9ef24": {
-                "OW_ID": "nl.imow-pv28.divisietekst.045c3e394fb34ca2876c2836faf9ef24",
+            "nl.imow-pv28.divisietekst.4fb00e6a0f4f42fb8c236940f55f77ba": {
+                "OW_ID": "nl.imow-pv28.divisietekst.4fb00e6a0f4f42fb8c236940f55f77ba",
                 "status": null,
                 "procedure_status": null,
                 "wid": "pv28_2__div_o_2__div_o_1__div_o_1__content_o_2",
                 "ow_type": "OWDivisieTekst"
             },
-            "nl.imow-pv28.tekstdeel.49213c6c6f9344b48c21a675ed6d3ec1": {
-                "OW_ID": "nl.imow-pv28.tekstdeel.49213c6c6f9344b48c21a675ed6d3ec1",
+            "nl.imow-pv28.tekstdeel.e2c95da6cb8e45a6bdad85820ba45c79": {
+                "OW_ID": "nl.imow-pv28.tekstdeel.e2c95da6cb8e45a6bdad85820ba45c79",
                 "status": null,
                 "procedure_status": null,
-                "divisie": "nl.imow-pv28.divisietekst.045c3e394fb34ca2876c2836faf9ef24",
+                "divisie": "nl.imow-pv28.divisietekst.4fb00e6a0f4f42fb8c236940f55f77ba",
                 "locaties": [
-                    "nl.imow-pv28.gebiedengroep.ff6ff837d5204f81b67c24b397720fd8"
-                ],
-                "gebiedsaanwijzingen": [
-                    "nl.imow-pv28.gebiedsaanwijzing.d3453d3135634d83a72cbf7129b1c975"
+                    "nl.imow-pv28.gebiedengroep.3498437911d34ab4a8e6ba818226d699"
                 ],
                 "ow_type": "OWTekstdeel",
                 "divisie_type": "divisietekst"
             },
-            "nl.imow-pv28.gebiedsaanwijzing.d3453d3135634d83a72cbf7129b1c975": {
-                "OW_ID": "nl.imow-pv28.gebiedsaanwijzing.d3453d3135634d83a72cbf7129b1c975",
+            "nl.imow-pv28.regelingsgebied.16e714f1d34e48c78074012cb26e844f": {
+                "OW_ID": "nl.imow-pv28.regelingsgebied.16e714f1d34e48c78074012cb26e844f",
                 "status": null,
                 "procedure_status": null,
-                "naam": "Maatwerkgebied glastuinbouw",
-                "type_": "http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Bodem",
-                "groep": "http://standaarden.omgevingswet.overheid.nl/bodem/id/concept/Bodembeheergebied",
-                "locaties": [
-                    "nl.imow-pv28.gebiedengroep.ff6ff837d5204f81b67c24b397720fd8"
-                ],
-                "wid": "pv28_2__div_o_2__div_o_1__div_o_1__content_o_2__ref_o_1",
-                "ow_type": "OWGebiedsaanwijzing"
-            },
-            "nl.imow-pv28.regelingsgebied.daa3acdee18048fd99151a0db9f77e24": {
-                "OW_ID": "nl.imow-pv28.regelingsgebied.daa3acdee18048fd99151a0db9f77e24",
-                "status": null,
-                "procedure_status": null,
-                "ambtsgebied": "nl.imow-pv28.ambtsgebied.33c0706747cc4b70bd2a79c204cc6de6",
+                "ambtsgebied": "nl.imow-pv28.ambtsgebied.df3ee686e5e04b6eb8c740ea025b7dbd",
                 "ow_type": "OWRegelingsgebied"
             }
         },

@@ -135,10 +135,10 @@
 			<ow-dc:owObject>
 				<vt:Divisie wId="{{ ow_object.wid }}">
 					{% if ow_object.status is not none %}
-					<ow:status>{{ ow_object.status.value }}</ow:status>
+					<op:status>{{ ow_object.status.value }}</op:status>
 					{% endif %}
 					{% if ow_object.procedure_status is not none %}
-					<ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+					<op:procedurestatus>{{ ow_object.procedure_status.value }}</op:procedurestatus>
 					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 				</vt:Divisie>
@@ -149,10 +149,10 @@
 			<ow-dc:owObject>
 				<vt:Divisietekst wId="{{ ow_object.wid }}">
 					{% if ow_object.status is not none %}
-					<ow:status>{{ ow_object.status.value }}</ow:status>
+					<op:status>{{ ow_object.status.value }}</op:status>
 					{% endif %}
 					{% if ow_object.procedure_status is not none %}
-					<ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+					<op:procedurestatus>{{ ow_object.procedure_status.value }}</op:procedurestatus>
 					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 				</vt:Divisietekst>

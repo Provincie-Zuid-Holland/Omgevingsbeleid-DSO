@@ -80,7 +80,7 @@ class OwDivisieBuilder(OwFileBuilder):
                 ref_ow_id=known_divisie.OW_ID,
             )
 
-        ow_gebiedengroep = self._ow_repository.get_gebiedengroep_by_code(values["gebied_code"])
+        ow_gebiedengroep = self._ow_repository.get_active_gebiedengroep_by_code(values["gebied_code"])
         if not ow_gebiedengroep:
             raise OWObjectStateException(
                 message=f"Expected gebiedengroep with werkingsgebied: {values['gebied_code']} in new state",
