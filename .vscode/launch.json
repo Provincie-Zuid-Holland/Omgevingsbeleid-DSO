@@ -10,6 +10,18 @@
             "justMyCode": false
         },
         {
+            "name": "DSO generate-all",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "dso.cmds",
+            "args": [
+                "generate-all",
+                "./input",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
             "name": "DSO 01-1-initial-visie",
             "type": "debugpy",
             "request": "launch",
