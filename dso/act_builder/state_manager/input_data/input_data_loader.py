@@ -11,6 +11,7 @@ from ....models import (
     PublicationSettings,
     RegelingMutatie,
     RenvooiRegelingMutatie,
+    VervangRegelingMutatie,
 )
 from ....services.utils.helpers import load_json_data, load_xml_file
 from ....services.utils.os import create_normalized_path
@@ -222,23 +223,40 @@ class InputDataExporter:
 
         # Update main.json refs to seperated files
         regeling_vrijetekst_ref = "./regelingvrijetekst_template.xml"
+
         resources_ref = {
             "policy_object_repository": "./policy_objects.json",
             "asset_repository": "./assets.json",
             "werkingsgebied_repository": "./werkingsgebieden.json",
         }
 
-        file_path_map = {
+        export_dict_updates = {
             "resources": resources_ref,
             "regeling_vrijetekst": regeling_vrijetekst_ref,
         }
+
         if self._input_data.regeling_mutatie:
-            self.export_was_regelingvrijetekst(filename="was_regelingvrijetekst.xml")
-            file_path_map["regeling_mutatie"] = self._input_data.regeling_mutatie.dict()
-            file_path_map["regeling_mutatie"]["was_regeling_vrijetekst"] = "./was_regelingvrijetekst.xml"
+            match self._input_data.regeling_mutatie:
+                case RenvooiRegelingMutatie():
+                    # dump was to file and update dict to reference the file
+                    was_filename = "was_regelingvrijetekst.xml"
+                    self.export_was_regelingvrijetekst(filename=was_filename)
+                    regeling_mutatie_dict = self._input_data.regeling_mutatie.dict()
+                    regeling_mutatie_dict.update(
+                        {
+                            "was_regeling_vrijetekst": f"./{was_filename}",
+                            "type": "renvooi",
+                            "renvooi_api_key": "placeholder",  # dont export api keys automatically
+                        }
+                    )
+                case VervangRegelingMutatie():
+                    # TODO: implement after DSO supported
+                    raise NotImplementedError("VervangRegelingMutatie not yet supported")
+
+            export_dict_updates["regeling_mutatie"] = regeling_mutatie_dict
 
         # replace the values for split file path refs in main.json
-        updated_input_data = self._input_data.copy(update=file_path_map)
+        updated_input_data = self._input_data.copy(update=export_dict_updates)
 
         file_path = os.path.join(self._output_dir, "main.json")
         with open(file_path, "w") as file:
