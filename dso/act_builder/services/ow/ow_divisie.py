@@ -91,7 +91,11 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ow_repository.add_mutated_ow(new_ow_tekstdeel)
 
     def process_new_divisie(self, division_map: dict) -> OWTekstdeel:
-        new_div = self._new_divisie(tag=division_map["tag"], wid=division_map["wid"])
+        new_div = self._new_divisie(
+            tag=division_map["tag"],
+            wid=division_map["wid"],
+            object_code=division_map["object_code"],
+        )
 
         werkingsgebied_code = division_map["gebied_code"]
 
@@ -125,18 +129,20 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ow_repository.add_terminated_ow(known_tekstdeel)
         self._ow_repository.add_terminated_ow(known_divisie)
 
-    def _new_divisie(self, tag: str, wid: str) -> OWDivisie | OWDivisieTekst:
+    def _new_divisie(self, tag: str, wid: str, object_code: Optional[str] = None) -> OWDivisie | OWDivisieTekst:
         if tag == "Divisietekst":
             ow_div = OWDivisieTekst(
                 OW_ID=generate_ow_id(IMOWTYPES.DIVISIETEKST, self._provincie_id),
                 wid=wid,
                 procedure_status=self._ow_procedure_status,
+                mapped_policy_object_code=object_code,
             )
         elif tag == "Divisie":
             ow_div = OWDivisie(
                 OW_ID=generate_ow_id(IMOWTYPES.DIVISIE, self._provincie_id),
                 wid=wid,
                 procedure_status=self._ow_procedure_status,
+                mapped_policy_object_code=object_code,
             )
         else:
             raise OWObjectGenerationError("Expected annotation text tag to be either Divisie or Divisietekst.")
