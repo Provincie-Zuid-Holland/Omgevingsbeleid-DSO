@@ -75,7 +75,7 @@ class OWGebiedenGroep(OWLocatie):
 
 class OWDivisie(OWObject):
     wid: str
-    # mapped_policy_object_code: Optional[str] = None
+    mapped_policy_object_code: Optional[str] = None
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
         return self.OW_ID in reverse_ref_index.get("OWTekstdeel", set())
@@ -83,7 +83,7 @@ class OWDivisie(OWObject):
 
 class OWDivisieTekst(OWObject):
     wid: str
-    # mapped_policy_object_code: Optional[str] = None
+    mapped_policy_object_code: Optional[str] = None
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
         return self.OW_ID in reverse_ref_index.get("OWTekstdeel", set())

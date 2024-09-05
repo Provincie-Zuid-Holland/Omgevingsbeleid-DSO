@@ -136,6 +136,7 @@ class EWIDService:
                 self._state_object_tekst_lookup[object_code] = {
                     "wid": wid,
                     "tag": element.tag,
+                    "object_code": object_code,
                     "gebied_code": gebied_code,
                     "gebied_uuid": str(werkingsgebied.UUID),
                 }
