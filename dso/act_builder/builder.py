@@ -1,9 +1,10 @@
 import io
+import os
 from typing import Dict, List, Optional
 from zipfile import ZIP_DEFLATED, ZipFile
 
+from ..models import OwData
 from ..services.assets.create_image import create_image, create_image_in_zip
-from ..services.utils.os import empty_directory
 from .services import BuilderService
 from .services.aanlevering_besluit.aanlevering_besluit_builder import AanleveringBesluitBuilder
 from .services.asset.asset_builder import AssetBuilder
@@ -39,10 +40,11 @@ class Builder:
             self._state_manager = service.apply(self._state_manager)
 
     def save_files(self, output_dir: str):
-        empty_directory(output_dir)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
         for output_file in self._state_manager.get_output_files():
-            destination_path = f"{output_dir}/{output_file.filename}"
+            destination_path = os.path.join(output_dir, output_file.filename)
             match output_file.content:
                 case StrContentData():
                     with open(destination_path, "w") as f:
@@ -81,8 +83,7 @@ class Builder:
     def get_regeling_vrijetekst(self) -> Optional[str]:
         return self._state_manager.regeling_vrijetekst
 
-    def get_created_ow_object_ids(self) -> List[str]:
-        return self._state_manager.created_ow_object_ids
-
-    def get_created_ow_object_map(self) -> Dict[str, Dict[str, str]]:
-        return self._state_manager.created_ow_objects_map
+    def get_ow_object_state(self) -> OwData:
+        if self._state_manager.ow_object_state is None:
+            raise RuntimeError("Expected OW object state result to be set in state manager.")
+        return self._state_manager.ow_object_state

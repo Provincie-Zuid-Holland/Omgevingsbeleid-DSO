@@ -1,5 +1,7 @@
 from enum import Enum
 
+# Type spec of IMOW
+
 
 class IMOWTYPES(str, Enum):
     REGELTEKST = "regeltekst"
@@ -43,11 +45,22 @@ class OwRegelingsgebiedObjectType(str, Enum):
     REGELINGSGEBIED = "Regelingsgebied"
 
 
+class OwGebiedsaanwijzingObjectType(str, Enum):
+    GEBIEDSAANWIJZING = "Gebiedsaanwijzing"
+
+
 class OwProcedureStatus(str, Enum):
     """
     For OW objects the procedure status is not provided by default (for "Definitief")
     and only the value "ontwerp" is added for ontwerp besluiten.
-    Source: IMOW 2.0.2
     """
 
     ONTWERP = "ontwerp"
+
+
+class OwObjectStatus(str, Enum):
+    """
+    No status == active, "beëindigen" == terminated
+    """
+
+    BEEINDIG = "beëindigen"

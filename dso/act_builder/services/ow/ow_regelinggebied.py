@@ -1,71 +1,125 @@
-from typing import Optional
+from typing import List, Optional
 
-from ....models import ContentType
-from ....services.ow.enums import IMOWTYPES, OwProcedureStatus, OwRegelingsgebiedObjectType
-from ....services.ow.models import OWRegelingsgebied
-from ....services.ow.ow_id import generate_ow_id
-from ....services.utils.helpers import load_template
-from ...state_manager.models import OutputFile, StrContentData
+from pydantic.main import BaseModel
+
+from ....services.ow import (
+    IMOWTYPES,
+    OWAmbtsgebied,
+    OWObject,
+    OwProcedureStatus,
+    OWRegelingsgebied,
+    OwRegelingsgebiedObjectType,
+    generate_ow_id,
+)
+from ...state_manager.exceptions import OWStateError
+from ...state_manager.states.ow_repository import OWStateRepository
+from .ow_file_builder import OwFileBuilder
 
 
-class OwRegelingsgebiedContent:
+class OwRegelingsgebiedFileData(BaseModel):
+    levering_id: str
+    procedure_status: Optional[OwProcedureStatus]
+    object_types: List[OwRegelingsgebiedObjectType]
+    new_ow_objects: List[OWObject] = []
+    mutated_ow_objects: List[OWObject] = []
+    terminated_ow_objects: List[OWObject] = []
+
+    @property
+    def object_type_list(self) -> List[str]:
+        return [obj.value for obj in self.object_types]
+
+
+class OwRegelingsgebiedBuilder(OwFileBuilder):
     """
-    Prepares the content for the OWRegelingGebied
-    Assuming that the regelinggebied is always part of a publication
-    and that ambtsgebied should be upserted and shared between acts.
-    based on TPOD 2.0.2
-    https://docs.geostandaarden.nl/tpod/def-st-TPOD-OVI-20230407/#0F625002
+    Prepares the content for the OWRegelingGebied.
+    Assuming that regelinggebied and ambstgebied should only be
+    delivered on initial version of an act, then updated together.
+
+    based on TPOD 3.0:
+    https://docs.geostandaarden.nl/tpod/def-st-TPOD-OVI-20231215/#0F625002
     """
+
+    FILE_NAME = "owRegelingsgebied.xml"
+    TEMPLATE_PATH = "ow/owRegelingsgebied.xml"
 
     def __init__(
         self,
         provincie_id: str,
-        levering_id,
+        levering_id: str,
+        ow_repository: OWStateRepository,
         ow_procedure_status: Optional[OwProcedureStatus],
-        ambtsgebied_ow_id: str,
     ):
-        self.provincie_id: str = provincie_id
-        self.levering_id = levering_id
-        self.ow_procedure_status = ow_procedure_status
-        self.ambtsgebied = ambtsgebied_ow_id
-        self.xml_data = {
-            "filename": "owRegelingsgebied.xml",
-            "leveringsId": self.levering_id,
-            "objectTypen": [],
-            "regelingsgebieden": [],
-        }
-        self.file = None
+        super().__init__()
+        self._provincie_id = provincie_id
+        self._levering_id = levering_id
+        self._ow_procedure_status = ow_procedure_status
+        self._ow_repository = ow_repository
+        self._used_object_types = [OwRegelingsgebiedObjectType.REGELINGSGEBIED]
+        self._ambtsgebied: Optional[OWAmbtsgebied] = None
 
-    def create_regelingsgebieden(self):
-        regelingsgebied = self._create_regelingsgebied()
-        self.xml_data["regelingsgebieden"].append(regelingsgebied)
-        self.xml_data["objectTypen"].append(OwRegelingsgebiedObjectType.REGELINGSGEBIED.value)
-        self.file = self.create_file()
-        return self.xml_data
+    def get_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
+        return self._ambtsgebied
 
-    def _create_regelingsgebied(self):
+    def get_used_object_types(self) -> List[str]:
+        return [obj.value for obj in self._used_object_types]
+
+    def handle_ow_object_changes(self) -> None:
         """
-        Always include regelingsgebied once for a bill+act.
-        Point to existing ambtsgebied if available in state.
+        Either create a new regelingsgebied for a new ambtsgebied given or
+        if existing ambtsgebied was mutated, mutate the matching regelingsgebied reference.
         """
-        # TODO: currently generates new OW ID every time. Read from input data if unchanged
-        ow_id: str = generate_ow_id(IMOWTYPES.REGELINGSGEBIED, self.provincie_id)
+        self._ambtsgebied = self._ow_repository.get_ambtsgebied()
+        if not self._ambtsgebied:
+            # no changes to regelingsgebied needed so exit
+            return
+
+        known_ambtsgebied_id = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied.mapped_uuid)
+        if not known_ambtsgebied_id:
+            # new ambtsgebied so new regelingsgebied
+            self._create_regelingsgebied()
+        else:
+            # existing ambtsgebied so mutating regelingsgebied
+            known_regelingsgebied_id = self._ow_repository.get_existing_regelingsgebied_id(known_ambtsgebied_id)
+            if not known_regelingsgebied_id:
+                raise OWStateError("Ambtsgebied known, but no regelingsgebied found in state.")
+            self._mutate_regelingsgebied(
+                known_regelingsgebied_id=known_regelingsgebied_id, new_ambtsgebied_id=known_ambtsgebied_id
+            )
+
+    def _create_regelingsgebied(self) -> OWRegelingsgebied:
+        if not self._ambtsgebied:
+            raise OWStateError("Ambtsgebied is required to create a new regelingsgebied.")
+
+        ow_id: str = generate_ow_id(IMOWTYPES.REGELINGSGEBIED, self._provincie_id)
         regelingsgebied = OWRegelingsgebied(
             OW_ID=ow_id,
-            ambtsgebied=self.ambtsgebied,
-            procedure_status=self.ow_procedure_status,
+            ambtsgebied=self._ambtsgebied.OW_ID,
+            procedure_status=self._ow_procedure_status,
         )
+        self._ow_repository.add_new_ow(regelingsgebied)
         return regelingsgebied
 
-    def create_file(self):
-        content = load_template(
-            "ow/owRegelingsgebied.xml",
-            pretty_print=True,
-            data=self.xml_data,
+    def _mutate_regelingsgebied(self, known_regelingsgebied_id: str, new_ambtsgebied_id: str) -> OWRegelingsgebied:
+        regelingsgebied = OWRegelingsgebied(
+            OW_ID=known_regelingsgebied_id,
+            ambtsgebied=new_ambtsgebied_id,
+            procedure_status=self._ow_procedure_status,
         )
-        output_file = OutputFile(
-            filename="owRegelingsgebied.xml",
-            content_type=ContentType.XML,
-            content=StrContentData(content),
+        self._ow_repository.add_mutated_ow(regelingsgebied)
+        return regelingsgebied
+
+    def build_template_data(self) -> OwRegelingsgebiedFileData:
+        new_regelingsgebieden = self._ow_repository.get_new_regelingsgebied()
+        mutated_regelingsgebieden = self._ow_repository.get_mutated_regelingsgebied()
+        terminated_regelingsgebieden = self._ow_repository.get_terminated_regelingsgebied()
+
+        template_data = OwRegelingsgebiedFileData(
+            levering_id=self._levering_id,
+            object_types=self._used_object_types,
+            new_ow_objects=new_regelingsgebieden,
+            mutated_ow_objects=mutated_regelingsgebieden,
+            terminated_ow_objects=terminated_regelingsgebieden,
+            procedure_status=self._ow_procedure_status,
         )
-        return output_file
+        self.template_data = template_data
+        return template_data

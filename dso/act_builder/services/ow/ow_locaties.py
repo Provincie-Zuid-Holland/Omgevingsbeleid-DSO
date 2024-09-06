@@ -1,139 +1,191 @@
-from typing import List, Optional
-from uuid import UUID
+from typing import List, Optional, Set
 
-from ....models import ContentType
+from pydantic.main import BaseModel
+
 from ....services.ow.enums import IMOWTYPES, OwLocatieObjectType, OwProcedureStatus
-from ....services.ow.models import BestuurlijkeGrenzenVerwijzing, OWAmbtsgebied, OWGebied, OWGebiedenGroep
+from ....services.ow.models import BestuurlijkeGrenzenVerwijzing, OWAmbtsgebied, OWGebied, OWGebiedenGroep, OWObject
 from ....services.ow.ow_id import generate_ow_id
-from ....services.utils.helpers import load_template
 from ...state_manager.input_data.ambtsgebied import Ambtsgebied
-from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
-from ...state_manager.models import OutputFile, StrContentData
+from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Locatie, Werkingsgebied
+from ...state_manager.states.ow_repository import OWStateRepository
+from .ow_file_builder import OwFileBuilder
 
 
-class OwLocatiesContent:
-    """
-    Prepares the content for the OWLocaties file from Werkingsgebieden.
+class OwLocatieTemplateData(BaseModel):
+    levering_id: str
+    procedure_status: Optional[OwProcedureStatus]
+    object_types: List[OwLocatieObjectType]
+    new_ow_objects: List[OWObject] = []
+    mutated_ow_objects: List[OWObject] = []
+    terminated_ow_objects: List[OWObject] = []
 
-    Assuming that ambtsgebied should only be defined as location
-    on the first publication or if updated in value based on TPOD 2.0.2
-    https://docs.geostandaarden.nl/tpod/def-st-TPOD-OVI-20230407/#00B96535
-    """
+    @property
+    def object_type_list(self) -> List[str]:
+        return [obj.value for obj in self.object_types]
+
+
+class OwLocatieBuilder(OwFileBuilder):
+    FILE_NAME = "owLocaties.xml"
+    TEMPLATE_PATH = "ow/owLocaties.xml"
 
     def __init__(
         self,
         provincie_id: str,
-        werkingsgebieden: List[Werkingsgebied],
-        object_tekst_lookup: dict,
         levering_id: str,
+        ambtsgebied: Ambtsgebied,
+        werkingsgebieden: List[Werkingsgebied],
+        ow_repository: OWStateRepository,
         ow_procedure_status: Optional[OwProcedureStatus],
-        ambtsgebied_data: Ambtsgebied,
-    ):
+    ) -> None:
+        super().__init__()
         self._provincie_id: str = provincie_id
-        self.werkingsgebieden = werkingsgebieden
-        self.object_tekst_lookup = object_tekst_lookup
-        self.levering_id = levering_id
-        self.ow_procedure_status = ow_procedure_status
-        self.ambtsgebied_data = ambtsgebied_data
+        self._levering_id: str = levering_id
+        self._werkingsgebieden = werkingsgebieden
+        self._ow_procedure_status = ow_procedure_status
+        self._ow_repository = ow_repository
+        self._ambtsgebied_data = ambtsgebied
+        self._used_object_types: Set[OwLocatieObjectType] = set()
 
-        self.xml_data = {
-            "filename": "owLocaties.xml",
-            "leveringsId": self.levering_id,
-            "objectTypen": [],
-            "gebiedengroepen": [],
-            "gebieden": [],
-            "ambtsgebieden": [],
-        }
-        self.file = None
+    def handle_ow_object_changes(self) -> None:
+        """
+        Compares werkingsgebied objects with previous OW state and
+        determines if new, mutation or termination action is needed.
+        """
+        existing_ambtsgebied = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied_data.UUID)
+        if not existing_ambtsgebied:
+            self.create_ow_ambtsgebied(self._ambtsgebied_data)
+            # TODO: Add termination of previous ambtsgebied
+            # Requires storing full aoj data to ow state
 
-    def create_locations(self):
-        """
-        Create OWGebied and OWGebiedenGroep objects and return them in a dict
-        """
-        self._create_ow_locations()
-
-        # TODO: Add input data + state check to see if new ambtsgebied is needed
-        ow_ambtsgebied = self._create_amtsgebied()
-        self.xml_data["ambtsgebieden"].append(ow_ambtsgebied)
-        self._add_object_types()
-        self.file = self.create_file()
-        return self.xml_data
-
-    def _create_ow_locations(self):
-        """
-        Create new OW Locations from werkingsgebieden.
-        Use manual ambtsgebied for now.
-        """
-        for werkingsgebied in self.werkingsgebieden:
-            ow_locations = [
-                OWGebied(
-                    OW_ID=generate_ow_id(IMOWTYPES.GEBIED, self._provincie_id),
-                    geo_uuid=loc.UUID,
-                    noemer=loc.Title,
-                    procedure_status=self.ow_procedure_status,
-                    mapped_geo_code=werkingsgebied.Code,
-                )
-                for loc in werkingsgebied.Locaties
-            ]
-            ow_group = OWGebiedenGroep(
-                OW_ID=generate_ow_id(IMOWTYPES.GEBIEDENGROEP, self._provincie_id),
-                geo_uuid=werkingsgebied.UUID,
-                noemer=werkingsgebied.Title,
-                locations=ow_locations,
-                procedure_status=self.ow_procedure_status,
-                mapped_geo_code=werkingsgebied.Code,
+        for werkingsgebied in self._werkingsgebieden:
+            existing_ow_gebied: Optional[OWGebied] = self._ow_repository.get_known_gebied_by_code(
+                werkingsgebied_code=werkingsgebied.Code
             )
-            self.xml_data["gebieden"].extend(ow_locations)
-            self.xml_data["gebiedengroepen"].append(ow_group)
+            if not existing_ow_gebied:
+                self.new_ow_gebiedengroep(werkingsgebied)
+            else:
+                if existing_ow_gebied.mapped_uuid != werkingsgebied.UUID:
+                    # if existing werkingsgebied code in state, with a new external UUID, mutate
+                    self.mutate_ow_gebied(
+                        locatie=werkingsgebied.Locaties[0],
+                        existing_gebied_id=existing_ow_gebied.OW_ID,
+                        code=werkingsgebied.Code,
+                    )
 
-        # Update object_tekst_lookup with OW_IDs
-        ow_gebied_mapping = {gebied.geo_uuid: gebied.OW_ID for gebied in self.xml_data["gebieden"]}
-        ow_gebied_mapping.update(
-            {gebiedengroep.geo_uuid: gebiedengroep.OW_ID for gebiedengroep in self.xml_data["gebiedengroepen"]}
+                # gebiedengroep mutation not yet needed
+                # self.mutate_ow_gebiedengroep(werkingsgebied, existing_gebiedengroep_id)
+
+    def new_ow_gebied(self, locatie: Locatie, werkingsgebied_code: str) -> OWGebied:
+        new_ow_id = generate_ow_id(IMOWTYPES.GEBIED, self._provincie_id)
+        gebied = OWGebied(
+            OW_ID=new_ow_id,
+            mapped_uuid=locatie.UUID,
+            noemer=locatie.Title,
+            procedure_status=self._ow_procedure_status,
+            mapped_geo_code=werkingsgebied_code,
         )
-        for object_code, values in self.object_tekst_lookup.items():
-            if values.get("gebied_uuid", None) is None:
-                continue
-            # Find the matching OWGebied and update ow_location_id to the state
-            matching_ow_gebied = ow_gebied_mapping.get(UUID(values["gebied_uuid"]))
-            if matching_ow_gebied:
-                values["ow_location_id"] = matching_ow_gebied
+        self._ow_repository.add_new_ow(gebied)
+        return gebied
 
-    def _create_amtsgebied(self):
-        # TODO: now always new OW ID, reuse from state if same work.
-        ow_id: str = generate_ow_id(IMOWTYPES.AMBTSGEBIED, self._provincie_id)
-        # unique_code=self.ambtsgebied_data.identificatie_suffix,
+    def new_ow_gebiedengroep(self, werkingsgebied: Werkingsgebied) -> OWGebiedenGroep:
+        gebieden: List[str] = []
+        for locatie in werkingsgebied.Locaties:
+            new_gebied = self.new_ow_gebied(locatie, werkingsgebied.Code)
+            gebieden.append(new_gebied.OW_ID)
+
+        new_group_ow_id = generate_ow_id(IMOWTYPES.GEBIEDENGROEP, self._provincie_id)
+        new_gebiedengroep = OWGebiedenGroep(
+            OW_ID=new_group_ow_id,
+            mapped_uuid=werkingsgebied.UUID,
+            noemer=werkingsgebied.Title,
+            procedure_status=self._ow_procedure_status,
+            mapped_geo_code=werkingsgebied.Code,
+            gebieden=gebieden,
+        )
+        self._ow_repository.add_new_ow(new_gebiedengroep)
+        return new_gebiedengroep
+
+    def mutate_ow_gebied(self, locatie: Locatie, existing_gebied_id: str, code: str) -> OWGebied:
+        # ow obj mutation means deliver OW object with new data but same OW_ID
+        mutated_obj = OWGebied(
+            OW_ID=existing_gebied_id,
+            mapped_uuid=locatie.UUID,
+            noemer=locatie.Title,
+            procedure_status=self._ow_procedure_status,
+            mapped_geo_code=code,
+        )
+        self._ow_repository.add_mutated_ow(mutated_obj)
+        return mutated_obj
+
+    def mutate_ow_gebiedengroep(
+        self, werkingsgebied: Werkingsgebied, existing_gebiedengroep_id: str
+    ) -> OWGebiedenGroep:
+        # ow obj mutation means deliver OW object with new data but same OW_ID
+        mutated_gebiedengroep = OWGebiedenGroep(
+            OW_ID=existing_gebiedengroep_id,
+            mapped_uuid=werkingsgebied.UUID,
+            noemer=werkingsgebied.Title,
+            procedure_status=self._ow_procedure_status,
+            mapped_geo_code=werkingsgebied.Code,
+        )
+        for locatie in werkingsgebied.Locaties:
+            existing_gebied = self._ow_repository.get_known_gebied_by_code(werkingsgebied.Code)
+            if not existing_gebied:
+                # Gebiedengroep and Gebied currently 1-1 matched
+                # Not supported to mutate a existing gebiedengroep with non existing gebied
+                raise NotImplementedError("Expected existing owgebied in state to apply to mutated gebiedengroep")
+
+            mutated_gebied = self.mutate_ow_gebied(locatie, existing_gebied.OW_ID, werkingsgebied.Code)
+            mutated_gebiedengroep.gebieden.append(mutated_gebied.OW_ID)
+
+        self._ow_repository.add_mutated_ow(mutated_gebiedengroep)
+        return mutated_gebiedengroep
+
+    def create_ow_ambtsgebied(self, ambtsgebied_data: Ambtsgebied) -> OWAmbtsgebied:
+        gebied_ow_id = generate_ow_id(IMOWTYPES.AMBTSGEBIED, self._provincie_id)
         new_ambtsgebied: OWAmbtsgebied = OWAmbtsgebied(
-            OW_ID=ow_id,
-            bestuurlijke_genzenverwijzing=BestuurlijkeGrenzenVerwijzing(
+            OW_ID=gebied_ow_id,
+            bestuurlijke_grenzen_verwijzing=BestuurlijkeGrenzenVerwijzing(
                 bestuurlijke_grenzen_id=self._provincie_id.upper(),
-                domein=self.ambtsgebied_data.domein,
-                geldig_op=self.ambtsgebied_data.geldig_op,
+                domein=ambtsgebied_data.domein,
+                geldig_op=ambtsgebied_data.geldig_op,
             ),
-            mapped_uuid=self.ambtsgebied_data.UUID,
-            procedure_status=self.ow_procedure_status,
+            mapped_uuid=ambtsgebied_data.UUID,
+            procedure_status=self._ow_procedure_status,
         )
-        new_ambtsgebied.procedure_status = self.ow_procedure_status
+        self._ow_repository.add_new_ow(new_ambtsgebied)
         return new_ambtsgebied
 
-    def _add_object_types(self):
-        # Add object types for used location types
-        if len(self.xml_data["gebieden"]) > 0:
-            self.xml_data["objectTypen"].append(OwLocatieObjectType.GEBIED.value)
-        if len(self.xml_data["gebiedengroepen"]) > 0:
-            self.xml_data["objectTypen"].append(OwLocatieObjectType.GEBIEDENGROEP.value)
-        if len(self.xml_data["ambtsgebieden"]) > 0:
-            self.xml_data["objectTypen"].append(OwLocatieObjectType.AMBTSGEBIED.value)
+    def get_used_object_types(self) -> List[OwLocatieObjectType]:
+        return list(self._used_object_types)
 
-    def create_file(self):
-        content = load_template(
-            "ow/owLocaties.xml",
-            pretty_print=True,
-            data=self.xml_data,
+    def add_used_ow_object_types(self, ow_objects: List[OWObject]) -> None:
+        for obj in ow_objects:
+            if isinstance(obj, OWGebied):
+                self._used_object_types.add(OwLocatieObjectType.GEBIED)
+            elif isinstance(obj, OWGebiedenGroep):
+                self._used_object_types.add(OwLocatieObjectType.GEBIEDENGROEP)
+            elif isinstance(obj, OWAmbtsgebied):
+                self._used_object_types.add(OwLocatieObjectType.AMBTSGEBIED)
+
+    def build_template_data(self) -> Optional[OwLocatieTemplateData]:
+        new_locations = self._ow_repository.get_new_locations()
+        mutated_locations = self._ow_repository.get_mutated_locations()
+        terminated_locations = self._ow_repository.get_terminated_locations()
+
+        if not (new_locations or mutated_locations or terminated_locations):
+            return None
+
+        # find all used object types in this file
+        self.add_used_ow_object_types(new_locations + mutated_locations + terminated_locations)
+
+        template_data = OwLocatieTemplateData(
+            levering_id=self._levering_id,
+            object_types=self.get_used_object_types(),
+            new_ow_objects=new_locations,
+            mutated_ow_objects=mutated_locations,
+            terminated_ow_objects=terminated_locations,
+            procedure_status=self._ow_procedure_status,
         )
-        output_file = OutputFile(
-            filename="owLocaties.xml",
-            content_type=ContentType.XML,
-            content=StrContentData(content),
-        )
-        return output_file
+        self.template_data = template_data
+        return template_data

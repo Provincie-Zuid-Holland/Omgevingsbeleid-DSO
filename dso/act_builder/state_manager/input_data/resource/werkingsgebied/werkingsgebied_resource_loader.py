@@ -1,4 +1,4 @@
-from typing import List
+from typing import Optional
 
 from ......models import PublicationSettings
 from ......services.utils.helpers import load_json_data
@@ -7,20 +7,22 @@ from .werkingsgebied_repository import WerkingsgebiedRepository
 
 
 class WerkingsgebiedResourceLoader:
-    def __init__(self, base_dir: str, publication_settings: PublicationSettings, werkingsgebied_files: List[str]):
+    def __init__(self, base_dir: str, publication_settings: PublicationSettings, json_file_path: Optional[str]) -> None:
         self._base_dir: str = base_dir
         self._publication_settings: PublicationSettings = publication_settings
-        self._werkingsgebied_files: List[str] = werkingsgebied_files
+        self._json_file_path: Optional[str] = json_file_path
 
     def load(self) -> WerkingsgebiedRepository:
         repository = WerkingsgebiedRepository()
 
-        for werkingsgebied_file in self._werkingsgebied_files:
-            path = create_normalized_path(self._base_dir, werkingsgebied_file)
-            werkingsgebied = load_json_data(path)
-            if isinstance(werkingsgebied, dict):
-                repository.add(werkingsgebied)
-            else:
-                repository.add_list(werkingsgebied)
+        if not self._json_file_path:
+            return repository
+
+        path = create_normalized_path(self._base_dir, self._json_file_path)
+        loaded_json_data = load_json_data(path)
+        if isinstance(loaded_json_data, dict):
+            repository.add_from_dict(loaded_json_data)
+        else:
+            repository.add_list(load_json_data)
 
         return repository

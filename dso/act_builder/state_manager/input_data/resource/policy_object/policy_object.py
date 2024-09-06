@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 from typing import Any
 
 
@@ -14,6 +15,8 @@ class PolicyObject:
         for key, value in self.data.items():
             if isinstance(value, uuid.UUID):
                 serializable_dict[key] = str(value)
+            elif isinstance(value, datetime):
+                serializable_dict[key] = value.isoformat()
             else:
                 serializable_dict[key] = value
         return serializable_dict

@@ -1,3 +1,4 @@
+import json
 import uuid
 from typing import Dict, List, Optional
 
@@ -16,6 +17,10 @@ class AssetRepository:
         for asset in assets:
             self.add(asset)
 
+    def add_from_dict(self, assets: Dict[str, dict]) -> None:
+        for asset_uuid, asset in assets.items():
+            self.add(asset)
+
     def get_optional(self, idx: uuid.UUID) -> Optional[Asset]:
         asset: Optional[Asset] = self._assets.get(str(idx))
         return asset
@@ -32,9 +37,5 @@ class AssetRepository:
     def is_empty(self) -> bool:
         return not self._assets
 
-    # def to_dict(self):
-    #     return {k: v.dict() for k, v in self._assets.items()}
-
     def to_dict(self):
-        serializable_data = {k: v.dict() for k, v in self._assets.items()}
-        return serializable_data
+        return {str(k): json.loads(v.json()) for k, v in self._assets.items()}
