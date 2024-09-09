@@ -1,8 +1,8 @@
-<WijzigBijlage eId="cmp_A" wId="{{ wId_prefix }}cmp_A">
+<WijzigBijlage eId="cmp_{{ wijzig_bijlage.nummer }}" wId="{{ wId_prefix }}cmp_{{ wijzig_bijlage.nummer }}">
     <Kop>
         <Label>Bijlage</Label>
-        <Nummer>A</Nummer>
-        <Opschrift>bij Artikel I</Opschrift>
+        <Nummer>{{ wijzig_bijlage.nummer }}</Nummer>
+        <Opschrift>{{ wijzig_bijlage.opschrift }}</Opschrift>
     </Kop>
     {{ regeling_content }}
 </WijzigBijlage>

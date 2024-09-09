@@ -22,13 +22,13 @@
             "justMyCode": true
         },
         {
-            "name": "DSO 01-1-initial-visie",
+            "name": "DSO Initieel 01 Visie Compleet",
             "type": "debugpy",
             "request": "launch",
             "module": "dso.cmds",
             "args": [
                 "generate",
-                "./input/01-1-initial-visie",
+                "./input/omgevingsvisie/initieel/01-visie-compleet",
             ],
             "console": "integratedTerminal",
             "justMyCode": true

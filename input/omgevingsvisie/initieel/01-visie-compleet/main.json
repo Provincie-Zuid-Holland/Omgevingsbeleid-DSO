@@ -59,6 +59,10 @@
             "nummer": "I",
             "inhoud": "De Omgevingsvisie wordt vastgesteld zoals gegeven in <IntRef ref=\"cmp_A\">Bijlage A</IntRef> van dit Besluit."
         },
+        "wijzig_bijlage": {
+            "nummer": "1",
+            "opschrift": "bij Artikel I"
+        },
         "tekst_artikelen": [
             {
                 "label": "Artikel",
