@@ -17,6 +17,11 @@ class Bijlage(BaseModel):
     content: str
 
 
+class WijzigBijlage(BaseModel):
+    nummer: str
+    opschrift: str
+
+
 class Motivering(BaseModel):
     opschrift: str
     content: str
@@ -27,6 +32,10 @@ class Besluit(BaseModel):
     citeertitel: Optional[str]
     aanhef: str
     wijzig_artikel: Artikel
+    wijzig_bijlage: WijzigBijlage = Field(WijzigBijlage(
+        nummer="A",
+        opschrift="bij Artikel I",
+    ))
     tekst_artikelen: List[Artikel]
 
     # tijd_artikel does not exist on drafts and should then be set to reserved

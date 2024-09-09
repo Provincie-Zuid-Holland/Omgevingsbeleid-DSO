@@ -35,6 +35,7 @@ class WijzigBijlageContent:
             "akn/besluit_versie/besluit_compact/WijzigBijlage.xml",
             regeling_content=aanleveren_regeling_content,
             wId_prefix=wId_prefix,
+            wijzig_bijlage=self._state_manager.input_data.besluit.wijzig_bijlage,
         )
         return content
 
