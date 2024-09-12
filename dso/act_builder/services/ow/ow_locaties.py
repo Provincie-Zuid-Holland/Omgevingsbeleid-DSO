@@ -51,11 +51,12 @@ class OwLocatieBuilder(OwFileBuilder):
         Compares werkingsgebied objects with previous OW state and
         determines if new, mutation or termination action is needed.
         """
-        existing_ambtsgebied = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied_data.UUID)
-        if not existing_ambtsgebied:
+        existing_ambtsgebied_id = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied_data.UUID)
+        if existing_ambtsgebied_id:
+            # TODO: only mutate if updated data, leave for now to mutate missing ambtsgebied noemer
+            self.mutate_ow_ambtsgebied(self._ambtsgebied_data, existing_ambtsgebied_id)
+        if not existing_ambtsgebied_id:
             self.create_ow_ambtsgebied(self._ambtsgebied_data)
-            # TODO: Add termination of previous ambtsgebied
-            # Requires storing full aoj data to ow state
 
         for werkingsgebied in self._werkingsgebieden:
             existing_ow_gebied: Optional[OWGebied] = self._ow_repository.get_known_gebied_by_code(
@@ -106,7 +107,6 @@ class OwLocatieBuilder(OwFileBuilder):
         return new_gebiedengroep
 
     def mutate_ow_gebied(self, locatie: Locatie, existing_gebied_id: str, code: str) -> OWGebied:
-        # ow obj mutation means deliver OW object with new data but same OW_ID
         mutated_obj = OWGebied(
             OW_ID=existing_gebied_id,
             mapped_uuid=locatie.UUID,
@@ -120,7 +120,6 @@ class OwLocatieBuilder(OwFileBuilder):
     def mutate_ow_gebiedengroep(
         self, werkingsgebied: Werkingsgebied, existing_gebiedengroep_id: str
     ) -> OWGebiedenGroep:
-        # ow obj mutation means deliver OW object with new data but same OW_ID
         mutated_gebiedengroep = OWGebiedenGroep(
             OW_ID=existing_gebiedengroep_id,
             mapped_uuid=werkingsgebied.UUID,
@@ -145,8 +144,9 @@ class OwLocatieBuilder(OwFileBuilder):
         gebied_ow_id = generate_ow_id(IMOWTYPES.AMBTSGEBIED, self._provincie_id)
         new_ambtsgebied: OWAmbtsgebied = OWAmbtsgebied(
             OW_ID=gebied_ow_id,
+            noemer=ambtsgebied_data.titel,
             bestuurlijke_grenzen_verwijzing=BestuurlijkeGrenzenVerwijzing(
-                bestuurlijke_grenzen_id=self._provincie_id.upper(),
+                bestuurlijke_grenzen_id=self._provincie_id,
                 domein=ambtsgebied_data.domein,
                 geldig_op=ambtsgebied_data.geldig_op,
             ),
@@ -155,6 +155,21 @@ class OwLocatieBuilder(OwFileBuilder):
         )
         self._ow_repository.add_new_ow(new_ambtsgebied)
         return new_ambtsgebied
+
+    def mutate_ow_ambtsgebied(self, ambtsgebied_data: Ambtsgebied, existing_ambtsgebied_id: str) -> OWAmbtsgebied:
+        mutated_ambtsgebied: OWAmbtsgebied = OWAmbtsgebied(
+            OW_ID=existing_ambtsgebied_id,
+            noemer=ambtsgebied_data.titel,
+            bestuurlijke_grenzen_verwijzing=BestuurlijkeGrenzenVerwijzing(
+                bestuurlijke_grenzen_id=self._provincie_id,
+                domein=ambtsgebied_data.domein,
+                geldig_op=ambtsgebied_data.geldig_op,
+            ),
+            mapped_uuid=ambtsgebied_data.UUID,
+            procedure_status=self._ow_procedure_status,
+        )
+        self._ow_repository.add_mutated_ow(mutated_ambtsgebied)
+        return mutated_ambtsgebied
 
     def get_used_object_types(self) -> List[OwLocatieObjectType]:
         return list(self._used_object_types)

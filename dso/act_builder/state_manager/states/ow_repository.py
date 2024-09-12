@@ -59,13 +59,14 @@ class OWStateRepository:
             )
         # If ow_object OW_ID exists in known ow state and values are not
         # different from existing, # raise exception to prevent duplicate
-        existing_ow_object = self._known_ow_state.ow_objects[ow_object.OW_ID]
-        if existing_ow_object == ow_object:
-            raise OWStateMutationError(
-                message="Trying to add a mutated object to state with no changes, this would raise LVBB error.",
-                action="add_mutated_ow",
-                ow_object=ow_object.dict(),
-            )
+
+        # existing_ow_object = self._known_ow_state.ow_objects[ow_object.OW_ID]
+        # if existing_ow_object == ow_object:
+        #     raise OWStateMutationError(
+        #         message="Trying to add a mutated object to state with no changes, this would raise LVBB error.",
+        #         action="add_mutated_ow",
+        #         ow_object=ow_object.dict(),
+        #     )
         self._mutated_ow_objects.append(ow_object)
 
     def add_terminated_ow(self, ow_object: OWObject) -> None:
@@ -125,8 +126,8 @@ class OWStateRepository:
                 return ow_obj
         return None
 
-    def get_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
-        for ow_obj in self.get_changed_ow_objects():
+    def get_new_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
+        for ow_obj in self._new_ow_objects:
             if isinstance(ow_obj, OWAmbtsgebied):
                 return ow_obj
         return None
@@ -232,6 +233,12 @@ class OWStateRepository:
         for ow_obj in self._known_ow_state.ow_objects.values():
             if isinstance(ow_obj, OWRegelingsgebied) and ow_obj.ambtsgebied == ambtsgebied_ow_id:
                 return ow_obj.OW_ID
+        return None
+
+    def get_existing_regelingsgebied(self) -> Optional[OWRegelingsgebied]:
+        for ow_obj in self._known_ow_state.ow_objects.values():
+            if isinstance(ow_obj, OWRegelingsgebied):
+                return ow_obj
         return None
 
     def get_existing_divisie(self, wid: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
