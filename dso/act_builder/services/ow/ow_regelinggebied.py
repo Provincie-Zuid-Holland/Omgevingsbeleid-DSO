@@ -63,50 +63,66 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
     def get_used_object_types(self) -> List[str]:
         return [obj.value for obj in self._used_object_types]
 
+    # def handle_ow_object_changes(self) -> None:
+    #     if self._ow_repository.get_new_ambtsgebied():
+    #         self._ambtsgebied = self._ow_repository.get_new_ambtsgebied()
+    #         # if existing regelingsgebied, mutate reference, else create initial regelingsgebied
+    #         known_regelingsgebied = self._ow_repository.get_existing_regelingsgebied()
+    #         if known_regelingsgebied:
+    #             self._mutate_regelingsgebied(
+    #                 existing_regelingsgebied=known_regelingsgebied, new_ambtsgebied_ref=self._ambtsgebied.OW_ID
+    #             )
+    #         else:
+    #             if not self._ambtsgebied:
+    #                 raise OWStateError("Ambtsgebied required to create new regelingsgebied.")
+    #             self._create_regelingsgebied(ambtsgebied_ref=self._ambtsgebied.OW_ID)
+    #     else:
+    #         # no ambtsgebied ref changes so exit
+    #         return
+
     def handle_ow_object_changes(self) -> None:
-        """
-        Either create a new regelingsgebied for a new ambtsgebied given or
-        if existing ambtsgebied was mutated, mutate the matching regelingsgebied reference.
-        """
-        self._ambtsgebied = self._ow_repository.get_ambtsgebied()
-        if not self._ambtsgebied:
-            # no changes to regelingsgebied needed so exit
+        new_ambtsgebied = self._ow_repository.get_new_ambtsgebied()
+
+        if not new_ambtsgebied:
+            # No ambtsgebied ref changes, so exit early
             return
 
-        known_ambtsgebied_id = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied.mapped_uuid)
-        if not known_ambtsgebied_id:
-            # new ambtsgebied so new regelingsgebied
-            self._create_regelingsgebied()
-        else:
-            # existing ambtsgebied so mutating regelingsgebied
-            known_regelingsgebied_id = self._ow_repository.get_existing_regelingsgebied_id(known_ambtsgebied_id)
-            if not known_regelingsgebied_id:
-                raise OWStateError("Ambtsgebied known, but no regelingsgebied found in state.")
+        self._ambtsgebied = new_ambtsgebied
+
+        # Check for existing regelingsgebied
+        known_regelingsgebied = self._ow_repository.get_existing_regelingsgebied()
+
+        if known_regelingsgebied:
+            # Mutate reference if existing regelingsgebied found
             self._mutate_regelingsgebied(
-                known_regelingsgebied_id=known_regelingsgebied_id, new_ambtsgebied_id=known_ambtsgebied_id
+                existing_regelingsgebied=known_regelingsgebied, new_ambtsgebied_ref=self._ambtsgebied.OW_ID
             )
+            return
 
-    def _create_regelingsgebied(self) -> OWRegelingsgebied:
+        # If no existing regelingsgebied, ensure ambtsgebied exists before creation
         if not self._ambtsgebied:
-            raise OWStateError("Ambtsgebied is required to create a new regelingsgebied.")
+            raise OWStateError("Ambtsgebied required to create new regelingsgebied.")
 
+        # Create initial regelingsgebied
+        self._create_regelingsgebied(ambtsgebied_ref=self._ambtsgebied.OW_ID)
+
+    def _create_regelingsgebied(self, ambtsgebied_ref: str) -> OWRegelingsgebied:
         ow_id: str = generate_ow_id(IMOWTYPES.REGELINGSGEBIED, self._provincie_id)
         regelingsgebied = OWRegelingsgebied(
             OW_ID=ow_id,
-            ambtsgebied=self._ambtsgebied.OW_ID,
+            ambtsgebied=ambtsgebied_ref,
             procedure_status=self._ow_procedure_status,
         )
         self._ow_repository.add_new_ow(regelingsgebied)
         return regelingsgebied
 
-    def _mutate_regelingsgebied(self, known_regelingsgebied_id: str, new_ambtsgebied_id: str) -> OWRegelingsgebied:
-        regelingsgebied = OWRegelingsgebied(
-            OW_ID=known_regelingsgebied_id,
-            ambtsgebied=new_ambtsgebied_id,
-            procedure_status=self._ow_procedure_status,
-        )
-        self._ow_repository.add_mutated_ow(regelingsgebied)
-        return regelingsgebied
+    def _mutate_regelingsgebied(
+        self, existing_regelingsgebied: OWRegelingsgebied, new_ambtsgebied_ref: str
+    ) -> OWRegelingsgebied:
+        updated_regelingsgebied = existing_regelingsgebied.copy(deep=True)
+        updated_regelingsgebied.ambtsgebied = new_ambtsgebied_ref
+        self._ow_repository.add_mutated_ow(updated_regelingsgebied)
+        return updated_regelingsgebied
 
     def build_template_data(self) -> OwRegelingsgebiedFileData:
         new_regelingsgebieden = self._ow_repository.get_new_regelingsgebied()
