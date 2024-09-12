@@ -31,6 +31,10 @@ class BestuurlijkeGrenzenVerwijzing(BaseModel):
     domein: str
     geldig_op: str
 
+    @validator("bestuurlijke_grenzen_id", pre=True, always=True)
+    def convert_to_upper(cls, v):
+        return v.upper() if isinstance(v, str) else v
+
 
 class OWRegelingsgebied(OWObject):
     ambtsgebied: str  # OW id ref
@@ -45,6 +49,7 @@ class OWLocatie(OWObject):
 
 
 class OWAmbtsgebied(OWLocatie):
+    noemer: str
     bestuurlijke_grenzen_verwijzing: BestuurlijkeGrenzenVerwijzing
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
