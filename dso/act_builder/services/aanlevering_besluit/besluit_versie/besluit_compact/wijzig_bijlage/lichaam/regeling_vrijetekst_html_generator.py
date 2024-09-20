@@ -1,3 +1,4 @@
+import os
 from copy import copy
 
 from lxml import etree
@@ -12,6 +13,7 @@ from .......state_manager.state_manager import StateManager
 class RegelingVrijetekstHtmlGenerator:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
+        self._debug_enabled = os.getenv("DEBUG_MODE", "").lower() in ("true", "1")
 
     def create(self):
         html: str = self._resolve_objects()
@@ -47,10 +49,11 @@ class RegelingVrijetekstHtmlGenerator:
             )
 
             object_html = middleware_image_in_p(object_html)
-            # @todo remove debug
-            if not "html_templates" in self._state_manager.debug:
-                self._state_manager.debug["html_templates"] = {}
-            self._state_manager.debug["html_templates"][object_code] = copy(object_html)
+
+            if self._debug_enabled:
+                if "html_templates" not in self._state_manager.debug:
+                    self._state_manager.debug["html_templates"] = {}
+                self._state_manager.debug["html_templates"][object_code] = copy(object_html)
 
             new_elements = lxml_html.fragments_fromstring(object_html)
 

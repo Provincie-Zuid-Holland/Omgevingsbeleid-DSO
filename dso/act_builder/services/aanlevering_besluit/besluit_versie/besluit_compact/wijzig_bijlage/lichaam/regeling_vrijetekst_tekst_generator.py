@@ -1,5 +1,6 @@
+import os
 import re
-from copy import deepcopy
+from copy import copy, deepcopy
 from uuid import UUID
 
 from bs4 import BeautifulSoup
@@ -16,30 +17,36 @@ from .......state_manager.state_manager import StateManager
 class RegelingVrijetekstTekstGenerator:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
+        self._debug_enabled = os.getenv("DEBUG_MODE", "").lower() in ("true", "1")
 
     def create(self, html: str):
         tekst: str = self._html_to_xml_lichaam(html)
-        # self._state_manager.debug["tekst-part-1"] = copy(tekst)
+        self._set_debug("text-stage-xml", tekst)
 
         tekst = self._enrich_illustratie(tekst)
-        # self._state_manager.debug["tekst-part-2"] = copy(tekst)
+        self._set_debug("text-stage-img", tekst)
 
         tekst = self._add_ewids(tekst)
-        # self._state_manager.debug["tekst-part-3"] = copy(tekst)
+        self._set_debug("text-stage-ewids", tekst)
 
         tekst = self._handle_annotation_refs(tekst)
+        self._set_debug("text-stage-annotation", tekst)
 
         tekst = self._remove_hints(tekst)
-        # self._state_manager.debug["tekst-part-4"] = copy(tekst)
+        self._set_debug("text-stage-deleted-hints", tekst)
 
         return tekst
+
+    def _set_debug(self, key: str, value: str):
+        if self._debug_enabled:
+            self._state_manager.debug[key] = copy(value)
 
     def _html_to_xml_lichaam(self, html: str) -> str:
         if not is_html_valid(html):
             raise RuntimeError("Invalid html")
 
         html = middleware_enrich_table(html)
-        # self._state_manager.debug["tekst-part-0"] = copy(html)
+        self._set_debug("text-stage-html", html)
 
         input_soup = BeautifulSoup(html, "html.parser")
         lichaam = Lichaam()
