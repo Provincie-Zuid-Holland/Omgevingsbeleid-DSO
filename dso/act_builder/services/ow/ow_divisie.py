@@ -1,12 +1,15 @@
+import os
 from typing import List, Optional, Set
 
 from pydantic.main import BaseModel
 
 from ....services.ow import (
     IMOWTYPES,
+    OWAmbtsgebied,
     OWDivisie,
     OwDivisieObjectType,
     OWDivisieTekst,
+    OWGebiedenGroep,
     OWObject,
     OWObjectGenerationError,
     OwProcedureStatus,
@@ -52,6 +55,9 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ow_procedure_status = ow_procedure_status
         self._used_object_types: Set[OwDivisieObjectType] = set()
 
+        self._ambtsgebied: Optional[OWAmbtsgebied] = self._ow_repository.get_active_amtsgebied()
+        self._debug_enabled = os.getenv("DEBUG_MODE", "").lower() in ("true", "1")
+
     def handle_ow_object_changes(self):
         for division_map in self._annotation_lookup.values():
             known_divisie = self._ow_repository.get_existing_divisie(division_map["wid"])
@@ -61,54 +67,75 @@ class OwDivisieBuilder(OwFileBuilder):
                 self.process_new_divisie(division_map=division_map)
         self.terminate_removed_wids()
 
-    def process_existing_divisie(self, known_divisie: OWObject, divisie_map: dict):
-        known_gebied_code = self._ow_repository.get_existing_werkingsgebied_code_by_divisie(known_divisie.OW_ID)
-        if not known_gebied_code:
-            raise OWObjectStateException(
-                message=f"Expected to find werkingsgebied code in input state for existing divisie: {divisie_map['wid']}",
-                ref_ow_id=known_divisie.OW_ID,
-            )
-
-        if divisie_map["gebied_code"] != known_gebied_code:
-            self.handle_gebied_code_mutation(known_divisie, divisie_map)
-
-    def handle_gebied_code_mutation(self, known_divisie, values):
+    def process_existing_divisie(self, known_divisie: OWObject, annotation_data: dict):
+        """
+        Process existing divisie by comparing the current state with the new state.
+        if ambtsgebied is used, the new divisie will be mapped to the active ambtsgebied.
+        """
+        # fetch divs existing owtekstdeel
         known_tekstdeel = self._ow_repository.get_existing_tekstdeel_by_divisie(known_divisie.OW_ID)
         if not known_tekstdeel:
             raise OWObjectStateException(
-                message="Expected to find tekstdeel for existing divisie",
+                message="No existing tekstdeel to mutate for div", ref_ow_id=known_divisie.OW_ID
+            )
+
+        if annotation_data["uses_ambtsgebied"]:
+            # handle annotating ambtsgebied only if changed
+            if not self._ambtsgebied:
+                raise OWObjectStateException(message="Expected to find active ambtsgebied since uses_ambtsgebied")
+            if known_tekstdeel.locaties[0] == self._ambtsgebied.OW_ID:
+                return  # skip mutation
+
+            self._update_tekstdeel_location(ow_tekstdeel=known_tekstdeel, ow_location_id=self._ambtsgebied.OW_ID)
+        elif annotation_data["gebied_code"]:
+            # handle annotating a gebiedengroep only if changed
+            existing_ref = self._ow_repository.get_known_state_object(known_tekstdeel.locaties[0])
+            if existing_ref and isinstance(existing_ref, OWGebiedenGroep):
+                if existing_ref.mapped_geo_code == annotation_data["gebied_code"]:
+                    return  # skip mutation
+
+            # fetch latest gebied from either pending state or known state
+            ow_gebiedengroep = self._ow_repository.get_active_gebiedengroep_by_code(annotation_data["gebied_code"])
+            if not ow_gebiedengroep:
+                raise OWObjectStateException(
+                    message=f"Mutating tekstdeel but: {annotation_data['gebied_code']} missing owlocation in state",
+                )
+
+            self._update_tekstdeel_location(ow_tekstdeel=known_tekstdeel, ow_location_id=ow_gebiedengroep.OW_ID)
+        else:
+            raise OWObjectStateException(
+                message="Requiring either gebied_code or use_ambtsgebied for annotation data in division",
                 ref_ow_id=known_divisie.OW_ID,
             )
 
-        ow_gebiedengroep = self._ow_repository.get_active_gebiedengroep_by_code(values["gebied_code"])
-        if not ow_gebiedengroep:
-            raise OWObjectStateException(
-                message=f"Expected gebiedengroep with werkingsgebied: {values['gebied_code']} in new state",
-            )
-
-        new_ow_tekstdeel = known_tekstdeel.copy(deep=True, exclude={"locaties"})
-        new_ow_tekstdeel.locaties = [ow_gebiedengroep.OW_ID]
-        self._ow_repository.add_mutated_ow(new_ow_tekstdeel)
-
     def process_new_divisie(self, division_map: dict) -> OWTekstdeel:
+        """
+        Generates new OW divisie(tekst) tag and a OWTekstdeel container
+        with refs. Either latest known ambtsgebied with be tagged or latest location ID
+        based on the area code.
+        """
         new_div = self._new_divisie(
             tag=division_map["tag"],
             wid=division_map["wid"],
             object_code=division_map["object_code"],
         )
 
-        werkingsgebied_code = division_map["gebied_code"]
+        if division_map["uses_ambtsgebied"]:
+            if not self._ambtsgebied:
+                raise OWObjectStateException(message="Expected to find active ambtsgebied in ow_repository")
+            return self._new_text_mapping(new_div.OW_ID, [self._ambtsgebied.OW_ID])
+        else:
+            werkingsgebied_code = division_map["gebied_code"]
+            active_gebiedengroep = self._ow_repository.get_gebiedengroep_by_code(werkingsgebied_code)
+            if not active_gebiedengroep:
+                active_gebiedengroep = self._ow_repository.get_known_gebiedengroep_by_code(werkingsgebied_code)
 
-        active_gebiedengroep = self._ow_repository.get_gebiedengroep_by_code(werkingsgebied_code)
-        if not active_gebiedengroep:
-            active_gebiedengroep = self._ow_repository.get_known_gebiedengroep_by_code(werkingsgebied_code)
+            if not active_gebiedengroep:
+                raise OWObjectStateException(
+                    message=f"Expected to find existing werkingsgebied: {werkingsgebied_code} in ow_repository",
+                )
 
-        if not active_gebiedengroep:
-            raise OWObjectStateException(
-                message=f"Expected to find existing werkingsgebied: {werkingsgebied_code} in ow_repository",
-            )
-
-        return self._new_text_mapping(new_div.OW_ID, [active_gebiedengroep.OW_ID])
+            return self._new_text_mapping(new_div.OW_ID, [active_gebiedengroep.OW_ID])
 
     def terminate_removed_wids(self):
         for wid in self._terminated_wids:
@@ -159,9 +186,14 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ow_repository.add_new_ow(ow_text_mapping)
         return ow_text_mapping
 
-    def _update_tekstdeel_gebiedengroep(self, ow_tekstdeel: OWTekstdeel, ow_location_id: str) -> None:
+    def _update_tekstdeel_location(self, ow_tekstdeel: OWTekstdeel, ow_location_id: str) -> None:
         new_ow_tekstdeel = ow_tekstdeel.copy(deep=True, exclude={"locaties"})
-        new_ow_tekstdeel.locaties = [ow_location_id]
+        new_ow_tekstdeel.locaties = [ow_location_id]  # supporting only 1 ref for now
+        if ow_location_id == ow_tekstdeel.locaties[0]:
+            raise OWObjectStateException(
+                message="Mutating tekstdeel but location refs are the same",
+                ref_ow_id=ow_location_id,
+            )
         self._ow_repository.add_mutated_ow(new_ow_tekstdeel)
 
     def get_used_object_types(self) -> List[OwDivisieObjectType]:
