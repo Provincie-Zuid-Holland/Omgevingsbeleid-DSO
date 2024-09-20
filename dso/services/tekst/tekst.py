@@ -591,11 +591,13 @@ class Divisietekst(Element):
         self.wid_code: Optional[str] = None
         self.object_code: Optional[str] = None
         self.gebied_code: Optional[str] = None
+        self.ambtsgebied: Optional[bool] = None
 
         if tag is not None:
             self.wid_code = tag.get("data-hint-wid-code", None)
             self.object_code = tag.get("data-hint-object-code", None)
             self.gebied_code = tag.get("data-hint-gebied-code", None)
+            self.ambtsgebied = tag.get("data-hint-ambtsgebied", None)
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         # A div requires a new Divisie which a Divisietekst can not create
@@ -624,6 +626,11 @@ class Divisietekst(Element):
         raise RuntimeError(f"Consume string not implemented for Divisietekst for code {self.object_code}")
 
     def consume_comment(self, comment: Comment) -> LeftoverTag:
+        """
+        Divisietekst template comments:
+            - [OBJECT-CODE:objecttype-123]
+            - [GEBIED-CODE:werkingsgebied-123]
+        """
         object_code: Optional[str] = extract_object_code(str(comment))
         if object_code is not None:
             self.object_code = object_code
@@ -641,12 +648,23 @@ class Divisietekst(Element):
         return self.inhoud
 
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
+        """
+        Builds Divisietekst Tag and adds additional data hint attributes
+        Edge case for gebied_code "ambtsgebied" which sets its own tag
+        instead of data-hint-gebied-code.
+        """
         tag_divisietekst: Tag = soup.new_tag("Divisietekst")
         wid_code = self.wid_code or self.object_code
+
         tag_divisietekst.attrs = {
             **({"data-hint-wid-code": wid_code} if wid_code else {}),
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
-            **({"data-hint-gebied-code": self.gebied_code} if self.gebied_code else {}),
+            **(
+                {"data-hint-gebied-code": self.gebied_code}
+                if self.gebied_code and self.gebied_code != "ambtsgebied"
+                else {}
+            ),
+            **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
         }
 
         if self.kop is not None:
@@ -667,6 +685,7 @@ class Divisie(Element):
         self.wid_code = tag.get("data-hint-wid-code", None)
         self.object_code = tag.get("data-hint-object-code", None)
         self.gebied_code = tag.get("data-hint-gebied-code", None)
+        self.ambtsgebied = tag.get("data-hint-ambtsgebied", None)
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         while True:
@@ -738,6 +757,11 @@ class Divisie(Element):
         raise RuntimeError(f"Consume string not implemented for Divisie. For code: {self.object_code}")
 
     def consume_comment(self, comment: Comment) -> LeftoverTag:
+        """
+        Divisie template comments:
+            - [OBJECT-CODE:objecttype-123]
+            - [GEBIED-CODE:werkingsgebied-123]
+        """
         object_code: Optional[str] = extract_object_code(str(comment))
         if object_code is not None:
             self.object_code = object_code
@@ -764,18 +788,30 @@ class Divisie(Element):
         return self.contents[-1]
 
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
+        """
+        Builds Divisie Tag and adds additional data hint attributes
+        Edge case for gebied_code "ambtsgebied" which sets its own tag
+        instead of data-hint-gebied-code.
+        """
         tag_divisie: Tag = soup.new_tag("Divisie")
         wid_code = self.wid_code or self.object_code
+
         tag_divisie.attrs = {
             **({"data-hint-wid-code": wid_code} if wid_code else {}),
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
-            **({"data-hint-gebied-code": self.gebied_code} if self.gebied_code else {}),
+            **(
+                {"data-hint-gebied-code": self.gebied_code}
+                if self.gebied_code and self.gebied_code != "ambtsgebied"
+                else {}
+            ),
+            **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
         }
 
         if self.kop is not None:
             tag_kop: Tag = self.kop.as_xml(soup)
             tag_divisie.append(tag_kop)
 
+        # Loop through contents and append them to the Divisie tag
         for content in self.contents:
             if hasattr(content, "as_xml"):
                 child = content.as_xml(soup)
@@ -783,7 +819,7 @@ class Divisie(Element):
             elif isinstance(content, str):
                 tag_divisie.append(content)
             else:
-                raise RuntimeError("Can not convert child to xml")
+                raise RuntimeError("Cannot convert child to XML")
 
         return tag_divisie
 

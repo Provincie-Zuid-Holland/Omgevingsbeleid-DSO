@@ -131,7 +131,16 @@ class EWIDService:
             # Remember the EWID for location annotated policy objects
             object_code = element.get("data-hint-object-code", None)
             gebied_code = element.get("data-hint-gebied-code", None)
-            if object_code is not None and gebied_code is not None:
+            uses_ambtsgebied: bool = element.get("data-hint-ambtsgebied", False)
+
+            if object_code is not None and uses_ambtsgebied:
+                self._state_object_tekst_lookup[object_code] = {
+                    "wid": wid,
+                    "tag": element.tag,
+                    "object_code": object_code,
+                    "uses_ambtsgebied": True,
+                }
+            elif object_code is not None and gebied_code is not None:
                 werkingsgebied: Werkingsgebied = self._werkingsgebied_repository.get_by_code(gebied_code)
                 self._state_object_tekst_lookup[object_code] = {
                     "wid": wid,
@@ -139,6 +148,7 @@ class EWIDService:
                     "object_code": object_code,
                     "gebied_code": gebied_code,
                     "gebied_uuid": str(werkingsgebied.UUID),
+                    "uses_ambtsgebied": False,
                 }
 
         for child in element:
