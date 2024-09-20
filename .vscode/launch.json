@@ -19,69 +19,25 @@
                 "./input",
             ],
             "console": "integratedTerminal",
-            "justMyCode": true
+            "justMyCode": true,
+            "env": {
+                "DEBUG_MODE": "True"
+            }
         },
         {
-            "name": "DSO Initieel 01 Visie Compleet",
+            "name": "DSO generate specific",
             "type": "debugpy",
             "request": "launch",
             "module": "dso.cmds",
             "args": [
                 "generate",
-                "./input/omgevingsvisie/initieel/01-visie-compleet",
-            ],
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "DSO 02-1 Mutaties",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "dso.cmds",
-            "args": [
-                "generate",
-                "./input/02-1-wijziging-visie-full",
+                "./input/omgevingsvisie/mutatie/renvooi/*SET*",
             ],
             "console": "internalConsole",
-            "justMyCode": true
-        },
-        {
-            "name": "DSO 02-2 mutatie zonder OW",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "dso.cmds",
-            "args": [
-                "generate",
-                "./input/02-2-wijziging-geen-ow",
-                "--json-file",
-                "main.json"
-            ],
-            "console": "internalConsole",
-            "justMyCode": true
-        },
-        {
-            "name": "DSO 01-2 initial GBA",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "dso.cmds",
-            "args": [
-                "generate",
-                "./input/01-2-initial-gebiedsaanwijzing",
-            ],
-            "console": "internalConsole",
-            "justMyCode": true
-        },
-        {
-            "name": "DSO 02-3 mutate gba",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "dso.cmds",
-            "args": [
-                "generate",
-                "./input/02-3-wijziging-gebiedsaanwijzing",
-            ],
-            "console": "internalConsole",
-            "justMyCode": true
+            "justMyCode": true,
+            "env": {
+                "DEBUG_MODE": "True"
+            }
         },
     ]
 }
