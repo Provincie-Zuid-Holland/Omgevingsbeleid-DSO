@@ -29,7 +29,6 @@ def run_generate(input_dir: str, base_output_dir: Optional[str], json_file: str 
     builder.save_files(str(output_dir))
 
 
-
 @click.command()
 @click.argument("input_dir")
 @click.argument("output_dir", required=False, default=None)
@@ -42,7 +41,7 @@ def generate(input_dir: str, output_dir: Optional[str], json_file: str):
 @click.argument("input_dir")
 @click.argument("output_dir", required=False, default=None)
 def generate_all(input_dir: Optional[str], output_dir: Optional[str]):
-    for path in Path(input_dir).rglob('main.json'):
+    for path in Path(input_dir).rglob("main.json"):
         dir_with_main = path.parent
         run_generate(str(dir_with_main), output_dir)
 
