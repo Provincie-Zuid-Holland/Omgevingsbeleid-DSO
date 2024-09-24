@@ -16,7 +16,7 @@ from ....services.ow import (
     OWRegelingsgebied,
     OWTekstdeel,
 )
-from ..exceptions import OWObjectStateException, OWStateMutationError
+from ..exceptions import OWStateMutationError
 
 
 # TODO: Refactor to more efficient lookups
