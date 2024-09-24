@@ -28,7 +28,6 @@ class StateManager:
             wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.Expression_Version}",
             known_wid_map=input_data.get_known_wid_map(),
             known_wids=input_data.get_known_wids(),
-            werkingsgebied_repository=input_data.resources.werkingsgebied_repository,
         )
         self.bill_ewid_service: EWIDService = EWIDService(
             wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.Expression_Version}",

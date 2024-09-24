@@ -74,7 +74,7 @@ class OwBuilder(BuilderService):
             provincie_id=provincie_id,
             levering_id=levering_id,
             ow_repository=state_manager.ow_repository,
-            annotation_lookup_map=state_manager.act_ewid_service.get_state_object_tekst_lookup(),
+            annotation_lookup_map=state_manager.annotation_ref_lookup_map,
             terminated_wids=self.terminated_wids,
             ow_procedure_status=ow_procedure_status,
         )

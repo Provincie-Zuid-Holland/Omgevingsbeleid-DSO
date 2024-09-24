@@ -1,11 +1,11 @@
 import os
-import re
-from copy import copy, deepcopy
+from copy import copy
 from uuid import UUID
 
 from bs4 import BeautifulSoup
 from lxml import etree
 
+from ........services.ow.ow_annotation_service import OWAnnotationService
 from ........services.tekst.middleware import middleware_enrich_table
 from ........services.tekst.tekst import Lichaam
 from ........services.utils.helpers import is_html_valid
@@ -18,6 +18,10 @@ class RegelingVrijetekstTekstGenerator:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
         self._debug_enabled = os.getenv("DEBUG_MODE", "").lower() in ("true", "1")
+        self._ow_annotation_service: OWAnnotationService = OWAnnotationService(
+            werkingsgebied_repository=self._state_manager.input_data.resources.werkingsgebied_repository,
+            used_wid_map=self._state_manager.act_ewid_service.get_state_used_wid_map(),
+        )
 
     def create(self, html: str):
         tekst: str = self._html_to_xml_lichaam(html)
@@ -84,56 +88,26 @@ class RegelingVrijetekstTekstGenerator:
         return result
 
     def _handle_annotation_refs(self, xml_data: str) -> str:
-        # annotation tags/refs left in the xml data, require ewids to be generated first.
-        ewid_service = self._state_manager.act_ewid_service
-        state_used_wid_map = deepcopy(ewid_service.get_state_used_wid_map())
-        # annotation_map = {}
-        root = etree.fromstring(xml_data)
-
-        # Handle IntIoRef tags
-        for element in root.xpath("//IntIoRef"):
-            # find first parent element that is Divisietekst tag
-            parent = element.getparent()
-            while parent is not None and parent.tag != "Divisietekst":
-                parent = parent.getparent()
-
-            # retrieve the used inioref pointers WID from bijlage
-            wid_ref_key_pattern = (
-                f"bijlage-werkingsgebieden-divisietekst-referentie-{element.attrib['data-hint-locatie']}-ref"
-            )
-            for key, value in state_used_wid_map.items():
-                if re.match(wid_ref_key_pattern, key):
-                    # replace the element "ref" tag  with annotation_ref_wid
-                    element.attrib["ref"] = value
-                    break
-
-            # update state with data for gebiedsaanwijzing
-            self._state_manager.annotation_ref_lookup_map[element.attrib["wId"]] = {
-                "type_annotation": "gebiedsaanwijzing",
-                "ref": element.attrib["ref"],
-                "werkingsgebied_code": element.attrib.pop("data-hint-locatie"),
-                "groep": element.attrib.pop("data-hint-gebiedengroep"),
-                "type": element.attrib.pop("data-hint-gebiedsaanwijzingtype"),
-                "parent_div": {
-                    "wid": parent.attrib["wId"],
-                    "object-code": parent.attrib["data-hint-object-code"],
-                    "gebied-code": parent.attrib["data-hint-gebied-code"],
-                },
-            }
-
-        output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
-        return output
+        result = self._ow_annotation_service.build_annotation_map(xml_source=xml_data)
+        self._state_manager.annotation_ref_lookup_map = self._ow_annotation_service.get_annotation_map()
+        return result
 
     def _remove_hints(self, xml_data: str) -> str:
-        xml_data = self._clean_attribute(xml_data, "data-hint-gebied-code")
-        xml_data = self._clean_attribute(xml_data, "data-hint-object-code")
-        xml_data = self._clean_attribute(xml_data, "data-hint-wid-code")
-        return xml_data
+        attributes = [
+            "data-hint-gebied-code",
+            "data-hint-object-code",
+            "data-hint-wid-code",
+            "data-hint-ambtsgebied",
+            "data-hint-locatie",
+            "data-hint-gebiedengroep",
+            "data-hint-gebiedsaanwijzingtype",
+        ]
 
-    def _clean_attribute(self, xml_data: str, attribute: str) -> str:
         root = etree.fromstring(xml_data)
-        for element in root.xpath(f"//*[@{attribute}]"):
-            element.attrib.pop(attribute)
+
+        for attribute in attributes:
+            for element in root.xpath(f"//*[@{attribute}]"):
+                element.attrib.pop(attribute)
 
         output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
         return output
