@@ -1,11 +1,7 @@
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from typing import Dict, List, Optional
+from typing import Dict, List
 
-from ...act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
-from ...act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
-    WerkingsgebiedRepository,
-)
 from . import ELEMENT_REF, EIDGenerationError
 
 
@@ -19,9 +15,7 @@ class EWIDService:
         wid_prefix: str,
         known_wid_map: Dict[str, str] = {},
         known_wids: List[str] = [],
-        werkingsgebied_repository: Optional[WerkingsgebiedRepository] = None,
     ):
-        self._werkingsgebied_repository: Optional[WerkingsgebiedRepository] = werkingsgebied_repository
         self._wid_prefix: str = wid_prefix
         self._known_wid_map: Dict[str, str] = known_wid_map
         # Make it a map for faster lookup
@@ -52,9 +46,6 @@ class EWIDService:
 
     def get_state_used_wids(self) -> List[str]:
         return self._state_used_wids
-
-    def get_state_object_tekst_lookup(self) -> dict:
-        return self._state_object_tekst_lookup
 
     def _parse_xml(self, xml_string: str):
         try:
@@ -126,30 +117,6 @@ class EWIDService:
 
         if wid_lookup_object_code is not None:
             self._state_used_wid_map[wid_lookup_object_code] = wid
-
-        if self._werkingsgebied_repository is not None:
-            # Remember the EWID for location annotated policy objects
-            object_code = element.get("data-hint-object-code", None)
-            gebied_code = element.get("data-hint-gebied-code", None)
-            uses_ambtsgebied: bool = element.get("data-hint-ambtsgebied", False)
-
-            if object_code is not None and uses_ambtsgebied:
-                self._state_object_tekst_lookup[object_code] = {
-                    "wid": wid,
-                    "tag": element.tag,
-                    "object_code": object_code,
-                    "uses_ambtsgebied": True,
-                }
-            elif object_code is not None and gebied_code is not None:
-                werkingsgebied: Werkingsgebied = self._werkingsgebied_repository.get_by_code(gebied_code)
-                self._state_object_tekst_lookup[object_code] = {
-                    "wid": wid,
-                    "tag": element.tag,
-                    "object_code": object_code,
-                    "gebied_code": gebied_code,
-                    "gebied_uuid": str(werkingsgebied.UUID),
-                    "uses_ambtsgebied": False,
-                }
 
         for child in element:
             self._fill_ewid(
