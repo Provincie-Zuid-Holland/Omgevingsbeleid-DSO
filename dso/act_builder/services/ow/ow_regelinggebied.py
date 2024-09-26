@@ -14,6 +14,7 @@ from ....services.ow import (
 from ...state_manager.exceptions import OWStateError
 from .ow_file_builder import OwFileBuilder
 from .ow_builder_context import BuilderContext
+from ...state_manager.states.ow_repository import OWStateRepository
 
 
 class OwRegelingsgebiedFileData(BaseModel):
@@ -42,11 +43,12 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
     FILE_NAME = "owRegelingsgebied.xml"
     TEMPLATE_PATH = "ow/owRegelingsgebied.xml"
 
-    def __init__(self, context: BuilderContext):
+    def __init__(self, context: BuilderContext, ow_repository: OWStateRepository):
         super().__init__()
         self._context = context
         self._used_object_types = [OwRegelingsgebiedObjectType.REGELINGSGEBIED]
         self._ambtsgebied: Optional[OWAmbtsgebied] = None
+        self._ow_repository = ow_repository
 
     def get_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
         return self._ambtsgebied
@@ -55,7 +57,7 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         return [obj.value for obj in self._used_object_types]
 
     def handle_ow_object_changes(self) -> None:
-        new_ambtsgebied = self._context.ow_repository.get_new_ambtsgebied()
+        new_ambtsgebied = self._ow_repository.get_new_ambtsgebied()
 
         if not new_ambtsgebied:
             # No ambtsgebied ref changes, so exit early
@@ -64,7 +66,7 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         self._ambtsgebied = new_ambtsgebied
 
         # Check for existing regelingsgebied
-        known_regelingsgebied = self._context.ow_repository.get_existing_regelingsgebied()
+        known_regelingsgebied = self._ow_repository.get_existing_regelingsgebied()
 
         if known_regelingsgebied:
             # Mutate reference if existing regelingsgebied found
@@ -87,7 +89,7 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
             ambtsgebied=ambtsgebied_ref,
             procedure_status=self._context.ow_procedure_status,
         )
-        self._context.ow_repository.add_new_ow(regelingsgebied)
+        self._ow_repository.add_new_ow(regelingsgebied)
         return regelingsgebied
 
     def _mutate_regelingsgebied(
@@ -95,13 +97,13 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
     ) -> OWRegelingsgebied:
         updated_regelingsgebied = existing_regelingsgebied.copy(deep=True)
         updated_regelingsgebied.ambtsgebied = new_ambtsgebied_ref
-        self._context.ow_repository.add_mutated_ow(updated_regelingsgebied)
+        self._ow_repository.add_mutated_ow(updated_regelingsgebied)
         return updated_regelingsgebied
 
     def build_template_data(self) -> OwRegelingsgebiedFileData:
-        new_regelingsgebieden = self._context.ow_repository.get_new_regelingsgebied()
-        mutated_regelingsgebieden = self._context.ow_repository.get_mutated_regelingsgebied()
-        terminated_regelingsgebieden = self._context.ow_repository.get_terminated_regelingsgebied()
+        new_regelingsgebieden = self._ow_repository.get_new_regelingsgebied()
+        mutated_regelingsgebieden = self._ow_repository.get_mutated_regelingsgebied()
+        terminated_regelingsgebieden = self._ow_repository.get_terminated_regelingsgebied()
 
         template_data = OwRegelingsgebiedFileData(
             levering_id=self._context.levering_id,

@@ -7,6 +7,7 @@ from ....services.ow.models import BestuurlijkeGrenzenVerwijzing, OWAmbtsgebied,
 from ....services.ow.ow_id import generate_ow_id
 from ...state_manager.input_data.ambtsgebied import Ambtsgebied
 from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Locatie, Werkingsgebied
+from ...state_manager.states.ow_repository import OWStateRepository
 from .ow_file_builder import OwFileBuilder
 from .ow_builder_context import BuilderContext
 
@@ -33,26 +34,28 @@ class OwLocatieBuilder(OwFileBuilder):
         context: BuilderContext,
         werkingsgebieden: List[Werkingsgebied],
         ambtsgebied: Ambtsgebied,
+        ow_repository: OWStateRepository,
     ) -> None:
         super().__init__()
         self._context = context
         self._werkingsgebieden = werkingsgebieden
         self._ambtsgebied_data = ambtsgebied
         self._used_object_types: Set[OwLocatieObjectType] = set()
+        self._ow_repository = ow_repository
 
     def handle_ow_object_changes(self) -> None:
         """
         Compares werkingsgebied objects with previous OW state and
         determines if new, mutation or termination action is needed.
         """
-        existing_ambtsgebied_id = self._context.ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied_data.UUID)
+        existing_ambtsgebied_id = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied_data.UUID)
         if existing_ambtsgebied_id:
             self.mutate_ow_ambtsgebied(self._ambtsgebied_data, existing_ambtsgebied_id)
         else:
             self.create_ow_ambtsgebied(self._ambtsgebied_data)
 
         for werkingsgebied in self._werkingsgebieden:
-            existing_ow_gebied: Optional[OWGebied] = self._context.ow_repository.get_known_gebied_by_code(
+            existing_ow_gebied: Optional[OWGebied] = self._ow_repository.get_known_gebied_by_code(
                 werkingsgebied_code=werkingsgebied.Code
             )
             if not existing_ow_gebied:
@@ -74,7 +77,7 @@ class OwLocatieBuilder(OwFileBuilder):
             procedure_status=self._context.ow_procedure_status,
             mapped_geo_code=werkingsgebied_code,
         )
-        self._context.ow_repository.add_new_ow(gebied)
+        self._ow_repository.add_new_ow(gebied)
         return gebied
 
     def new_ow_gebiedengroep(self, werkingsgebied: Werkingsgebied) -> OWGebiedenGroep:
@@ -92,7 +95,7 @@ class OwLocatieBuilder(OwFileBuilder):
             mapped_geo_code=werkingsgebied.Code,
             gebieden=gebieden,
         )
-        self._context.ow_repository.add_new_ow(new_gebiedengroep)
+        self._ow_repository.add_new_ow(new_gebiedengroep)
         return new_gebiedengroep
 
     def mutate_ow_gebied(self, locatie: Locatie, existing_gebied_id: str, code: str) -> OWGebied:
@@ -103,7 +106,7 @@ class OwLocatieBuilder(OwFileBuilder):
             procedure_status=self._context.ow_procedure_status,
             mapped_geo_code=code,
         )
-        self._context.ow_repository.add_mutated_ow(mutated_obj)
+        self._ow_repository.add_mutated_ow(mutated_obj)
         return mutated_obj
 
     def mutate_ow_ambtsgebied(self, ambtsgebied_data: Ambtsgebied, existing_ambtsgebied_id: str) -> OWAmbtsgebied:
@@ -118,7 +121,7 @@ class OwLocatieBuilder(OwFileBuilder):
             mapped_uuid=ambtsgebied_data.UUID,
             procedure_status=self._context.ow_procedure_status,
         )
-        self._context.ow_repository.add_mutated_ow(mutated_ambtsgebied)
+        self._ow_repository.add_mutated_ow(mutated_ambtsgebied)
         return mutated_ambtsgebied
 
     def get_used_object_types(self) -> List[OwLocatieObjectType]:
@@ -134,9 +137,9 @@ class OwLocatieBuilder(OwFileBuilder):
                 self._used_object_types.add(OwLocatieObjectType.AMBTSGEBIED)
 
     def build_template_data(self) -> Optional[OwLocatieTemplateData]:
-        new_locations = self._context.ow_repository.get_new_locations()
-        mutated_locations = self._context.ow_repository.get_mutated_locations()
-        terminated_locations = self._context.ow_repository.get_terminated_locations()
+        new_locations = self._ow_repository.get_new_locations()
+        mutated_locations = self._ow_repository.get_mutated_locations()
+        terminated_locations = self._ow_repository.get_terminated_locations()
 
         if not (new_locations or mutated_locations or terminated_locations):
             return None

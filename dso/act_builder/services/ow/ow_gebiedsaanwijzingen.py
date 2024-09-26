@@ -2,13 +2,14 @@ from typing import List, Optional, Set
 
 from pydantic.main import BaseModel
 
-from dso.act_builder.state_manager.exceptions import OWStateError
 
 from ....services.ow.enums import IMOWTYPES, OwGebiedsaanwijzingObjectType, OwProcedureStatus
 from ....services.ow.models import OWGebiedsaanwijzing, OWObject
 from ....services.ow.ow_id import generate_ow_id
 from .ow_file_builder import OwFileBuilder
 from .ow_builder_context import BuilderContext
+from ...state_manager.states.ow_repository import OWStateRepository
+from ...state_manager.exceptions import OWStateError
 
 
 class OwGebiedsaanwijzingTemplateData(BaseModel):
@@ -32,11 +33,13 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
         self,
         context: BuilderContext,
         annotation_lookup_map: dict,
+        ow_repository: OWStateRepository,
     ) -> None:
         super().__init__()
         self._context = context
         self._annotation_lookup_map = annotation_lookup_map
         self._used_object_types: Set[OwGebiedsaanwijzingTemplateData] = set()
+        self._ow_repository = ow_repository
 
     def handle_ow_object_changes(self) -> None:
         """
@@ -53,16 +56,16 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
             if annotation["type_annotation"] != "gebiedsaanwijzing":
                 continue
 
-            locatie = self._context.ow_repository.get_active_gebiedengroep_by_code(annotation["werkingsgebied_code"])
+            locatie = self._ow_repository.get_active_gebiedengroep_by_code(annotation["werkingsgebied_code"])
             if not locatie:
                 raise OWStateError(f"Locatie not found for code {annotation['werkingsgebied_code']}")
 
-            parent_divisie = self._context.ow_repository.get_active_div_by_wid(wid=annotation["parent_div"]["wid"])
+            parent_divisie = self._ow_repository.get_active_div_by_wid(wid=annotation["parent_div"]["wid"])
             if not parent_divisie:
                 raise OWStateError(
                     f"Creating gebiedsaanwijzing for non-existing divisie wid {annotation['parent_div']['wid']}"
                 )
-            ow_tekstdeel = self._context.ow_repository.get_active_tekstdeel_by_div(divisie_ow_id=parent_divisie.OW_ID)
+            ow_tekstdeel = self._ow_repository.get_active_tekstdeel_by_div(divisie_ow_id=parent_divisie.OW_ID)
             if not ow_tekstdeel:
                 raise OWStateError(
                     f"Creating gebiedsaanwijzing for non-existing tekstdeel. divisie owid: {parent_divisie.OW_ID}"
@@ -71,7 +74,7 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
             new_gebiedsaanwijzing = True
             if ow_tekstdeel.gebiedsaanwijzingen:
                 for gba_ref in ow_tekstdeel.gebiedsaanwijzingen:
-                    known_gba: Optional[OWGebiedsaanwijzing] = self._context.ow_repository.get_known_state_object(ow_id=gba_ref)
+                    known_gba: Optional[OWGebiedsaanwijzing] = self._ow_repository.get_known_state_object(ow_id=gba_ref)
                     if known_gba and known_gba.locaties[0] == locatie.OW_ID:
                         new_gebiedsaanwijzing = False
                         if known_gba.type_ != annotation["type"] or known_gba.groep != annotation["groep"]:
@@ -90,7 +93,7 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
                 else:
                     ow_tekstdeel.gebiedsaanwijzingen.append(new_gba.OW_ID)
 
-            self._context.ow_repository.update_state_tekstdeel(state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel)
+            self._ow_repository.update_state_tekstdeel(state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel)
 
     def new_ow_gebiedsaanwijzing(
         self, element_wid: str, naam: str, type: str, groep: str, locatie_ref: str
@@ -105,14 +108,14 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
             "wid": element_wid,
         }
         gebiedawz = OWGebiedsaanwijzing(**input_dict)
-        self._context.ow_repository.add_new_ow(gebiedawz)
+        self._ow_repository.add_new_ow(gebiedawz)
 
         return gebiedawz
 
     def build_template_data(self):
-        new = self._context.ow_repository.get_new_gebiedsaanwijzingen()
-        mutated = self._context.ow_repository.get_mutated_gebiedsaanwijzingen()
-        terminated = self._context.ow_repository.get_terminated_gebiedsaanwijzingen()
+        new = self._ow_repository.get_new_gebiedsaanwijzingen()
+        mutated = self._ow_repository.get_mutated_gebiedsaanwijzingen()
+        terminated = self._ow_repository.get_terminated_gebiedsaanwijzingen()
 
         if not (new or mutated or terminated):
             return None

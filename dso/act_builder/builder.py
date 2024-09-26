@@ -13,6 +13,7 @@ from .services.geo.gio_aanlevering_informatie_object_builder import GioAanleveri
 from .services.lvbb.manifest_builder import ManifestBuilder
 from .services.lvbb.opdracht_builder import OpdrachtBuilder
 from .services.ow.ow_builder import OwBuilder
+from .services.ow.ow_builder_factory import OwBuilderFactory
 from .services.pdf.pdf_aanlevering_informatie_object_builder import PdfAanleveringInformatieObjectBuilder
 from .services.pdf.pdf_builder import PdfBuilder
 from .state_manager.input_data.input_data_loader import InputData
@@ -23,10 +24,19 @@ from .state_manager.state_manager import StateManager
 class Builder:
     def __init__(self, input_data: InputData):
         self._state_manager: StateManager = StateManager(input_data)
+
+        # use OwBuilderFactory to prepare OwBuilder service
+        ow_builder: OwBuilder = OwBuilderFactory.create_ow_builder(
+            state_manager=self._state_manager,
+            annotation_lookup_map=self._state_manager.annotation_ref_lookup_map,
+            regeling_frbr=self._state_manager.input_data.publication_settings.besluit_frbr,
+            doel_frbr=self._state_manager.input_data.publication_settings.instelling_doel.frbr,
+        )
+
         self._services: List[BuilderService] = [
             OpdrachtBuilder(),
             AanleveringBesluitBuilder(),
-            OwBuilder(),
+            ow_builder,
             GeoInformatieObjectVaststellingBuilder(),
             GioAanleveringInformatieObjectBuilder(),
             PdfBuilder(),

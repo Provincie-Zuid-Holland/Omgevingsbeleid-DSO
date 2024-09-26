@@ -7,8 +7,7 @@ from .models import OWGebied, OWGebiedenGroep, OWObject, OWRegelingsgebied, OWTe
 
 
 class OWStatePatcher:
-    def __init__(self, ow_data: OwData, ow_repository: OWStateRepository):
-        self._known_ow_state = ow_data
+    def __init__(self, ow_repository: OWStateRepository):
         self._ow_repository: OWStateRepository = ow_repository
         self._patched_ow_state: Optional[OwData] = None  # result state
 
@@ -17,9 +16,9 @@ class OWStatePatcher:
             raise ValueError("OW state not patched yet.")
         return self._patched_ow_state
 
-    def patch(self) -> None:
+    def patch(self, input_state_ow_data: OwData) -> OwData:
         """merge changed and terminated ow objects into the known ow state"""
-        new_ow_state: OwData = self._known_ow_state.copy(deep=True)
+        new_ow_state: OwData = input_state_ow_data.copy(deep=True)
 
         for ow_obj in self._ow_repository.get_new_ow_objects():
             new_ow_state.ow_objects[ow_obj.OW_ID] = ow_obj
@@ -45,6 +44,7 @@ class OWStatePatcher:
         # ensure isolated objects are terminated
         new_ow_state = self._remove_dangling_objects(new_ow_state)
         self._patched_ow_state = new_ow_state
+        return new_ow_state
 
     def _remove_dangling_objects(self, new_ow_state):
         """
