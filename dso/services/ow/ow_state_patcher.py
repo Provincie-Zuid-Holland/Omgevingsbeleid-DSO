@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional, Set
 
-from ...act_builder.state_manager.states.ow_repository import OWObjectStateException, OWStateRepository
+from ...act_builder.state_manager.states.ow_repository import OWStateRepository
+from ...act_builder.state_manager.exceptions import OWObjectStateException
 from ...models import OwData
 from .models import OWGebied, OWGebiedenGroep, OWObject, OWRegelingsgebied, OWTekstdeel
 
