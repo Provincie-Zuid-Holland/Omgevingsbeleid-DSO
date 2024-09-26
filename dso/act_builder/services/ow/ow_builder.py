@@ -10,6 +10,7 @@ from ...services.ow.ow_locaties import OwLocatieBuilder
 from ...services.ow.ow_manifest import OwManifestBuilder
 from ...services.ow.ow_regelinggebied import OwRegelingsgebiedBuilder
 from ...state_manager.state_manager import StateManager
+from .ow_builder_context import BuilderContext
 
 
 class OwBuilder(BuilderService):
@@ -21,79 +22,42 @@ class OwBuilder(BuilderService):
     - Patch a new ow data state.
     """
 
-    def __init__(self):
-        self.terminated_wids = []
-        self.terminated_object_codes = []
-
-    def _calc_terminated_policy_objs(self, known_wid_map, current_wid_map, known_ow_wids: List[str]) -> None:
-        """
-        Compares the current wids used to the previous known state, to find objects that
-        are no longer used and should be terminated.
-        """
-        terminated_wids = []
-        terminated_object_codes = []
-        for obj_code, wid in known_wid_map.items():
-            if obj_code not in current_wid_map and wid in known_ow_wids:
-                terminated_wids.append(wid)
-                terminated_object_codes.append(obj_code)
-
-        self.terminated_wids = terminated_wids
-        self.terminated_object_codes = terminated_object_codes
-        return
-
-    def _get_ow_procedure_status(self, soort_procedure: ProcedureType) -> Optional[OwProcedureStatus]:
-        if soort_procedure == ProcedureType.Ontwerpbesluit:
-            return OwProcedureStatus.ONTWERP
-        elif soort_procedure == ProcedureType.Definitief_besluit:
-            return None
-        else:
-            return None
-
     def apply(self, state_manager: StateManager) -> StateManager:
-        provincie_id = state_manager.input_data.publication_settings.provincie_id
-        levering_id = state_manager.input_data.publication_settings.opdracht.id_levering
-        ow_procedure_status = self._get_ow_procedure_status(state_manager.input_data.besluit.soort_procedure)
-        werkingsgebieden = state_manager.input_data.resources.werkingsgebied_repository.all()
-
-        self._calc_terminated_policy_objs(
+        orphaned_wids, orphaned_object_codes = self._calc_orphaned_wids(
             known_wid_map=state_manager.input_data.get_known_wid_map(),
             current_wid_map=state_manager.act_ewid_service.get_state_used_wid_map(),
             known_ow_wids=state_manager.ow_repository.get_existing_wid_list(),
         )
 
-        # setup file builders
+        # Create a shared context
+        context = BuilderContext(
+            provincie_id=state_manager.input_data.publication_settings.provincie_id,
+            levering_id=state_manager.input_data.publication_settings.opdracht.id_levering,
+            ow_procedure_status=self._get_ow_procedure_status(state_manager.input_data.besluit.soort_procedure),
+            orphaned_wids=orphaned_wids,
+            ow_repository=state_manager.ow_repository
+        )
+
+        # Pass the context to the builders
         locatie_builder = OwLocatieBuilder(
-            provincie_id=provincie_id,
-            levering_id=levering_id,
-            ambtsgebied=state_manager.input_data.ambtsgebied,
-            werkingsgebieden=werkingsgebieden,
-            ow_repository=state_manager.ow_repository,
-            ow_procedure_status=ow_procedure_status,
+            context=context,
+            werkingsgebieden=state_manager.input_data.resources.werkingsgebied_repository.all(),
+            ambtsgebied=state_manager.input_data.ambtsgebied
         )
         divisie_builder = OwDivisieBuilder(
-            provincie_id=provincie_id,
-            levering_id=levering_id,
-            ow_repository=state_manager.ow_repository,
-            annotation_lookup_map=state_manager.annotation_ref_lookup_map,
-            terminated_wids=self.terminated_wids,
-            ow_procedure_status=ow_procedure_status,
+            context=context,
+            annotation_lookup_map=state_manager.annotation_ref_lookup_map
         )
         gb_aanwijzing_builder = OwGebiedsaanwijzingBuilder(
-            provincie_id=provincie_id,
-            levering_id=levering_id,
-            ow_repository=state_manager.ow_repository,
-            ow_procedure_status=ow_procedure_status,
-            annotation_lookup_map=state_manager.annotation_ref_lookup_map,
+            context=context,
+            annotation_lookup_map=state_manager.annotation_ref_lookup_map
         )
         regelinggebied_builder = OwRegelingsgebiedBuilder(
-            provincie_id=provincie_id,
-            levering_id=levering_id,
-            ow_procedure_status=ow_procedure_status,
-            ow_repository=state_manager.ow_repository,
+            context=context
         )
         ow_manifest_builder = OwManifestBuilder(
             act=state_manager.input_data.publication_settings.regeling_frbr,
-            doel=state_manager.input_data.publication_settings.instelling_doel.frbr,
+            doel=state_manager.input_data.publication_settings.instelling_doel.frbr
         )
 
         # CRUD ow object
@@ -147,3 +111,27 @@ class OwBuilder(BuilderService):
         state_manager.ow_object_state = ow_state_patcher.get_patched_ow_state()
 
         return state_manager
+
+    def _calc_orphaned_wids(self, known_wid_map, current_wid_map, known_ow_wids: List[str]):
+        """
+        Compares the current wids used to the previous known state, to find objects that
+        are no longer used and should be considered as orphaned (no longer referenced in current state).
+        """
+        orphaned_wids = []
+        orphaned_object_codes = []
+        for obj_code, wid in known_wid_map.items():
+            if obj_code not in current_wid_map and wid in known_ow_wids:
+                orphaned_wids.append(wid)
+                orphaned_object_codes.append(obj_code)
+
+        return orphaned_wids, orphaned_object_codes
+
+    def _get_ow_procedure_status(self, soort_procedure: ProcedureType) -> Optional[OwProcedureStatus]:
+        """local helper to determine if ow objects should be created in concept modes"""
+        match soort_procedure:
+            case ProcedureType.Ontwerpbesluit:
+                return OwProcedureStatus.ONTWERP
+            case ProcedureType.Definitief_besluit:
+                return None
+            case _:
+                return None
