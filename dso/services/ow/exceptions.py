@@ -5,4 +5,3 @@ class OWObjectGenerationError(Exception):
 
 class OWTextAttributesError(Exception):
     """Exception while handling the stop xml layer of OW annotation"""
-

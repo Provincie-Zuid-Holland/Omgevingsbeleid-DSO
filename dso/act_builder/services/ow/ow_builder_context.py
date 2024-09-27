@@ -1,4 +1,5 @@
-from typing import Optional, List
+from typing import List, Optional
+
 from ....services.ow.enums import OwProcedureStatus
 
 
@@ -16,4 +17,3 @@ class BuilderContext:
         self.levering_id = levering_id
         self.ow_procedure_status: Optional[OwProcedureStatus] = ow_procedure_status
         self.orphaned_wids = orphaned_wids
-

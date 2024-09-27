@@ -8,8 +8,8 @@ from ....services.ow.ow_id import generate_ow_id
 from ...state_manager.input_data.ambtsgebied import Ambtsgebied
 from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Locatie, Werkingsgebied
 from ...state_manager.states.ow_repository import OWStateRepository
-from .ow_file_builder import OwFileBuilder
 from .ow_builder_context import BuilderContext
+from .ow_file_builder import OwFileBuilder
 
 
 class OwLocatieTemplateData(BaseModel):

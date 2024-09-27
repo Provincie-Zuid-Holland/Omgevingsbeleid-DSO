@@ -1,4 +1,4 @@
-from typing import List, Optional, Callable, Tuple
+from typing import List, Optional
 
 from ....models import ActFRBR, DoelFRBR
 from ....services.ow.enums import OwProcedureStatus
@@ -10,8 +10,8 @@ from ...services.ow.ow_locaties import OwLocatieBuilder
 from ...services.ow.ow_manifest import OwManifestBuilder
 from ...services.ow.ow_regelinggebied import OwRegelingsgebiedBuilder
 from ...state_manager.state_manager import StateManager
-from .ow_builder_context import BuilderContext
 from .ow_builder import OwBuilder
+from .ow_builder_context import BuilderContext
 
 
 class OwBuilderFactory:
