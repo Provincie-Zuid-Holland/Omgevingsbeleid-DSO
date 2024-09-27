@@ -1,4 +1,3 @@
-
 from ....services.ow.ow_state_patcher import OWStatePatcher
 from ...services import BuilderService
 from ...services.ow.ow_divisie import OwDivisieBuilder
