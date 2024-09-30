@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -25,12 +25,12 @@ class OwManifestBuilder(OwFileBuilder):
         self,
         act: ActFRBR,
         doel: DoelFRBR,
-        manifest: List[OwManifestBestand] = [],
+        manifest: Optional[List[OwManifestBestand]] = None,
     ):
         super().__init__()
         self._act = act
         self._doel = doel
-        self._manifest = manifest
+        self._manifest = manifest if manifest is not None else []
 
     def add_manifest_item(self, file_name: str, object_types: List[str]) -> None:
         manifest_entry = OwManifestBestand(naam=file_name, objecttypes=object_types)
