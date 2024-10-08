@@ -32,9 +32,6 @@ class EWIDService:
         # This will be send in the input data for the next version of this Act
         self._state_used_wids: List[str] = []
 
-        # wId lookup used by OW files
-        self._state_object_tekst_lookup: dict = {}
-
     def add_ewids(self, xml_source: str, parent_eid="", parent_wid="", parent_tag_name="") -> str:
         root = self._parse_xml(xml_source)
         self._fill_ewid(root, parent_eid, parent_wid, parent_tag_name)

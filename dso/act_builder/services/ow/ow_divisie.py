@@ -58,7 +58,7 @@ class OwDivisieBuilder(OwFileBuilder):
         self.terminate_removed_wids()
 
         for division_map in self._annotation_lookup.values():
-            known_divisie = self._ow_repository.get_existing_divisie(division_map["wid"])
+            known_divisie = self._ow_repository.get_existing_divisie_by_mapped_code(division_map["object_code"])
             if known_divisie:
                 self.process_existing_divisie(known_divisie, division_map)
             else:
@@ -127,7 +127,7 @@ class OwDivisieBuilder(OwFileBuilder):
 
     def terminate_removed_wids(self):
         for wid in self._context.orphaned_wids:
-            known_divisie = self._ow_repository.get_existing_divisie(wid)
+            known_divisie = self._ow_repository.get_existing_divisie_by_wid(wid)
             if not known_divisie:
                 raise OWObjectStateException(f"Missing existing divisie OW ID for orphaned wid: {wid}")
             self.terminate_existing_divisie(known_divisie)

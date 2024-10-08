@@ -265,9 +265,15 @@ class OWStateRepository:
                 return ow_obj
         return None
 
-    def get_existing_divisie(self, wid: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
+    def get_existing_divisie_by_wid(self, wid: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
         for ow_obj in self._known_ow_state.ow_objects.values():
             if isinstance(ow_obj, (OWDivisie, OWDivisieTekst)) and ow_obj.wid == wid:
+                return ow_obj
+        return None
+
+    def get_existing_divisie_by_mapped_code(self, object_code: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
+        for ow_obj in self._known_ow_state.ow_objects.values():
+            if isinstance(ow_obj, (OWDivisie, OWDivisieTekst)) and ow_obj.mapped_policy_object_code == object_code:
                 return ow_obj
         return None
 

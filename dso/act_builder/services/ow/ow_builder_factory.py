@@ -62,7 +62,6 @@ class OwBuilderFactory:
 
         ow_state_patcher = OWStatePatcher(ow_repository=state_manager.ow_repository)
 
-        # Return fully configured OwBuilder instance
         return OwBuilder(
             locatie_builder=locatie_builder,
             divisie_builder=divisie_builder,

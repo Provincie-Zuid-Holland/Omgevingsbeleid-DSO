@@ -50,18 +50,16 @@ class InputData(BaseModel):
         }
 
     def get_known_wid_map(self) -> Dict[str, str]:
-        match self.regeling_mutatie:
-            case RenvooiRegelingMutatie(bekend_wid_map=bekend_wid_map):
-                return bekend_wid_map
+        if self.regeling_mutatie is None:
+            return {}
 
-        return {}
+        return self.regeling_mutatie.bekend_wid_map
 
     def get_known_wids(self) -> List[str]:
-        match self.regeling_mutatie:
-            case RenvooiRegelingMutatie(bekend_wids=bekend_wids):
-                return bekend_wids
+        if self.regeling_mutatie is None:
+            return []
 
-        return {}
+        return self.regeling_mutatie.bekend_wids
 
 
 class InputDataLoader:
@@ -250,8 +248,8 @@ class InputDataExporter:
                         }
                     )
                 case VervangRegelingMutatie():
-                    # TODO: implement after DSO supported
-                    raise NotImplementedError("VervangRegelingMutatie not yet supported")
+                    regeling_mutatie_dict = self._input_data.regeling_mutatie.dict()
+                    regeling_mutatie_dict.update({"type": "vervang"})
 
             export_dict_updates["regeling_mutatie"] = regeling_mutatie_dict
 
