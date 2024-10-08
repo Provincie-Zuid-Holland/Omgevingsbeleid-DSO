@@ -12,10 +12,15 @@ def cli():
     """Validation commands."""
 
 
-def run_generate(input_dir: str, base_output_dir: Optional[str], json_file: str = "main.json"):
+def build_input_data_from_dir(input_dir: str, json_file: str = "main.json"):
     main_file = f"{input_dir}/{json_file}"
     loader = InputDataLoader(main_file)
-    data: InputData = loader.load()
+    input_data: InputData = loader.load()
+    return input_data
+
+
+def run_generate(input_dir: str, base_output_dir: Optional[str], json_file: str):
+    data: InputData = build_input_data_from_dir(input_dir, json_file)
 
     if base_output_dir is None:
         base_output_dir = "./output"

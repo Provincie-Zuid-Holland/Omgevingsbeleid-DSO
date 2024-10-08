@@ -21,9 +21,9 @@ class ConsolidatieInformatieContent:
         }
 
         beoogd_informatieobjecten = []
-        werkingsgebieden: List[
-            Werkingsgebied
-        ] = self._state_manager.input_data.resources.werkingsgebied_repository.all()
+        werkingsgebieden: List[Werkingsgebied] = (
+            self._state_manager.input_data.resources.werkingsgebied_repository.all()
+        )
         for werkingsgebied in werkingsgebieden:
             if werkingsgebied.New:
                 eid: str = self._state_manager.werkingsgebied_eid_lookup[str(werkingsgebied.UUID)]

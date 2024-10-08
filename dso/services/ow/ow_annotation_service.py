@@ -25,7 +25,6 @@ class OWAnnotationService:
         "object_code": "beleidskeuze-756",
         "gebied_code": "werkingsgebied-28",
         "gebied_uuid": "6cee5d12-beaa-4ea8-9464-5697a6e85931",
-        "uses_ambtsgebied": False,
     },
 
     annotation types handled:

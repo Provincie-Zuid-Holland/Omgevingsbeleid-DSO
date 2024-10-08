@@ -13,9 +13,9 @@ class BesluitMetadataContent:
     def create(self) -> str:
         informatieobject_refs: List[str] = []
 
-        werkingsgebieden: List[
-            Werkingsgebied
-        ] = self._state_manager.input_data.resources.werkingsgebied_repository.all()
+        werkingsgebieden: List[Werkingsgebied] = (
+            self._state_manager.input_data.resources.werkingsgebied_repository.all()
+        )
         for werkingsgebied in werkingsgebieden:
             if werkingsgebied.New:
                 informatieobject_refs.append(werkingsgebied.Frbr.get_expression())

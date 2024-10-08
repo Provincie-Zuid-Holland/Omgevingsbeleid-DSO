@@ -50,9 +50,6 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         self._ambtsgebied: Optional[OWAmbtsgebied] = None
         self._ow_repository = ow_repository
 
-    def get_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
-        return self._ambtsgebied
-
     def get_used_object_types(self) -> List[str]:
         return [obj.value for obj in self._used_object_types]
 
@@ -100,10 +97,13 @@ class OwRegelingsgebiedBuilder(OwFileBuilder):
         self._ow_repository.add_mutated_ow(updated_regelingsgebied)
         return updated_regelingsgebied
 
-    def build_template_data(self) -> OwRegelingsgebiedFileData:
+    def build_template_data(self) -> Optional[OwRegelingsgebiedFileData]:
         new_regelingsgebieden = self._ow_repository.get_new_regelingsgebied()
         mutated_regelingsgebieden = self._ow_repository.get_mutated_regelingsgebied()
         terminated_regelingsgebieden = self._ow_repository.get_terminated_regelingsgebied()
+
+        if not (new_regelingsgebieden or mutated_regelingsgebieden or terminated_regelingsgebieden):
+            return None
 
         template_data = OwRegelingsgebiedFileData(
             levering_id=self._context.levering_id,
