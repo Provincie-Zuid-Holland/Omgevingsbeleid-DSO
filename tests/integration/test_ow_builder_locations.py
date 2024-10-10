@@ -119,7 +119,7 @@ class TestOWLocatieBuilder:
         assert self.ow_repository._mutated_ow_objects == []
         assert self.ow_repository._terminated_ow_objects == []
 
-    def test_handle_ow_object_changes(self, enable_debugpy):
+    def test_handle_ow_object_changes(self):
         """
         expecting:
             - input werkingsgebied-1, werkingsgebied-2 exist in ow state with same UUID: no changes
