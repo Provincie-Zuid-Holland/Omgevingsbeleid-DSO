@@ -53,10 +53,8 @@ class OwBuilder(BuilderService):
             output_files.append(builder.create_file(template_data=data_dict))
             self._ow_manifest_builder.add_manifest_item(builder.FILE_NAME, template_data.object_type_list)
 
-        # always create and add manifest file
         ow_manifest_template_data = self._ow_manifest_builder.build_template_data()
         manifest_data = ow_manifest_template_data.dict()
         output_files.append(self._ow_manifest_builder.create_file(template_data=manifest_data))
 
-        # store results in state manager
         state_manager.add_output_files(output_files=output_files)

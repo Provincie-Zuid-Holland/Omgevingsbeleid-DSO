@@ -109,6 +109,22 @@ class OwLocatieBuilder(OwFileBuilder):
         self._ow_repository.add_mutated_ow(mutated_obj)
         return mutated_obj
 
+    def create_ow_ambtsgebied(self, ambtsgebied_data: Ambtsgebied) -> OWAmbtsgebied:
+        gebied_ow_id = generate_ow_id(IMOWTYPES.AMBTSGEBIED, self._context.provincie_id)
+        new_ambtsgebied: OWAmbtsgebied = OWAmbtsgebied(
+            OW_ID=gebied_ow_id,
+            noemer=ambtsgebied_data.titel,
+            bestuurlijke_grenzen_verwijzing=BestuurlijkeGrenzenVerwijzing(
+                bestuurlijke_grenzen_id=self._context.provincie_id,
+                domein=ambtsgebied_data.domein,
+                geldig_op=ambtsgebied_data.geldig_op,
+            ),
+            mapped_uuid=ambtsgebied_data.UUID,
+            procedure_status=self._context.ow_procedure_status,
+        )
+        self._ow_repository.add_new_ow(new_ambtsgebied)
+        return new_ambtsgebied
+
     def mutate_ow_ambtsgebied(self, ambtsgebied_data: Ambtsgebied, existing_ambtsgebied_id: str) -> OWAmbtsgebied:
         mutated_ambtsgebied: OWAmbtsgebied = OWAmbtsgebied(
             OW_ID=existing_ambtsgebied_id,

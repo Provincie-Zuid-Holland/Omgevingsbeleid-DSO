@@ -1,4 +1,3 @@
-import os
 from typing import List, Optional, Set
 
 from pydantic.main import BaseModel
@@ -44,13 +43,14 @@ class OwDivisieBuilder(OwFileBuilder):
         context: BuilderContext,
         annotation_lookup_map: dict,
         ow_repository: OWStateRepository,
+        debug_enabled: bool,
     ) -> None:
         super().__init__()
         self._context = context
         self._annotation_lookup = annotation_lookup_map
         self._used_object_types: Set[OwDivisieObjectType] = set()
 
-        self._debug_enabled = os.getenv("DEBUG_MODE", "").lower() in ("true", "1")
+        self._debug_enabled: bool = debug_enabled
         self._ow_repository = ow_repository
         self._ambtsgebied: Optional[OWAmbtsgebied] = self._ow_repository.get_active_amtsgebied()
 
@@ -98,7 +98,7 @@ class OwDivisieBuilder(OwFileBuilder):
                     ref_ow_id=known_divisie.OW_ID,
                 )
 
-    def process_new_divisie(self, annotation_data: dict) -> OWTekstdeel:
+    def process_new_divisie(self, annotation_data: dict) -> Optional[OWTekstdeel]:
         new_div = self._new_divisie(
             tag=annotation_data["tag"],
             wid=annotation_data["wid"],
