@@ -25,6 +25,7 @@ class OWAnnotationService:
         "object_code": "beleidskeuze-756",
         "gebied_code": "werkingsgebied-28",
         "gebied_uuid": "6cee5d12-beaa-4ea8-9464-5697a6e85931",
+        "uses_ambtsgebied": False,
     },
 
     annotation types handled:
@@ -110,13 +111,18 @@ class OWAnnotationService:
 
     def _add_gebiedsaanwijzing_annotation(self, element):
         parent = element.getparent()
-        while parent is not None and parent.tag != "Divisietekst":
+
+        while parent is not None and not parent.get("wId"):
             parent = parent.getparent()
+
+        if parent is None or parent.tag != "Divisietekst":
+            raise ValueError("Gebiedsaanwijzing currently only supported on Divisietekst elements.")
 
         # upper divisietekst attributes
         div_wid = parent.get("wId")
         div_object_code = parent.get("data-hint-object-code")
-        div_gebied_code = parent.get("data-hint-gebied-code")
+        div_gebied_code = parent.get("data-hint-gebied-code", None)
+        div_ambtsgebied = bool(parent.get("data-hint-ambtsgebied", False))
 
         # gebiedsaanwijzing tag attributes
         gba_locatie = element.get("data-hint-locatie", None)
@@ -144,6 +150,7 @@ class OWAnnotationService:
                 "wid": div_wid,
                 "object-code": div_object_code,
                 "gebied-code": div_gebied_code,
+                "uses_ambtsgebied": div_ambtsgebied,
             },
         }
 

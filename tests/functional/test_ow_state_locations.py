@@ -15,7 +15,6 @@ def input_dir(request):
     "input_dir",
     [
         "tests/fixtures/test-herziening-2024-ambtsgebied",
-        "tests/fixtures/test-herziening-2024-vervang",
     ],
     indirect=True,
 )

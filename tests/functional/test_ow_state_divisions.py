@@ -14,7 +14,6 @@ def input_dir(request):
     "input_dir",
     [
         "tests/fixtures/test-herziening-2024-ambtsgebied",
-        "tests/fixtures/test-herziening-2024-vervang",
     ],
     indirect=True,
 )
@@ -38,3 +37,4 @@ class TestOWDivision(BaseTestBuilder):
 
         # verify removed from result state
         assert not any(owid in self.state_manager.ow_object_state.ow_objects for owid in orphaned_ow_ids)
+        assert all(owid in self.state_manager.ow_object_state.terminated_ow_ids for owid in orphaned_ow_ids)

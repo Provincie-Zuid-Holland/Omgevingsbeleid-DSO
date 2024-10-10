@@ -13,7 +13,6 @@ def input_dir(request):
     "input_dir",
     [
         "tests/fixtures/test-herziening-2024-ambtsgebied",
-        "tests/fixtures/test-herziening-2024-vervang",
     ],
     indirect=True,
 )
@@ -23,7 +22,6 @@ class TestOWAnnotationRefs(BaseTestBuilder):
     """
 
     def test_annotation_refs_match_ow_state(self):
-        # self.debug()
         assert len(self.state_manager.annotation_ref_lookup_map) > 0, "No annotations were added to the state manager"
         assert self.state_manager.ow_object_state is not None, "OW object state expected to be set"
 

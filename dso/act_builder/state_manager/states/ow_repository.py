@@ -147,9 +147,6 @@ class OWStateRepository:
     def get_terminated_gebiedsaanwijzingen(self) -> List[OWObject]:
         return [obj for obj in self._terminated_ow_objects if isinstance(obj, OWGebiedsaanwijzing)]
 
-    def get_new_tekstdeel(self) -> List[OWObject]:
-        return [obj for obj in self._new_ow_objects if isinstance(obj, OWTekstdeel)]
-
     def get_gebiedengroep_by_code(self, werkingsgebied_code: str) -> Optional[OWGebiedenGroep]:
         # Search current state used objects
         for ow_obj in self.get_changed_ow_objects():
@@ -285,7 +282,8 @@ class OWStateRepository:
                 ow_obj
                 for ow_obj in self._known_ow_state.ow_objects.values()
                 if isinstance(ow_obj, OWTekstdeel) and ow_obj.divisie == divisie_ow_id
-            )
+            ),
+            None,
         )
 
     def get_existing_wid_list(self) -> List[str]:

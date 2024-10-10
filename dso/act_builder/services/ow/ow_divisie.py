@@ -55,7 +55,8 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ambtsgebied: Optional[OWAmbtsgebied] = self._ow_repository.get_active_amtsgebied()
 
     def handle_ow_object_changes(self):
-        self.terminate_removed_wids()
+        if self._context.orphaned_wids != []:
+            self.terminate_removed_wids(self._context.orphaned_wids)
 
         for division_map in self._annotation_lookup.values():
             known_divisie = self._ow_repository.get_existing_divisie_by_mapped_code(division_map["object_code"])
@@ -125,23 +126,27 @@ class OwDivisieBuilder(OwFileBuilder):
             case _:
                 pass  # No direct annotations to handle now, assuming div to be annotated later.
 
-    def terminate_removed_wids(self):
-        for wid in self._context.orphaned_wids:
+    def terminate_removed_wids(self, orphaned_wids: List[str]):
+        for wid in orphaned_wids:
             known_divisie = self._ow_repository.get_existing_divisie_by_wid(wid)
             if not known_divisie:
                 raise OWObjectStateException(f"Missing existing divisie OW ID for orphaned wid: {wid}")
             self.terminate_existing_divisie(known_divisie)
 
+            known_tekstdeel = self._ow_repository.get_existing_tekstdeel_by_divisie(divisie_ow_id=known_divisie.OW_ID)
+            if not known_tekstdeel:
+                raise OWObjectStateException(
+                    message="Expected to find tekstdeel for existing divisie", ref_ow_id=known_divisie.OW_ID
+                )
+            self.terminate_existing_tekstdeel(known_tekstdeel=known_tekstdeel)
+
     def terminate_existing_divisie(self, known_divisie: OWObject):
-        known_tekstdeel = self._ow_repository.get_existing_tekstdeel_by_divisie(known_divisie.OW_ID)
-        if not known_tekstdeel:
-            raise OWObjectStateException(
-                message="Expected to find tekstdeel for existing divisie", ref_ow_id=known_divisie.OW_ID
-            )
-        known_tekstdeel.set_status_beeindig()
         known_divisie.set_status_beeindig()
-        self._ow_repository.add_terminated_ow(known_tekstdeel)
         self._ow_repository.add_terminated_ow(known_divisie)
+
+    def terminate_existing_tekstdeel(self, known_tekstdeel: OWTekstdeel):
+        known_tekstdeel.set_status_beeindig()
+        self._ow_repository.add_terminated_ow(known_tekstdeel)
 
     def _new_divisie(self, tag: str, wid: str, object_code: Optional[str] = None) -> OWDivisie | OWDivisieTekst:
         if tag == "Divisietekst":
