@@ -1,8 +1,5 @@
-import json
 import pytest
-
 from lxml import etree
-from pathlib import Path
 
 from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
     WerkingsgebiedRepository,
@@ -12,20 +9,10 @@ from dso.services.ow.ow_annotation_service import OWAnnotationService
 
 class TestOWAnnotationService:
     @pytest.fixture(autouse=True)
-    def setup_method(self):
+    def setup_method(self, input_data_werkingsgebieden):
         """Setup method to initialize common resources."""
-        # debugpy.listen(("0.0.0.0", 5678))
-        # print("Waiting for debugger attach...")
-        # debugpy.wait_for_client()
-        # print("Debugger attached...")
-
-        # Load Werkingsgebied data from a JSON file and populate the repository
-        json_file_path = Path(__file__).parent.parent / "fixtures/werkingsgebied-example.json"
-        with open(json_file_path, "r") as f:
-            werkingsgebied_data = json.load(f)
-
         self.werkingsgebied_repository = WerkingsgebiedRepository()
-        self.werkingsgebied_repository.add_from_dict(werkingsgebied_data)
+        self.werkingsgebied_repository.add_from_dict(input_data_werkingsgebieden)
 
         self.annotation_service = OWAnnotationService(
             werkingsgebied_repository=self.werkingsgebied_repository,
@@ -194,7 +181,6 @@ class TestOWAnnotationService:
 
         assert annotation_map["beleidskeuze-756"] == expected_annotation_ambtsgebied
         assert annotation_map["beleidskeuze-420"] == expected_annotation_gebied
-        print(annotation_map)
 
     def test_error_gebiedsaanwijzing_parent_divivisietest(self):
         parent = etree.Element(

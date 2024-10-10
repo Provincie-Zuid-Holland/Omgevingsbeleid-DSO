@@ -50,6 +50,7 @@ class OwLocatieBuilder(OwFileBuilder):
         """
         existing_ambtsgebied_id = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied_data.UUID)
         if existing_ambtsgebied_id:
+            # should compare data and skip if same
             self.mutate_ow_ambtsgebied(self._ambtsgebied_data, existing_ambtsgebied_id)
         else:
             self.create_ow_ambtsgebied(self._ambtsgebied_data)

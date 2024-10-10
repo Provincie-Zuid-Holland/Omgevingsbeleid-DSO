@@ -1,20 +1,20 @@
 from uuid import UUID
+
 import pytest
 
-
+from dso.act_builder.services.ow.ow_builder_context import BuilderContext
+from dso.act_builder.services.ow.ow_divisie import OwDivisieBuilder
 from dso.act_builder.state_manager.exceptions import OWObjectStateException
 from dso.act_builder.state_manager.states.ow_repository import OWStateRepository
-from dso.act_builder.services.ow.ow_divisie import OwDivisieBuilder
-from dso.act_builder.services.ow.ow_builder_context import BuilderContext
 from dso.models import OwData
 from dso.services.ow import (
     BestuurlijkeGrenzenVerwijzing,
     OWAmbtsgebied,
-    OWRegelingsgebied,
     OWDivisie,
     OWDivisieTekst,
     OWGebied,
     OWGebiedenGroep,
+    OWRegelingsgebied,
     OWTekstdeel,
 )
 
@@ -73,6 +73,7 @@ class TestOWDivisieBuilder:
             locaties=[mock_gebiedengroep_1.OW_ID],
             gebiedsaanwijzingen=None,
         )
+
         return [
             mock_ambtsgebied_1,
             mock_regelingsgebied_1,
