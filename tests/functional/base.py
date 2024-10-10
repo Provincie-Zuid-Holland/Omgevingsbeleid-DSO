@@ -36,6 +36,7 @@ class BaseTestBuilder:
         self.ensure_clean_state(state_manager=request.cls.state_manager)
 
         # Setup results for testing
+        # self.debug()
         request.cls.builder.build_publication_files()
 
     def ensure_clean_state(self, state_manager):
