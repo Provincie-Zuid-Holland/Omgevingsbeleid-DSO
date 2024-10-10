@@ -4,16 +4,14 @@ import pytest
 
 from dso.act_builder.services.ow.ow_builder_context import BuilderContext
 from dso.act_builder.services.ow.ow_locaties import OwLocatieBuilder
-from dso.act_builder.state_manager.exceptions import OWObjectStateException
 from dso.act_builder.state_manager.input_data.ambtsgebied import Ambtsgebied
-from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Locatie, Werkingsgebied
+from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
     WerkingsgebiedRepository,
 )
 from dso.act_builder.state_manager.states.ow_repository import OWStateRepository
 from dso.models import OwData
 from dso.services.ow import BestuurlijkeGrenzenVerwijzing, OWAmbtsgebied, OWGebied, OWGebiedenGroep, OWRegelingsgebied
-from dso.services.ow.models import OWObject
 
 
 class TestOWLocatieBuilder:
