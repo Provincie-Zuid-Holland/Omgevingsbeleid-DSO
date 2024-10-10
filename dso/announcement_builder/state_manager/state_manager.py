@@ -1,3 +1,4 @@
+import os
 from typing import List
 
 from ...services.ewid.ewid_service import EWIDService
@@ -6,10 +7,12 @@ from .models import InputData, OutputFile
 
 class StateManager:
     def __init__(self, input_data: InputData):
+        self.debug_enabled: bool = os.getenv("DEBUG_MODE", "").lower() in ("true", "1")
+        self.debug: dict = {}
+
         self.input_data: InputData = input_data
         self.werkingsgebied_eid_lookup: dict = {}
         self.output_files: List[OutputFile] = []
-        self.debug: dict = {}
 
         # Service is in the state manager
         # As we use it on multiple places, and the internal state should be updates for each use

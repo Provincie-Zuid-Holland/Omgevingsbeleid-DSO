@@ -1,6 +1,6 @@
 import io
 import os
-from typing import Callable, Dict, List, Optional
+from typing import Dict, List, Optional
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from ..models import OwData
@@ -12,7 +12,7 @@ from .services.geo.geo_informatie_object_vaststelling_builder import GeoInformat
 from .services.geo.gio_aanlevering_informatie_object_builder import GioAanleveringInformatieObjectBuilder
 from .services.lvbb.manifest_builder import ManifestBuilder
 from .services.lvbb.opdracht_builder import OpdrachtBuilder
-from .services.ow.ow_builder_factory import OwBuilderFactory
+from .services.ow.ow_builder_facade import OwBuilderFacade
 from .services.pdf.pdf_aanlevering_informatie_object_builder import PdfAanleveringInformatieObjectBuilder
 from .services.pdf.pdf_builder import PdfBuilder
 from .state_manager.input_data.input_data_loader import InputData
@@ -24,26 +24,20 @@ class Builder:
     def __init__(self, input_data: InputData):
         self._state_manager: StateManager = StateManager(input_data)
 
-        self._services: List[Callable[[], BuilderService]] = [
-            lambda: OpdrachtBuilder(),
-            lambda: AanleveringBesluitBuilder(),
-            lambda: OwBuilderFactory.create_ow_builder(
-                state_manager=self._state_manager,
-                annotation_lookup_map=self._state_manager.annotation_ref_lookup_map,
-                regeling_frbr=self._state_manager.input_data.publication_settings.regeling_frbr,
-                doel_frbr=self._state_manager.input_data.publication_settings.instelling_doel.frbr,
-            ),
-            lambda: GeoInformatieObjectVaststellingBuilder(),
-            lambda: GioAanleveringInformatieObjectBuilder(),
-            lambda: PdfBuilder(),
-            lambda: PdfAanleveringInformatieObjectBuilder(),
-            lambda: AssetBuilder(),
-            lambda: ManifestBuilder(),
+        self._services: List[BuilderService] = [
+            OpdrachtBuilder(),
+            AanleveringBesluitBuilder(),
+            OwBuilderFacade(),
+            GeoInformatieObjectVaststellingBuilder(),
+            GioAanleveringInformatieObjectBuilder(),
+            PdfBuilder(),
+            PdfAanleveringInformatieObjectBuilder(),
+            AssetBuilder(),
+            ManifestBuilder(),
         ]
 
     def build_publication_files(self):
-        for service_factory in self._services:
-            service = service_factory()
+        for service in self._services:
             self._state_manager = service.apply(self._state_manager)
 
     def save_files(self, output_dir: str):

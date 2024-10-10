@@ -250,6 +250,8 @@ class InputDataExporter:
                 case VervangRegelingMutatie():
                     regeling_mutatie_dict = self._input_data.regeling_mutatie.dict()
                     regeling_mutatie_dict.update({"type": "vervang"})
+                case _:
+                    raise RuntimeError("Missing clause")
 
             export_dict_updates["regeling_mutatie"] = regeling_mutatie_dict
 
