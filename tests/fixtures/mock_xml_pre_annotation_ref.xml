@@ -1,0 +1,44 @@
+<Lichaam eId="body" wId="body">
+    <Divisietekst data-hint-object-code="visie_algemeen-1" data-hint-wid-code="visie_algemeen-1"
+        eId="content_o_1" wId="pv28_2__content_o_1">
+        <Kop>
+            <Opschrift>1. Inleiding</Opschrift>
+        </Kop>
+        <Inhoud>
+            <Tussenkop>Introductie</Tussenkop>
+            <Al>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </Al>
+        </Inhoud>
+    </Divisietekst>
+    <Divisie data-hint-wid-code="omgevingsvisie-custom-beleidsdoelen-and-beleidskeuzes-wrapper"
+        eId="div_o_1" wId="pv28_2__div_o_1">
+        <Kop>
+            <Opschrift>6. Beleidsdoelen en beleidskeuzes</Opschrift>
+        </Kop>
+        <Divisie data-hint-wid-code="omgevingsvisie-custom-beleidskeuze-beleidsdoel-419-wrapper"
+            eId="div_o_1__div_o_1" wId="pv28_2__div_o_1__div_o_1">
+            <Kop>
+                <Opschrift>Lorem Ipsum divisie content</Opschrift>
+            </Kop>
+            <Divisietekst data-hint-ambtsgebied="True" data-hint-object-code="beleidskeuze-790"
+                data-hint-wid-code="beleidskeuze-790" eId="div_o_1__div_o_1__content_o_1"
+                wId="pv28_2__div_o_1__div_o_1__content_o_1">
+                <Kop>
+                    <Opschrift>Lorem Ipsum Divisietekst Kop</Opschrift>
+                </Kop>
+                <Inhoud>
+                    <Tussenkop>Lorem ipsum tussenkop?</Tussenkop>
+                    <Al>Voorbeeld inline GBA: <IntIoRef data-gebiedengroep="Bodembeheergebied"
+                            data-hint-locatie="werkingsgebied-10"
+                            data-hint-gebiedsaanwijzingtype="Bodem" href="#"
+                            eId="div_o_1__div_o_1__content_o_1__ref_o_1"
+                            wId="pv28_2__div_o_1__div_o_1__content_o_1__ref_o_1">
+                            Gebiedsnaam
+                        </IntIoRef>
+                    </Al>
+                    <Tussenkop>Aanleiding</Tussenkop>
+                    <Al>Lorem ipsum dolor sit amet.</Al>
+                </Inhoud>
+            </Divisietekst>
+        </Divisie>
+    </Divisie>
+</Lichaam>

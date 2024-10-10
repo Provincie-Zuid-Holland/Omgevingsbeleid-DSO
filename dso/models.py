@@ -270,6 +270,14 @@ class PublicationSettings(BaseModel):
 class RegelingMutatie(BaseModel, metaclass=ABCMeta):
     was_regeling_frbr: ActFRBR
 
+    # wId's used by indentifiers, for example beleidskeuze-4 by that object
+    # Although it should be possible to add custom identifiers
+    bekend_wid_map: Dict[str, str]
+
+    # All previously used wIds. Which are allowed to be used again
+    # The main reason here is that we can not generate new wIds for old versions
+    bekend_wids: List[str]
+
     @classmethod
     def from_dict(cls, data: dict) -> "RegelingMutatie":
         type_map = {"vervang": VervangRegelingMutatie, "renvooi": RenvooiRegelingMutatie}
@@ -288,14 +296,6 @@ class VervangRegelingMutatie(RegelingMutatie):
 
 class RenvooiRegelingMutatie(RegelingMutatie):
     was_regeling_vrijetekst: str
-
-    # wId's used by indentifiers, for example beleidskeuze-4 by that object
-    # Although it should be possible to add custom identifiers
-    bekend_wid_map: Dict[str, str]
-
-    # All previously used wIds. Which are allowed to be used again
-    # The main reason here is that we can not generate new wIds for old versions
-    bekend_wids: List[str]
 
     renvooi_api_url: str
     renvooi_api_key: str

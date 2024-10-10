@@ -11,7 +11,6 @@ from lxml import etree
 
 from ...exceptions import FileWriteError, TemplateError
 from .jinja_filters import jinja2_filter_has_text
-from .jinja_tests import template_tests
 
 # env = Environment(loader=FileSystemLoader("."))
 
@@ -22,9 +21,6 @@ jinja2_env = Environment(
 )
 # Add the filters to the environment
 jinja2_env.filters["has_text"] = jinja2_filter_has_text
-# Add the template tests to the environment
-for test_name, test_func in template_tests.items():
-    jinja2_env.tests[test_name] = test_func
 
 
 def load_template(template_name: str, pretty_print: bool = False, **context) -> str:

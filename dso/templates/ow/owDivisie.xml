@@ -57,7 +57,7 @@
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
-                    {% if ow_object.gebiedsaanwijzingen is not none %}
+					{% if ow_object.gebiedsaanwijzingen is not none and ow_object.gebiedsaanwijzingen | length > 0 %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
 						<ga:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
@@ -115,7 +115,7 @@
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
-                    {% if ow_object.gebiedsaanwijzingen is not none %}
+					{% if ow_object.gebiedsaanwijzingen is not none and ow_object.gebiedsaanwijzingen | length > 0 %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
 						<ga:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>
@@ -182,7 +182,7 @@
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
-                    {% if ow_object.gebiedsaanwijzingen is not none %}
+					{% if ow_object.gebiedsaanwijzingen is not none and ow_object.gebiedsaanwijzingen | length > 0 %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
 						<ga:GebiedsaanwijzingRef xlink:href="{{ gba_ref }}"/>

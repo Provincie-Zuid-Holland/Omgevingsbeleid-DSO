@@ -10,25 +10,29 @@ asttokens==2.4.1
     #   stack-data
 autoflake==2.3.1
     # via -r requirements-dev.in
-bandit==1.7.9
+bandit==1.7.10
     # via -r requirements-dev.in
-black==24.8.0
+black==24.10.0
     # via -r requirements-dev.in
 click==8.1.7
     # via black
-debugpy==1.8.5
+debugpy==1.8.6
     # via -r requirements-dev.in
 decorator==5.1.1
     # via ipython
 devtools==0.12.2
     # via -r requirements-dev.in
 exceptiongroup==1.2.2
-    # via ipython
-executing==2.0.1
+    # via
+    #   ipython
+    #   pytest
+executing==2.1.0
     # via
     #   devtools
     #   stack-data
-ipython==8.26.0
+iniconfig==2.0.0
+    # via pytest
+ipython==8.28.0
     # via -r requirements-dev.in
 isort==5.13.2
     # via -r requirements-dev.in
@@ -45,18 +49,22 @@ mypy-extensions==1.0.0
     #   -r requirements-dev.in
     #   black
 packaging==24.1
-    # via black
+    # via
+    #   black
+    #   pytest
 parso==0.8.4
     # via jedi
 pathspec==0.12.1
     # via black
-pbr==6.0.0
+pbr==6.1.0
     # via stevedore
 pexpect==4.9.0
     # via ipython
-platformdirs==4.2.2
+platformdirs==4.3.6
     # via black
-prompt-toolkit==3.0.47
+pluggy==1.5.0
+    # via pytest
+prompt-toolkit==3.0.48
     # via ipython
 ptyprocess==0.7.0
     # via pexpect
@@ -69,9 +77,11 @@ pygments==2.18.0
     #   devtools
     #   ipython
     #   rich
+pytest==8.3.3
+    # via -r requirements-dev.in
 pyyaml==6.0.2
     # via bandit
-rich==13.7.1
+rich==13.9.2
     # via bandit
 six==1.16.0
     # via asttokens
@@ -79,10 +89,11 @@ stack-data==0.6.3
     # via ipython
 stevedore==5.3.0
     # via bandit
-tomli==2.0.1
+tomli==2.0.2
     # via
     #   autoflake
     #   black
+    #   pytest
     #   vulture
 traitlets==5.14.3
     # via
@@ -92,7 +103,8 @@ typing-extensions==4.12.2
     # via
     #   black
     #   ipython
-vulture==2.11
+    #   rich
+vulture==2.13
     # via -r requirements-dev.in
 wcwidth==0.2.13
     # via prompt-toolkit
