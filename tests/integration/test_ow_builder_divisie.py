@@ -10,7 +10,6 @@ from dso.models import OwData
 from dso.services.ow import (
     BestuurlijkeGrenzenVerwijzing,
     OWAmbtsgebied,
-    OWDivisie,
     OWDivisieTekst,
     OWGebied,
     OWGebiedenGroep,
@@ -51,7 +50,7 @@ class TestOWDivisieBuilder:
             mapped_uuid=mock_gebied_1.mapped_uuid,
             gebieden=[mock_gebied_1.OW_ID],
         )
-        mock_divisie_1 = OWDivisie(
+        mock_divisie_1 = OWDivisieTekst(
             OW_ID="nl.imow-pv28.divisie.01",
             wid="pv28_4__content_o_1",
             mapped_policy_object_code="beleidskeuze-1",
@@ -62,7 +61,7 @@ class TestOWDivisieBuilder:
             locaties=[mock_gebiedengroep_1.OW_ID],
             gebiedsaanwijzingen=None,
         )
-        mock_divisie_2 = OWDivisie(
+        mock_divisie_2 = OWDivisieTekst(
             OW_ID="nl.imow-pv28.divisie.02",
             wid="pv28_4__content_o_2",
             mapped_policy_object_code="beleidskeuze-2",

@@ -9,7 +9,7 @@ from dso.models import OwData
 from dso.services.ow import (
     BestuurlijkeGrenzenVerwijzing,
     OWAmbtsgebied,
-    OWDivisie,
+    OWDivisieTekst,
     OWGebied,
     OWGebiedenGroep,
     OWRegelingsgebied,
@@ -50,7 +50,7 @@ class TestOWGebiedsaanwijzingBuilder:
             mapped_uuid=mock_gebied_1.mapped_uuid,
             gebieden=[mock_gebied_1.OW_ID],
         )
-        mock_divisie_1 = OWDivisie(
+        mock_divisie_1 = OWDivisieTekst(
             OW_ID="nl.imow-pv28.divisie.01",
             wid="pv28_4__content_o_1",
             mapped_policy_object_code="beleidskeuze-1",
@@ -61,7 +61,7 @@ class TestOWGebiedsaanwijzingBuilder:
             locaties=[mock_gebiedengroep_1.OW_ID],
             gebiedsaanwijzingen=None,
         )
-        mock_divisie_2 = OWDivisie(
+        mock_divisie_2 = OWDivisieTekst(
             OW_ID="nl.imow-pv28.divisie.02",
             wid="pv28_4__content_o_2",
             mapped_policy_object_code="beleidskeuze-2",
@@ -97,7 +97,7 @@ class TestOWGebiedsaanwijzingBuilder:
         return mock_ow_data
 
     @pytest.fixture(autouse=True)
-    def setup_method(self, mock_ow_data: OwData):
+    def setup_method(self, mock_ow_data: OwData, mock_ow_objects):
         """Setup method to initialize common resources."""
 
         self.context = BuilderContext(
@@ -106,20 +106,7 @@ class TestOWGebiedsaanwijzingBuilder:
             levering_id="10000000-0000-0000-0000-000000000001",
             orphaned_wids=[],
         )
-        self.expected_gba_wid = "pv28_4__content_o_1__ref_o_1"
-        self.expected_gba_annotation = {
-            "type_annotation": "gebiedsaanwijzing",
-            "ref": "mock-ref-werkingsgebied-1",
-            "werkingsgebied_code": "werkingsgebied-1",
-            "groep": "NationaalLandschap",
-            "type": "Landschap",
-            "parent_div": {
-                "wid": "pv28_4__content_o_2",
-                "object-code": "beleidskeuze-2",
-                "gebied-code": None,
-                "uses_ambtsgebied": True,
-            },
-        }
+
         self.annotation_lookup_map = {
             "beleidskeuze-2": {
                 "type_annotation": "ambtsgebied",
@@ -127,16 +114,66 @@ class TestOWGebiedsaanwijzingBuilder:
                 "wid": "pv28_4__content_o_2",  # existing ow annotation
                 "object_code": "beleidskeuze-2",  # existing policy obj code
             },
-            self.expected_gba_wid: self.expected_gba_annotation,
+            "pv28_4__content_o_2__ref_o_1": {
+                "type_annotation": "gebiedsaanwijzing",
+                "ref": "mock-ref-werkingsgebied-1",
+                "werkingsgebied_code": "werkingsgebied-1",
+                "groep": "NationaalLandschap",
+                "type": "Landschap",
+                "parent_div": {
+                    "wid": "pv28_4__content_o_2",
+                    "object-code": "beleidskeuze-2",
+                    "gebied-code": None,
+                    "uses_ambtsgebied": True,
+                },
+            },
+            # new in state
+            "beleidskeuze-3": {
+                "type_annotation": "ambtsgebied",
+                "tag": "Divisietekst",
+                "wid": "pv28_4__content_o_3",
+                "object_code": "beleidskeuze-3",
+            },
+            "pv28_4__content_o_3__ref_o_1": {
+                "type_annotation": "gebiedsaanwijzing",
+                "ref": "mock-ref-werkingsgebied-1",
+                "werkingsgebied_code": "werkingsgebied-1",
+                "groep": "NationaalLandschap",
+                "type": "Landschap",
+                "parent_div": {
+                    "wid": "pv28_4__content_o_3",
+                    "object-code": "beleidskeuze-3",
+                    "gebied-code": None,
+                    "uses_ambtsgebied": True,
+                },
+            },
         }
         self.ow_repository = OWStateRepository(ow_input_data=mock_ow_data)
+
+        # setup expected state of new objs created by ow divisie builder
+        bk2_tekstdeel = mock_ow_objects[7]
+        assert bk2_tekstdeel.gebiedsaanwijzingen is None
+        self.ow_repository._mutated_ow_objects = [bk2_tekstdeel]
+        new_divisie = OWDivisieTekst(
+            OW_ID="nl.imow-pv28.divisie.03",
+            wid="pv28_4__content_o_3",
+            mapped_policy_object_code="beleidskeuze-3",
+        )
+        new_ow_tekstdeel = OWTekstdeel(
+            OW_ID="nl.imow-pv28.tekstdeel.03",
+            divisie=new_divisie.OW_ID,
+            locaties=[mock_ow_objects[2].OW_ID],
+            gebiedsaanwijzingen=None,
+        )
+        self.ow_repository._new_ow_objects = [new_divisie, new_ow_tekstdeel]
+
         self.builder = OwGebiedsaanwijzingBuilder(
             context=self.context, annotation_lookup_map=self.annotation_lookup_map, ow_repository=self.ow_repository
         )
 
     def test_builder_init(self):
         assert self.builder._context == self.context
-        assert self.builder._annotation_lookup_map == self.annotation_lookup_map
+        assert len(self.builder._annotation_lookup) == 2  # ensure filter correct
         assert self.builder._used_object_types == set()
         assert self.builder._ow_repository == self.ow_repository
 
@@ -144,24 +181,26 @@ class TestOWGebiedsaanwijzingBuilder:
         """
         tests:
         - new gebiedsaanwijzing is created on existing div+tekstdeel without existing gba's
+        - new gebiedsaanwijzing is created on new div
         TODO:
         - multiple gba
         - mutate existing tekstdeel gba
         """
-        # setup
-        bk2_tekstdeel = mock_ow_objects[7]
-        assert bk2_tekstdeel.gebiedsaanwijzingen is None
-        # expecting existing tekstdeel in mutation lane as gba origin
-        self.ow_repository._mutated_ow_objects = [bk2_tekstdeel]
-
-        # runs over the annotation lookup map set in service init
         self.builder.handle_ow_object_changes()
 
-        assert len(self.ow_repository._new_ow_objects) == 1
-        # new gba created
-        new_gba = self.ow_repository._new_ow_objects[0]
+        # new in state
+        assert len(self.ow_repository._new_ow_objects) == 4
+        new_gba = self.ow_repository._new_ow_objects[2]
         assert isinstance(new_gba, OWGebiedsaanwijzing)
-        assert new_gba.locaties == ["nl.imow-pv28.gebiedengroep.01"]  # werkingsgebied-1 ref
+        assert new_gba.locaties == ["nl.imow-pv28.gebiedengroep.01"]
+
+        new_gba_2 = self.ow_repository._new_ow_objects[3]
+        assert isinstance(new_gba_2, OWGebiedsaanwijzing)
+        assert new_gba_2.locaties == ["nl.imow-pv28.gebiedengroep.01"]
+
+        new_tekstdeel = self.ow_repository._new_ow_objects[1]
+        assert isinstance(new_tekstdeel, OWTekstdeel)
+        assert new_tekstdeel.gebiedsaanwijzingen == [new_gba_2.OW_ID]
 
         # mutations
         assert len(self.ow_repository._mutated_ow_objects) == 1

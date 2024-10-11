@@ -47,7 +47,11 @@ class OwDivisieBuilder(OwFileBuilder):
     ) -> None:
         super().__init__()
         self._context = context
-        self._annotation_lookup = annotation_lookup_map
+        # Filter to only include relevant type_annotations for this builder
+        self._annotation_lookup = {
+            key: value for key, value in annotation_lookup_map.items()
+            if value.get('type_annotation') in ["ambtsgebied", "gebied"]
+        }
         self._used_object_types: Set[OwDivisieObjectType] = set()
 
         self._debug_enabled: bool = debug_enabled

@@ -36,7 +36,11 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
     ) -> None:
         super().__init__()
         self._context = context
-        self._annotation_lookup_map = annotation_lookup_map
+        # Filter to only include relevant type_annotations for this builder
+        self._annotation_lookup = {
+            key: value for key, value in annotation_lookup_map.items()
+            if value.get('type_annotation') in ["gebiedsaanwijzing"]
+        }
         self._used_object_types: Set[OwGebiedsaanwijzingTemplateData] = set()
         self._ow_repository = ow_repository
 
@@ -51,10 +55,7 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
         - if no match, create new gebiedsaanwijzing and add to tekstdeel
         """
 
-        for wid, annotation in self._annotation_lookup_map.items():
-            if annotation["type_annotation"] != "gebiedsaanwijzing":
-                continue
-
+        for wid, annotation in self._annotation_lookup.items():
             locatie = self._ow_repository.get_active_gebiedengroep_by_code(annotation["werkingsgebied_code"])
             if not locatie:
                 raise OWStateError(f"Locatie not found for code {annotation['werkingsgebied_code']}")
