@@ -45,10 +45,11 @@ def generate(input_dir: str, output_dir: Optional[str], json_file: str):
 @click.command()
 @click.argument("input_dir")
 @click.argument("output_dir", required=False, default=None)
-def generate_all(input_dir: Optional[str], output_dir: Optional[str]):
+@click.option("--json-file", default="main.json", help="JSON file name")
+def generate_all(input_dir: Optional[str], output_dir: Optional[str], json_file: str):
     for path in Path(input_dir).rglob("main.json"):
         dir_with_main = path.parent
-        run_generate(str(dir_with_main), output_dir)
+        run_generate(str(dir_with_main), output_dir, json_file)
 
 
 cli.add_command(generate)
