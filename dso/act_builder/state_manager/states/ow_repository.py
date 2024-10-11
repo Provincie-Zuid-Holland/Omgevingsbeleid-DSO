@@ -31,7 +31,7 @@ class OWStateRepository:
     terminated_ow_objects: List[OWObject] - List of OW objects to be ended and from the state final state
     """
 
-    def __init__(self, ow_input_data: OwData, debug_enabled: bool) -> None:
+    def __init__(self, ow_input_data: OwData, debug_enabled: bool = False) -> None:
         self._debug_enabled: bool = debug_enabled
         # Previous ow state from input
         self._known_ow_state = ow_input_data

@@ -43,7 +43,7 @@ class OwDivisieBuilder(OwFileBuilder):
         context: BuilderContext,
         annotation_lookup_map: dict,
         ow_repository: OWStateRepository,
-        debug_enabled: bool,
+        debug_enabled: bool = False,
     ) -> None:
         super().__init__()
         self._context = context
