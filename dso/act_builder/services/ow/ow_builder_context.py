@@ -4,8 +4,6 @@ from ....services.ow.enums import OwProcedureStatus
 
 
 class BuilderContext:
-    """Holds shared configuration and state for OW builders."""
-
     def __init__(
         self,
         provincie_id: str,

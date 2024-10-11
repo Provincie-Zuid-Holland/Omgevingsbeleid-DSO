@@ -1,4 +1,3 @@
-import os
 from copy import copy
 from uuid import UUID
 
@@ -17,7 +16,6 @@ from .......state_manager.state_manager import StateManager
 class RegelingVrijetekstTekstGenerator:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
-        self._debug_enabled = os.getenv("DEBUG_MODE", "").lower() in ("true", "1")
         self._ow_annotation_service: OWAnnotationService = OWAnnotationService(
             werkingsgebied_repository=self._state_manager.input_data.resources.werkingsgebied_repository,
             used_wid_map=self._state_manager.act_ewid_service.get_state_used_wid_map(),
@@ -42,7 +40,7 @@ class RegelingVrijetekstTekstGenerator:
         return tekst
 
     def _set_debug(self, key: str, value: str):
-        if self._debug_enabled:
+        if self._state_manager.debug_enabled:
             self._state_manager.debug[key] = copy(value)
 
     def _html_to_xml_lichaam(self, html: str) -> str:

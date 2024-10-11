@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import Dict, List, Optional, Set
 from uuid import UUID
 
@@ -9,8 +9,7 @@ from .imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsa
 from .ow_id import check_ow_id_imowtype
 
 
-# Base OWObject class
-class OWObject(BaseModel, ABC):
+class OWObject(BaseModel):
     OW_ID: str
     status: Optional[OwObjectStatus] = None
     procedure_status: Optional[OwProcedureStatus] = None
@@ -26,7 +25,6 @@ class OWObject(BaseModel, ABC):
     @abstractmethod
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
         """Check if current obj is actively referenced in the OW State"""
-        # Add subclasses that allow reference to this obj
 
 
 class BestuurlijkeGrenzenVerwijzing(BaseModel):
@@ -46,7 +44,7 @@ class OWRegelingsgebied(OWObject):
         return self.ambtsgebied in used_ow_ids
 
 
-class OWLocatie(OWObject, ABC):
+class OWLocatie(OWObject):
     mapped_uuid: Optional[UUID] = None
     noemer: Optional[str] = None
 
