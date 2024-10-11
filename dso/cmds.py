@@ -12,10 +12,15 @@ def cli():
     """Validation commands."""
 
 
-def run_generate(input_dir: str, base_output_dir: Optional[str], json_file: str = "main.json"):
+def build_input_data_from_dir(input_dir: str, json_file: str = "main.json"):
     main_file = f"{input_dir}/{json_file}"
     loader = InputDataLoader(main_file)
-    data: InputData = loader.load()
+    input_data: InputData = loader.load()
+    return input_data
+
+
+def run_generate(input_dir: str, base_output_dir: Optional[str], json_file: str):
+    data: InputData = build_input_data_from_dir(input_dir, json_file)
 
     if base_output_dir is None:
         base_output_dir = "./output"
@@ -29,7 +34,6 @@ def run_generate(input_dir: str, base_output_dir: Optional[str], json_file: str 
     builder.save_files(str(output_dir))
 
 
-
 @click.command()
 @click.argument("input_dir")
 @click.argument("output_dir", required=False, default=None)
@@ -41,10 +45,11 @@ def generate(input_dir: str, output_dir: Optional[str], json_file: str):
 @click.command()
 @click.argument("input_dir")
 @click.argument("output_dir", required=False, default=None)
-def generate_all(input_dir: Optional[str], output_dir: Optional[str]):
-    for path in Path(input_dir).rglob('main.json'):
+@click.option("--json-file", default="main.json", help="JSON file name")
+def generate_all(input_dir: Optional[str], output_dir: Optional[str], json_file: str):
+    for path in Path(input_dir).rglob("main.json"):
         dir_with_main = path.parent
-        run_generate(str(dir_with_main), output_dir)
+        run_generate(str(dir_with_main), output_dir, json_file)
 
 
 cli.add_command(generate)

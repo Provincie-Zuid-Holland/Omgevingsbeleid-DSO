@@ -1,13 +1,13 @@
 from typing import Dict, List, Optional, Set
 
+from ...act_builder.state_manager.exceptions import OWObjectStateException
 from ...act_builder.state_manager.states.ow_repository import OWStateRepository
 from ...models import OwData
 from .models import OWGebied, OWGebiedenGroep, OWObject, OWRegelingsgebied, OWTekstdeel
 
 
 class OWStatePatcher:
-    def __init__(self, ow_data: OwData, ow_repository: OWStateRepository):
-        self._known_ow_state = ow_data
+    def __init__(self, ow_repository: OWStateRepository):
         self._ow_repository: OWStateRepository = ow_repository
         self._patched_ow_state: Optional[OwData] = None  # result state
 
@@ -16,12 +16,25 @@ class OWStatePatcher:
             raise ValueError("OW state not patched yet.")
         return self._patched_ow_state
 
-    def patch(self) -> None:
+    def patch(self, input_state_ow_data: OwData) -> OwData:
         """merge changed and terminated ow objects into the known ow state"""
-        new_ow_state: OwData = self._known_ow_state.copy(deep=True)
+        new_ow_state: OwData = input_state_ow_data.copy(deep=True)
 
-        # update active ow_objects
-        for ow_obj in self._ow_repository.get_changed_ow_objects():
+        for ow_obj in self._ow_repository.get_new_ow_objects():
+            new_ow_state.ow_objects[ow_obj.OW_ID] = ow_obj
+
+        for ow_obj in self._ow_repository.get_mutated_ow_objects():
+            if ow_obj.OW_ID not in new_ow_state.ow_objects:
+                raise OWObjectStateException(f"Patching ow {ow_obj.OW_ID} not found in known ow state.")
+
+            # if patching mutated OWGebied, ensure its parent OWGebiedenGroep is also has mapped_uuid patched
+            if isinstance(ow_obj, OWGebied):
+                parent = self._ow_repository.get_active_gebiedengroep_by_code(ow_obj.mapped_geo_code)
+                if not parent:
+                    raise OWObjectStateException(f"Cannot patch mapped uuid for parent of {ow_obj.OW_ID}.")
+                parent.mapped_uuid = ow_obj.mapped_uuid
+                new_ow_state.ow_objects[parent.OW_ID] = parent
+
             new_ow_state.ow_objects[ow_obj.OW_ID] = ow_obj
 
         for ow_obj in self._ow_repository.get_terminated_ow_objects():
@@ -31,6 +44,7 @@ class OWStatePatcher:
         # ensure isolated objects are terminated
         new_ow_state = self._remove_dangling_objects(new_ow_state)
         self._patched_ow_state = new_ow_state
+        return new_ow_state
 
     def _remove_dangling_objects(self, new_ow_state):
         """
@@ -53,6 +67,7 @@ class OWStatePatcher:
             for dangling_obj in dangling_objects:
                 del new_ow_state.ow_objects[dangling_obj.OW_ID]
                 new_ow_state.terminated_ow_ids.append(dangling_obj.OW_ID)
+
                 dangling_obj.set_status_beeindig()
                 self._ow_repository.add_terminated_ow(dangling_obj)
 
@@ -101,3 +116,11 @@ class OWStatePatcher:
                 dangling_objects.append(ow_obj)
 
         return dangling_objects
+
+    def _patch_gebiedengroep_mappings(self, new_ow_state: OwData):
+        """Update the OWGebiedenGroep mappings to reflect the new state."""
+        for ow_obj in new_ow_state.ow_objects.values():
+            if isinstance(ow_obj, OWGebiedenGroep):
+                ow_obj.gebieden = [gebied_id for gebied_id in ow_obj.gebieden if gebied_id in new_ow_state.ow_objects]
+                self._ow_repository.add_mutated_ow(ow_obj)
+        return new_ow_state

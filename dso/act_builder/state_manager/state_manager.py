@@ -1,3 +1,4 @@
+import os
 from typing import List, Optional
 
 from ...models import OwData
@@ -9,12 +10,14 @@ from .states import ArtikelEidRepository, OWStateRepository
 
 class StateManager:
     def __init__(self, input_data: InputData):
+        self.debug_enabled: bool = os.getenv("DEBUG_MODE", "").lower() in ("true", "1")
+        self.debug: dict = {}
+
         self.input_data: InputData = input_data
         self.werkingsgebied_eid_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
-        self.ow_repository: OWStateRepository = OWStateRepository(input_data.ow_data)
+        self.ow_repository: OWStateRepository = OWStateRepository(input_data.ow_data, self.debug_enabled)
         self.output_files: List[OutputFile] = []
-        self.debug: dict = {}
         self.regeling_vrijetekst: Optional[str] = None
         self.annotation_ref_lookup_map: dict = {}
         # result state of ow object data after processing
@@ -28,7 +31,6 @@ class StateManager:
             wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.Expression_Version}",
             known_wid_map=input_data.get_known_wid_map(),
             known_wids=input_data.get_known_wids(),
-            werkingsgebied_repository=input_data.resources.werkingsgebied_repository,
         )
         self.bill_ewid_service: EWIDService = EWIDService(
             wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.Expression_Version}",

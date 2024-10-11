@@ -8,7 +8,7 @@ class Ambtsgebied(BaseModel):
     identificatie_suffix: str
     domein: str
     geldig_op: str
-    new: bool
+    titel: str
 
     @classmethod
     def from_json(cls, json_data):

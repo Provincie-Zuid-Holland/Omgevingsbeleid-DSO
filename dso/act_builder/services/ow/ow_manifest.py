@@ -23,13 +23,13 @@ class OwManifestBuilder(OwFileBuilder):
 
     def __init__(
         self,
-        act: ActFRBR,
-        doel: DoelFRBR,
+        regeling_frbr: ActFRBR,
+        doel_frbr: DoelFRBR,
         manifest: Optional[List[OwManifestBestand]] = None,
     ):
         super().__init__()
-        self._act = act
-        self._doel = doel
+        self._act = regeling_frbr
+        self._doel = doel_frbr
         self._manifest = manifest if manifest is not None else []
 
     def add_manifest_item(self, file_name: str, object_types: List[str]) -> None:

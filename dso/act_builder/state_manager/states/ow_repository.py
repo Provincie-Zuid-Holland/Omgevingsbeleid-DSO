@@ -15,24 +15,43 @@ from ....services.ow import (
     OWRegelingsgebied,
     OWTekstdeel,
 )
-from ..exceptions import OWObjectStateException, OWStateMutationError
+from ..exceptions import OWStateMutationError
 
 
+# TODO: Refactor to more efficient lookups
 class OWStateRepository:
-    def __init__(self, ow_input_data: OwData) -> None:
+    """
+    OWStateRepository is a helper class to manage the state of OW objects in a single place.
+    it retrieves ow objects from the input data and builds a list
+    of pending state change actions in new, mutated and terminated objects.
+
+    known_ow_state: OwData - The last known state of OW objects coming from input data model
+    new_ow_objects: List[OWObject] - List of new OW objects to be added to the final state
+    mutated_ow_objects: List[OWObject] - List of OW objects to be updated in the final state
+    terminated_ow_objects: List[OWObject] - List of OW objects to be ended and from the state final state
+    """
+
+    def __init__(self, ow_input_data: OwData, debug_enabled: bool = False) -> None:
+        self._debug_enabled: bool = debug_enabled
         # Previous ow state from input
         self._known_ow_state = ow_input_data
-
+        # Pending state lists
         self._new_ow_objects: List[OWObject] = []
         self._mutated_ow_objects: List[OWObject] = []
         self._terminated_ow_objects: List[OWObject] = []
 
-    def get_changed_ow_objects(self) -> List[OWObject]:
-        """Changed == Actively used in the current state"""
-        return self._new_ow_objects + self._mutated_ow_objects
+    def get_new_ow_objects(self) -> List[OWObject]:
+        return self._new_ow_objects
+
+    def get_mutated_ow_objects(self) -> List[OWObject]:
+        return self._mutated_ow_objects
 
     def get_terminated_ow_objects(self) -> List[OWObject]:
         return self._terminated_ow_objects
+
+    def get_changed_ow_objects(self) -> List[OWObject]:
+        """all objs in pending state lanes that stay active in the final state."""
+        return self._new_ow_objects + self._mutated_ow_objects
 
     def add_new_ow(self, ow_object: OWObject) -> None:
         new_ow_id = ow_object.OW_ID
@@ -49,6 +68,8 @@ class OWStateRepository:
                 ow_object=ow_object.dict(),
             )
         self._new_ow_objects.append(ow_object)
+        if self._debug_enabled:
+            print(f"Added New OW obj to pending state: {ow_object.OW_ID}")
 
     def add_mutated_ow(self, ow_object: OWObject) -> None:
         if ow_object.OW_ID not in self._known_ow_state.used_ow_ids:
@@ -57,16 +78,9 @@ class OWStateRepository:
                 action="add_mutated_ow",
                 ow_object=ow_object.dict(),
             )
-        # If ow_object OW_ID exists in known ow state and values are not
-        # different from existing, # raise exception to prevent duplicate
-        existing_ow_object = self._known_ow_state.ow_objects[ow_object.OW_ID]
-        if existing_ow_object == ow_object:
-            raise OWStateMutationError(
-                message="Trying to add a mutated object to state with no changes, this would raise LVBB error.",
-                action="add_mutated_ow",
-                ow_object=ow_object.dict(),
-            )
         self._mutated_ow_objects.append(ow_object)
+        if self._debug_enabled:
+            print(f"Added Mutate OW obj to pending state: {ow_object.OW_ID}")
 
     def add_terminated_ow(self, ow_object: OWObject) -> None:
         if ow_object.OW_ID not in self._known_ow_state.used_ow_ids:
@@ -75,9 +89,27 @@ class OWStateRepository:
                 action="add_terminated_ow",
                 ow_object=ow_object.dict(),
             )
+
+        for idx, new_obj in enumerate(self._new_ow_objects):
+            if new_obj.OW_ID == ow_object.OW_ID:
+                del self._new_ow_objects[idx]
+                if self._debug_enabled:
+                    print(f"Removing obj: {ow_object.OW_ID} from new_ow_objects due to termination")
+        for idx, mutate_obj in enumerate(self._mutated_ow_objects):
+            if mutate_obj.OW_ID == ow_object.OW_ID:
+                del self._mutated_ow_objects[idx]
+                if self._debug_enabled:
+                    print(f"Removing obj: {ow_object.OW_ID} from mutated_ow_objects due to termination")
+
         self._terminated_ow_objects.append(ow_object)
+        if self._debug_enabled:
+            print(f"Adding Terminate OW obj to pending state: {ow_object.OW_ID}")
 
     # TODO: Refactor this block more efficiently when certain of mapping logic
+
+    def get_new_objects_by_type(self, obj_type: type) -> List[OWObject]:
+        """Fetches objects by type from new, mutated, or terminated lists."""
+        return [obj for obj in (self._new_ow_objects) if isinstance(obj, obj_type)]
 
     def get_new_locations(self) -> List[OWObject]:
         return [obj for obj in self._new_ow_objects if isinstance(obj, OWLocatie)]
@@ -115,9 +147,6 @@ class OWStateRepository:
     def get_terminated_gebiedsaanwijzingen(self) -> List[OWObject]:
         return [obj for obj in self._terminated_ow_objects if isinstance(obj, OWGebiedsaanwijzing)]
 
-    def get_new_tekstdeel(self) -> List[OWObject]:
-        return [obj for obj in self._new_ow_objects if isinstance(obj, OWTekstdeel)]
-
     def get_gebiedengroep_by_code(self, werkingsgebied_code: str) -> Optional[OWGebiedenGroep]:
         # Search current state used objects
         for ow_obj in self.get_changed_ow_objects():
@@ -125,11 +154,21 @@ class OWStateRepository:
                 return ow_obj
         return None
 
-    def get_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
-        for ow_obj in self.get_changed_ow_objects():
+    def get_active_amtsgebied(self) -> Optional[OWAmbtsgebied]:
+        new = self.get_new_ambtsgebied()
+        existing = self.get_existing_ambtsgebied()
+        return new if new is not None else existing if existing is not None else None
+
+    def get_new_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
+        for ow_obj in self._new_ow_objects:
             if isinstance(ow_obj, OWAmbtsgebied):
                 return ow_obj
         return None
+
+    def get_existing_ambtsgebied(self) -> Optional[OWAmbtsgebied]:
+        for ow_obj in self._known_ow_state.ow_objects.values():
+            if isinstance(ow_obj, OWAmbtsgebied):
+                return ow_obj
 
     def get_divisie_by_wid(self, wid: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
         for ow_obj in self.get_changed_ow_objects():
@@ -204,24 +243,6 @@ class OWStateRepository:
                 return ow_obj
         return None
 
-    def get_existing_gebiedengroep(self, ow_id: str) -> OWGebiedenGroep:
-        ow_obj = self._known_ow_state.ow_objects.get(ow_id, None)
-        if not ow_obj or not isinstance(ow_obj, OWGebiedenGroep):
-            raise OWObjectStateException(
-                message=f"Expected OWGebiedenGroep type object in existing state OW_ID: {ow_id}.",
-                ref_ow_id=ow_id,
-            )
-        return ow_obj
-
-    def get_existing_locatie(self, ow_id: str) -> Union[OWGebied, OWGebiedenGroep]:
-        ow_obj = self._known_ow_state.ow_objects.get(ow_id, None)
-        if not ow_obj or not isinstance(ow_obj, (OWGebied, OWGebiedenGroep)):
-            raise OWObjectStateException(
-                message=f"Expected OWGebied or OWGebiedenGroep type object in existing state OW_ID: {ow_id}.",
-                ref_ow_id=ow_id,
-            )
-        return ow_obj
-
     def get_existing_ambtsgebied_id(self, uuid: UUID) -> Optional[str]:
         for ow_obj in self._known_ow_state.ow_objects.values():
             if isinstance(ow_obj, OWAmbtsgebied) and ow_obj.mapped_uuid == uuid:
@@ -234,9 +255,21 @@ class OWStateRepository:
                 return ow_obj.OW_ID
         return None
 
-    def get_existing_divisie(self, wid: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
+    def get_existing_regelingsgebied(self) -> Optional[OWRegelingsgebied]:
+        for ow_obj in self._known_ow_state.ow_objects.values():
+            if isinstance(ow_obj, OWRegelingsgebied):
+                return ow_obj
+        return None
+
+    def get_existing_divisie_by_wid(self, wid: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
         for ow_obj in self._known_ow_state.ow_objects.values():
             if isinstance(ow_obj, (OWDivisie, OWDivisieTekst)) and ow_obj.wid == wid:
+                return ow_obj
+        return None
+
+    def get_existing_divisie_by_mapped_code(self, object_code: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
+        for ow_obj in self._known_ow_state.ow_objects.values():
+            if isinstance(ow_obj, (OWDivisie, OWDivisieTekst)) and ow_obj.mapped_policy_object_code == object_code:
                 return ow_obj
         return None
 
@@ -249,7 +282,8 @@ class OWStateRepository:
                 ow_obj
                 for ow_obj in self._known_ow_state.ow_objects.values()
                 if isinstance(ow_obj, OWTekstdeel) and ow_obj.divisie == divisie_ow_id
-            )
+            ),
+            None,
         )
 
     def get_existing_wid_list(self) -> List[str]:

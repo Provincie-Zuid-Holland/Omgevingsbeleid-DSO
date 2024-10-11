@@ -47,10 +47,11 @@ class RegelingVrijetekstHtmlGenerator:
             )
 
             object_html = middleware_image_in_p(object_html)
-            # @todo remove debug
-            if not "html_templates" in self._state_manager.debug:
-                self._state_manager.debug["html_templates"] = {}
-            self._state_manager.debug["html_templates"][object_code] = copy(object_html)
+
+            if self._state_manager.debug_enabled:
+                if "html_templates" not in self._state_manager.debug:
+                    self._state_manager.debug["html_templates"] = {}
+                self._state_manager.debug["html_templates"][object_code] = copy(object_html)
 
             new_elements = lxml_html.fragments_fromstring(object_html)
 

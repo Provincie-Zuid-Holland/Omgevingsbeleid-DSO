@@ -1,7 +1,8 @@
+from abc import abstractmethod
 from typing import Dict, List, Optional, Set
 from uuid import UUID
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, Field, validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
 from .imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
@@ -14,7 +15,6 @@ class OWObject(BaseModel):
     procedure_status: Optional[OwProcedureStatus] = None
 
     def dict(self, **kwargs):
-        # Add ow_type to dict for template level checks
         base_dict = super().dict(**kwargs)
         base_dict["ow_type"] = self.__class__.__name__
         return base_dict
@@ -22,14 +22,19 @@ class OWObject(BaseModel):
     def set_status_beeindig(self):
         self.status = OwObjectStatus.BEEINDIG
 
+    @abstractmethod
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
-        return True
+        """Check if current obj is actively referenced in the OW State"""
 
 
 class BestuurlijkeGrenzenVerwijzing(BaseModel):
     bestuurlijke_grenzen_id: str
     domein: str
     geldig_op: str
+
+    @validator("bestuurlijke_grenzen_id", pre=True, always=True)
+    def convert_to_upper(cls, v):
+        return v.upper() if isinstance(v, str) else v
 
 
 class OWRegelingsgebied(OWObject):
@@ -45,6 +50,7 @@ class OWLocatie(OWObject):
 
 
 class OWAmbtsgebied(OWLocatie):
+    noemer: str
     bestuurlijke_grenzen_verwijzing: BestuurlijkeGrenzenVerwijzing
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
@@ -92,7 +98,7 @@ class OWDivisieTekst(OWObject):
 class OWTekstdeel(OWObject):
     divisie: str  # imow DivisieRef / DivisieTekstRef
     locaties: List[str]  # imow LocatieRef
-    gebiedsaanwijzingen: Optional[List[str]]  # imow GebiedsaanwijzingRef
+    gebiedsaanwijzingen: Optional[List[str]] = Field(default_factory=list)  # imow GebiedsaanwijzingRef
 
     # idealisatie: Optional[str]
     # thema: Optional[str] = None

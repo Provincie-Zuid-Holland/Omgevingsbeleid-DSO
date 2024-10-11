@@ -16,4 +16,6 @@ per-file-ignores = [
 
 [tool.pytest.ini_options]
 norecursedirs = "*venv* *.venv* *.pytest_cache*"
-testpaths = "app/tests"
+testpaths = ["tests"]
+addopts = "-s"
+

@@ -1,0 +1,14 @@
+<Root>
+    <Divisietekst eId="div_o_2__div_o_12__div_o_1__content_o_3" wId="pv28_4__div_o_2__div_o_16__div_o_1__content_o_7"
+        data-hint-object-code="beleidskeuze-756"
+        data-hint-gebied-code="werkingsgebied-2">
+        Lorem Ipsum Dolor Sit Amet 
+        <IntIoRef eId="div_o_2__div_o_12__div_o_1__content_o_3__ref_o_1" wId="pv28_4__div_o_2__div_o_16__div_o_1__content_o_7__ref_o_1"
+            data-hint-locatie="werkingsgebied-1"
+            data-hint-gebiedengroep="Bodembeheergebied"
+            data-hint-gebiedsaanwijzingtype="Bodem">
+            Example Geo 2
+        </IntIoRef>
+        Lorem Ipsum Dolor Sit Amet.
+    </Divisietekst>
+</Root>
