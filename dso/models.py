@@ -268,6 +268,15 @@ class PublicationSettings(BaseModel):
         return cls(**json_data)
 
 
+class VerwijderdeWerkingsgebied(BaseModel):
+    UUID: uuid.UUID
+    code: str
+    object_id: int
+    frbr: GioFRBR
+    geboorteregeling: str
+    titel: str
+
+
 class RegelingMutatie(BaseModel, metaclass=ABCMeta):
     was_regeling_frbr: ActFRBR
 
@@ -278,6 +287,8 @@ class RegelingMutatie(BaseModel, metaclass=ABCMeta):
     # All previously used wIds. Which are allowed to be used again
     # The main reason here is that we can not generate new wIds for old versions
     bekend_wids: List[str]
+
+    verwijderde_werkingsgebieden: List[VerwijderdeWerkingsgebied]
 
     @classmethod
     def from_dict(cls, data: dict) -> "RegelingMutatie":
@@ -373,12 +384,3 @@ class OwData(BaseModel):
             ow_objects=ow_objects,
             terminated_ow_ids=data.get("terminated_ow_ids", []),
         )
-
-
-class VerwijderdeWerkingsgebied(BaseModel):
-    UUID: uuid.UUID
-    code: str
-    object_id: int
-    frbr: GioFRBR
-    geboorteregeling: str
-    titel: str

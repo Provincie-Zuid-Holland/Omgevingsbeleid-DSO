@@ -12,7 +12,6 @@ from ....models import (
     RegelingMutatie,
     RenvooiRegelingMutatie,
     VervangRegelingMutatie,
-    VerwijderdeWerkingsgebied,
 )
 from ....services.utils.helpers import load_json_data, load_xml_file
 from ....services.utils.os import create_normalized_path
@@ -39,7 +38,6 @@ class InputData(BaseModel):
     object_template_repository: ObjectTemplateRepository
     ambtsgebied: Ambtsgebied
     ow_data: OwData
-    verwijderde_werkingsgebieden: List[VerwijderdeWerkingsgebied] = Field([])
 
     class Config:
         arbitrary_types_allowed = True
