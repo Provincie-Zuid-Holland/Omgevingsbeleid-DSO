@@ -1,3 +1,4 @@
+import uuid
 from abc import ABCMeta, abstractmethod
 from enum import Enum
 from typing import Any, Dict, List, Optional, Type
@@ -372,3 +373,11 @@ class OwData(BaseModel):
             ow_objects=ow_objects,
             terminated_ow_ids=data.get("terminated_ow_ids", []),
         )
+
+
+class VerwijderdeWerkingsgebied(BaseModel):
+    UUID: uuid.UUID
+    frbr: GioFRBR
+    geboorteregeling: str
+    title: str
+    frbr: GioFRBR

@@ -38,8 +38,9 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
         self._context = context
         # Filter to only include relevant type_annotations for this builder
         self._annotation_lookup = {
-            key: value for key, value in annotation_lookup_map.items()
-            if value.get('type_annotation') in ["gebiedsaanwijzing"]
+            key: value
+            for key, value in annotation_lookup_map.items()
+            if value.get("type_annotation") in ["gebiedsaanwijzing"]
         }
         self._used_object_types: Set[OwGebiedsaanwijzingTemplateData] = set()
         self._ow_repository = ow_repository
