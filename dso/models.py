@@ -377,7 +377,8 @@ class OwData(BaseModel):
 
 class VerwijderdeWerkingsgebied(BaseModel):
     UUID: uuid.UUID
+    code: str
+    object_id: int
     frbr: GioFRBR
     geboorteregeling: str
-    title: str
-    frbr: GioFRBR
+    titel: str
