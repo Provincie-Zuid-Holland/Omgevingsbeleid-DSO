@@ -1,3 +1,4 @@
+import uuid
 from abc import ABCMeta, abstractmethod
 from enum import Enum
 from typing import Any, Dict, List, Optional, Type
@@ -267,6 +268,15 @@ class PublicationSettings(BaseModel):
         return cls(**json_data)
 
 
+class VerwijderdWerkingsgebied(BaseModel):
+    UUID: uuid.UUID
+    code: str
+    object_id: int
+    frbr: GioFRBR
+    geboorteregeling: str
+    titel: str
+
+
 class RegelingMutatie(BaseModel, metaclass=ABCMeta):
     was_regeling_frbr: ActFRBR
 
@@ -277,6 +287,8 @@ class RegelingMutatie(BaseModel, metaclass=ABCMeta):
     # All previously used wIds. Which are allowed to be used again
     # The main reason here is that we can not generate new wIds for old versions
     bekend_wids: List[str]
+
+    te_verwijderden_werkingsgebieden: List[VerwijderdWerkingsgebied]
 
     @classmethod
     def from_dict(cls, data: dict) -> "RegelingMutatie":
