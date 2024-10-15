@@ -49,5 +49,20 @@
                 "DEBUG_MODE": "True"
             }
         },
+        {
+            "name": "DSO generate - mutatie zonder ow",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "dso.cmds",
+            "args": [
+                "generate",
+                "./input/omgevingsvisie/mutatie/02-wijziging-zonder-ow",
+            ],
+            "console": "internalConsole",
+            "justMyCode": true,
+            "env": {
+                "DEBUG_MODE": "True"
+            }
+        },
     ]
 }

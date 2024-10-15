@@ -1,4 +1,4 @@
-import uuid
+import os
 from abc import ABCMeta, abstractmethod
 from enum import Enum
 from typing import Any, Dict, List, Optional, Type
@@ -269,7 +269,7 @@ class PublicationSettings(BaseModel):
 
 
 class VerwijderdWerkingsgebied(BaseModel):
-    UUID: uuid.UUID
+    UUID: str
     code: str
     object_id: int
     frbr: GioFRBR
@@ -311,6 +311,13 @@ class RenvooiRegelingMutatie(RegelingMutatie):
 
     renvooi_api_url: str
     renvooi_api_key: str
+
+    @validator("renvooi_api_key", pre=False, always=True)
+    def _overwrite_renvooi_api_key_from_env(cls, v):
+        env_key: Optional[str] = os.getenv("RENVOOI_API_KEY")
+        if env_key:
+            return env_key
+        return v
 
 
 class OwIdMapping(BaseModel):

@@ -82,7 +82,7 @@ class Builder:
         return self._state_manager.act_ewid_service.get_state_used_wids()
 
     def get_regeling_vrijetekst(self) -> Optional[str]:
-        return self._state_manager.regeling_vrijetekst
+        return self._state_manager.regeling_vrijetekst_wordt
 
     def get_ow_object_state(self) -> OwData:
         if self._state_manager.ow_object_state is None:

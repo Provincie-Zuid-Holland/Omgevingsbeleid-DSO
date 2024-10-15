@@ -127,6 +127,23 @@
             "Work_Country": "nl"
         },
         "was_regeling_vrijetekst": "./was_regelingvrijetekst.xml",
+        "te_verwijderden_werkingsgebieden": [
+            {
+                "UUID": "x",
+                "code": "x",
+                "object_id": 1,
+                "frbr": {
+                    "Work_Province_ID": "pv28",
+                    "Work_Date": "2024",
+                    "Work_Other": "1-1",
+                    "Expression_Language": "nld",
+                    "Expression_Date": "2024-07-08",
+                    "Expression_Version": 1
+                },
+                "geboorteregeling": "x",
+                "titel": "x"
+            }
+        ],
         "renvooi_api_key": "placeholder",
         "renvooi_api_url": "https://renvooiservice-eto.overheid.nl",
         "bekend_wid_map": {
@@ -198,7 +215,7 @@
         "identificatie_suffix": "PV28",
         "domein": "NL.BI.BestuurlijkGebied",
         "geldig_op": "2023-09-29",
-        "new": true
+        "titel": "Provincie Zuid-Holland"
     },
     "ow_data": {
         "ow_objects": {

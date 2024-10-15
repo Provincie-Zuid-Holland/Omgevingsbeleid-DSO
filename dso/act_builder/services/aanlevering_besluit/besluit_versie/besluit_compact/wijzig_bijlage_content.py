@@ -28,7 +28,8 @@ class WijzigBijlageContent:
         )
 
         # We store the RegelingVrijetekst for the future mutations
-        self._state_manager.regeling_vrijetekst = regeling_vrijetekst_wordt
+        self._state_manager.regeling_vrijetekst_wordt = regeling_vrijetekst_wordt
+        self._state_manager.regeling_vrijetekst_aangeleverd = aanleveren_regeling_content
 
         wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__"
         content = load_template(

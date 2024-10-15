@@ -17,6 +17,19 @@
         </BeoogdInformatieobject>
         {% endfor %}
     </BeoogdeRegelgeving>
+    {% if withdrawals | length %}
+        <Intrekkingen>
+            {% for withdrawal in withdrawals %}
+                <Intrekking>
+                    <doelen>
+                        <doel>{{ instelling_doel }}</doel>
+                    </doelen>
+                    <instrument>{{ withdrawal.instrument }}</instrument>
+                    <eId>{{ withdrawal.eid }}</eId>
+                </Intrekking>
+            {% endfor %} 
+        </Intrekkingen>
+    {% endif %}
     {% if tijdstempels | length %}
     <Tijdstempels>
         {% for tijdstempel in tijdstempels %}
