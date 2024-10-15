@@ -16,7 +16,7 @@ black==24.10.0
     # via -r requirements-dev.in
 click==8.1.7
     # via black
-debugpy==1.8.6
+debugpy==1.8.7
     # via -r requirements-dev.in
 decorator==5.1.1
     # via ipython
