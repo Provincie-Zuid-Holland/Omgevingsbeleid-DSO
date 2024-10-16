@@ -60,6 +60,10 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ambtsgebied: Optional[OWAmbtsgebied] = self._ow_repository.get_active_amtsgebied()
 
     def handle_ow_object_changes(self):
+        new_ambtsgebied = self._ow_repository.get_new_ambtsgebied()
+        if new_ambtsgebied:
+            self._ambtsgebied = new_ambtsgebied
+
         if self._context.orphaned_wids != []:
             self.terminate_removed_wids(self._context.orphaned_wids)
 
