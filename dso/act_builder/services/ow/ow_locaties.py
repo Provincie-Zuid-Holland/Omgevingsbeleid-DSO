@@ -48,10 +48,10 @@ class OwLocatieBuilder(OwFileBuilder):
         Compares werkingsgebied objects with previous OW state and
         determines if new, mutation or termination action is needed.
         """
-        existing_ambtsgebied_id = self._ow_repository.get_existing_ambtsgebied_id(self._ambtsgebied_data.UUID)
-        if existing_ambtsgebied_id:
-            # should compare data and skip if same
-            self.mutate_ow_ambtsgebied(self._ambtsgebied_data, existing_ambtsgebied_id)
+        existing_ambtsgebied = self._ow_repository.get_existing_ambtsgebied()
+        if existing_ambtsgebied:
+            if existing_ambtsgebied.mapped_uuid != self._ambtsgebied_data.UUID:
+                self.mutate_ow_ambtsgebied(self._ambtsgebied_data, existing_ambtsgebied.OW_ID)
         else:
             self.create_ow_ambtsgebied(self._ambtsgebied_data)
 

@@ -137,8 +137,8 @@ class TestOWLocatieBuilder:
         # run
         self.builder.handle_ow_object_changes()
 
-        assert len(self.ow_repository._mutated_ow_objects) == 2 # 2 because ambtsgebied forced mutation
-        assert self.ow_repository._mutated_ow_objects[1].mapped_uuid == input_gebied_2.UUID
+        assert len(self.ow_repository._mutated_ow_objects) == 1
+        assert self.ow_repository._mutated_ow_objects[0].mapped_uuid == input_gebied_2.UUID
 
         assert len(self.ow_repository._new_ow_objects) == 2
         assert self.ow_repository._new_ow_objects[0].mapped_uuid == input_gebied_new.UUID
