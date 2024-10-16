@@ -69,6 +69,7 @@
                     <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
                     <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
+                    <l:noemer>{{ ow_object.noemer }}</l:noemer>
                     <l:bestuurlijkeGrenzenVerwijzing>
                         <l:BestuurlijkeGrenzenVerwijzing>
                             <l:bestuurlijkeGrenzenID>{{ ow_object.bestuurlijke_grenzen_verwijzing.bestuurlijke_grenzen_id }}</l:bestuurlijkeGrenzenID>
@@ -84,7 +85,26 @@
 
         <!-- gemuteerde locaties -->
         {% for ow_object in data.mutated_ow_objects %}
-		{% if ow_object.ow_type == "OWGebied" %}
+		{% if ow_object.ow_type == "OWAmbtsgebied" %}
+        <sl:stand>
+            <ow-dc:owObject>
+                <l:Ambtsgebied>
+                    {% if ow_object.procedure_status is not none %}
+                    <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+                    {% endif %}
+                    <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
+                    <l:noemer>{{ ow_object.noemer }}</l:noemer>
+                    <l:bestuurlijkeGrenzenVerwijzing>
+                        <l:BestuurlijkeGrenzenVerwijzing>
+                            <l:bestuurlijkeGrenzenID>{{ ow_object.bestuurlijke_grenzen_verwijzing.bestuurlijke_grenzen_id }}</l:bestuurlijkeGrenzenID>
+                            <l:domein>{{ ow_object.bestuurlijke_grenzen_verwijzing.domein }}</l:domein>
+                            <l:geldigOp>{{ ow_object.bestuurlijke_grenzen_verwijzing.geldig_op }}</l:geldigOp>
+                        </l:BestuurlijkeGrenzenVerwijzing>
+                    </l:bestuurlijkeGrenzenVerwijzing>
+                </l:Ambtsgebied>
+            </ow-dc:owObject>
+        </sl:stand>
+		{% elif ow_object.ow_type == "OWGebied" %}
         <sl:stand>
             <ow-dc:owObject>
                 <l:Gebied>
