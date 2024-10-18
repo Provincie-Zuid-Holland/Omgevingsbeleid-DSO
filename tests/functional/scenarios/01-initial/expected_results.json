@@ -1,0 +1,38 @@
+{
+    "package_files": [
+        "akn_nl_bill_pv28-pub-2024-omgevingsvisie-1-1.xml",
+        "GIO_locaties_testgebied-2.xml",
+        "locaties_testgebied-1.gml",
+        "manifest-ow.xml",
+        "opdracht.xml",
+        "owLocaties.xml",
+        "GIO_locaties_testgebied-1.xml",
+        "img_00000000-aaaa-0000-0000-000000000001.png",
+        "locaties_testgebied-2.gml",
+        "manifest.xml",
+        "owDivisies.xml",
+        "owRegelingsgebied.xml"
+    ],
+    "owLocaties": {
+        "ambtsgebied": {
+            "noemer": "Provincie Zuid-Holland",
+            "bestuurlijkeGrenzenVerwijzing": {
+                "bestuurlijkeGrenzenID": "PV28",
+                "domein": "NL.BI.BestuurlijkGebied",
+                "geldigOp": "2023-09-29"
+            }
+        },
+        "gebieden": [
+            {
+                "noemer": "Testgebied 1",
+                "gebied-code": "werkingsgebied-1",
+                "geometrie_href": "00000000-0000-0005-0000-000000000001"
+            },
+            {
+                "noemer": "Testgebied 2",
+                "gebied-code": "werkingsgebied-1",
+                "geometrie_href": "00000000-0000-0005-0000-000000000002"
+            }
+        ]
+    }
+}
