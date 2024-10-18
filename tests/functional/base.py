@@ -1,6 +1,8 @@
+from pathlib import Path
 import debugpy
 import os
 import pytest
+import shutil
 
 from dso.cmds import build_input_data_from_dir
 from dso.act_builder.builder import Builder
@@ -38,6 +40,15 @@ class BaseTestBuilder:
         # Setup results for testing
         # self.debug()
         request.cls.builder.build_publication_files()
+
+        # store output files for assertions
+        relative_path = str(Path(input_dir).relative_to(Path(input_dir).parents[0]))
+        output_dir = Path("./output") / relative_path
+        if output_dir.exists() and output_dir.is_dir():
+            shutil.rmtree(output_dir)  # remove existing
+        request.cls.builder.save_files(str(output_dir))
+        print(f"Output files saved to {output_dir}")
+        request.cls.output_dir = output_dir
 
     def ensure_clean_state(self, state_manager):
         assert len(state_manager.output_files) == 0, "Initial state should have no output files"
