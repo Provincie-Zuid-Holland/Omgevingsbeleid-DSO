@@ -25,7 +25,7 @@ class TestOWLocatieBuilder:
                 geldig_op="2023-09-29",
             ),
             noemer="Ambtsgebied 1",
-            mapped_uuid=UUID("00000000-0000-0000-0000-000000000001"),
+            gio_ref=UUID("00000000-0000-0000-0000-000000000001"),
         )
 
         mock_regelingsgebied_1 = OWRegelingsgebied(
@@ -37,26 +37,26 @@ class TestOWLocatieBuilder:
             OW_ID="nl.imow-pv28.gebied.01",
             noemer="Gebied 1",
             mapped_geo_code="werkingsgebied-1",
-            mapped_uuid=UUID("00000000-0000-0005-0000-000000000001"),
+            gio_ref=UUID("00000000-0000-0005-0000-000000000001"),
         )
         mock_gebiedengroep_1 = OWGebiedenGroep(
             OW_ID="nl.imow-pv28.gebiedengroep.01",
             noemer="Gebiedengroep 1",
             mapped_geo_code=mock_gebied_1.mapped_geo_code,
-            mapped_uuid=mock_gebied_1.mapped_uuid,
+            gio_ref=mock_gebied_1.gio_ref,
             gebieden=[mock_gebied_1.OW_ID],
         )
         mock_gebied_2 = OWGebied(
             OW_ID="nl.imow-pv28.gebied.02",
             noemer="Gebied 2",
             mapped_geo_code="werkingsgebied-2",
-            mapped_uuid=UUID("20000000-0000-0005-0000-000000000002"),
+            gio_ref=UUID("20000000-0000-0005-0000-000000000002"),
         )
         mock_gebiedengroep_2 = OWGebiedenGroep(
             OW_ID="nl.imow-pv28.gebiedengroep.02",
             noemer="Gebiedengroep 2",
             mapped_geo_code=mock_gebied_2.mapped_geo_code,
-            mapped_uuid=mock_gebied_2.mapped_uuid,
+            gio_ref=mock_gebied_2.gio_ref,
             gebieden=[mock_gebied_2.OW_ID],
         )
 
@@ -141,7 +141,7 @@ class TestOWLocatieBuilder:
         assert self.ow_repository._mutated_ow_objects[0].mapped_uuid == input_gebied_2.UUID
 
         assert len(self.ow_repository._new_ow_objects) == 2
-        assert self.ow_repository._new_ow_objects[0].mapped_uuid == input_gebied_new.UUID
+        assert self.ow_repository._new_ow_objects[0].gio_ref == str(input_gebied_new.UUID)
         assert self.ow_repository._new_ow_objects[1].mapped_geo_code == input_gebied_new.Code
 
     def test_new_ow_gebiedengroep(self):
@@ -156,7 +156,7 @@ class TestOWLocatieBuilder:
         new_gebied = self.ow_repository._new_ow_objects[0]
         new_groep = self.ow_repository._new_ow_objects[1]
         assert isinstance(new_gebied, OWGebied)
-        assert new_gebied.mapped_uuid == input_data_werkingsgebied.UUID
+        assert new_gebied.gio_ref == str(input_data_werkingsgebied.UUID)
         assert isinstance(new_groep, OWGebiedenGroep)
         assert new_groep.mapped_geo_code == input_data_werkingsgebied.Code
         assert new_groep.gebieden == [new_gebied.OW_ID]

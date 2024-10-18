@@ -45,7 +45,7 @@ class OWRegelingsgebied(OWObject):
 
 
 class OWLocatie(OWObject):
-    mapped_uuid: Optional[UUID] = None
+    gio_ref: Optional[str] = None  # GeometrieRef -> GIO Identifier
     noemer: Optional[str] = None
 
 
