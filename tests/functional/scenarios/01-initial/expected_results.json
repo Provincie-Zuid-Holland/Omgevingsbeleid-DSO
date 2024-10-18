@@ -1,15 +1,15 @@
 {
     "package_files": [
         "akn_nl_bill_pv28-pub-2024-omgevingsvisie-1-1.xml",
+        "opdracht.xml",
+        "manifest.xml",
+        "GIO_locaties_testgebied-1.xml",
         "GIO_locaties_testgebied-2.xml",
         "locaties_testgebied-1.gml",
-        "manifest-ow.xml",
-        "opdracht.xml",
-        "owLocaties.xml",
-        "GIO_locaties_testgebied-1.xml",
-        "img_00000000-aaaa-0000-0000-000000000001.png",
         "locaties_testgebied-2.gml",
-        "manifest.xml",
+        "img_00000000-aaaa-0000-0000-000000000001.png",
+        "manifest-ow.xml",
+        "owLocaties.xml",
         "owDivisies.xml",
         "owRegelingsgebied.xml"
     ],

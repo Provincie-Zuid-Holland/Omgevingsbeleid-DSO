@@ -37,6 +37,7 @@ def namespaces():
         "ow": "http://www.geostandaarden.nl/imow/owobject",
         "rg": "http://www.geostandaarden.nl/imow/regelingsgebied",
         "ow-dc": "http://www.geostandaarden.nl/imow/bestanden/deelbestand",
+        "lvbb": "http://www.overheid.nl/2017/lvbb"
     }
     return namespaces
 
@@ -50,11 +51,36 @@ def namespaces():
 )
 class TestPackageOutputFiles(BaseTestBuilder):
     def test_expected_files_exist(self, expected_results):
+        """
+        Ensure all expected files from package_files list are found in the output directory. 
+        """
         expected_files = expected_results["package_files"]
         assert self.output_dir is not None, "Output directory not set"
-        # Add logic to check if the expected files exist in the output directory
         for file in expected_files:
             assert (self.output_dir / file).exists(), f"Expected file {file} not found in output directory"
+
+    def test_manifest_content(self, expected_results, namespaces):
+        expected_manifest = expected_results["package_files"]
+
+        manifest_results = []
+        tree = etree.parse(f"{self.output_dir}/manifest.xml")
+        root = tree.getroot()
+
+        for bestand in root.findall(".//lvbb:bestand", namespaces=namespaces):
+            bestandsnaam = bestand.find(".//lvbb:bestandsnaam", namespaces=namespaces)
+            content_type = bestand.find(".//lvbb:contentType", namespaces=namespaces)
+            manifest_results.append({"bestandsnaam": bestandsnaam.text, "content_type": content_type.text})
+
+        # ensure every expected file is found in the manifest bestandsnaam
+        for file in expected_manifest:
+            assert any(file in result["bestandsnaam"] for result in manifest_results), f"Expected file {file} not found in manifest"
+
+    def test_manifest_ow_content(self, expected_results, namespaces):
+        # TODO
+        assert True
+
+    def test_regelinggebied_content(self, expected_results, namespaces):
+        # TODO
         assert True
 
     def test_ow_gebieden(self, expected_results, namespaces):
