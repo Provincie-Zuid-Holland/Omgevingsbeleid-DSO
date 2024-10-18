@@ -12,7 +12,7 @@ def input_dir(request):
 @pytest.mark.parametrize(
     "input_dir",
     [
-        "tests/fixtures/test-herziening-2024-ambtsgebied",
+        "tests/functional/scenarios/01-initial",
     ],
     indirect=True,
 )
@@ -64,6 +64,3 @@ class TestOWAnnotationRefs(BaseTestBuilder):
                     # TOOD: add assertions for gebiedsaanwijzing
                 case _:
                     raise ValueError("unexpected annotation type")
-
-        print(f"gebied count: {annotation_type_count['gebied']}")
-        print(f"ambtsgebied count: {annotation_type_count['ambtsgebied']}")

@@ -14,7 +14,7 @@ def input_dir(request):
 @pytest.mark.parametrize(
     "input_dir",
     [
-        "tests/fixtures/test-herziening-2024-ambtsgebied",
+        "tests/functional/scenarios/01-initial",
     ],
     indirect=True,
 )
@@ -57,7 +57,6 @@ class TestOWLocations(BaseTestBuilder):
 
         assert len(terminated_gebieden_codes) == len(diff)
         assert len(terminated_gebiedengroepen_codes) == len(diff)
-        print(terminated_gebieden_codes)
 
     def test_new_locations(self):
         """
@@ -116,5 +115,3 @@ class TestOWLocations(BaseTestBuilder):
         for ow_id, expected_uuid in expected_mutations:
             result_ow_obj = self.state_manager.ow_object_state.ow_objects[ow_id]
             assert result_ow_obj.gio_ref == str(expected_uuid), f"Expected UUID {expected_uuid} for OW ID {ow_id}"
-
-        print(len(expected_mutations), "gebied mutations found")

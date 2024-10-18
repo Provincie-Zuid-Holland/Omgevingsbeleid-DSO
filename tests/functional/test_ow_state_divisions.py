@@ -13,7 +13,7 @@ def input_dir(request):
 @pytest.mark.parametrize(
     "input_dir",
     [
-        "tests/fixtures/test-herziening-2024-ambtsgebied",
+        "tests/functional/scenarios/01-initial",
     ],
     indirect=True,
 )
@@ -32,8 +32,6 @@ class TestOWDivision(BaseTestBuilder):
             if isinstance(ow_obj, OWDivisieTekst) and ow_obj.mapped_policy_object_code not in input_objects:
                 orphaned_ow_ids.append(owid)
                 orphaned_objs.append(ow_obj)
-
-        print(len(orphaned_objs))
 
         # verify removed from result state
         assert not any(owid in self.state_manager.ow_object_state.ow_objects for owid in orphaned_ow_ids)
