@@ -49,9 +49,10 @@ class OWLocatie(OWObject):
     noemer: Optional[str] = None
 
 
-class OWAmbtsgebied(OWLocatie):
+class OWAmbtsgebied(OWObject):
     noemer: str
     bestuurlijke_grenzen_verwijzing: BestuurlijkeGrenzenVerwijzing
+    mapped_uuid: Optional[UUID] = None
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
         return self.OW_ID in reverse_ref_index.get("OWRegelingsgebied", set())
