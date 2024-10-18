@@ -24,7 +24,7 @@ class OWAnnotationService:
         "tag": "Divisietekst",
         "object_code": "beleidskeuze-756",
         "gebied_code": "werkingsgebied-28",
-        "gebied_uuid": "6cee5d12-beaa-4ea8-9464-5697a6e85931",
+        "gio_ref": "6cee5d12-beaa-4ea8-9464-5697a6e85931",
         "uses_ambtsgebied": False,
     },
 
@@ -104,7 +104,7 @@ class OWAnnotationService:
                 "tag": element.tag,
                 "object_code": object_code,
                 "gebied_code": gebied_code,
-                "gebied_uuid": str(werkingsgebied.UUID),
+                "gio_ref": werkingsgebied.Identifier,
             }
 
         return

@@ -29,7 +29,7 @@ class TestOWGebiedsaanwijzingBuilder:
                 geldig_op="2023-09-29",
             ),
             noemer="Ambtsgebied 1",
-            mapped_uuid=UUID("00000000-0000-0000-0000-000000000001"),
+            gio_ref=UUID("00000000-0000-0000-0000-000000000001"),
         )
 
         mock_regelingsgebied_1 = OWRegelingsgebied(
@@ -41,13 +41,13 @@ class TestOWGebiedsaanwijzingBuilder:
             OW_ID="nl.imow-pv28.gebied.01",
             noemer="Gebied 1",
             mapped_geo_code="werkingsgebied-1",
-            mapped_uuid=UUID("00000000-0000-0000-0000-000000000002"),
+            gio_ref=UUID("00000000-0000-0000-0000-000000000002"),
         )
         mock_gebiedengroep_1 = OWGebiedenGroep(
             OW_ID="nl.imow-pv28.gebiedengroep.01",
             noemer="Gebiedengroep 1",
             mapped_geo_code=mock_gebied_1.mapped_geo_code,
-            mapped_uuid=mock_gebied_1.mapped_uuid,
+            gio_ref=mock_gebied_1.gio_ref,
             gebieden=[mock_gebied_1.OW_ID],
         )
         mock_divisie_1 = OWDivisieTekst(

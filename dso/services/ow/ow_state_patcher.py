@@ -32,7 +32,7 @@ class OWStatePatcher:
                 parent = self._ow_repository.get_active_gebiedengroep_by_code(ow_obj.mapped_geo_code)
                 if not parent:
                     raise OWObjectStateException(f"Cannot patch mapped uuid for parent of {ow_obj.OW_ID}.")
-                parent.mapped_uuid = ow_obj.mapped_uuid
+                parent.gio_ref = ow_obj.gio_ref
                 new_ow_state.ow_objects[parent.OW_ID] = parent
 
             new_ow_state.ow_objects[ow_obj.OW_ID] = ow_obj

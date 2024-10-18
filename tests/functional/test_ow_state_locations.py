@@ -98,23 +98,23 @@ class TestOWLocations(BaseTestBuilder):
         """
         # new gebieden data
         input_gebieden = self.state_manager.input_data.resources.werkingsgebied_repository._werkingsgebieden
-        input_gebieden_code_uuids = {}
+        input_gebieden_code_identifiers = {}
         for location in input_gebieden.values():
-            input_gebieden_code_uuids[location.Code] = location.UUID
+            input_gebieden_code_identifiers[location.Code] = location.Identifier
 
         # search existing ow data for changed uuids
         # between reused state ow_objs and input gebieden
         expected_mutations = [
-            (ow_obj.OW_ID, input_gebieden_code_uuids[ow_obj.mapped_geo_code])
+            (ow_obj.OW_ID, input_gebieden_code_identifiers[ow_obj.mapped_geo_code])
             for ow_obj in self.state_manager.input_data.ow_data.ow_objects.values()
             if isinstance(ow_obj, OWGebied)
-            and ow_obj.mapped_geo_code in input_gebieden_code_uuids
-            and input_gebieden_code_uuids[ow_obj.mapped_geo_code] != ow_obj.mapped_uuid
+            and ow_obj.mapped_geo_code in input_gebieden_code_identifiers
+            and input_gebieden_code_identifiers[ow_obj.mapped_geo_code] != ow_obj.gio_ref
         ]
 
         # test if mutated uuids are set in the result state
         for ow_id, expected_uuid in expected_mutations:
             result_ow_obj = self.state_manager.ow_object_state.ow_objects[ow_id]
-            assert result_ow_obj.mapped_uuid == expected_uuid, f"Expected UUID {expected_uuid} for OW ID {ow_id}"
+            assert result_ow_obj.gio_ref == str(expected_uuid), f"Expected UUID {expected_uuid} for OW ID {ow_id}"
 
         print(len(expected_mutations), "gebied mutations found")

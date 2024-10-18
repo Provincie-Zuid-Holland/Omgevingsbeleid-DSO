@@ -60,7 +60,7 @@ class TestOWAnnotationService:
             "tag": "Divisietekst",
             "object_code": "beleidskeuze-756",
             "gebied_code": "werkingsgebied-2",
-            "gebied_uuid": "20000000-0000-0005-0000-000000000002",
+            "gio_ref": "20000000-0000-0005-0000-000000000002",
         }
 
         expected_gba_wid = "pv28_4__content_o_1__ref_o_1"
@@ -176,7 +176,7 @@ class TestOWAnnotationService:
             "tag": "Divisietekst",
             "object_code": "beleidskeuze-420",
             "gebied_code": "werkingsgebied-2",
-            "gebied_uuid": "20000000-0000-0005-0000-000000000002",
+            "gio_ref": "20000000-0000-0005-0000-000000000002",
         }
 
         assert annotation_map["beleidskeuze-756"] == expected_annotation_ambtsgebied

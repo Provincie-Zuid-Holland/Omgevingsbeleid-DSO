@@ -9,6 +9,7 @@ from ......models import GioFRBR
 
 class Locatie(BaseModel):
     UUID: uuid.UUID
+    Identifier: str
     Title: str
     Gml: Optional[str] = Field(None)
     Geometry: Optional[str] = Field(None)
@@ -22,6 +23,7 @@ class Locatie(BaseModel):
 
 class Werkingsgebied(BaseModel):
     UUID: uuid.UUID
+    Identifier: str
     Code: str
     New: bool
     Frbr: GioFRBR

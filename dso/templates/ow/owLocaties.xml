@@ -39,7 +39,7 @@
                     <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
                     <l:noemer>{{ ow_object.noemer }}</l:noemer>
                     <l:geometrie>
-                        <l:GeometrieRef xlink:href="{{ ow_object.mapped_uuid }}" />
+                        <l:GeometrieRef xlink:href="{{ ow_object.gio_ref }}" />
                     </l:geometrie>
                 </l:Gebied>
             </ow-dc:owObject>
@@ -114,7 +114,7 @@
                     <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
                     <l:noemer>{{ ow_object.noemer }}</l:noemer>
                     <l:geometrie>
-                        <l:GeometrieRef xlink:href="{{ ow_object.mapped_uuid }}" />
+                        <l:GeometrieRef xlink:href="{{ ow_object.gio_ref }}" />
                     </l:geometrie>
                 </l:Gebied>
             </ow-dc:owObject>
@@ -154,7 +154,7 @@
                     <l:identificatie>{{ ow_object.OW_ID }}</l:identificatie>
                     <l:noemer>{{ ow_object.noemer }}</l:noemer>
                     <l:geometrie>
-                        <l:GeometrieRef xlink:href="{{ ow_object.mapped_uuid }}" />
+                        <l:GeometrieRef xlink:href="{{ ow_object.gio_ref }}" />
                     </l:geometrie>
                 </l:Gebied>
             </ow-dc:owObject>

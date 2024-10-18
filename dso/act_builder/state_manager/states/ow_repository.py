@@ -112,13 +112,13 @@ class OWStateRepository:
         return [obj for obj in (self._new_ow_objects) if isinstance(obj, obj_type)]
 
     def get_new_locations(self) -> List[OWObject]:
-        return [obj for obj in self._new_ow_objects if isinstance(obj, OWLocatie)]
+        return [obj for obj in self._new_ow_objects if isinstance(obj, (OWLocatie, OWAmbtsgebied))]
 
     def get_mutated_locations(self) -> List[OWObject]:
-        return [obj for obj in self._mutated_ow_objects if isinstance(obj, OWLocatie)]
+        return [obj for obj in self._mutated_ow_objects if isinstance(obj, (OWLocatie, OWAmbtsgebied))]
 
     def get_terminated_locations(self) -> List[OWObject]:
-        return [obj for obj in self._terminated_ow_objects if isinstance(obj, OWLocatie)]
+        return [obj for obj in self._terminated_ow_objects if isinstance(obj, (OWLocatie, OWAmbtsgebied))]
 
     def get_new_div(self) -> List[OWObject]:
         return [obj for obj in self._new_ow_objects if isinstance(obj, (OWDivisie, OWDivisieTekst, OWTekstdeel))]

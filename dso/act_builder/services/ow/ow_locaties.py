@@ -62,9 +62,10 @@ class OwLocatieBuilder(OwFileBuilder):
             if not existing_ow_gebied:
                 self.new_ow_gebiedengroep(werkingsgebied)
             else:
-                if existing_ow_gebied.mapped_uuid != werkingsgebied.UUID:
+                input_gebied = werkingsgebied.Locaties[0]
+                if existing_ow_gebied.gio_ref != input_gebied.Identifier:
                     self.mutate_ow_gebied(
-                        locatie=werkingsgebied.Locaties[0],
+                        locatie=input_gebied,
                         existing_gebied_id=existing_ow_gebied.OW_ID,
                         code=werkingsgebied.Code,
                     )
@@ -73,7 +74,7 @@ class OwLocatieBuilder(OwFileBuilder):
         new_ow_id = generate_ow_id(IMOWTYPES.GEBIED, self._context.provincie_id)
         gebied = OWGebied(
             OW_ID=new_ow_id,
-            mapped_uuid=locatie.UUID,
+            gio_ref=locatie.Identifier,
             noemer=locatie.Title,
             procedure_status=self._context.ow_procedure_status,
             mapped_geo_code=werkingsgebied_code,
@@ -90,7 +91,7 @@ class OwLocatieBuilder(OwFileBuilder):
         new_group_ow_id = generate_ow_id(IMOWTYPES.GEBIEDENGROEP, self._context.provincie_id)
         new_gebiedengroep = OWGebiedenGroep(
             OW_ID=new_group_ow_id,
-            mapped_uuid=werkingsgebied.UUID,
+            gio_ref=werkingsgebied.Identifier,
             noemer=werkingsgebied.Title,
             procedure_status=self._context.ow_procedure_status,
             mapped_geo_code=werkingsgebied.Code,
@@ -102,7 +103,7 @@ class OwLocatieBuilder(OwFileBuilder):
     def mutate_ow_gebied(self, locatie: Locatie, existing_gebied_id: str, code: str) -> OWGebied:
         mutated_obj = OWGebied(
             OW_ID=existing_gebied_id,
-            mapped_uuid=locatie.UUID,
+            gio_ref=locatie.Identifier,
             noemer=locatie.Title,
             procedure_status=self._context.ow_procedure_status,
             mapped_geo_code=code,
@@ -120,7 +121,7 @@ class OwLocatieBuilder(OwFileBuilder):
                 domein=ambtsgebied_data.domein,
                 geldig_op=ambtsgebied_data.geldig_op,
             ),
-            mapped_uuid=ambtsgebied_data.UUID,
+            gio_ref=ambtsgebied_data.UUID,
             procedure_status=self._context.ow_procedure_status,
         )
         self._ow_repository.add_new_ow(new_ambtsgebied)
@@ -135,7 +136,7 @@ class OwLocatieBuilder(OwFileBuilder):
                 domein=ambtsgebied_data.domein,
                 geldig_op=ambtsgebied_data.geldig_op,
             ),
-            mapped_uuid=ambtsgebied_data.UUID,
+            gio_ref=ambtsgebied_data.UUID,
             procedure_status=self._context.ow_procedure_status,
         )
         self._ow_repository.add_mutated_ow(mutated_ambtsgebied)
