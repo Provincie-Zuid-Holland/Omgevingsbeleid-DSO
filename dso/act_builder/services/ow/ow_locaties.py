@@ -62,9 +62,10 @@ class OwLocatieBuilder(OwFileBuilder):
             if not existing_ow_gebied:
                 self.new_ow_gebiedengroep(werkingsgebied)
             else:
-                if existing_ow_gebied.gio_ref != werkingsgebied.Identifier:
+                input_gebied = werkingsgebied.Locaties[0]
+                if existing_ow_gebied.gio_ref != input_gebied.Identifier:
                     self.mutate_ow_gebied(
-                        locatie=werkingsgebied.Locaties[0],
+                        locatie=input_gebied,
                         existing_gebied_id=existing_ow_gebied.OW_ID,
                         code=werkingsgebied.Code,
                     )
