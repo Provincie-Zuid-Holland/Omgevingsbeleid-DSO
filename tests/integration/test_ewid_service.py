@@ -78,7 +78,6 @@ class TestEWIDService:
         import xml.etree.ElementTree as ET
 
         result_xml: str = ET.tostring(mock_xml, encoding="utf-8").decode("utf-8")
-        print(result_xml)
 
         # assert lichaam root not touched
         assert mock_xml.get("eId") == "body"

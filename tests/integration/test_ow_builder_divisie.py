@@ -29,7 +29,7 @@ class TestOWDivisieBuilder:
                 geldig_op="2023-09-29",
             ),
             noemer="Ambtsgebied 1",
-            gio_ref=UUID("00000000-0000-0000-0000-000000000001"),
+            mapped_uuid=UUID("00000000-0000-0000-0000-000000000001"),
         )
 
         mock_regelingsgebied_1 = OWRegelingsgebied(
@@ -41,13 +41,13 @@ class TestOWDivisieBuilder:
             OW_ID="nl.imow-pv28.gebied.01",
             noemer="Gebied 1",
             mapped_geo_code="werkingsgebied-1",
-            gio_ref=UUID("00000000-0000-0000-0000-000000000002"),
+            gio_ref="lo-1-00000000-0000-0005-0000-000000000001",
         )
         mock_gebiedengroep_1 = OWGebiedenGroep(
             OW_ID="nl.imow-pv28.gebiedengroep.01",
             noemer="Gebiedengroep 1",
             mapped_geo_code=mock_gebied_1.mapped_geo_code,
-            gio_ref=mock_gebied_1.gio_ref,
+            gio_ref="wg-1-00000000-0000-0005-0000-000000000001",
             gebieden=[mock_gebied_1.OW_ID],
         )
         mock_divisie_1 = OWDivisieTekst(
@@ -212,7 +212,7 @@ class TestOWDivisieBuilder:
             "tag": "Divisietekst",
             "object_code": self.new_divisie_data["object_code"],  # new policy obj code
             "gebied_code": "werkingsgebied-1",  # existing gebied
-            "gio_ref": (existing_state_location.Identifier),
+            "gio_ref": (existing_state_location.gio_ref),
         }
 
         self.builder.process_new_divisie(annotation_data=mock_annotation)
@@ -311,13 +311,13 @@ class TestOWDivisieBuilder:
             OW_ID="nl.imow-pv28.gebied.02",
             noemer="Gebied 2",
             mapped_geo_code="werkingsgebied-2",
-            gio_ref=UUID("00000000-0000-0000-0000-000000000003"),
+            gio_ref="lo-1-00000000-0000-0005-0000-000000000002",
         )
         new_gebiedengroep = OWGebiedenGroep(
             OW_ID="nl.imow-pv28.gebiedengroep.02",
             noemer="Gebiedengroep 2",
             mapped_geo_code=new_gebied.mapped_geo_code,
-            gio_ref=new_gebied.gio_ref,
+            gio_ref="wg-1-00000000-0000-0005-0000-000000000002",
             gebieden=[new_gebied.OW_ID],
         )
 
@@ -333,7 +333,7 @@ class TestOWDivisieBuilder:
             "tag": "Divisietekst",
             "object_code": "beleidskeuze-1",  # known policy obj
             "gebied_code": "werkingsgebied-2",  # existing gebied
-            "gio_ref": "20000000-0000-0005-0000-000000000002",
+            "gio_ref": "lo-1-00000000-0000-0005-0000-000000000002",
         }
 
         # run
@@ -360,7 +360,7 @@ class TestOWDivisieBuilder:
             "tag": "Divisietekst",
             "object_code": "beleidskeuze-1",  # known policy obj
             "gebied_code": "werkingsgebied-1",  # existing gebied
-            "gio_ref": "20000000-0000-0005-0000-000000000002",
+            "gio_ref": "lo-1-00000000-0000-0005-0000-000000000001",
         }
         self.builder.process_existing_divisie(known_divisie=mock_divisie, annotation_data=mock_annotation)
         assert len(self.ow_repository._mutated_ow_objects) == 0

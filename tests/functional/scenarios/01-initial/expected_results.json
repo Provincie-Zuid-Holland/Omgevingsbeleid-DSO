@@ -26,12 +26,12 @@
             {
                 "noemer": "Testgebied 1",
                 "gebied-code": "werkingsgebied-1",
-                "geometrie_href": "00000000-0000-0005-0000-000000000001"
+                "geometrie_href": "lo-1-00000000-0000-0005-0000-000000000001"
             },
             {
                 "noemer": "Testgebied 2",
-                "gebied-code": "werkingsgebied-1",
-                "geometrie_href": "00000000-0000-0005-0000-000000000002"
+                "gebied-code": "werkingsgebied-2",
+                "geometrie_href": "lo-1-00000000-0000-0005-0000-000000000002"
             }
         ]
     }
