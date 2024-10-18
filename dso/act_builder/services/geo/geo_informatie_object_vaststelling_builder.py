@@ -23,13 +23,13 @@ class GeoInformatieObjectVaststellingBuilder(BuilderService):
     def _generate_glm(self, werkingsgebied: Werkingsgebied):
         locaties: List[dict] = []
         for location in werkingsgebied.Locaties:
-            gml_id: str = f"gml-{location.UUID}"
+            gml_id: str = f"gml-{location.Identifier}"
             geometry_xml = self._get_geometry_xml(gml_id, location)
             locaties.append(
                 {
                     "gml_id": gml_id,
-                    "groep_id": f"groep-{str(location.UUID)}",
-                    "basis_id": str(location.UUID),
+                    "groep_id": f"groep-{location.Identifier}",
+                    "basis_id": location.Identifier,
                     "naam": location.Title,
                     "geometry_xml": geometry_xml,
                 }
