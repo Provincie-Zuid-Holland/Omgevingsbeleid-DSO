@@ -30,10 +30,10 @@
 		<sl:stand>
 			<ow-dc:owObject>
 				<rg:Regelingsgebied>
-					<rg:identificatie>{{ ow_object.OW_ID }}</rg:identificatie>
                     {% if ow_object.procedure_status is not none %}
                     <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
+					<rg:identificatie>{{ ow_object.OW_ID }}</rg:identificatie>
 					<rg:locatieaanduiding>
 						<l:LocatieRef xlink:href="{{ ow_object.ambtsgebied }}" />
 					</rg:locatieaanduiding>
@@ -49,10 +49,10 @@
 		<sl:stand>
 			<ow-dc:owObject>
 				<rg:Regelingsgebied>
-					<rg:identificatie>{{ ow_object.OW_ID }}</rg:identificatie>
                     {% if ow_object.procedure_status is not none %}
                     <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
+					<rg:identificatie>{{ ow_object.OW_ID }}</rg:identificatie>
 					<rg:locatieaanduiding>
 						<l:LocatieRef xlink:href="{{ ow_object.ambtsgebied }}" />
 					</rg:locatieaanduiding>
@@ -68,13 +68,13 @@
 		<sl:stand>
 			<ow-dc:owObject>
 				<rg:Regelingsgebied>
-					<rg:identificatie>{{ ow_object.OW_ID }}</rg:identificatie>
                     {% if ow_object.status is not none %}
                     <ow:status>{{ ow_object.status.value }}</ow:status>
                     {% endif %}
                     {% if ow_object.procedure_status is not none %}
                     <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                     {% endif %}
+					<rg:identificatie>{{ ow_object.OW_ID }}</rg:identificatie>
 					<rg:locatieaanduiding>
 						<l:LocatieRef xlink:href="{{ ow_object.ambtsgebied }}" />
 					</rg:locatieaanduiding>
