@@ -31,9 +31,9 @@
         },
         "opdracht": {
             "opdracht_type": "PUBLICATIE",
-            "id_levering": "bf08a662-653d-472d-b098-75134b918b57",
-            "id_bevoegdgezag": "00000001002306608000",
-            "id_aanleveraar": "00000001002306608000",
+            "id_levering": "66666666-6666-6666-6666-666666666666",
+            "id_bevoegdgezag": "11111111111111111111",
+            "id_aanleveraar": "22222222222222222222",
             "publicatie_bestand": "akn_nl_bill_pv28-pub-2024-omgevingsvisie-1-1.xml",
             "datum_bekendmaking": "2024-07-10"
         },

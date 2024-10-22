@@ -13,7 +13,6 @@ cgi.log
 .pytest_cache/
 .coverage
 **/*.hidden*
-input/*
 output/*
 !output/.gitkeep
 notes.md

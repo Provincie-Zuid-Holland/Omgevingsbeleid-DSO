@@ -9,6 +9,12 @@ from dso.act_builder.builder import Builder
 from dso.act_builder.state_manager.input_data.input_data_loader import InputData
 
 
+# These scenarios will be testing with functional test case
+TEST_SCENARIO_DIRS = [
+    "./input/01-initial",
+]
+
+
 class BaseTestBuilder:
     """
     Base test class that allows customizable input_dir per test class instance.
@@ -38,7 +44,6 @@ class BaseTestBuilder:
         self.ensure_clean_state(state_manager=request.cls.state_manager)
 
         # Setup results for testing
-        # self.debug()
         request.cls.builder.build_publication_files()
 
         # store output files for assertions
@@ -55,10 +60,3 @@ class BaseTestBuilder:
         assert state_manager.annotation_ref_lookup_map == {}, "Initial state should have no annotations"
         assert state_manager.act_ewid_service.get_state_used_wid_map() == {}, "Initial state shouldnt have wids"
         assert state_manager.ow_object_state is None, "Initial state should have no OW object state"
-
-    def debug(self):
-        """enable listener socket to attach debugger"""
-        debugpy.listen(("0.0.0.0", 5678))
-        print("Waiting for debugger attach...")
-        debugpy.wait_for_client()
-        print("Debugger attached...")

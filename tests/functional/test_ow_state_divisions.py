@@ -2,7 +2,7 @@ import pytest
 
 from dso.services.ow.models import OWDivisieTekst
 
-from .base import BaseTestBuilder
+from .base import BaseTestBuilder, TEST_SCENARIO_DIRS
 
 
 @pytest.fixture(scope="class")
@@ -10,13 +10,7 @@ def input_dir(request):
     return request.param
 
 
-@pytest.mark.parametrize(
-    "input_dir",
-    [
-        "tests/functional/scenarios/01-initial",
-    ],
-    indirect=True,
-)
+@pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
 class TestOWDivision(BaseTestBuilder):
     def test_divisions_terminated(self):
         # self.debug()
