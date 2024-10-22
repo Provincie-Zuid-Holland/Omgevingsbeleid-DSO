@@ -1,56 +1,24 @@
+from pathlib import Path
+from typing import List, Optional
 import pytest
-import json
 from lxml import etree
-from collections import defaultdict
 
-from dso.services.ow.models import OWGebiedenGroep, OWGebied, OWDivisieTekst, OWDivisie
-
-from .base import BaseTestBuilder, TEST_SCENARIO_DIRS
-
-
-@pytest.fixture(scope="class")
-def input_dir(request):
-    return request.param
-
-
-@pytest.fixture(scope="class")
-def expected_results(input_dir):
-    with open(f"{input_dir}/expected_results.json") as f:
-        return json.load(f)
-
-
-@pytest.fixture(scope="class")
-def namespaces():
-    namespaces = {
-        "xsi": "http://www.w3.org/2001/XMLSchema-instance",
-        "xlink": "http://www.w3.org/1999/xlink",
-        "r": "http://www.geostandaarden.nl/imow/regels",
-        "vt": "http://www.geostandaarden.nl/imow/vrijetekst",
-        "rol": "http://www.geostandaarden.nl/imow/regelsoplocatie",
-        "p": "http://www.geostandaarden.nl/imow/pons",
-        "l": "http://www.geostandaarden.nl/imow/locatie",
-        "k": "http://www.geostandaarden.nl/imow/kaart",
-        "op": "http://www.geostandaarden.nl/imow/opobject",
-        "ga": "http://www.geostandaarden.nl/imow/gebiedsaanwijzing",
-        "sl": "http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek",
-        "da": "http://www.geostandaarden.nl/imow/datatypenalgemeen",
-        "ow": "http://www.geostandaarden.nl/imow/owobject",
-        "rg": "http://www.geostandaarden.nl/imow/regelingsgebied",
-        "ow-dc": "http://www.geostandaarden.nl/imow/bestanden/deelbestand",
-        "lvbb": "http://www.overheid.nl/2017/lvbb",
-        "basisgeo": "http://www.geostandaarden.nl/basisgeometrie/1.0",
-        "gio": "https://standaarden.overheid.nl/stop/imop/gio/",
-        "geo": "https://standaarden.overheid.nl/stop/imop/geo/",
-        "data": "https://standaarden.overheid.nl/stop/imop/data/",
-        "gml": "http://www.opengis.net/gml/3.2",
-        "rg": "http://www.geostandaarden.nl/imow/regelingsgebied",
-        "tekst": "https://standaarden.overheid.nl/stop/imop/tekst/",
-    }
-    return namespaces
-
+# These scenarios will run as input for every test case
+TEST_SCENARIO_DIRS = [
+    "./input/01-initial",
+]
 
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
-class TestPackageOutputFiles(BaseTestBuilder):
+@pytest.mark.usefixtures("initialize_dso_builder")
+class TestPackageFileOutput:
+    """
+    Note:
+    E2E tests over multiple mock scenario folders.
+    uses the expected_results.yaml/json file for each scenario folder to
+    validate the xml output.
+    """
+    output_dir: Optional[Path] = None
+
     def test_expected_files_exist(self, expected_results):
         """
         Ensure all expected files from package_files list are found in the output directory.
@@ -60,7 +28,7 @@ class TestPackageOutputFiles(BaseTestBuilder):
         for file in expected_files:
             assert (self.output_dir / file).exists(), f"Expected file {file} not found in output directory"
 
-    def test_expected_wids_used(self, expected_results, namespaces):
+    def test_act_expected_wids_used(self, expected_results, namespaces):
         file_list = expected_results["package_files"]
         # find single file that starts with pattern akn_ and ends with .xml
         bill_file = next(file for file in file_list if file.startswith("akn_") and file.endswith(".xml"))
@@ -72,8 +40,6 @@ class TestPackageOutputFiles(BaseTestBuilder):
             assert root.xpath(
                 f".//*[@wId='{wId}']", namespaces=namespaces
             ), f"Expected wId {wId} not found in {bill_file}"
-
-        assert True
 
     def test_manifest_content(self, expected_results, namespaces):
         expected_manifest = expected_results["package_files"]
@@ -93,8 +59,20 @@ class TestPackageOutputFiles(BaseTestBuilder):
                 file in result["bestandsnaam"] for result in manifest_results
             ), f"Expected file {file} not found in manifest"
 
-    def test_expected_ow_gebied_objects(self, expected_results, namespaces):
-        expected_gebieden = expected_results["owLocaties"]["gebieden"]
+    def test_ow_divisiestekst_objects(self, expected_results, namespaces):
+        expected_div = expected_results["owDivisies"]["divisietekst"]
+        tree = etree.parse(f"{self.output_dir}/owDivisies.xml", parser=None)
+        root = tree.getroot()
+
+        expected_div_wids: List[str] = expected_div["new"]
+        ow_divisie_elements = root.findall(".//vt:Divisietekst", namespaces=namespaces)
+
+        # make sure only expected div objects are present
+        for div in ow_divisie_elements:
+            assert div.get("wId") in expected_div_wids, f"Unexpected wId {div.get('wId')} found in owDivisies"
+
+    def test_new_ow_gebieden(self, expected_results, namespaces):
+        expected_gebieden = expected_results["owLocaties"]["gebied"]["new"]
 
         # Parse the XML file
         tree = etree.parse(f"{self.output_dir}/owLocaties.xml", parser=None)
@@ -134,7 +112,7 @@ class TestPackageOutputFiles(BaseTestBuilder):
         expected_ambtsgebied = expected_results["owLocaties"]["ambtsgebied"]
 
         # Parse the XML file
-        tree = etree.parse(f"{self.output_dir}/owLocaties.xml")
+        tree = etree.parse(f"{self.output_dir}/owLocaties.xml", parser=None)
         root = tree.getroot()
 
         ambtsgebied = root.xpath(".//l:Ambtsgebied", namespaces=namespaces)
