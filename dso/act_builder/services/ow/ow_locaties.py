@@ -121,7 +121,7 @@ class OwLocatieBuilder(OwFileBuilder):
                 domein=ambtsgebied_data.domein,
                 geldig_op=ambtsgebied_data.geldig_op,
             ),
-            gio_ref=ambtsgebied_data.UUID,
+            mapped_uuid=ambtsgebied_data.UUID,
             procedure_status=self._context.ow_procedure_status,
         )
         self._ow_repository.add_new_ow(new_ambtsgebied)
@@ -136,7 +136,7 @@ class OwLocatieBuilder(OwFileBuilder):
                 domein=ambtsgebied_data.domein,
                 geldig_op=ambtsgebied_data.geldig_op,
             ),
-            gio_ref=ambtsgebied_data.UUID,
+            mapped_uuid=ambtsgebied_data.UUID,
             procedure_status=self._context.ow_procedure_status,
         )
         self._ow_repository.add_mutated_ow(mutated_ambtsgebied)
