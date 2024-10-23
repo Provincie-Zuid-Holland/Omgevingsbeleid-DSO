@@ -59,17 +59,28 @@ class TestPackageFileOutput:
                 file in result["bestandsnaam"] for result in manifest_results
             ), f"Expected file {file} not found in manifest"
 
-    def test_ow_divisiestekst_objects(self, expected_results, namespaces):
-        expected_div = expected_results["owDivisies"]["divisietekst"]
+    def test_new_ow_divisiestekst_objects(self, expected_results, namespaces):
+        expected_div_wids: List[str] = expected_results["owDivisies"]["divisietekst"]["new"]
         tree = etree.parse(f"{self.output_dir}/owDivisies.xml", parser=None)
         root = tree.getroot()
 
-        expected_div_wids: List[str] = expected_div["new"]
         ow_divisie_elements = root.findall(".//vt:Divisietekst", namespaces=namespaces)
 
-        # make sure only expected div objects are present
+        ow_divisie_wids = []
+        ow_divisie_ids = []
         for div in ow_divisie_elements:
-            assert div.get("wId") in expected_div_wids, f"Unexpected wId {div.get('wId')} found in owDivisies"
+            ow_divisie_wids.append(div.get("wId"))
+            ow_divisie_ids.append(div.find(".//vt:identificatie", namespaces=namespaces).text)
+
+        assert set(ow_divisie_wids) == set(expected_div_wids), "Mismatch between expected and actual wIds in owDivisies"
+
+        for div_id in ow_divisie_ids:
+            tekstdeel = root.xpath(
+                f".//vt:Tekstdeel[vt:divisieaanduiding/vt:DivisietekstRef/@xlink:href='{div_id}']", namespaces=namespaces
+            )
+            assert tekstdeel, f"Expected a new Tekstdeel with DivisietekstRef {div_id}."
+            # TODO: assert correct locationRef?
+
 
     def test_new_ow_gebieden(self, expected_results, namespaces):
         expected_gebieden = expected_results["owLocaties"]["gebied"]["new"]
