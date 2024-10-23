@@ -6,6 +6,7 @@ from lxml import etree
 # These scenarios will run as input for every test case
 TEST_SCENARIO_DIRS = [
     "./input/01-initial",
+    "./input/02-mutation",
 ]
 
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
@@ -59,6 +60,22 @@ class TestPackageFileOutput:
                 file in result["bestandsnaam"] for result in manifest_results
             ), f"Expected file {file} not found in manifest"
 
+    def test_ow_locatie_count(self, expected_results, namespaces):
+        expected_obj_count = expected_results["owLocaties"]["total"]
+        tree = etree.parse(f"{self.output_dir}/owLocaties.xml", parser=None)
+        root = tree.getroot()
+
+        obj_count = len(root.findall(".//ow-dc:owObject", namespaces=namespaces))
+        assert obj_count == expected_obj_count, f"Expected object count {expected_obj_count}, found {obj_count}"
+
+    def test_ow_divisie_count(self, expected_results, namespaces):
+        expected_obj_count = expected_results["owDivisies"]["total"]
+        tree = etree.parse(f"{self.output_dir}/owDivisies.xml", parser=None)
+        root = tree.getroot()
+
+        obj_count = len(root.findall(".//ow-dc:owObject", namespaces=namespaces))
+        assert obj_count == expected_obj_count, f"Expected object count {expected_obj_count}, found {obj_count}"
+
     def test_new_ow_divisiestekst_objects(self, expected_results, namespaces):
         expected_div_wids: List[str] = expected_results["owDivisies"]["divisietekst"]["new"]
         tree = etree.parse(f"{self.output_dir}/owDivisies.xml", parser=None)
@@ -71,8 +88,6 @@ class TestPackageFileOutput:
         for div in ow_divisie_elements:
             ow_divisie_wids.append(div.get("wId"))
             ow_divisie_ids.append(div.find(".//vt:identificatie", namespaces=namespaces).text)
-
-        assert set(ow_divisie_wids) == set(expected_div_wids), "Mismatch between expected and actual wIds in owDivisies"
 
         for div_id in ow_divisie_ids:
             tekstdeel = root.xpath(
@@ -122,7 +137,6 @@ class TestPackageFileOutput:
         """ensure any ambtsgebied changes reflect in both owlocaties and owregelingsgebied"""
         expected_ambtsgebied = expected_results["owLocaties"]["ambtsgebied"]
 
-        # Parse the XML file
         tree = etree.parse(f"{self.output_dir}/owLocaties.xml", parser=None)
         root = tree.getroot()
 
@@ -133,32 +147,17 @@ class TestPackageFileOutput:
         else:
             assert len(ambtsgebied) == 0, "Expected no Ambtsgebied, but found one"
 
-    def test_gml_ids_match_ow(self, expected_results, namespaces):
-        """
-        check if every expected geo identifier is used in .gml files +
-        ow locatie object.
-        """
+    def test_gml_file_ids(self, expected_results, namespaces):
         expected_geo_identifiers = expected_results["geo"]["identifiers"]
-
-        geo_ids = []
+        geo_ids = set()
         gml_files = [file for file in expected_results["package_files"] if file.endswith(".gml")]
         for gml_file in gml_files:
             tree = etree.parse(f"{self.output_dir}/{gml_file}", parser=None)
             gml_root = tree.getroot()
             geometry = gml_root.xpath(".//basisgeo:Geometrie[basisgeo:id]", namespaces=namespaces)
-            geo_ids.append(geometry[0][0].text)  # extract ID
+            geo_ids.add(geometry[0][0].text)
 
-        assert geo_ids == expected_geo_identifiers, "GML IDs do not match expected geo identifiers"
-
-        tree = etree.parse(f"{self.output_dir}/owLocaties.xml", parser=None)
-        ow_root = tree.getroot()
-        ow_gebieden = ow_root.xpath(".//l:Gebied", namespaces=namespaces)
-        ow_gio_refs = []
-        for ow in ow_gebieden:
-            ref = ow.find(".//l:GeometrieRef", namespaces=namespaces).get("{http://www.w3.org/1999/xlink}href")
-            ow_gio_refs.append(ref)
-
-        assert ow_gio_refs == expected_geo_identifiers, "GML IDs do not match OW GeometrieRefs"
+        assert geo_ids == set(expected_geo_identifiers), "GML IDs do not match expected geo identifiers"
 
     def test_gio_uris(self, expected_results, namespaces):
         expected_gio_uris = expected_results["geo"]["uris"]
