@@ -64,5 +64,20 @@
                 "DEBUG_MODE": "True"
             }
         },
+        {
+            "name": "DSO add gba",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "dso.cmds",
+            "args": [
+                "generate",
+                "./input/03-add-gba",
+            ],
+            "console": "internalConsole",
+            "justMyCode": true,
+            "env": {
+                "DEBUG_MODE": "True"
+            }
+        },
     ]
 }
