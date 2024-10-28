@@ -35,13 +35,13 @@
             }
         },
         {
-            "name": "DSO generate specific",
+            "name": "DSO generate specific initial",
             "type": "debugpy",
             "request": "launch",
             "module": "dso.cmds",
             "args": [
                 "generate",
-                "./input/omgevingsvisie/mutatie/renvooi/*SET*",
+                "./input/01-initial",
             ],
             "console": "internalConsole",
             "justMyCode": true,
@@ -50,13 +50,13 @@
             }
         },
         {
-            "name": "DSO generate - mutatie zonder ow",
+            "name": "DSO generate specific mutatie",
             "type": "debugpy",
             "request": "launch",
             "module": "dso.cmds",
             "args": [
                 "generate",
-                "./input/omgevingsvisie/mutatie/02-wijziging-zonder-ow",
+                "./input/02-mutation",
             ],
             "console": "internalConsole",
             "justMyCode": true,

@@ -7,12 +7,6 @@
         <object code="ambitie-2" template="ambitie" />
     </div>
     <div data-hint-element="divisietekst">
-        <object code="ambitie-4" template="ambitie" />
-    </div>
-    <div data-hint-element="divisietekst">
-        <object code="ambitie-5" template="ambitie" />
-    </div>
-    <div data-hint-element="divisietekst">
         <object code="ambitie-1" template="ambitie" />
     </div>
 </div>
@@ -29,12 +23,12 @@
                 <object code="beleidskeuze-1" template="beleidskeuze" />
             </div>
             <div data-hint-element="divisietekst">
-                <object code="beleidskeuze-2" template="beleidskeuze" />
+                <object code="beleidskeuze-3" template="beleidskeuze" />
+            </div>
+            <div data-hint-element="divisietekst">
+                <object code="beleidskeuze-4" template="beleidskeuze" />
             </div>
         </div>
-    </div>
-    <div data-hint-element="divisietekst">
-        <object code="beleidsdoel-2" template="beleidsdoel" />
     </div>
 </div>
 <div data-hint-element="divisietekst">
