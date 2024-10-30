@@ -1,3 +1,8 @@
+import re
+from typing import Set
+
+from lxml import etree
+
 from ......models import PublicationSettings, RenvooiRegelingMutatie, VervangRegelingMutatie
 from ......services.utils.helpers import load_template
 from .....state_manager.state_manager import StateManager
@@ -26,6 +31,9 @@ class WijzigBijlageContent:
             lichaam,
             settings,
         )
+
+        used_asset_uuids: Set[str] = self._calculate_used_asset_uuids(aanleveren_regeling_content)
+        self._state_manager.used_asset_uuids = used_asset_uuids
 
         # We store the RegelingVrijetekst for the future mutations
         self._state_manager.regeling_vrijetekst_wordt = regeling_vrijetekst_wordt
@@ -92,3 +100,41 @@ class WijzigBijlageContent:
             case _:
                 # What we send and what we store is the same for the initial regeling
                 return regeling_vrijetekst_wordt, regeling_vrijetekst_wordt
+
+    def _calculate_used_asset_uuids(self, aanleveren_regeling_content: str) -> Set[str]:
+        # We only need to add images that are used in the resulting text.
+        # - On an initial act that would be all the images
+        # - On a regular renvooi that would be all current used, and removed images
+        # - On a replace text that would be all current images
+        # - The renvooi could deside to result into a replace text
+        #
+        # All in all, its safer to just check the text which images are used
+        # and have that as the source of which images we should add to the zip
+        parser: ActTextAssetParser = ActTextAssetParser()
+        asset_uuids: Set[str] = parser.get_asset_uuids(aanleveren_regeling_content)
+        return asset_uuids
+
+
+class ActTextAssetParser:
+    def __init__(self):
+        self._uuid_regex = r"img_([a-f0-9\-]+)\.png"
+
+    def get_asset_uuids(self, act_text: str) -> Set[str]:
+        parser = etree.XMLParser(ns_clean=True)
+        tree = etree.fromstring(act_text, parser)
+        namespaces = {"ns": "https://standaarden.overheid.nl/stop/imop/tekst/"}
+        illustraties = tree.xpath("//ns:Illustratie", namespaces=namespaces)
+
+        asset_uuids: Set[str] = set()
+        for illustratie in illustraties:
+            uuidx = self._extract_uuid(illustratie.attrib.get("naam", ""))
+            asset_uuids.add(uuidx)
+
+        return asset_uuids
+
+    def _extract_uuid(self, name: str) -> str:
+        match = re.search(r"img_([a-f0-9\-]+)\.png", name)
+        if match:
+            return match.group(1)
+
+        raise RuntimeError("Unable to find asset uuid in the name: '{name}'")

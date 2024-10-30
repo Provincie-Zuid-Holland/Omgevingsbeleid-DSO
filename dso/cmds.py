@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 from typing import Optional
 
@@ -5,7 +6,6 @@ import click
 
 from .act_builder.builder import Builder
 from .act_builder.state_manager.input_data.input_data_loader import InputData, InputDataLoader
-import shutil
 
 
 @click.group()

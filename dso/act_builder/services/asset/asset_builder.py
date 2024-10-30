@@ -13,6 +13,9 @@ class AssetBuilder(BuilderService):
         assets: List[Asset] = asset_repository.all()
 
         for asset in assets:
+            if str(asset.UUID) not in state_manager.used_asset_uuids:
+                continue
+
             output_file = OutputFile(
                 filename=asset.get_filename(),
                 content_type=asset.Meta.Formaat,
