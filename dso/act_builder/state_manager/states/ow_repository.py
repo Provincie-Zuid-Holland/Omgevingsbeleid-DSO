@@ -192,11 +192,14 @@ class OWStateRepository:
                 self._mutated_ow_objects[idx] = updated_obj
                 return
 
-        raise OWStateMutationError(
-            message="Cannot update tekstdeel, not found in new or mutated state list.",
-            action="update_state_tekstdeel",
-            ow_object=updated_obj.dict(),
-        )
+        if state_ow_id not in self._known_ow_state.used_ow_ids:
+            raise OWStateMutationError(
+                message="Cannot update tekstdeel, not found in new or mutated state list.",
+                action="update_state_tekstdeel",
+                ow_object=updated_obj.dict(),
+            )
+
+        self.add_mutated_ow(updated_obj)
 
     def get_gebiedsaanwijzing_by_wid(self, wid: str) -> Optional[OWGebiedsaanwijzing]:
         for ow_obj in self.get_changed_ow_objects():

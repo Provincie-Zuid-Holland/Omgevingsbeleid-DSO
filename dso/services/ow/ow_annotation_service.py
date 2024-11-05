@@ -126,8 +126,8 @@ class OWAnnotationService:
 
         # gebiedsaanwijzing tag attributes
         gba_locatie = element.get("data-hint-locatie", None)
-        gba_type = element.get("data-hint-gebiedengroep", None)
-        gba_groep = element.get("data-hint-gebiedsaanwijzingtype", None)
+        gba_groep = element.get("data-hint-gebiedengroep", None)
+        gba_type = element.get("data-hint-gebiedsaanwijzingtype", None)
 
         if not all([gba_locatie, gba_type, gba_groep]):
             raise ValueError("Missing data-hint-* attributes for gebiedsaanwijzing")

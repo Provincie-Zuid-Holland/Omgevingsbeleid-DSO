@@ -9,15 +9,18 @@ from dso.services.ow.models import OWGebiedenGroep, OWGebied, OWTekstdeel, OWDiv
 TEST_SCENARIO_DIRS = [
     "./input/01-initial",
 ]
+
+
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
 @pytest.mark.usefixtures("initialize_dso_builder")
 class TestOWState:
     """
     Note:
     Following tests do not require expected_results file but generically tests the OW State.
-    Mostly useful to smoke test full data exports too large for 
+    Mostly useful to smoke test full data exports too large for
     maintaining expected results files.
     """
+
     state_manager: StateManager
 
     def test_unused_locations_terminated(self):
@@ -129,7 +132,7 @@ class TestOWState:
 
     def test_annotation_refs_match_ow_state(self):
         """
-        loop the annotation map and check if the expected OW objects are present 
+        loop the annotation map and check if the expected OW objects are present
         """
         assert len(self.state_manager.annotation_ref_lookup_map) > 0, "No annotations were added to the state manager"
         assert self.state_manager.ow_object_state is not None, "OW object state expected to be set"
