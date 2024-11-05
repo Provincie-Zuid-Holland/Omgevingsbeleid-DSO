@@ -38,9 +38,8 @@ class TestOWAnnotationService:
                     data-hint-locatie="werkingsgebied-1"
                     data-hint-gebiedengroep="Bodembeheergebied"
                     data-hint-gebiedsaanwijzingtype="Bodem">
-                    Example Geo 2
+                    Gebiedsaanwijzing MockGebied1
                 </IntIoRef>
-                MockGebiedNaam
             </Divisietekst>
         </Lichaam>
         """
@@ -68,8 +67,8 @@ class TestOWAnnotationService:
             "type_annotation": "gebiedsaanwijzing",
             "ref": "mock-ref-werkingsgebied-1",
             "werkingsgebied_code": "werkingsgebied-1",
-            "groep": "Bodem",
-            "type": "Bodembeheergebied",
+            "groep": "Bodembeheergebied",
+            "type": "Bodem",
             "parent_div": {
                 "wid": "pv28_4__content_o_1",
                 "object-code": "beleidskeuze-756",
@@ -123,8 +122,8 @@ class TestOWAnnotationService:
             "type_annotation": "gebiedsaanwijzing",
             "ref": "mock-ref-werkingsgebied-1",
             "werkingsgebied_code": "werkingsgebied-1",
-            "groep": "Bodem",
-            "type": "Bodembeheergebied",
+            "groep": "Bodembeheergebied",
+            "type": "Bodem",
             "parent_div": {
                 "wid": "pv28_4__content_o_1",
                 "object-code": "beleidskeuze-756",
