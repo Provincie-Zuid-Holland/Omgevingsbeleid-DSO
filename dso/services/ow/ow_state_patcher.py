@@ -3,7 +3,7 @@ from typing import Dict, List, Optional, Set
 from ...act_builder.state_manager.exceptions import OWObjectStateException
 from ...act_builder.state_manager.states.ow_repository import OWStateRepository
 from ...models import OwData
-from .models import OWGebied, OWGebiedenGroep, OWObject, OWRegelingsgebied, OWTekstdeel
+from .models import OWGebied, OWGebiedenGroep, OWGebiedsaanwijzing, OWObject, OWRegelingsgebied, OWTekstdeel
 
 
 class OWStatePatcher:
@@ -89,6 +89,7 @@ class OWStatePatcher:
             "OWTekstdeel": set(),
             "OWGebiedenGroep": set(),
             "OWRegelingsgebied": set(),
+            "OWGebiedsaanwijzing": set(),
         }
 
         for ow_obj in ow_objects_map.values():
@@ -96,11 +97,17 @@ class OWStatePatcher:
                 for locatie_id in ow_obj.locaties:
                     reverse_ref_index["OWTekstdeel"].add(locatie_id)
                 reverse_ref_index["OWTekstdeel"].add(ow_obj.divisie)
+                if ow_obj.gebiedsaanwijzingen:
+                    for gebiedsaanwijzing_id in ow_obj.gebiedsaanwijzingen:
+                        reverse_ref_index["OWGebiedsaanwijzing"].add(gebiedsaanwijzing_id)
             if isinstance(ow_obj, OWGebiedenGroep):
                 for gebied_id in ow_obj.gebieden:
                     reverse_ref_index["OWGebiedenGroep"].add(gebied_id)
             if isinstance(ow_obj, OWRegelingsgebied):
                 reverse_ref_index["OWRegelingsgebied"].add(ow_obj.ambtsgebied)
+            if isinstance(ow_obj, OWGebiedsaanwijzing):
+                for locatie_id in ow_obj.locaties:
+                    reverse_ref_index["OWTekstdeel"].add(locatie_id)
 
         return reverse_ref_index
 
