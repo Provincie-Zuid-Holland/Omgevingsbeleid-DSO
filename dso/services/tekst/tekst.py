@@ -190,9 +190,12 @@ class RefGenerator(ElementGenerator):
         return tag.name == "a"
 
     def generate(self, tag: Tag, context: dict = {}) -> Element:
-        tag_gebiedsaanwijzing: Optional[str] = tag.get("data-hint-locatie", None)
-        if tag_gebiedsaanwijzing is not None:
+        hint_type: Optional[str] = tag.get("data-hint-type", None)
+        if hint_type == "gebiedsaanwijzing":
             return GebiedsaanwijzingRef(tag)
+        
+        if hint_type == "object":
+            return TekstObjectRef(tag)
 
         return ExtRef(tag)
 
@@ -304,6 +307,24 @@ class ExtRef(SimpleElement):
             tag_attrs_overwrite={
                 "ref": self.href,
                 "soort": self.soort,
+            },
+        )
+        return result
+
+
+class TekstObjectRef(SimpleElement):
+    def __init__(self, tag: Tag):
+        super().__init__()
+        self.object_code: str = tag["data-hint-value"]
+
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+        result = SimpleElement.as_xml(
+            self,
+            soup=soup,
+            tag_name_overwrite="IntRef",
+            tag_attrs_overwrite={
+                "ref": "",
+                "data-hint-object-code": self.object_code,
             },
         )
         return result

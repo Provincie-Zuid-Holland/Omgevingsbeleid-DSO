@@ -27,7 +27,7 @@ class Builder:
         self._services: List[BuilderService] = [
             OpdrachtBuilder(),
             AanleveringBesluitBuilder(),
-            # OwBuilderFacade(),
+            OwBuilderFacade(),
             GeoInformatieObjectVaststellingBuilder(),
             GioAanleveringInformatieObjectBuilder(),
             PdfBuilder(),
