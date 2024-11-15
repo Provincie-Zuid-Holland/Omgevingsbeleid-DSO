@@ -96,14 +96,14 @@
   },
   "beleidskeuze-4": {
     "Module_ID": 2,
-    "UUID": "20000000-0000-0003-0000-000000000004",
+    "UUID": "30000000-0000-0003-0000-000000000034",
     "Object_Type": "beleidskeuze",
     "Object_ID": 4,
     "Code": "beleidskeuze-4",
     "Hierarchy_Code": "beleidsdoel-1",
     "Werkingsgebied_Code": "werkingsgebied-3",
-    "Title": "4e beleidskeuze toegevoegd",
-    "Description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eleifend lobortis libero, sit amet vestibulum lorem molestie sed. Cras felis mi, finibus eget dignissim id, pretium egestas elit. Cras sodales eleifend velit vel aliquet. Nulla dapibus sem at velit suscipit, at varius augue porttitor. Morbi tempor vel est id dictum. Donec ante eros, rutrum eu quam non, interdum tristique turpis. Donec odio ipsum, tincidunt ut dignissim vel, scelerisque ut ex. Sed sit amet molestie tellus. Vestibulum porta condimentum molestie. Praesent non facilisis nisi, in egestas mi. \n\nCurabitur porta dolor libero, auctor laoreet magna imperdiet tempus. Mauris at metus sit amet urna malesuada bibendum. Nulla ut tortor ut justo venenatis luctus nec vitae purus. Aliquam eget arcu sed ligula feugiat auctor. Integer at commodo turpis, id cursus enim. Pellentesque mattis posuere libero ut volutpat. Sed sagittis magna ac neque aliquam, eget scelerisque erat efficitur. Vivamus at erat rhoncus metus venenatis laoreet. Aliquam at pharetra leo. Vestibulum metus purus, molestie vel iaculis quis, suscipit nec velit. Nunc finibus felis quis iaculis posuere.</p>",
+    "Title": "4e beleidskeuze gemuteerd met gebiedsaanwijzing naar nieuwe geo",
+    "Description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse <a data-hint-gebiedengroep=\"Bodembeheergebied\" data-hint-locatie=\"werkingsgebied-4\" data-hint-gebiedsaanwijzingtype=\"Bodem\" href=\"#\">Testgebied 4</a> eleifend lobortis libero, sit amet vestibulum lorem molestie sed. Cras felis mi, finibus eget dignissim id, pretium egestas elit. Cras sodales eleifend velit vel aliquet. Nulla dapibus sem at velit suscipit, at varius augue porttitor. Morbi tempor vel est id dictum. Donec ante eros, rutrum eu quam non, interdum tristique turpis. Donec odio ipsum, tincidunt ut dignissim vel, scelerisque ut ex. Sed sit amet molestie tellus. Vestibulum porta condimentum molestie. Praesent non facilisis nisi, in egestas mi. \n\nCurabitur porta dolor libero, auctor laoreet magna imperdiet tempus. Mauris at metus sit amet urna malesuada bibendum. Nulla ut tortor ut justo venenatis luctus nec vitae purus. Aliquam eget arcu sed ligula feugiat auctor. Integer at commodo turpis, id cursus enim. Pellentesque mattis posuere libero ut volutpat. Sed sagittis magna ac neque aliquam, eget scelerisque erat efficitur. Vivamus at erat rhoncus metus venenatis laoreet. Aliquam at pharetra leo. Vestibulum metus purus, molestie vel iaculis quis, suscipit nec velit. Nunc finibus felis quis iaculis posuere.</p>",
     "Cause": null,
     "Provincial_Interest": null,
     "Explanation": null,
@@ -111,7 +111,7 @@
     "Effect": null,
     "Area_UUID": null,
     "Created_Date": "2023-02-02T03:03:03",
-    "Modified_Date": "2023-02-02T03:03:03"
+    "Modified_Date": "2024-02-02T03:03:03"
   },
   "beleidskeuze-5": {
     "Module_ID": 3,

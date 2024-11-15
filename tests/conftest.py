@@ -66,7 +66,6 @@ def initialize_dso_builder(request, input_dir, output_dir) -> Builder:
         shutil.rmtree(output_dir)  # remove existing
 
     dso_builder.save_files(str(output_dir))
-    print(f"Output files saved to {output_dir}")
     # Set dso_builder as an attribute on the test class if needed
     request.cls.dso_builder = dso_builder
     request.cls.state_manager = dso_builder._state_manager
@@ -98,6 +97,7 @@ def namespaces():
         "gml": "http://www.opengis.net/gml/3.2",
         "rg": "http://www.geostandaarden.nl/imow/regelingsgebied",
         "tekst": "https://standaarden.overheid.nl/stop/imop/tekst/",
-        "vt": "http://www.geostandaarden.nl/imow/vrijetekst"
+        "vt": "http://www.geostandaarden.nl/imow/vrijetekst",
+        "ga": "http://www.geostandaarden.nl/imow/gebiedsaanwijzing"
     }
     return namespaces
