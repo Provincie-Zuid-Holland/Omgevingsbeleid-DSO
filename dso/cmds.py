@@ -38,6 +38,21 @@ def run_generate(input_dir: str, base_output_dir: Optional[str], json_file: str)
     builder.build_publication_files()
     builder.save_files(str(output_dir))
 
+    import pprint
+
+    click.echo(click.style("---finished---", fg="green"))
+    click.echo(click.style(f"DSO files saved in: {output_dir}", fg="green"))
+
+    # output generate state values that are not in file output
+    click.echo(click.style("Used WID MAP:", fg="green"))
+    click.echo(pprint.pformat(builder.get_used_wid_map(), indent=2))
+
+    click.echo(click.style("Used WID list:", fg="green")) 
+    click.echo(pprint.pformat(builder.get_used_wids(), indent=2))
+
+    click.echo(click.style("OW data:", fg="green"))
+    click.echo(builder.get_ow_object_state().json(indent=2))
+
 
 @click.command()
 @click.argument("input_dir")
