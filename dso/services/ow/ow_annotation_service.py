@@ -1,158 +1,131 @@
 import re
+from collections import defaultdict
 from typing import Dict
 
-from lxml import etree
+from bs4 import BeautifulSoup
 
+from ...act_builder.state_manager.input_data.resource.policy_object.policy_object_repository import (
+    PolicyObjectRepository,
+)
 from ...act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
     WerkingsgebiedRepository,
 )
 
 
 class OWAnnotationService:
-    """
-    Service to build OW annotations from STOP XML data-hints
-    result is a dict map of annotation info per STOP wid item.
-
-    This annotation map is consumed by OW builder classes as
-    input for change comparison.
-
-    e.g.
-
-    "beleidskeuze-756": {
-        "type_annotation": "gebied",
-        "wid": "pv28_4__div_o_2__div_o_16__div_o_1__content_o_7",
-        "tag": "Divisietekst",
-        "object_code": "beleidskeuze-756",
-        "gebied_code": "werkingsgebied-28",
-        "gio_ref": "6cee5d12-beaa-4ea8-9464-5697a6e85931",
-        "uses_ambtsgebied": False,
-    },
-
-    annotation types handled:
-        - gebied
-        - ambtsgebied
-        - gebiedsaanwijzing
-    """
-
     def __init__(
         self,
         werkingsgebied_repository: WerkingsgebiedRepository,
+        policy_object_repository: PolicyObjectRepository,
         used_wid_map: Dict[str, str] = {},
     ):
-        self._werkingsgebied_repository: WerkingsgebiedRepository = werkingsgebied_repository
-        self._state_used_wid_map: Dict[str, str] = used_wid_map
-        self._annotation_map: dict = {}
+        self._werkingsgebied_repository = werkingsgebied_repository
+        self._policy_object_repository = policy_object_repository
+        self._state_used_wid_map = used_wid_map
+        self._annotation_map: defaultdict = defaultdict(list)
 
-    def get_annotation_map(self) -> Dict[str, str]:
+    def build_annotation_map(self):
+        """Build annotation map from policy objects instead of XML"""
+        for object_code, policy_object in self._policy_object_repository._data.items():
+            policy_dict = policy_object.to_dict()
+
+            if policy_dict.get("Werkingsgebied_Code"):
+                self._add_gebied_annotation(policy_dict, object_code)
+
+            if policy_dict.get("Themas"):
+                self._add_thema_annotation(policy_dict, object_code)
+
+            if policy_dict.get("Hoofdlijnen"):
+                self._add_hoofdlijn_annotation(policy_dict, object_code)
+
+            if policy_dict.get("Description"):
+                self._add_gebiedsaanwijzing_annotations(policy_dict, object_code)
+
         return self._annotation_map
 
-    def build_annotation_map(self, xml_source: str) -> str:
-        parser = etree.XMLParser(remove_blank_text=False, encoding="utf-8")
-        root = etree.fromstring(xml_source.encode("utf-8"), parser)
+    def _add_gebied_annotation(self, policy_dict: dict, object_code: str) -> None:
+        """Handle gebied/ambtsgebied annotation from policy object"""
+        gebied_code = policy_dict.get("Werkingsgebied_Code")
+        wid = self._state_used_wid_map.get(object_code)
 
-        self._parse_data_hints(xml_root=root)
-
-        output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
-        return output
-
-    def _parse_data_hints(self, xml_root) -> None:
-        """Build a map of OW annotations from STOP XML data-hints"""
-
-        # find every element with a data-hint-* attribute and get its value
-        # data_hinted_elements = xml_root.xpath("//Divisietekst[attribute::*[starts-with(name(), 'data-hint-')]]")
-        data_hinted_elements = xml_root.xpath("//* [attribute::*[starts-with(name(), 'data-hint-')]]")
-        for element in data_hinted_elements:
-            if element.tag == "Divisietekst":
-                # if gebied_code or ambtsgebied hint attribute is present, add annotation
-                if element.get("data-hint-gebied-code") or element.get("data-hint-ambtsgebied"):
-                    self._add_gebied_annotation(element)
-                # add other possible annotations here..
-                # - thema
-                # - hoofdlijn
-
-            if element.tag == "IntIoRef" and element.get("data-hint-gebiedsaanwijzingtype"):
-                self._add_gebiedsaanwijzing_annotation(element)
-
-            # Gebiedsaanwijzing annotation
-        return
-
-    def _add_gebied_annotation(self, element) -> None:
-        """
-        handle new annotation mapping for standard werkingsgebied
-        annotation or ambtsgebied annotations
-        """
-        try:
-            object_code = element.get("data-hint-object-code")
-            wid = element.get("wId")
-        except KeyError:
-            raise ValueError("Creating gebied annotation without data-hint-object-code or wId.")
-
-        gebied_code = element.get("data-hint-gebied-code", None)
-        uses_ambtsgebied: bool = element.get("data-hint-ambtsgebied", False)
-
-        if uses_ambtsgebied:  # Ambtsgebied annotation
-            self._annotation_map[object_code] = {
+        if gebied_code is None:
+            annotation = {
                 "type_annotation": "ambtsgebied",
                 "wid": wid,
-                "tag": element.tag,
+                "tag": "Divisietekst",
                 "object_code": object_code,
             }
-        elif gebied_code:  # Normal gebied Annotation
+        else:
             werkingsgebied = self._werkingsgebied_repository.get_by_code(gebied_code)
-            self._annotation_map[object_code] = {
+            annotation = {
                 "type_annotation": "gebied",
                 "wid": wid,
-                "tag": element.tag,
+                "tag": "Divisietekst",
                 "object_code": object_code,
                 "gebied_code": gebied_code,
                 "gio_ref": werkingsgebied.Identifier,
             }
 
-        return
+        self._annotation_map[object_code].append(annotation)
 
-    def _add_gebiedsaanwijzing_annotation(self, element):
-        parent = element.getparent()
-
-        while parent is not None and not parent.get("wId"):
-            parent = parent.getparent()
-
-        if parent is None or parent.tag != "Divisietekst":
-            raise ValueError("Gebiedsaanwijzing currently only supported on Divisietekst elements.")
-
-        # upper divisietekst attributes
-        div_wid = parent.get("wId")
-        div_object_code = parent.get("data-hint-object-code")
-        div_gebied_code = parent.get("data-hint-gebied-code", None)
-        div_ambtsgebied = bool(parent.get("data-hint-ambtsgebied", False))
-
-        # gebiedsaanwijzing tag attributes
-        gba_locatie = element.get("data-hint-locatie", None)
-        gba_groep = element.get("data-hint-gebiedengroep", None)
-        gba_type = element.get("data-hint-gebiedsaanwijzingtype", None)
-
-        if not all([gba_locatie, gba_type, gba_groep]):
-            raise ValueError("Missing data-hint-* attributes for gebiedsaanwijzing")
-
-        # retrieve the used inioref pointers WID from bijlage
-        wid_ref_key_pattern = f"bijlage-werkingsgebieden-divisietekst-referentie-{gba_locatie}-ref"
-        for key, value in self._state_used_wid_map.items():
-            if re.match(wid_ref_key_pattern, key):
-                # replace the element "ref" tag  with annotation_ref_wid
-                element.attrib["ref"] = value
-                break
-
-        self._annotation_map[element.get("wId")] = {
-            "type_annotation": "gebiedsaanwijzing",
-            "ref": element.get("ref"),
-            "werkingsgebied_code": gba_locatie,
-            "groep": gba_groep,
-            "type": gba_type,
-            "parent_div": {
-                "wid": div_wid,
-                "object-code": div_object_code,
-                "gebied-code": div_gebied_code,
-                "uses_ambtsgebied": div_ambtsgebied,
-            },
+    def _add_thema_annotation(self, policy_dict: dict, object_code: str) -> None:
+        """Handle thema annotation from policy object"""
+        annotation = {
+            "type_annotation": "thema",
+            "tag": "Divisietekst",
+            "wid": self._state_used_wid_map.get(object_code),
+            "object_code": object_code,
+            "thema_waardes": policy_dict["Themas"],
         }
 
-        return
+        self._annotation_map[object_code].append(annotation)
+
+    def _add_hoofdlijn_annotation(self, policy_dict: dict, object_code: str) -> None:
+        """Handle hoofdlijn annotation from policy object"""
+        annotation = {
+            "type_annotation": "hoofdlijn",
+            "tag": "Divisietekst",
+            "wid": self._state_used_wid_map.get(object_code),
+            "object_code": object_code,
+            "hoofdlijnen": policy_dict["Hoofdlijnen"],
+        }
+
+        self._annotation_map[object_code].append(annotation)
+
+    def _add_gebiedsaanwijzing_annotations(self, policy_dict: dict, object_code: str) -> None:
+        """Extract and handle gebiedsaanwijzing annotations from Description HTML"""
+        soup = BeautifulSoup(policy_dict["Description"], "html.parser")
+        parent_wid = self._state_used_wid_map.get(object_code)
+
+        for a_tag in soup.find_all("a", attrs={"data-hint-type": "gebiedsaanwijzing"}):
+            locatie = a_tag["data-hint-locatie"]
+            gba_wid = self._get_ref_from_wid_map(locatie)
+
+            annotation = {
+                "type_annotation": "gebiedsaanwijzing",
+                "tag": "IntIoRef",
+                "ref": gba_wid,
+                "wid": f"{gba_wid}_ref",  # Append _ref to the gebiedsaanwijzing wid
+                "werkingsgebied_code": locatie,
+                "groep": a_tag["data-hint-gebiedengroep"],
+                "type": a_tag["data-hint-gebiedsaanwijzingtype"],
+                "parent_div": {
+                    "wid": parent_wid,
+                    "object-code": object_code,
+                    "gebied-code": policy_dict.get("Werkingsgebied_Code"),
+                    "uses_ambtsgebied": policy_dict.get("Werkingsgebied_Code") is None,
+                },
+            }
+
+            self._annotation_map[object_code].append(annotation)
+
+    def _get_ref_from_wid_map(self, locatie: str) -> str:
+        """Helper to get ref from wid map using locatie pattern"""
+        pattern = f"bijlage-werkingsgebieden-divisietekst-referentie-{locatie}-ref"
+        for key, value in self._state_used_wid_map.items():
+            if re.match(pattern, key):
+                return value
+        return ""
+
+    def get_annotation_map(self) -> Dict[str, str]:
+        return self._annotation_map

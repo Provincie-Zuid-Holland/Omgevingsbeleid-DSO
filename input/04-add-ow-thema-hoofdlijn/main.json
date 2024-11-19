@@ -1,7 +1,7 @@
 {
     "publication_settings": {
         "document_type": "Omgevingsvisie",
-        "datum_bekendmaking": "2025-02-01",
+        "datum_bekendmaking": "2025-03-01",
         "provincie_id": "pv28",
         "soort_bestuursorgaan": "/tooi/def/thes/kern/c_411b4e4a",
         "regeling_componentnaam": "pv28_omgevingsvisie_1",
@@ -14,9 +14,9 @@
         "besluit_frbr": {
             "Work_Province_ID": "pv28",
             "Work_Date": "2024",
-            "Work_Other": "omgevingsvisie-1-3",
+            "Work_Other": "omgevingsvisie-1-4",
             "Expression_Language": "nld",
-            "Expression_Date": "2025-01-15",
+            "Expression_Date": "2025-01-19",
             "Expression_Version": 1,
             "Work_Country": "nl"
         },
@@ -25,28 +25,28 @@
             "Work_Date": "2024",
             "Work_Other": "omgevingsvisie-1",
             "Expression_Language": "nld",
-            "Expression_Date": "2025-01-15",
-            "Expression_Version": 3,
+            "Expression_Date": "2025-01-19",
+            "Expression_Version": 4,
             "Work_Country": "nl"
         },
         "opdracht": {
             "opdracht_type": "PUBLICATIE",
-            "id_levering": "88888888-8888-8888-8888-888888888888",
+            "id_levering": "99999999-9999-9999-9999-999999999999",
             "id_bevoegdgezag": "11111111111111111111",
             "id_aanleveraar": "22222222222222222222",
-            "publicatie_bestand": "akn_nl_bill_pv28-pub-2024-omgevingsvisie-1-3.xml",
-            "datum_bekendmaking": "2025-02-01"
+            "publicatie_bestand": "akn_nl_bill_pv28-pub-2024-omgevingsvisie-1-4.xml",
+            "datum_bekendmaking": "2025-03-01"
         },
         "instelling_doel": {
             "frbr": {
                 "Work_Province_ID": "pv28",
                 "Work_Date": "2024",
-                "Work_Other": "mutatie-omgevingsvisie-2",
+                "Work_Other": "mutatie-omgevingsvisie-3",
                 "Expression_Language": "",
                 "Expression_Date": "",
                 "Expression_Version": 1
             },
-            "datum_juridisch_werkend_vanaf": "2025-02-01"
+            "datum_juridisch_werkend_vanaf": "2025-03-11"
         },
         "intrekking": null
     },
@@ -88,7 +88,7 @@
         "motivering": null
     },
     "regeling": {
-        "versienummer": "3",
+        "versienummer": "4",
         "officiele_titel": "Omgevingsvisie van Zuid-Holland",
         "citeertitel": "Omgevingsvisie van Zuid-Holland",
         "is_officieel": "true",
@@ -107,8 +107,8 @@
             "Work_Date": "2024",
             "Work_Other": "omgevingsvisie-1",
             "Expression_Language": "nld",
-            "Expression_Date": "2024-10-20",
-            "Expression_Version": 2,
+            "Expression_Date": "2025-01-15",
+            "Expression_Version": 3,
             "Work_Country": "nl"
         },
         "bekend_wid_map": {
@@ -119,6 +119,8 @@
             "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-1-ref": "pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1",
             "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-3": "pv28_2__cmp_o_1__content_o_1__list_o_1__item_o_2",
             "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-3-ref": "pv28_2__cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1",
+            "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-4": "pv28_3__cmp_o_1__content_o_1__list_o_1__item_o_3",
+            "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-4-ref": "pv28_3__cmp_o_1__content_o_1__list_o_1__item_o_3__ref_o_1",
             "visie_algemeen-1": "pv28_1__content_o_1",
             "omgevingsvisie-custom-ambities-wrapper": "pv28_1__div_o_1",
             "ambitie-2": "pv28_1__div_o_1__content_o_1",
@@ -130,6 +132,7 @@
             "beleidskeuze-1": "pv28_1__div_o_2__div_o_1__div_o_1__content_o_1",
             "beleidskeuze-3": "pv28_1__div_o_2__div_o_1__div_o_1__content_o_3",
             "beleidskeuze-4": "pv28_2__div_o_2__div_o_1__div_o_1__content_o_3",
+            "beleidskeuze-5": "pv28_3__div_o_2__div_o_1__div_o_1__content_o_4",
             "visie_algemeen-2": "pv28_1__content_o_2"
         },
         "bekend_wids": [
@@ -140,6 +143,8 @@
             "pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1",
             "pv28_2__cmp_o_1__content_o_1__list_o_1__item_o_2",
             "pv28_2__cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1",
+            "pv28_3__cmp_o_1__content_o_1__list_o_1__item_o_3",
+            "pv28_3__cmp_o_1__content_o_1__list_o_1__item_o_3__ref_o_1",
             "pv28_1__content_o_1",
             "pv28_1__div_o_1",
             "pv28_1__div_o_1__content_o_1",
@@ -149,23 +154,27 @@
             "pv28_1__div_o_2__div_o_1__content_o_1",
             "pv28_1__div_o_2__div_o_1__div_o_1",
             "pv28_1__div_o_2__div_o_1__div_o_1__content_o_1",
+            "pv28_3__div_o_2__div_o_1__div_o_1__content_o_1__ref_o_1",
             "pv28_1__div_o_2__div_o_1__div_o_1__content_o_1__img_o_1",
             "pv28_1__div_o_2__div_o_1__div_o_1__content_o_3",
             "pv28_2__div_o_2__div_o_1__div_o_1__content_o_3",
+            "pv28_3__div_o_2__div_o_1__div_o_1__content_o_3__ref_o_1",
+            "pv28_3__div_o_2__div_o_1__div_o_1__content_o_4",
+            "pv28_3__div_o_2__div_o_1__div_o_1__content_o_4__ref_o_1",
             "pv28_1__content_o_2"
         ],
         "te_verwijderden_werkingsgebieden": []
     },
     "procedure_verloop": {
-        "bekend_op": "2025-01-05",
+        "bekend_op": "2025-02-05",
         "stappen": [
             {
                 "soort_stap": "/join/id/stop/procedure/stap_002",
-                "voltooid_op": "2025-01-05"
+                "voltooid_op": "2025-02-05"
             },
             {
                 "soort_stap": "/join/id/stop/procedure/stap_003",
-                "voltooid_op": "2025-01-05"
+                "voltooid_op": "2025-02-05"
             }
         ]
     },
@@ -236,10 +245,13 @@
                 "status": null,
                 "procedure_status": null,
                 "divisie": "nl.imow-pv28.divisietekst.6c9502a67552494d832da3f5d39cb14b",
-                "gebiedsaanwijzingen": [],
                 "locaties": [
                     "nl.imow-pv28.ambtsgebied.1067234921254f1ab412f530d662c71b"
                 ],
+                "gebiedsaanwijzingen": [
+                    "nl.imow-pv28.gebiedsaanwijzing.84340994694b4c7f9b136e95005925ec"
+                ],
+                "thema": [],
                 "ow_type": "OWTekstdeel",
                 "divisie_type": "divisietekst"
             },
@@ -256,10 +268,11 @@
                 "status": null,
                 "procedure_status": null,
                 "divisie": "nl.imow-pv28.divisietekst.c1cbb63788714d178aba8b35a1e68cce",
-                "gebiedsaanwijzingen": [],
                 "locaties": [
                     "nl.imow-pv28.gebiedengroep.9ecebee30ed94dc893cc5734efbafcaa"
                 ],
+                "gebiedsaanwijzingen": [],
+                "thema": [],
                 "ow_type": "OWTekstdeel",
                 "divisie_type": "divisietekst"
             },
@@ -307,9 +320,95 @@
                 "locaties": [
                     "nl.imow-pv28.gebiedengroep.ca23e835864b451b954c455e7ac092e1"
                 ],
-                "gebiedsaanwijzingen": [],
+                "gebiedsaanwijzingen": [
+                    "nl.imow-pv28.gebiedsaanwijzing.059cae0fba7d436bbca0e2a59f0bc83b"
+                ],
+                "thema": [],
                 "ow_type": "OWTekstdeel",
                 "divisie_type": "divisietekst"
+            },
+            "nl.imow-pv28.gebied.facec299bc6c463c9f3f00aeee9d9ee8": {
+                "OW_ID": "nl.imow-pv28.gebied.facec299bc6c463c9f3f00aeee9d9ee8",
+                "status": null,
+                "procedure_status": null,
+                "gio_ref": "lo-1-30000000-0000-0005-0000-000000000004",
+                "noemer": "Testgebied 4",
+                "mapped_geo_code": "werkingsgebied-4",
+                "ow_type": "OWGebied"
+            },
+            "nl.imow-pv28.gebiedengroep.d30522ce2eb74d389006159554cf050d": {
+                "OW_ID": "nl.imow-pv28.gebiedengroep.d30522ce2eb74d389006159554cf050d",
+                "status": null,
+                "procedure_status": null,
+                "gio_ref": "wg-1-30000000-0000-0005-0000-000000000004",
+                "noemer": "Testgebied 4",
+                "mapped_geo_code": "werkingsgebied-4",
+                "gebieden": [
+                    "nl.imow-pv28.gebied.facec299bc6c463c9f3f00aeee9d9ee8"
+                ],
+                "ow_type": "OWGebiedenGroep"
+            },
+            "nl.imow-pv28.divisietekst.379e867049b94b5e934e2962937c8fc3": {
+                "OW_ID": "nl.imow-pv28.divisietekst.379e867049b94b5e934e2962937c8fc3",
+                "status": null,
+                "procedure_status": null,
+                "wid": "pv28_3__div_o_2__div_o_1__div_o_1__content_o_4",
+                "mapped_policy_object_code": "beleidskeuze-5",
+                "ow_type": "OWDivisieTekst"
+            },
+            "nl.imow-pv28.tekstdeel.bd480f27bb384a048d6cbc14f4d141db": {
+                "OW_ID": "nl.imow-pv28.tekstdeel.bd480f27bb384a048d6cbc14f4d141db",
+                "status": null,
+                "procedure_status": null,
+                "divisie": "nl.imow-pv28.divisietekst.379e867049b94b5e934e2962937c8fc3",
+                "locaties": [
+                    "nl.imow-pv28.gebiedengroep.ca23e835864b451b954c455e7ac092e1"
+                ],
+                "gebiedsaanwijzingen": [
+                    "nl.imow-pv28.gebiedsaanwijzing.3b51725e401a4f68bb832e32513d1b07"
+                ],
+                "thema": [],
+                "ow_type": "OWTekstdeel",
+                "divisie_type": "divisietekst"
+            },
+            "nl.imow-pv28.gebiedsaanwijzing.84340994694b4c7f9b136e95005925ec": {
+                "OW_ID": "nl.imow-pv28.gebiedsaanwijzing.84340994694b4c7f9b136e95005925ec",
+                "status": null,
+                "procedure_status": null,
+                "naam": "Testgebied 1",
+                "type_": "http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Lucht",
+                "groep": "http://standaarden.omgevingswet.overheid.nl/lucht/id/concept/AandachtsgebiedLuchtkwaliteit",
+                "locaties": [
+                    "nl.imow-pv28.gebiedengroep.9ecebee30ed94dc893cc5734efbafcaa"
+                ],
+                "wid": "pv28_3__div_o_2__div_o_1__div_o_1__content_o_1__ref_o_1",
+                "ow_type": "OWGebiedsaanwijzing"
+            },
+            "nl.imow-pv28.gebiedsaanwijzing.059cae0fba7d436bbca0e2a59f0bc83b": {
+                "OW_ID": "nl.imow-pv28.gebiedsaanwijzing.059cae0fba7d436bbca0e2a59f0bc83b",
+                "status": null,
+                "procedure_status": null,
+                "naam": "Testgebied 4",
+                "type_": "http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Bodem",
+                "groep": "http://standaarden.omgevingswet.overheid.nl/bodem/id/concept/Bodembeheergebied",
+                "locaties": [
+                    "nl.imow-pv28.gebiedengroep.d30522ce2eb74d389006159554cf050d"
+                ],
+                "wid": "pv28_3__div_o_2__div_o_1__div_o_1__content_o_3__ref_o_1",
+                "ow_type": "OWGebiedsaanwijzing"
+            },
+            "nl.imow-pv28.gebiedsaanwijzing.3b51725e401a4f68bb832e32513d1b07": {
+                "OW_ID": "nl.imow-pv28.gebiedsaanwijzing.3b51725e401a4f68bb832e32513d1b07",
+                "status": null,
+                "procedure_status": null,
+                "naam": "Testgebied 3",
+                "type_": "http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Bodem",
+                "groep": "http://standaarden.omgevingswet.overheid.nl/bodem/id/concept/Bodembeheergebied",
+                "locaties": [
+                    "nl.imow-pv28.gebiedengroep.ca23e835864b451b954c455e7ac092e1"
+                ],
+                "wid": "pv28_3__div_o_2__div_o_1__div_o_1__content_o_4__ref_o_1",
+                "ow_type": "OWGebiedsaanwijzing"
             }
         },
         "terminated_ow_ids": [

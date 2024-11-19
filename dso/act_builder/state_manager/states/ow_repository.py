@@ -10,6 +10,7 @@ from ....services.ow import (
     OWGebied,
     OWGebiedenGroep,
     OWGebiedsaanwijzing,
+    OWHoofdlijn,
     OWLocatie,
     OWObject,
     OWRegelingsgebied,
@@ -307,3 +308,51 @@ class OWStateRepository:
             if isinstance(ow_obj, OWGebiedenGroep) and ow_obj.OW_ID in ow_tekstdeel.locaties:
                 return ow_obj.mapped_geo_code
         return None
+
+    def get_new_hoofdlijnen(self) -> List[OWObject]:
+        return [obj for obj in self._new_ow_objects if isinstance(obj, OWHoofdlijn)]
+
+    def get_mutated_hoofdlijnen(self) -> List[OWObject]:
+        return [obj for obj in self._mutated_ow_objects if isinstance(obj, OWHoofdlijn)]
+
+    def get_terminated_hoofdlijnen(self) -> List[OWObject]:
+        return [obj for obj in self._terminated_ow_objects if isinstance(obj, OWHoofdlijn)]
+
+    def get_active_hoofdlijn_by_soort_naam(self, soort: str, naam: str) -> Optional[OWHoofdlijn]:
+        # First check changed state objects, then existing state objects
+        ow_objects = itertools.chain(self.get_changed_ow_objects(), self._known_ow_state.ow_objects.values())
+        return next(
+            (
+                ow_obj
+                for ow_obj in ow_objects
+                if isinstance(ow_obj, OWHoofdlijn) and ow_obj.soort == soort and ow_obj.naam == naam
+            ),
+            None,
+        )
+
+    def get_known_hoofdlijn_by_soort_naam(self, soort: str, naam: str) -> Optional[OWHoofdlijn]:
+        return next(
+            (
+                ow_obj
+                for ow_obj in self._known_ow_state.ow_objects.values()
+                if isinstance(ow_obj, OWHoofdlijn) and ow_obj.soort == soort and ow_obj.naam == naam
+            ),
+            None,
+        )
+
+    def get_active_tekstdeel_by_object_code(self, object_code: str) -> Optional[OWTekstdeel]:
+        divisie = self.get_active_div_by_object_code(object_code)
+        if not divisie:
+            return None
+        return self.get_active_tekstdeel_by_div(divisie.OW_ID)
+
+    def get_active_div_by_object_code(self, object_code: str) -> Optional[Union[OWDivisie, OWDivisieTekst]]:
+        ow_objects = itertools.chain(self.get_changed_ow_objects(), self._known_ow_state.ow_objects.values())
+        return next(
+            (
+                ow_obj
+                for ow_obj in ow_objects
+                if isinstance(ow_obj, (OWDivisie, OWDivisieTekst)) and ow_obj.mapped_policy_object_code == object_code
+            ),
+            None,
+        )

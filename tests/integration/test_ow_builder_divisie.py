@@ -110,21 +110,22 @@ class TestOWDivisieBuilder:
             "wid": "pv28_4__content_o_10",
             "object_code": "beleidskeuze-10",
         }
+        # Each object_code maps to a list of annotations
         self.annotation_lookup_map = {
-            "beleidskeuze-2": {
+            "beleidskeuze-2": [{
                 "type_annotation": "ambtsgebied",
                 "tag": "Divisietekst",
                 "wid": "pv28_4__content_o_2",  # existing ow annotation
                 "object_code": "beleidskeuze-2",  # existing policy obj code
-            },
-            self.new_divisie_data["object_code"]: {  # new divisie annotation existing werkingsgebied
+            }],
+            self.new_divisie_data["object_code"]: [{  # new divisie annotation existing werkingsgebied
                 "type_annotation": "gebied",
                 "wid": self.new_divisie_data["wid"],
                 "tag": "Divisietekst",
                 "object_code": self.new_divisie_data["object_code"],
                 "gebied_code": "werkingsgebied-1",
                 "gio_ref": "00000000-0000-0000-0000-000000000002",
-            },
+            }],
         }
         self.ow_repository = OWStateRepository(ow_input_data=mock_ow_data)
         self.builder = OwDivisieBuilder(self.context, self.annotation_lookup_map, self.ow_repository)
@@ -206,16 +207,16 @@ class TestOWDivisieBuilder:
         existing_state_location = mock_ow_objects[3]  # mock_gebiedengroep_1
         assert self.ow_repository._new_ow_objects == []
 
-        mock_annotation = {
+        mock_annotations = [{
             "type_annotation": "gebied",
             "wid": self.new_divisie_data["wid"],
             "tag": "Divisietekst",
             "object_code": self.new_divisie_data["object_code"],  # new policy obj code
             "gebied_code": "werkingsgebied-1",  # existing gebied
             "gio_ref": (existing_state_location.gio_ref),
-        }
+        }]
 
-        self.builder.process_new_divisie(annotation_data=mock_annotation)
+        self.builder.process_new_divisie(annotations=mock_annotations)
 
         assert len(self.ow_repository._new_ow_objects) == 2
 
@@ -233,16 +234,16 @@ class TestOWDivisieBuilder:
 
     def test_process_new_divisie_unknown_gebied(self):
         assert self.ow_repository._new_ow_objects == []
-        invalid_annotation = {
+        invalid_annotations = [{
             "type_annotation": "gebied",
             "wid": self.new_divisie_data["wid"],
             "tag": "Divisietekst",
             "object_code": self.new_divisie_data["object_code"],
             "gebied_code": "werkingsgebied-99",  # unknown gebied
             "gio_ref": "99999999-0000-0005-0000-000000000002",
-        }
+        }]
         with pytest.raises(OWObjectStateException):
-            self.builder.process_new_divisie(annotation_data=invalid_annotation)
+            self.builder.process_new_divisie(annotations=invalid_annotations)
 
     def test_process_new_divisie_ambtsgebied(self, mock_ow_objects):
         """
@@ -252,13 +253,13 @@ class TestOWDivisieBuilder:
             1x OWTekstdeel - ref to ambtsgebied
         """
         assert self.ow_repository._new_ow_objects == []
-        ambtsgebied_annotation = {
+        ambtsgebied_annotations = [{
             "type_annotation": "ambtsgebied",
             "wid": self.new_divisie_data["wid"],
             "tag": "Divisietekst",
             "object_code": self.new_divisie_data["object_code"],  # new policy obj
-        }
-        self.builder.process_new_divisie(annotation_data=ambtsgebied_annotation)
+        }]
+        self.builder.process_new_divisie(annotations=ambtsgebied_annotations)
 
         mock_ambtsgebied = mock_ow_objects[0]  # mock_ambtsgebied_1
 
@@ -284,14 +285,14 @@ class TestOWDivisieBuilder:
         mock_ambtsgebied_id: str = mock_ow_objects[0].OW_ID  # mock_ambtsgebied_1 id
         mock_divisie = mock_ow_objects[4]  # existing owdivisie id
 
-        mutate_annotation_data = {
+        mutate_annotation_data = [{
             "type_annotation": "ambtsgebied",
             "wid": mock_divisie.wid,
             "tag": "Divisietekst",
             "object_code": "beleidskeuze-1",  # known policy obj
-        }
+        }]
 
-        self.builder.process_existing_divisie(known_divisie=mock_divisie, annotation_data=mutate_annotation_data)
+        self.builder.process_existing_divisie(known_divisie=mock_divisie, annotations=mutate_annotation_data)
 
         assert len(self.ow_repository._mutated_ow_objects) == 1
 
@@ -327,17 +328,17 @@ class TestOWDivisieBuilder:
 
         mock_divisie = mock_ow_objects[4]  # existing owdivisie id
 
-        mock_annotation = {
+        mock_annotations = [{
             "type_annotation": "gebied",
             "wid": mock_divisie.wid,
             "tag": "Divisietekst",
             "object_code": "beleidskeuze-1",  # known policy obj
             "gebied_code": "werkingsgebied-2",  # existing gebied
             "gio_ref": "lo-1-00000000-0000-0005-0000-000000000002",
-        }
+        }]
 
         # run
-        self.builder.process_existing_divisie(known_divisie=mock_divisie, annotation_data=mock_annotation)
+        self.builder.process_existing_divisie(known_divisie=mock_divisie, annotations=mock_annotations)
 
         # check state
         assert len(self.ow_repository._mutated_ow_objects) == 1
@@ -354,13 +355,13 @@ class TestOWDivisieBuilder:
         """
         assert self.ow_repository._mutated_ow_objects == []
         mock_divisie = mock_ow_objects[4]  # existing owdivisie id
-        mock_annotation = {
+        mock_annotations = [{
             "type_annotation": "gebied",
             "wid": mock_divisie.wid,
             "tag": "Divisietekst",
             "object_code": "beleidskeuze-1",  # known policy obj
             "gebied_code": "werkingsgebied-1",  # existing gebied
             "gio_ref": "lo-1-00000000-0000-0005-0000-000000000001",
-        }
-        self.builder.process_existing_divisie(known_divisie=mock_divisie, annotation_data=mock_annotation)
+        }]
+        self.builder.process_existing_divisie(known_divisie=mock_divisie, annotations=mock_annotations)
         assert len(self.ow_repository._mutated_ow_objects) == 0

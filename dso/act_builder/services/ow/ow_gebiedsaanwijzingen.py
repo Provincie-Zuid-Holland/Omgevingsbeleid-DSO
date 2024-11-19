@@ -1,4 +1,4 @@
-from typing import List, Optional, Set
+from typing import List, Optional
 
 from pydantic.main import BaseModel
 
@@ -38,11 +38,10 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
         self._context = context
         # Filter to only include relevant type_annotations for this builder
         self._annotation_lookup = {
-            key: value
-            for key, value in annotation_lookup_map.items()
-            if value.get("type_annotation") in ["gebiedsaanwijzing"]
+            key: [annotation for annotation in annotations if annotation["type_annotation"] == "gebiedsaanwijzing"]
+            or None
+            for key, annotations in annotation_lookup_map.items()
         }
-        self._used_object_types: Set[OwGebiedsaanwijzingTemplateData] = set()
         self._ow_repository = ow_repository
 
     def handle_ow_object_changes(self) -> None:
@@ -56,30 +55,25 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
         - if no match, create new gebiedsaanwijzing and add to tekstdeel
         """
 
-        for wid, annotation in self._annotation_lookup.items():
-            locatie = self._ow_repository.get_active_gebiedengroep_by_code(annotation["werkingsgebied_code"])
-            if not locatie:
-                raise OWStateError(f"Locatie not found for code {annotation['werkingsgebied_code']}")
+        for object_code, annotations in self._annotation_lookup.items():
+            if not annotations:
+                continue
 
-            parent_divisie = self._ow_repository.get_active_div_by_wid(wid=annotation["parent_div"]["wid"])
-            if not parent_divisie:
-                raise OWStateError(
-                    f"Creating gebiedsaanwijzing for non-existing divisie wid {annotation['parent_div']['wid']}"
-                )
-            ow_tekstdeel = self._ow_repository.get_active_tekstdeel_by_div(divisie_ow_id=parent_divisie.OW_ID)
-            if not ow_tekstdeel:
-                raise OWStateError(
-                    f"Creating gebiedsaanwijzing for non-existing tekstdeel. divisie owid: {parent_divisie.OW_ID}"
-                )
+            for gba in annotations:
+                locatie = self._ow_repository.get_active_gebiedengroep_by_code(gba["werkingsgebied_code"])
+                if not locatie:
+                    raise OWStateError(f"Locatie not found for code {gba['werkingsgebied_code']}")
 
-            new_gebiedsaanwijzing = True
-            if ow_tekstdeel.gebiedsaanwijzingen:
-                for gba_ref in ow_tekstdeel.gebiedsaanwijzingen:
-                    known_gba: Optional[OWGebiedsaanwijzing] = self._ow_repository.get_known_state_object(ow_id=gba_ref)
-                    if known_gba and known_gba.locaties[0] == locatie.OW_ID:
-                        new_gebiedsaanwijzing = False
-                        if known_gba.type_ != annotation["type"] or known_gba.groep != annotation["groep"]:
-                            pass  # mutate
+                parent_divisie = self._ow_repository.get_active_div_by_wid(wid=gba["parent_div"]["wid"])
+                if not parent_divisie:
+                    raise OWStateError(
+                        f"Creating gebiedsaanwijzing for non-existing divisie wid {gba['parent_div']['wid']}"
+                    )
+                ow_tekstdeel = self._ow_repository.get_active_tekstdeel_by_div(divisie_ow_id=parent_divisie.OW_ID)
+                if not ow_tekstdeel:
+                    raise OWStateError(
+                        f"Creating gebiedsaanwijzing for non-existing tekstdeel. divisie owid: {parent_divisie.OW_ID}"
+                    )
 
             if new_gebiedsaanwijzing:
                 new_gba = self.new_ow_gebiedsaanwijzing(
@@ -96,7 +90,21 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
                     ow_tekstdeel.gebiedsaanwijzingen.append(new_gba.OW_ID)
                     ow_tekstdeel.procedure_status = self._context.ow_procedure_status
 
-            self._ow_repository.update_state_tekstdeel(state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel)
+                if new_gebiedsaanwijzing:
+                    new_gba = self.new_ow_gebiedsaanwijzing(
+                        element_wid=gba["wid"],
+                        naam=locatie.noemer,
+                        type=gba["type"],
+                        groep=gba["groep"],
+                        locatie_ref=locatie.OW_ID,
+                    )
+                    if not ow_tekstdeel.gebiedsaanwijzingen:
+                        ow_tekstdeel.gebiedsaanwijzingen = [new_gba.OW_ID]
+                    else:
+                        ow_tekstdeel.gebiedsaanwijzingen.append(new_gba.OW_ID)
+
+                if new_gebiedsaanwijzing:
+                    self._ow_repository.update_state_tekstdeel(state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel)
 
     def new_ow_gebiedsaanwijzing(
         self, element_wid: str, naam: str, type: str, groep: str, locatie_ref: str

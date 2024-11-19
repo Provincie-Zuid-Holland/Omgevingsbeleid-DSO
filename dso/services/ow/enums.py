@@ -49,6 +49,10 @@ class OwGebiedsaanwijzingObjectType(str, Enum):
     GEBIEDSAANWIJZING = "Gebiedsaanwijzing"
 
 
+class OwHoofdlijnObjectType(str, Enum):
+    HOOFDLIJN = "Hoofdlijn"
+
+
 class OwProcedureStatus(str, Enum):
     """
     For OW objects the procedure status is not provided by default (for "Definitief")
