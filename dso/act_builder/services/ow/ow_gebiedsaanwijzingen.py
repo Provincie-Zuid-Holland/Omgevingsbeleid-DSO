@@ -94,7 +94,7 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
                 else:
                     ow_tekstdeel.gebiedsaanwijzingen.append(new_gba.OW_ID)
 
-            self._ow_repository.update_state_tekstdeel(state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel)
+                self._ow_repository.update_state_tekstdeel(state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel)
 
     def new_ow_gebiedsaanwijzing(
         self, element_wid: str, naam: str, type: str, groep: str, locatie_ref: str
