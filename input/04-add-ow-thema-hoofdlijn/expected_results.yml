@@ -1,0 +1,35 @@
+package_files:
+  - akn_nl_bill_pv28-pub-2024-omgevingsvisie-1-3.xml
+
+wids_used:
+  - pv28_1__cmp_o_1
+
+geo:
+  uris:
+    - /join/id/regdata/pv28/2024/1-1/nld@2024-10-10;1
+    - /join/id/regdata/pv28/2024/1-3/nld@2024-11-10;1
+    - /join/id/regdata/pv28/2024/1-4/nld@2024-11-10;1
+  identifiers:
+    - lo-1-00000000-0000-0005-0000-000000000001
+    - lo-1-20000000-0000-0005-0000-000000000003
+    - lo-1-30000000-0000-0005-0000-000000000004
+
+owDivisies:
+  total: 4
+  divisietekst:
+    new:
+      - 'pv28_3__div_o_2__div_o_1__div_o_1__content_o_4'
+    mutated:
+      - 'nl.imow-pv28.tekstdeel.c8731e77fe264e2184ce5c67e89d5e7d'
+    terminated: []
+
+owGebiedsaanwijzingen:
+  total: 3
+  gebiedsaanwijzing:
+    new:
+      - noemer: "Testgebied 1"
+        gebied-code: "werkingsgebied-1"
+        type_: "http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Lucht"
+        groep: "http://standaarden.omgevingswet.overheid.nl/lucht/id/concept/AandachtsgebiedLuchtkwaliteit"
+    mutated: []
+    terminated: []

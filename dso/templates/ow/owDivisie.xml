@@ -45,6 +45,11 @@
                     {% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
+                    {% if ow_object.themas is not none and ow_object.themas | length > 0 %}
+                    {% for thema in ow_object.themas %}
+                    <vt:thema>{{ thema }}</vt:thema>
+                    {% endfor %}
+                    {% endif %}
 					<vt:divisieaanduiding>
 						{% if ow_object.divisie_type == "divisie" %}
 							<vt:DivisieRef xlink:href="{{ ow_object.divisie }}"/>
@@ -103,6 +108,11 @@
 					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
+                    {% if ow_object.themas is not none and ow_object.themas | length > 0 %}
+                    {% for thema in ow_object.themas %}
+                    <vt:thema>{{ thema }}</vt:thema>
+                    {% endfor %}
+                    {% endif %}
 					<vt:divisieaanduiding>
 						{% if ow_object.divisie_type == "divisie" %}
 							<vt:DivisieRef xlink:href="{{ ow_object.divisie }}"/>
@@ -170,6 +180,11 @@
 					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
+                    {% if ow_object.themas is not none and ow_object.themas | length > 0 %}
+                    {% for thema in ow_object.themas %}
+                    <vt:thema>{{ thema }}</vt:thema>
+                    {% endfor %}
+                    {% endif %}
 					<vt:divisieaanduiding>
 						{% if ow_object.divisie_type == "divisie" %}
 							<vt:DivisieRef xlink:href="{{ ow_object.divisie }}"/>
