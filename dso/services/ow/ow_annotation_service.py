@@ -72,15 +72,12 @@ class OWAnnotationService:
             if element.tag == "Divisietekst":
                 object_code = element.get("data-hint-object-code")
                 
-                # Initialize list for this object_code if it doesn't exist
                 if object_code not in self._annotation_map:
                     self._annotation_map[object_code] = []
                 
-                # Add gebied/ambtsgebied annotation if present
                 if element.get("data-hint-gebied-code") or element.get("data-hint-ambtsgebied"):
                     self._add_gebied_annotation(element)
                 
-                # Add thema annotation if present
                 if element.get("data-hint-themas"):
                     self._add_thema_annotation(element)
                     
@@ -127,6 +124,8 @@ class OWAnnotationService:
             raise ValueError("Creating thema annotation without data-hint-object-code or wId.")
 
         thema_waardes = [theme.strip() for theme in element.get("data-hint-themas").split(",")]
+
+        #TODO: validate in registry?
         
         annotation = {
             "type_annotation": "thema",

@@ -85,11 +85,9 @@ class OwDivisieBuilder(OwFileBuilder):
                 message="No existing tekstdeel to mutate for div", ref_ow_id=known_divisie.OW_ID
             )
 
-        # Track if we need to create a new tekstdeel due to changes
-        needs_update = False
+        needs_mutation = False
         new_tekstdeel = known_tekstdeel.copy(deep=True)
 
-        # Process each annotation type
         for annotation in annotations:
             match annotation["type_annotation"]:
                 case "ambtsgebied":
@@ -97,7 +95,7 @@ class OwDivisieBuilder(OwFileBuilder):
                         raise OWObjectStateException(message="Expected to find active ambtsgebied since uses_ambtsgebied")
                     if known_tekstdeel.locaties[0] != self._ambtsgebied.OW_ID:
                         new_tekstdeel.locaties = [self._ambtsgebied.OW_ID]
-                        needs_update = True
+                        needs_mutation = True
 
                 case "gebied":
                     ow_gebiedengroep = self._ow_repository.get_active_gebiedengroep_by_code(annotation["gebied_code"])
@@ -107,15 +105,14 @@ class OwDivisieBuilder(OwFileBuilder):
                         )
                     if known_tekstdeel.locaties[0] != ow_gebiedengroep.OW_ID:
                         new_tekstdeel.locaties = [ow_gebiedengroep.OW_ID]
-                        needs_update = True
+                        needs_mutation = True
 
                 case "thema":
                     if known_tekstdeel.themas != annotation["thema_waardes"]:
                         new_tekstdeel.themas = annotation["thema_waardes"]
-                        needs_update = True
+                        needs_mutation = True
 
-        # Only add mutated tekstdeel if changes were made
-        if needs_update:
+        if needs_mutation:
             self._ow_repository.add_mutated_ow(new_tekstdeel)
 
     def process_new_divisie(self, annotations: List[dict]) -> Optional[OWTekstdeel]:
