@@ -51,34 +51,33 @@ class TestOWAnnotationService:
         self.annotation_service._parse_data_hints(gba_xml)
         annotation_map = self.annotation_service.get_annotation_map()
 
-        # Expecting one gebied annotation for the parent divisietekst/owtekstdeel
-        # then a GBA annotation containing reference to wid and parent div
-        expected_annotation_gebied = {
-            "type_annotation": "gebied",
-            "wid": "pv28_4__content_o_1",
-            "tag": "Divisietekst",
-            "object_code": "beleidskeuze-756",
-            "gebied_code": "werkingsgebied-2",
-            "gio_ref": "wg-1-00000000-0000-0005-0000-000000000002",
-        }
-
-        expected_gba_wid = "pv28_4__content_o_1__ref_o_1"
-        expected_annotation_gebiedsaanwijzing = {
-            "type_annotation": "gebiedsaanwijzing",
-            "ref": "mock-ref-werkingsgebied-1",
-            "werkingsgebied_code": "werkingsgebied-1",
-            "groep": "Bodembeheergebied",
-            "type": "Bodem",
-            "parent_div": {
+        # Expecting one gebied annotation and one GBA annotation under the same object_code
+        expected_annotations = [
+            {
+                "type_annotation": "gebied",
                 "wid": "pv28_4__content_o_1",
-                "object-code": "beleidskeuze-756",
-                "gebied-code": "werkingsgebied-2",
-                "uses_ambtsgebied": False,
+                "tag": "Divisietekst",
+                "object_code": "beleidskeuze-756",
+                "gebied_code": "werkingsgebied-2",
+                "gio_ref": "wg-1-00000000-0000-0005-0000-000000000002",
             },
-        }
+            {
+                "type_annotation": "gebiedsaanwijzing",
+                "ref": "mock-ref-werkingsgebied-1",
+                "wid": "pv28_4__content_o_1__ref_o_1",
+                "werkingsgebied_code": "werkingsgebied-1",
+                "groep": "Bodembeheergebied",
+                "type": "Bodem",
+                "parent_div": {
+                    "wid": "pv28_4__content_o_1",
+                    "object-code": "beleidskeuze-756",
+                    "gebied-code": "werkingsgebied-2",
+                    "uses_ambtsgebied": False,
+                },
+            }
+        ]
 
-        assert annotation_map["beleidskeuze-756"] == expected_annotation_gebied
-        assert annotation_map[expected_gba_wid] == expected_annotation_gebiedsaanwijzing
+        assert annotation_map["beleidskeuze-756"] == expected_annotations
 
     @pytest.fixture
     def gba_with_ambtsgebied_parent_xml(self):
@@ -108,32 +107,30 @@ class TestOWAnnotationService:
         self.annotation_service._parse_data_hints(gba_with_ambtsgebied_parent_xml)
         annotation_map = self.annotation_service.get_annotation_map()
 
-        # Expecting 1x ambtsgebied annotation for the parent divisietekst/owtekstdeel
-        # 1x GBA annotation
-        expected_beleidskeuze = {
-            "type_annotation": "ambtsgebied",
-            "wid": "pv28_4__content_o_1",
-            "tag": "Divisietekst",
-            "object_code": "beleidskeuze-756",
-        }
-
-        expected_gba_wid = "pv28_4__content_o_1__ref_o_1"
-        expected_gba = {
-            "type_annotation": "gebiedsaanwijzing",
-            "ref": "mock-ref-werkingsgebied-1",
-            "werkingsgebied_code": "werkingsgebied-1",
-            "groep": "Bodembeheergebied",
-            "type": "Bodem",
-            "parent_div": {
+        expected_annotations = [
+            {
+                "type_annotation": "ambtsgebied",
                 "wid": "pv28_4__content_o_1",
-                "object-code": "beleidskeuze-756",
-                "gebied-code": None,
-                "uses_ambtsgebied": True,
+                "tag": "Divisietekst",
+                "object_code": "beleidskeuze-756",
             },
-        }
+            {
+                "type_annotation": "gebiedsaanwijzing",
+                "ref": "mock-ref-werkingsgebied-1",
+                "wid": "pv28_4__content_o_1__ref_o_1",
+                "werkingsgebied_code": "werkingsgebied-1",
+                "groep": "Bodembeheergebied",
+                "type": "Bodem",
+                "parent_div": {
+                    "wid": "pv28_4__content_o_1",
+                    "object-code": "beleidskeuze-756",
+                    "gebied-code": None,
+                    "uses_ambtsgebied": True,
+                },
+            }
+        ]
 
-        assert annotation_map["beleidskeuze-756"] == expected_beleidskeuze
-        assert annotation_map[expected_gba_wid] == expected_gba
+        assert annotation_map["beleidskeuze-756"] == expected_annotations
 
     @pytest.fixture
     def ambtsgebied_xml(self):
@@ -161,25 +158,25 @@ class TestOWAnnotationService:
         self.annotation_service._parse_data_hints(ambtsgebied_xml)
         annotation_map = self.annotation_service.get_annotation_map()
 
-        # ensure 1x ambtsgebied annotation and 1x gebied annotation
-        expected_annotation_ambtsgebied = {
+        # Each object_code should have a single annotation in its list
+        expected_annotations_756 = [{
             "type_annotation": "ambtsgebied",
             "wid": "pv28_4__content_o_1",
             "tag": "Divisietekst",
             "object_code": "beleidskeuze-756",
-        }
+        }]
 
-        expected_annotation_gebied = {
+        expected_annotations_420 = [{
             "type_annotation": "gebied",
             "wid": "pv28_4__content_o_2",
             "tag": "Divisietekst",
             "object_code": "beleidskeuze-420",
             "gebied_code": "werkingsgebied-2",
             "gio_ref": "wg-1-00000000-0000-0005-0000-000000000002",
-        }
+        }]
 
-        assert annotation_map["beleidskeuze-756"] == expected_annotation_ambtsgebied
-        assert annotation_map["beleidskeuze-420"] == expected_annotation_gebied
+        assert annotation_map["beleidskeuze-756"] == expected_annotations_756
+        assert annotation_map["beleidskeuze-420"] == expected_annotations_420
 
     def test_error_gebiedsaanwijzing_parent_divivisietest(self):
         parent = etree.Element(
