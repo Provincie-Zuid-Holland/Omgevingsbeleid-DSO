@@ -24,7 +24,9 @@ Terminations:
 New:
     - OWGebiedsaanwijzing -> OWgebiedengroep werkingsgebied-3
     - OWGebiedsaanwijzing -> OWgebiedengroep werkingsgebied-1
+    - OWGebiedsaanwijzing -> OWgebiedengroep werkingsgebied-4
     - OWDivisie + OWTekstdeel beleidskeuze-5 add OWGebiedsaanwijzing
 Mutations:
-    - OWTekstdeel beleidskeuze-1 changed to add OWGebiedsaanwijzing
+    - OWTekstdeel beleidskeuze-1 changed to add OWGebiedsaanwijzing wg-1
+    - OWTekstdeel beleidskeuze-4 changed to add OWGebiedsaanwijzing wg-4
 Terminations:

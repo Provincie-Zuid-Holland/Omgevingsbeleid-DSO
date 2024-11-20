@@ -70,11 +70,10 @@ class OWGebiedenGroep(OWLocatie):
     gebieden: List[str] = []
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
-        # tests us gebieden are used
         # tests if gebieden are used
         if not all(gebied_id in used_ow_ids for gebied_id in self.gebieden):
             return False
-        # tests if parent exists (either tekstdeel or gebiedsaanwijzing)
+        # tests if referenced by tekstdeel or gebiedsaanwijzing
         tekstdeel_refs = reverse_ref_index.get("OWTekstdeel", set())
         gebiedsaanwijzing_refs = reverse_ref_index.get("OWGebiedsaanwijzing", set())
         if self.OW_ID not in tekstdeel_refs and self.OW_ID not in gebiedsaanwijzing_refs:

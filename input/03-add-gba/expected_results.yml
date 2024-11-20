@@ -1,15 +1,17 @@
 package_files:
-  - akn_nl_bill_pv28-pub-2024-omgevingsvisie-1-2.xml
+  - akn_nl_bill_pv28-pub-2024-omgevingsvisie-1-3.xml
   - opdracht.xml
   - manifest.xml
   - GIO_locaties_testgebied-1.xml
   - GIO_locaties_testgebied-3.xml
+  - GIO_locaties_testgebied-4.xml
   - locaties_testgebied-1.gml
   - locaties_testgebied-3.gml
+  - locaties_testgebied-4.gml
   - img_00000000-aaaa-0000-0000-000000000001.png
   - manifest-ow.xml
-  - owLocaties.xml
   - owDivisies.xml
+  - owGebiedsaanwijzingen.xml
 
 wids_used:
   - pv28_1__cmp_o_1
@@ -19,6 +21,8 @@ wids_used:
   - pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1
   - pv28_2__cmp_o_1__content_o_1__list_o_1__item_o_2
   - pv28_2__cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1
+  - pv28_3__cmp_o_1__content_o_1__list_o_1__item_o_3
+  - pv28_3__cmp_o_1__content_o_1__list_o_1__item_o_3__ref_o_1
   - pv28_1__content_o_1
   - pv28_1__div_o_1
   - pv28_1__div_o_1__content_o_1
@@ -28,38 +32,48 @@ wids_used:
   - pv28_1__div_o_2__div_o_1__content_o_1
   - pv28_1__div_o_2__div_o_1__div_o_1
   - pv28_1__div_o_2__div_o_1__div_o_1__content_o_1
+  - pv28_3__div_o_2__div_o_1__div_o_1__content_o_1__ref_o_1
   - pv28_1__div_o_2__div_o_1__div_o_1__content_o_1__img_o_1
   - pv28_1__div_o_2__div_o_1__div_o_1__content_o_3
   - pv28_2__div_o_2__div_o_1__div_o_1__content_o_3
+  - pv28_3__div_o_2__div_o_1__div_o_1__content_o_4
+  - pv28_3__div_o_2__div_o_1__div_o_1__content_o_4__ref_o_1
   - pv28_1__content_o_2
 
 geo:
   uris:
     - /join/id/regdata/pv28/2024/1-1/nld@2024-10-10;1
     - /join/id/regdata/pv28/2024/1-3/nld@2024-11-10;1
+    - /join/id/regdata/pv28/2024/1-4/nld@2024-11-10;1
   identifiers:
     - lo-1-00000000-0000-0005-0000-000000000001
     - lo-1-20000000-0000-0005-0000-000000000003
-
-owLocaties:
-  total: 4
-  ambtsgebied: null
-  gebied:
-    new:
-      - noemer: "Testgebied 3"
-        gebied-code: "werkingsgebied-3"
-        geometrie_href: "lo-1-20000000-0000-0005-0000-000000000003"
-    mutated: []
-    terminated:
-      - 'nl.imow-pv28.gebiedengroep.6fee69033f7a4b68973d067348235e5b'
-      - 'nl.imow-pv28.gebied.d43a703e14c64867a3e244d08aa3d66c'
+    - lo-1-30000000-0000-0005-0000-000000000004
 
 owDivisies:
-  total: 6
+  total: 4
   divisietekst:
     new:
-      - "pv28_2__div_o_2__div_o_1__div_o_1__content_o_3"
+      - 'pv28_3__div_o_2__div_o_1__div_o_1__content_o_4'
+    mutated:
+      - 'nl.imow-pv28.tekstdeel.c8731e77fe264e2184ce5c67e89d5e7d'
+    terminated: []
+
+owGebiedsaanwijzingen:
+  total: 3
+  gebiedsaanwijzing:
+    new:
+      - noemer: "Testgebied 1"
+        gebied-code: "werkingsgebied-1"
+        type_: "http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Lucht"
+        groep: "http://standaarden.omgevingswet.overheid.nl/lucht/id/concept/AandachtsgebiedLuchtkwaliteit"
+      - noemer: "Testgebied 3"
+        gebied-code: "werkingsgebied-3"
+        type_: "http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Bodem"
+        groep: "http://standaarden.omgevingswet.overheid.nl/bodem/id/concept/Bodembeheergebied"
+      - noemer: "Testgebied 4"
+        gebied-code: "werkingsgebied-4"
+        type_: "http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Bodem"
+        groep: "http://standaarden.omgevingswet.overheid.nl/bodem/id/concept/Bodembeheergebied"
     mutated: []
-    terminated:
-      - 'nl.imow-pv28.divisietekst.817df5a675bb421eabe627e7aff5b5e9'
-      - 'nl.imow-pv28.tekstdeel.9ba8189e9608468988477a429ee0a720'
+    terminated: []
