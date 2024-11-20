@@ -18,20 +18,29 @@ class OWAnnotationService:
 
     e.g.
 
-    "beleidskeuze-756": {
-        "type_annotation": "gebied",
-        "wid": "pv28_4__div_o_2__div_o_16__div_o_1__content_o_7",
-        "tag": "Divisietekst",
-        "object_code": "beleidskeuze-756",
-        "gebied_code": "werkingsgebied-28",
-        "gio_ref": "6cee5d12-beaa-4ea8-9464-5697a6e85931",
-        "uses_ambtsgebied": False,
-    },
+    {
+    "beleidskeuze-756": [
+        {
+            "type_annotation": "gebied",
+            "wid": "pv28_4__div_o_2__div_o_16__div_o_1__content_o_7",
+            "object_code": "beleidskeuze-756",
+            "gebied_code": "werkingsgebied-28",
+            ...
+        },
+        {
+            "type_annotation": "thema",
+            "wid": "...",
+            "thema_waardes": ["bodem", "geluid"],
+            ...
+        }
+    ]
+}
 
     annotation types handled:
         - gebied
         - ambtsgebied
         - gebiedsaanwijzing
+        - thema
     """
 
     def __init__(
@@ -57,29 +66,29 @@ class OWAnnotationService:
 
     def _parse_data_hints(self, xml_root) -> None:
         """Build a map of OW annotations from STOP XML data-hints"""
-
-        # find every element with a data-hint-* attribute and get its value
-        # data_hinted_elements = xml_root.xpath("//Divisietekst[attribute::*[starts-with(name(), 'data-hint-')]]")
         data_hinted_elements = xml_root.xpath("//* [attribute::*[starts-with(name(), 'data-hint-')]]")
+        
         for element in data_hinted_elements:
             if element.tag == "Divisietekst":
-                # if gebied_code or ambtsgebied hint attribute is present, add annotation
+                object_code = element.get("data-hint-object-code")
+                
+                # Initialize list for this object_code if it doesn't exist
+                if object_code not in self._annotation_map:
+                    self._annotation_map[object_code] = []
+                
+                # Add gebied/ambtsgebied annotation if present
                 if element.get("data-hint-gebied-code") or element.get("data-hint-ambtsgebied"):
                     self._add_gebied_annotation(element)
-                # add other possible annotations here..
-                # - thema
-                # - hoofdlijn
+                
+                # Add thema annotation if present
+                if element.get("data-hint-themas"):
+                    self._add_thema_annotation(element)
+                    
             if element.tag == "IntIoRef":
                 self._add_gebiedsaanwijzing_annotation(element)
 
-            # Gebiedsaanwijzing annotation
-        return
-
     def _add_gebied_annotation(self, element) -> None:
-        """
-        handle new annotation mapping for standard werkingsgebied
-        annotation or ambtsgebied annotations
-        """
+        """Handle gebied/ambtsgebied annotation"""
         try:
             object_code = element.get("data-hint-object-code")
             wid = element.get("wId")
@@ -89,16 +98,16 @@ class OWAnnotationService:
         gebied_code = element.get("data-hint-gebied-code", None)
         uses_ambtsgebied: bool = element.get("data-hint-ambtsgebied", False)
 
-        if uses_ambtsgebied:  # Ambtsgebied annotation
-            self._annotation_map[object_code] = {
+        if uses_ambtsgebied:
+            annotation = {
                 "type_annotation": "ambtsgebied",
                 "wid": wid,
                 "tag": element.tag,
                 "object_code": object_code,
             }
-        elif gebied_code:  # Normal gebied Annotation
+        elif gebied_code:
             werkingsgebied = self._werkingsgebied_repository.get_by_code(gebied_code)
-            self._annotation_map[object_code] = {
+            annotation = {
                 "type_annotation": "gebied",
                 "wid": wid,
                 "tag": element.tag,
@@ -106,10 +115,29 @@ class OWAnnotationService:
                 "gebied_code": gebied_code,
                 "gio_ref": werkingsgebied.Identifier,
             }
+        
+        self._annotation_map[object_code].append(annotation)
 
-        return
+    def _add_thema_annotation(self, element) -> None:
+        """Handle thema annotation"""
+        try:
+            object_code = element.get("data-hint-object-code")
+            wid = element.get("wId")
+        except KeyError:
+            raise ValueError("Creating thema annotation without data-hint-object-code or wId.")
 
-    def _add_gebiedsaanwijzing_annotation(self, element):
+        thema_waardes = [theme.strip() for theme in element.get("data-hint-themas").split(",")]
+        
+        annotation = {
+            "type_annotation": "thema",
+            "wid": wid,
+            "object_code": object_code,
+            "thema_waardes": thema_waardes
+        }
+        
+        self._annotation_map[object_code].append(annotation)
+
+    def _add_gebiedsaanwijzing_annotation(self, element) -> None:
         parent = element.getparent()
 
         while parent is not None and not parent.get("wId"):
@@ -140,9 +168,10 @@ class OWAnnotationService:
                 element.attrib["ref"] = value
                 break
 
-        self._annotation_map[element.get("wId")] = {
+        annotation = {
             "type_annotation": "gebiedsaanwijzing",
             "ref": element.get("ref"),
+            "wid": element.get("wId"),
             "werkingsgebied_code": gba_locatie,
             "groep": gba_groep,
             "type": gba_type,
@@ -153,5 +182,5 @@ class OWAnnotationService:
                 "uses_ambtsgebied": div_ambtsgebied,
             },
         }
-
-        return
+        
+        self._annotation_map[div_object_code].append(annotation)

@@ -5,7 +5,7 @@ from uuid import UUID
 from pydantic import BaseModel, Field, validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
-from .imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
+from .waardelijsten.imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
 from .ow_id import check_ow_id_imowtype
 
 
@@ -99,11 +99,11 @@ class OWDivisieTekst(OWObject):
 
 class OWTekstdeel(OWObject):
     divisie: str  # imow DivisieRef / DivisieTekstRef
-    locaties: List[str]  # imow LocatieRef
+    locaties: List[str] = Field(default_factory=list)  # imow LocatieRef
     gebiedsaanwijzingen: Optional[List[str]] = Field(default_factory=list)  # imow GebiedsaanwijzingRef
 
+    themas: List[str] = Field(default_factory=list)
     # idealisatie: Optional[str]
-    # thema: Optional[str] = None
     # kaartaanduiding: Optional[str] = None
     # hoofdlijnaanduiding: Optional[str] = None
 

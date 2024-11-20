@@ -6,25 +6,25 @@ from bs4 import BeautifulSoup, CData, Comment, Declaration, Doctype, NavigableSt
 
 from .lijst import LijstType, LijstTypeOrdered, LijstTypeUnordered, NumberingStrategy, numbering_factory
 
-object_code_regex = r"\[OBJECT-CODE:(.*?)\]"
-gebied_code_regex = r"\[GEBIED-CODE:(.*?)\]"
 
+def extract_data_hint(text: str, regex: str) -> Optional[str]:
+    matched = re.search(regex, text)
+    if not matched:
+        return None
+    result = matched.group(1)
+    return result
 
 def extract_object_code(text: str) -> Optional[str]:
-    matched = re.search(object_code_regex, text)
-    if not matched:
-        return None
-    result = matched.group(1)
-    return result
-
+    return extract_data_hint(text, r"\[OBJECT-CODE:(.*?)\]")
 
 def extract_gebied_code(text: str) -> Optional[str]:
-    matched = re.search(gebied_code_regex, text)
-    if not matched:
-        return None
-    result = matched.group(1)
-    return result
+    return extract_data_hint(text, r"\[GEBIED-CODE:(.*?)\]")
 
+def extract_thema_waardes(text: str) -> Optional[List[str]]:
+    thema_str = extract_data_hint(text, r"\[THEMA-WAARDES:(.*?)\]")
+    if thema_str is None:
+        return None
+    return [theme.strip() for theme in thema_str.split(",")]
 
 class AsXmlTrait(metaclass=ABCMeta):
     @abstractmethod
@@ -574,6 +574,7 @@ class Divisietekst(Element):
         self.object_code: Optional[str] = None
         self.gebied_code: Optional[str] = None
         self.ambtsgebied: Optional[bool] = None
+        self.thema_waardes: Optional[List[str]] = None
 
         if tag is not None:
             self.wid_code = tag.get("data-hint-wid-code", None)
@@ -612,6 +613,7 @@ class Divisietekst(Element):
         Divisietekst template comments:
             - [OBJECT-CODE:objecttype-123]
             - [GEBIED-CODE:werkingsgebied-123]
+            - [THEMA-WAARDES:thema1, thema2]
         """
         object_code: Optional[str] = extract_object_code(str(comment))
         if object_code is not None:
@@ -620,6 +622,10 @@ class Divisietekst(Element):
         gebied_code: Optional[str] = extract_gebied_code(str(comment))
         if gebied_code is not None:
             self.gebied_code = gebied_code
+            
+        thema_waardes: Optional[List[str]] = extract_thema_waardes(str(comment))
+        if thema_waardes is not None:
+            self.thema_waardes = thema_waardes
 
         return None
 
@@ -647,6 +653,7 @@ class Divisietekst(Element):
                 else {}
             ),
             **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
+            **({"data-hint-themas": ",".join(str(t).strip() for t in self.thema_waardes)} if self.thema_waardes else {}),
         }
 
         if self.kop is not None:
@@ -668,6 +675,7 @@ class Divisie(Element):
         self.object_code = tag.get("data-hint-object-code", None)
         self.gebied_code = tag.get("data-hint-gebied-code", None)
         self.ambtsgebied = tag.get("data-hint-ambtsgebied", None)
+        self.thema_waardes: Optional[List[str]] = None
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         while True:
@@ -743,6 +751,7 @@ class Divisie(Element):
         Divisie template comments:
             - [OBJECT-CODE:objecttype-123]
             - [GEBIED-CODE:werkingsgebied-123]
+            - [THEMA-WAARDES:thema1, thema2]
         """
         object_code: Optional[str] = extract_object_code(str(comment))
         if object_code is not None:
@@ -751,6 +760,10 @@ class Divisie(Element):
         gebied_code: Optional[str] = extract_gebied_code(str(comment))
         if gebied_code is not None:
             self.gebied_code = gebied_code
+
+        thema_waardes: Optional[List[str]] = extract_thema_waardes(str(comment))
+        if thema_waardes is not None:
+            self.thema_waardes = thema_waardes
 
         return None
 
@@ -787,6 +800,7 @@ class Divisie(Element):
                 else {}
             ),
             **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
+            **({"data-hint-themas": ",".join(str(t).strip() for t in self.thema_waardes)} if self.thema_waardes else {}),
         }
 
         if self.kop is not None:
