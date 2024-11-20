@@ -75,6 +75,7 @@ class OwBuilderFacade(BuilderService):
             levering_id=state_manager.input_data.publication_settings.opdracht.id_levering,
             ow_procedure_status=ow_procedure_status,
             orphaned_wids=orphaned_wids,
+            imow_value_list_version=None
         )
 
     def _calc_orphaned_wids(self, state_manager: StateManager) -> List[str]:

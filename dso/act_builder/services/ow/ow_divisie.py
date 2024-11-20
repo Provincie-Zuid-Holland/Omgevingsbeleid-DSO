@@ -108,8 +108,16 @@ class OwDivisieBuilder(OwFileBuilder):
                         needs_mutation = True
 
                 case "thema":
-                    if known_tekstdeel.themas != annotation["thema_waardes"]:
-                        new_tekstdeel.themas = annotation["thema_waardes"]
+                    thema_uris = [
+                        self._context.thema_registry.get_uri_by_label(label) 
+                        for label in annotation["thema_waardes"]
+                    ]
+                    if None in thema_uris:
+                        raise OWObjectGenerationError(
+                            f"Invalid thema label(s) in: {annotation['thema_waardes']}"
+                        )
+                    if known_tekstdeel.themas != thema_uris:
+                        new_tekstdeel.themas = thema_uris
                         needs_mutation = True
 
         if needs_mutation:
@@ -150,9 +158,16 @@ class OwDivisieBuilder(OwFileBuilder):
                     locaties = [active_gebiedengroep.OW_ID]
 
                 case "thema":
-                    thema_waardes = annotation["thema_waardes"]
+                    thema_uris = [
+                        self._context.thema_registry.get_uri_by_label(label) 
+                        for label in annotation["thema_waardes"]
+                    ]
+                    if None in thema_uris:
+                        raise OWObjectGenerationError(
+                            f"Invalid thema label(s) in: {annotation['thema_waardes']}"
+                        )
+                    thema_waardes = thema_uris
 
-        # Create tekstdeel if we have either locaties or themas
         if locaties or thema_waardes:
             return self._new_text_mapping(
                 ow_div_id=new_div.OW_ID,
@@ -202,7 +217,7 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ow_repository.add_new_ow(ow_div)
         return ow_div
 
-    def _new_text_mapping(self, ow_div_id: str, locatie_refs: List[str], thema_waardes: Optional[List[str]] = None) -> OWTekstdeel:
+    def _new_text_mapping(self, ow_div_id: str, locatie_refs: List[str], thema_waardes: Optional[list[str]] = None) -> OWTekstdeel:
         """Create new tekstdeel with optional thema values"""
         ow_text_mapping = OWTekstdeel(
             OW_ID=generate_ow_id(IMOWTYPES.TEKSTDEEL, self._context.provincie_id),
