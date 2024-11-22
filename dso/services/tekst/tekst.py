@@ -30,12 +30,12 @@ def extract_thema_waardes(text: str) -> Optional[List[str]]:
     return [theme.strip() for theme in thema_str.split(",")]
 
 def extract_hoofdlijn(text: str) -> Optional[Dict[str, str]]:
-    # format [HOOFDLIJN:soort|name]
+    # format [HOOFDLIJN:soort|naam]
     hoofdlijn_str = extract_data_hint(text, r"\[HOOFDLIJN:(.*?)\]")
     if hoofdlijn_str is None:
         return None
-    soort, name = hoofdlijn_str.split("|", 1)
-    return {"soort": soort.strip(), "name": name.strip()}
+    soort, naam = hoofdlijn_str.split("|", 1)
+    return {"soort": soort.strip(), "naam": naam.strip()}
 
 class AsXmlTrait(metaclass=ABCMeta):
     @abstractmethod
@@ -671,7 +671,7 @@ class Divisietekst(Element):
             ),
             **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
             **({"data-hint-themas": ",".join(str(t).strip() for t in self.thema_waardes)} if self.thema_waardes else {}),
-            **({"data-hint-hoofdlijnen": ",".join(f"{h['soort']}|{h['name']}" for h in self.hoofdlijnen)} if self.hoofdlijnen else {}),
+            **({"data-hint-hoofdlijnen": ",".join(f"{h['soort']}|{h['naam']}" for h in self.hoofdlijnen)} if self.hoofdlijnen else {}),
         }
 
         if self.kop is not None:
@@ -825,7 +825,7 @@ class Divisie(Element):
             ),
             **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
             **({"data-hint-themas": ",".join(str(t).strip() for t in self.thema_waardes)} if self.thema_waardes else {}),
-            **({"data-hint-hoofdlijnen": ",".join(f"{h['soort']}|{h['name']}" for h in self.hoofdlijnen)} if self.hoofdlijnen else {}),
+            **({"data-hint-hoofdlijnen": ",".join(f"{h['soort']}|{h['naam']}" for h in self.hoofdlijnen)} if self.hoofdlijnen else {}),
         }
 
         if self.kop is not None:

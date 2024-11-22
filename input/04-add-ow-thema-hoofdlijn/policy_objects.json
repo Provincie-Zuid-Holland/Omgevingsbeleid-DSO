@@ -75,7 +75,7 @@
       "bodem",
       "geluid"
     ],
-    "Hoofdlijnen": [{"soort": "beleidskeuze", "name": "Mock Hoofdlijn Value"}],
+    "Hoofdlijnen": [{"soort": "beleidskeuze", "naam": "Mock Hoofdlijn Value"}],
     "Cause": null,
     "Provincial_Interest": null,
     "Explanation": null,

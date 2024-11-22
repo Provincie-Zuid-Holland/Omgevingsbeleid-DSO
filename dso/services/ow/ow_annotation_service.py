@@ -196,10 +196,10 @@ class OWAnnotationService:
 
         hoofdlijnen = []
         for hoofdlijn_str in element.get("data-hint-hoofdlijnen").split(","):
-            soort, name = hoofdlijn_str.split("|", 1)
+            soort, naam = hoofdlijn_str.split("|", 1)
             hoofdlijnen.append({
                 "soort": soort.strip(),
-                "name": name.strip()
+                "naam": naam.strip()
             })
 
         annotation = {
