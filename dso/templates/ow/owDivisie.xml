@@ -58,11 +58,11 @@
 						{% endif %}
 					</vt:divisieaanduiding>
 					{% if ow_object.hoofdlijnen is not none and ow_object.hoofdlijnen | length > 0 %}
-					<vt:hoofdlijnen>
+					<vt:hoofdlijnaanduiding>
 						{% for hoofdlijn_ref in ow_object.hoofdlijnen %}
 						<vt:HoofdlijnRef xlink:href="{{ hoofdlijn_ref }}"/>
 						{% endfor %}
-					</vt:hoofdlijnen>
+					</vt:hoofdlijnaanduiding>
 					{% endif %}
 					<vt:locatieaanduiding>
 						{% for locatie_ref in ow_object.locaties %}
@@ -128,11 +128,11 @@
 						{% endif %}
 					</vt:divisieaanduiding>
 					{% if ow_object.hoofdlijnen is not none and ow_object.hoofdlijnen | length > 0 %}
-					<vt:hoofdlijnen>
+					<vt:hoofdlijnaanduiding>
 						{% for hoofdlijn_ref in ow_object.hoofdlijnen %}
 						<vt:HoofdlijnRef xlink:href="{{ hoofdlijn_ref }}"/>
 						{% endfor %}
-					</vt:hoofdlijnen>
+					</vt:hoofdlijnaanduiding>
 					{% endif %}
 					<vt:locatieaanduiding>
 						{% for locatie_ref in ow_object.locaties %}
@@ -207,11 +207,11 @@
 						{% endif %}
 					</vt:divisieaanduiding>
 					{% if ow_object.hoofdlijnen is not none and ow_object.hoofdlijnen | length > 0 %}
-					<vt:hoofdlijnen>
+					<vt:hoofdlijnaanduiding>
 						{% for hoofdlijn_ref in ow_object.hoofdlijnen %}
 						<vt:HoofdlijnRef xlink:href="{{ hoofdlijn_ref }}"/>
 						{% endfor %}
-					</vt:hoofdlijnen>
+					</vt:hoofdlijnaanduiding>
 					{% endif %}
 					<vt:locatieaanduiding>
 						{% for locatie_ref in ow_object.locaties %}
