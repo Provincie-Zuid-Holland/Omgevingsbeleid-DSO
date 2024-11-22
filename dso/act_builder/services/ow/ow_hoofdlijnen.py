@@ -2,7 +2,7 @@ from typing import List, Optional, Set, Tuple
 
 from pydantic.main import BaseModel
 
-from ....services.ow.enums import IMOWTYPES, OwProcedureStatus
+from ....services.ow.enums import IMOWTYPES, OwProcedureStatus, OwHoofdlijnObjectType
 from ....services.ow.models import OWHoofdlijn, OWObject
 from ....services.ow.ow_id import generate_ow_id
 from ...state_manager.exceptions import OWStateError
@@ -14,6 +14,7 @@ from .ow_file_builder import OwFileBuilder
 class OwHoofdlijnTemplateData(BaseModel):
     levering_id: str
     procedure_status: Optional[OwProcedureStatus]
+    object_type_list: List[OwHoofdlijnObjectType]
     new_ow_objects: List[OWObject] = []
     mutated_ow_objects: List[OWObject] = []
     terminated_ow_objects: List[OWObject] = []
@@ -63,19 +64,19 @@ class OwHoofdlijnBuilder(OwFileBuilder):
                         f"Creating hoofdlijn for non-existing tekstdeel. object-code: {object_code}"
                     )
 
-                for soort, naam in hoofdlijn_annotation["hoofdlijn_waardes"]:
+                for hoofdlijn_values in hoofdlijn_annotation["hoofdlijnen"]:
                     # check if this hoofdlijn already exists in state
                     existing_hoofdlijn = self._ow_repository.get_active_hoofdlijn_by_soort_naam(
-                        soort=soort,
-                        naam=naam
+                        soort=hoofdlijn_values["soort"],
+                        naam=hoofdlijn_values["naam"]
                     )
 
                     if existing_hoofdlijn:
                         hoofdlijn_ow_id = existing_hoofdlijn.OW_ID
                     else:
                         new_hoofdlijn = self.new_ow_hoofdlijn(
-                            soort=soort,
-                            naam=naam,
+                            soort=hoofdlijn_values["soort"],
+                            naam=hoofdlijn_values["naam"]
                         )
                         hoofdlijn_ow_id = new_hoofdlijn.OW_ID
 
@@ -112,6 +113,7 @@ class OwHoofdlijnBuilder(OwFileBuilder):
         template_data = OwHoofdlijnTemplateData(
             levering_id=self._context.levering_id,
             procedure_status=self._context.ow_procedure_status,
+            object_type_list=[OwHoofdlijnObjectType.HOOFDLIJN],
             new_ow_objects=new,
             mutated_ow_objects=mutated,
             terminated_ow_objects=terminated,
