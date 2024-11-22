@@ -64,6 +64,7 @@ class OwHoofdlijnBuilder(OwFileBuilder):
                         f"Creating hoofdlijn for non-existing tekstdeel. object-code: {object_code}"
                     )
 
+                hoofdlijn_refs = []
                 for hoofdlijn_values in hoofdlijn_annotation["hoofdlijnen"]:
                     # check if this hoofdlijn already exists in state
                     existing_hoofdlijn = self._ow_repository.get_active_hoofdlijn_by_soort_naam(
@@ -72,23 +73,20 @@ class OwHoofdlijnBuilder(OwFileBuilder):
                     )
 
                     if existing_hoofdlijn:
-                        hoofdlijn_ow_id = existing_hoofdlijn.OW_ID
+                        hoofdlijn_refs.append(existing_hoofdlijn.OW_ID)
                     else:
                         new_hoofdlijn = self.new_ow_hoofdlijn(
                             soort=hoofdlijn_values["soort"],
                             naam=hoofdlijn_values["naam"]
                         )
-                        hoofdlijn_ow_id = new_hoofdlijn.OW_ID
+                        hoofdlijn_refs.append(new_hoofdlijn.OW_ID)
 
-                    # add reference to tekstdeel if not already present
-                    if not tekstdeel.hoofdlijnen:
-                        tekstdeel.hoofdlijnen = [hoofdlijn_ow_id]
-                    elif hoofdlijn_ow_id not in tekstdeel.hoofdlijnen:
-                        tekstdeel.hoofdlijnen.append(hoofdlijn_ow_id)
-                        self._ow_repository.update_state_tekstdeel(
-                            state_ow_id=tekstdeel.OW_ID,
-                            updated_obj=tekstdeel
-                        )
+                # Update tekstdeel with new hoofdlijn refs, replacing any existing ones
+                tekstdeel.hoofdlijnen = hoofdlijn_refs
+                self._ow_repository.update_state_tekstdeel(
+                    state_ow_id=tekstdeel.OW_ID,
+                    updated_obj=tekstdeel
+                )
 
     def new_ow_hoofdlijn(self, soort: str, naam: str) -> OWHoofdlijn:
         new_ow_id = generate_ow_id(IMOWTYPES.HOOFDLIJN, self._context.provincie_id)
