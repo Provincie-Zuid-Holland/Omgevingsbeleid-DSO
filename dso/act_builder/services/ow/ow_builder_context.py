@@ -13,7 +13,7 @@ class BuilderContext:
         levering_id: str,
         ow_procedure_status: Optional[OwProcedureStatus],
         orphaned_wids: List[str],
-        imow_value_list_version: Optional[str]
+        imow_value_list_version: Optional[str] = None
     ):
         self.provincie_id = provincie_id
         self.levering_id = levering_id
