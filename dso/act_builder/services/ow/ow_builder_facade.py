@@ -6,6 +6,7 @@ from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
 from ...services.ow.ow_divisie import OwDivisieBuilder
 from ...services.ow.ow_gebiedsaanwijzingen import OwGebiedsaanwijzingBuilder
+from ...services.ow.ow_hoofdlijnen import OwHoofdlijnBuilder
 from ...services.ow.ow_locaties import OwLocatieBuilder
 from ...services.ow.ow_manifest import OwManifestBuilder
 from ...services.ow.ow_regelinggebied import OwRegelingsgebiedBuilder
@@ -48,6 +49,12 @@ class OwBuilderFacade(BuilderService):
             ow_repository=state_manager.ow_repository,
         )
 
+        hoofdlijn_builder = OwHoofdlijnBuilder(
+            context=context,
+            annotation_lookup_map=annotation_lookup_map,
+            ow_repository=state_manager.ow_repository,
+        )
+
         ow_manifest_builder = OwManifestBuilder(
             regeling_frbr=state_manager.input_data.publication_settings.regeling_frbr,
             doel_frbr=state_manager.input_data.publication_settings.instelling_doel.frbr,
@@ -60,6 +67,7 @@ class OwBuilderFacade(BuilderService):
             divisie_builder=divisie_builder,
             gb_aanwijzing_builder=gb_aanwijzing_builder,
             regelinggebied_builder=regelinggebied_builder,
+            hoofdlijn_builder=hoofdlijn_builder,
             ow_manifest_builder=ow_manifest_builder,
             ow_state_patcher=ow_state_patcher,
         )

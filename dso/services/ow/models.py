@@ -99,13 +99,13 @@ class OWDivisieTekst(OWObject):
 
 class OWTekstdeel(OWObject):
     divisie: str  # imow DivisieRef / DivisieTekstRef
-    locaties: List[str] = Field(default_factory=list)  # imow LocatieRef
-    gebiedsaanwijzingen: Optional[List[str]] = Field(default_factory=list)  # imow GebiedsaanwijzingRef
-
+    locaties: List[str] = Field(default_factory=list)
+    gebiedsaanwijzingen: Optional[List[str]] = Field(default_factory=list)
     themas: List[str] = Field(default_factory=list)
+    hoofdlijnen: List[str] = Field(default_factory=list)
+
     # idealisatie: Optional[str]
     # kaartaanduiding: Optional[str] = None
-    # hoofdlijnaanduiding: Optional[str] = None
 
     @property
     def divisie_type(self) -> str:
@@ -164,4 +164,14 @@ class OWGebiedsaanwijzing(OWObject):
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
         if not all(locatie_id in used_ow_ids for locatie_id in self.locaties):
             return False
+        return True
+
+
+class OWHoofdlijn(OWObject):
+    soort: str
+    naam: str
+    related_hoofdlijnen: Optional[List[str]] = None
+
+    def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
+        # TODO: check if used
         return True

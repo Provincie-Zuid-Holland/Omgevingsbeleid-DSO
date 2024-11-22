@@ -19,5 +19,6 @@ from .models import (
     OWObject,
     OWRegelingsgebied,
     OWTekstdeel,
+    OWHoofdlijn
 )
 from .ow_id import generate_ow_id

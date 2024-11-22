@@ -81,6 +81,9 @@ class OWAnnotationService:
                 if element.get("data-hint-themas"):
                     self._add_thema_annotation(element)
                     
+                if element.get("data-hint-hoofdlijnen"):
+                    self._add_hoofdlijn_annotation(element)
+                    
             if element.tag == "IntIoRef":
                 self._add_gebiedsaanwijzing_annotation(element)
 
@@ -183,3 +186,27 @@ class OWAnnotationService:
         }
         
         self._annotation_map[div_object_code].append(annotation)
+
+    def _add_hoofdlijn_annotation(self, element) -> None:
+        try:
+            object_code = element.get("data-hint-object-code")
+            wid = element.get("wId")
+        except KeyError:
+            raise ValueError("Creating hoofdlijn annotation without data-hint-object-code or wId.")
+
+        hoofdlijnen = []
+        for hoofdlijn_str in element.get("data-hint-hoofdlijnen").split(","):
+            soort, name = hoofdlijn_str.split("|", 1)
+            hoofdlijnen.append({
+                "soort": soort.strip(),
+                "name": name.strip()
+            })
+
+        annotation = {
+            "type_annotation": "hoofdlijn",
+            "wid": wid,
+            "object_code": object_code,
+            "hoofdlijnen": hoofdlijnen
+        }
+        
+        self._annotation_map[object_code].append(annotation)

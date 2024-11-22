@@ -15,16 +15,27 @@ def extract_data_hint(text: str, regex: str) -> Optional[str]:
     return result
 
 def extract_object_code(text: str) -> Optional[str]:
+    # format [OBJECT-CODE:object-code]
     return extract_data_hint(text, r"\[OBJECT-CODE:(.*?)\]")
 
 def extract_gebied_code(text: str) -> Optional[str]:
+    # format [GEBIED-CODE:gebied-code]
     return extract_data_hint(text, r"\[GEBIED-CODE:(.*?)\]")
 
 def extract_thema_waardes(text: str) -> Optional[List[str]]:
+    # format [THEMA-WAARDES:thema1,thema2]
     thema_str = extract_data_hint(text, r"\[THEMA-WAARDES:(.*?)\]")
     if thema_str is None:
         return None
     return [theme.strip() for theme in thema_str.split(",")]
+
+def extract_hoofdlijn(text: str) -> Optional[Dict[str, str]]:
+    # format [HOOFDLIJN:soort|name]
+    hoofdlijn_str = extract_data_hint(text, r"\[HOOFDLIJN:(.*?)\]")
+    if hoofdlijn_str is None:
+        return None
+    soort, name = hoofdlijn_str.split("|", 1)
+    return {"soort": soort.strip(), "name": name.strip()}
 
 class AsXmlTrait(metaclass=ABCMeta):
     @abstractmethod
