@@ -586,6 +586,7 @@ class Divisietekst(Element):
         self.gebied_code: Optional[str] = None
         self.ambtsgebied: Optional[bool] = None
         self.thema_waardes: Optional[List[str]] = None
+        self.hoofdlijnen: List[Dict[str, str]] = []
 
         if tag is not None:
             self.wid_code = tag.get("data-hint-wid-code", None)
@@ -625,6 +626,7 @@ class Divisietekst(Element):
             - [OBJECT-CODE:objecttype-123]
             - [GEBIED-CODE:werkingsgebied-123]
             - [THEMA-WAARDES:thema1, thema2]
+            - [HOOFDLIJN:soort|name]
         """
         object_code: Optional[str] = extract_object_code(str(comment))
         if object_code is not None:
@@ -637,6 +639,10 @@ class Divisietekst(Element):
         thema_waardes: Optional[List[str]] = extract_thema_waardes(str(comment))
         if thema_waardes is not None:
             self.thema_waardes = thema_waardes
+
+        hoofdlijn: Optional[Dict[str, str]] = extract_hoofdlijn(str(comment))
+        if hoofdlijn is not None:
+            self.hoofdlijnen.append(hoofdlijn)
 
         return None
 
@@ -665,6 +671,7 @@ class Divisietekst(Element):
             ),
             **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
             **({"data-hint-themas": ",".join(str(t).strip() for t in self.thema_waardes)} if self.thema_waardes else {}),
+            **({"data-hint-hoofdlijnen": ",".join(f"{h['soort']}|{h['name']}" for h in self.hoofdlijnen)} if self.hoofdlijnen else {}),
         }
 
         if self.kop is not None:
@@ -687,6 +694,7 @@ class Divisie(Element):
         self.gebied_code = tag.get("data-hint-gebied-code", None)
         self.ambtsgebied = tag.get("data-hint-ambtsgebied", None)
         self.thema_waardes: Optional[List[str]] = None
+        self.hoofdlijnen: List[Dict[str, str]] = []
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         while True:
@@ -763,6 +771,7 @@ class Divisie(Element):
             - [OBJECT-CODE:objecttype-123]
             - [GEBIED-CODE:werkingsgebied-123]
             - [THEMA-WAARDES:thema1, thema2]
+            - [HOOFDLIJN:soort|name]
         """
         object_code: Optional[str] = extract_object_code(str(comment))
         if object_code is not None:
@@ -775,6 +784,10 @@ class Divisie(Element):
         thema_waardes: Optional[List[str]] = extract_thema_waardes(str(comment))
         if thema_waardes is not None:
             self.thema_waardes = thema_waardes
+
+        hoofdlijn: Optional[Dict[str, str]] = extract_hoofdlijn(str(comment))
+        if hoofdlijn is not None:
+            self.hoofdlijnen.append(hoofdlijn)
 
         return None
 
@@ -812,6 +825,7 @@ class Divisie(Element):
             ),
             **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
             **({"data-hint-themas": ",".join(str(t).strip() for t in self.thema_waardes)} if self.thema_waardes else {}),
+            **({"data-hint-hoofdlijnen": ",".join(f"{h['soort']}|{h['name']}" for h in self.hoofdlijnen)} if self.hoofdlijnen else {}),
         }
 
         if self.kop is not None:
