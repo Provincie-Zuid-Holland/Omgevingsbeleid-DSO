@@ -99,6 +99,8 @@ class RegelingVrijetekstTekstGenerator:
             "data-hint-locatie",
             "data-hint-gebiedengroep",
             "data-hint-gebiedsaanwijzingtype",
+            "data-hint-hoofdlijnen",
+            "data-hint-themas",
         ]
 
         root = etree.fromstring(xml_data)
