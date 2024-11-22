@@ -48,6 +48,8 @@ class OwRegelingsgebiedObjectType(str, Enum):
 class OwGebiedsaanwijzingObjectType(str, Enum):
     GEBIEDSAANWIJZING = "Gebiedsaanwijzing"
 
+class OwHoofdlijnObjectType(str, Enum):
+    HOOFDLIJN = "Hoofdlijn"
 
 class OwProcedureStatus(str, Enum):
     """
