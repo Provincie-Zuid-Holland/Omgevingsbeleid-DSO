@@ -44,7 +44,6 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
             ] or None
             for key, annotations in annotation_lookup_map.items()
         }
-        self._used_object_types: Set[OwGebiedsaanwijzingTemplateData] = set()
         self._ow_repository = ow_repository
 
     def handle_ow_object_changes(self) -> None:
