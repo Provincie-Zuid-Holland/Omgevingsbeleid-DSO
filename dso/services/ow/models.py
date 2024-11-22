@@ -173,4 +173,5 @@ class OWHoofdlijn(OWObject):
     related_hoofdlijnen: Optional[List[str]] = None
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
+        # TODO: check if related_hoofdlijnen are used in OWTekstdeel when supported
         return self.OW_ID in reverse_ref_index.get("OWTekstdeel", set())

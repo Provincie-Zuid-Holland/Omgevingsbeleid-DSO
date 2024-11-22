@@ -3,7 +3,7 @@ from typing import Dict, List, Optional, Set
 from ...act_builder.state_manager.exceptions import OWObjectStateException
 from ...act_builder.state_manager.states.ow_repository import OWStateRepository
 from ...models import OwData
-from .models import OWGebied, OWGebiedenGroep, OWGebiedsaanwijzing, OWObject, OWRegelingsgebied, OWTekstdeel
+from .models import OWGebied, OWGebiedenGroep, OWGebiedsaanwijzing, OWHoofdlijn, OWObject, OWRegelingsgebied, OWTekstdeel
 
 
 class OWStatePatcher:
@@ -87,27 +87,34 @@ class OWStatePatcher:
     def _build_reverse_ref_index(self, ow_objects_map: Dict[str, "OWObject"]) -> Dict[str, Set[str]]:
         reverse_ref_index = {
             "OWTekstdeel": set(),
-            "OWGebiedenGroep": set(),
+            "OWGebiedenGroep": set(), 
             "OWRegelingsgebied": set(),
             "OWGebiedsaanwijzing": set(),
+            "OWHoofdlijn": set(),
         }
 
         for ow_obj in ow_objects_map.values():
-            if isinstance(ow_obj, OWTekstdeel):
-                for locatie_id in ow_obj.locaties:
-                    reverse_ref_index["OWTekstdeel"].add(locatie_id)
-                reverse_ref_index["OWTekstdeel"].add(ow_obj.divisie)
-                if ow_obj.gebiedsaanwijzingen:
-                    for gebiedsaanwijzing_id in ow_obj.gebiedsaanwijzingen:
-                        reverse_ref_index["OWGebiedsaanwijzing"].add(gebiedsaanwijzing_id)
-            if isinstance(ow_obj, OWGebiedenGroep):
-                for gebied_id in ow_obj.gebieden:
-                    reverse_ref_index["OWGebiedenGroep"].add(gebied_id)
-            if isinstance(ow_obj, OWRegelingsgebied):
-                reverse_ref_index["OWRegelingsgebied"].add(ow_obj.ambtsgebied)
-            if isinstance(ow_obj, OWGebiedsaanwijzing):
-                for locatie_id in ow_obj.locaties:
-                    reverse_ref_index["OWTekstdeel"].add(locatie_id)
+            match ow_obj:
+                case OWTekstdeel():
+                    reverse_ref_index["OWTekstdeel"].add(ow_obj.divisie)
+                    reverse_ref_index["OWTekstdeel"].update(ow_obj.locaties)
+                    if ow_obj.gebiedsaanwijzingen:
+                        reverse_ref_index["OWTekstdeel"].update(ow_obj.gebiedsaanwijzingen)
+                    if ow_obj.hoofdlijnen:
+                        reverse_ref_index["OWTekstdeel"].update(ow_obj.hoofdlijnen)
+                
+                case OWGebiedenGroep():
+                    reverse_ref_index["OWGebiedenGroep"].update(ow_obj.gebieden)
+                
+                case OWRegelingsgebied():
+                    reverse_ref_index["OWRegelingsgebied"].add(ow_obj.ambtsgebied)
+                
+                case OWGebiedsaanwijzing():
+                    reverse_ref_index["OWGebiedsaanwijzing"].update(ow_obj.locaties)
+
+                case OWHoofdlijn():
+                    if ow_obj.related_hoofdlijnen:
+                        reverse_ref_index["OWHoofdlijn"].update(ow_obj.OW_ID)
 
         return reverse_ref_index
 
