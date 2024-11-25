@@ -64,11 +64,13 @@
 						{% endfor %}
 					</vt:hoofdlijnaanduiding>
 					{% endif %}
+					{% if ow_object.locaties is not none and ow_object.locaties | length > 0 %}
 					<vt:locatieaanduiding>
 						{% for locatie_ref in ow_object.locaties %}
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
+					{% endif %}
 					{% if ow_object.gebiedsaanwijzingen is not none and ow_object.gebiedsaanwijzingen | length > 0 %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
@@ -134,11 +136,13 @@
 						{% endfor %}
 					</vt:hoofdlijnaanduiding>
 					{% endif %}
+					{% if ow_object.locaties is not none and ow_object.locaties | length > 0 %}
 					<vt:locatieaanduiding>
 						{% for locatie_ref in ow_object.locaties %}
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
+					{% endif %}
 					{% if ow_object.gebiedsaanwijzingen is not none and ow_object.gebiedsaanwijzingen | length > 0 %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
@@ -213,11 +217,13 @@
 						{% endfor %}
 					</vt:hoofdlijnaanduiding>
 					{% endif %}
+					{% if ow_object.locaties is not none and ow_object.locaties | length > 0 %}
 					<vt:locatieaanduiding>
 						{% for locatie_ref in ow_object.locaties %}
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
+					{% endif %}
 					{% if ow_object.gebiedsaanwijzingen is not none and ow_object.gebiedsaanwijzingen | length > 0 %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}

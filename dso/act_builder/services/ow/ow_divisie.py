@@ -125,7 +125,7 @@ class OwDivisieBuilder(OwFileBuilder):
 
     def process_new_divisie(self, annotations: List[dict]) -> Optional[OWTekstdeel]:
         """Process all annotations for a new divisie"""
-        # Get basic info from first annotation (should be same for all)
+        # use first annotation for this obj code to generate new divisie
         first_annotation = annotations[0]
         new_div = self._new_divisie(
             tag=first_annotation["tag"],
