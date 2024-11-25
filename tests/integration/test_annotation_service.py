@@ -209,3 +209,102 @@ class TestOWAnnotationService:
     def test_multiple_gba_in_div(self):
         # TODO: add
         pass
+
+    @pytest.fixture
+    def thema_hoofdlijn_annotations_xml(self):
+        """
+        Test if the annotation service correctly parses the data-hint-* attributes
+        for thema, hoofdlijn and ambtsgebied.
+        """
+        mock_xml = """
+        <Lichaam eId="body" wId="body">
+            <Divisietekst eId="content_o_1"
+                wId="pv28_4__content_o_1"
+                data-hint-object-code="beleidskeuze-756"
+                data-hint-themas="geluid"
+                data-hint-hoofdlijnen="omgevingsvisie|Example Value 1"
+                data-hint-ambtsgebied="True">
+                single thema and hoofdlijn used
+            </Divisietekst>
+            <Divisietekst eId="content_o_2"
+                wId="pv28_4__content_o_2"
+                data-hint-object-code="beleidskeuze-888"
+                data-hint-themas="bodem,water"
+                data-hint-hoofdlijnen="omgevingsvisie|Example Value 1,omgevingsvisie|Example Value 2"
+                data-hint-ambtsgebied="True">
+                multiple themas and hoofdlijnen used
+            </Divisietekst>
+        </Lichaam>
+        """
+        parser = etree.XMLParser(remove_blank_text=False, encoding="utf-8")
+        root = etree.fromstring(mock_xml.encode("utf-8"), parser)
+        return root
+
+    def test_total_annotations(self, thema_hoofdlijn_annotations_xml):
+        self.annotation_service._parse_data_hints(thema_hoofdlijn_annotations_xml)
+        annotation_map = self.annotation_service.get_annotation_map()
+        assert len(annotation_map) == 2
+
+    def test_build_annotation_map_single_thema_hoofdlijn(self, thema_hoofdlijn_annotations_xml):
+        self.annotation_service._parse_data_hints(thema_hoofdlijn_annotations_xml)
+        annotation_map = self.annotation_service.get_annotation_map()
+
+        expected_annotations = [
+            {
+                "type_annotation": "ambtsgebied",
+                "tag": "Divisietekst", 
+                "wid": "pv28_4__content_o_1",
+                "object_code": "beleidskeuze-756",
+            },
+            {
+                "type_annotation": "thema",
+                "tag": "Divisietekst",
+                "wid": "pv28_4__content_o_1", 
+                "object_code": "beleidskeuze-756",
+                "thema_waardes": ["geluid"],
+            },
+            {
+                "type_annotation": "hoofdlijn",
+                "tag": "Divisietekst",
+                "wid": "pv28_4__content_o_1",
+                "object_code": "beleidskeuze-756",
+                "hoofdlijnen": [{'soort': 'omgevingsvisie', 'naam': 'Example Value 1'}],
+            }
+        ]
+
+        assert annotation_map["beleidskeuze-756"] == expected_annotations
+
+    def test_build_annotation_map_multiple_themas_hoofdlijnen(self, thema_hoofdlijn_annotations_xml):
+        self.annotation_service._parse_data_hints(thema_hoofdlijn_annotations_xml)
+        annotation_map = self.annotation_service.get_annotation_map()
+
+        expected_annotations = [
+            {
+                "type_annotation": "ambtsgebied",
+                "wid": "pv28_4__content_o_2",
+                "tag": "Divisietekst",
+                "object_code": "beleidskeuze-888",
+            },
+            {
+                "type_annotation": "thema",
+                "tag": "Divisietekst",
+                "wid": "pv28_4__content_o_2",
+                "object_code": "beleidskeuze-888",
+                "thema_waardes": [
+                    "bodem",
+                    "water"
+                ],
+            },
+            {
+                "type_annotation": "hoofdlijn",
+                "tag": "Divisietekst",
+                "wid": "pv28_4__content_o_2",
+                "object_code": "beleidskeuze-888",
+                "hoofdlijnen": [
+                    {'soort': 'omgevingsvisie', 'naam': 'Example Value 1'},
+                    {'soort': 'omgevingsvisie', 'naam': 'Example Value 2'}
+                ],
+            }
+        ]
+
+        assert annotation_map["beleidskeuze-888"] == expected_annotations
