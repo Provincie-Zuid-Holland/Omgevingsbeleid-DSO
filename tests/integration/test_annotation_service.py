@@ -63,6 +63,7 @@ class TestOWAnnotationService:
             },
             {
                 "type_annotation": "gebiedsaanwijzing",
+                "tag": "IntIoRef",
                 "ref": "mock-ref-werkingsgebied-1",
                 "wid": "pv28_4__content_o_1__ref_o_1",
                 "werkingsgebied_code": "werkingsgebied-1",
@@ -116,6 +117,7 @@ class TestOWAnnotationService:
             },
             {
                 "type_annotation": "gebiedsaanwijzing",
+                "tag": "IntIoRef",
                 "ref": "mock-ref-werkingsgebied-1",
                 "wid": "pv28_4__content_o_1__ref_o_1",
                 "werkingsgebied_code": "werkingsgebied-1",

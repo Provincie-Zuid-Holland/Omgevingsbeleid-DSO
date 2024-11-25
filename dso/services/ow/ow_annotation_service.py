@@ -132,6 +132,7 @@ class OWAnnotationService:
         
         annotation = {
             "type_annotation": "thema",
+            "tag": element.tag,
             "wid": wid,
             "object_code": object_code,
             "thema_waardes": thema_waardes
@@ -172,6 +173,7 @@ class OWAnnotationService:
 
         annotation = {
             "type_annotation": "gebiedsaanwijzing",
+            "tag": element.tag,
             "ref": element.get("ref"),
             "wid": element.get("wId"),
             "werkingsgebied_code": gba_locatie,
@@ -204,6 +206,7 @@ class OWAnnotationService:
 
         annotation = {
             "type_annotation": "hoofdlijn",
+            "tag": element.tag,
             "wid": wid,
             "object_code": object_code,
             "hoofdlijnen": hoofdlijnen
