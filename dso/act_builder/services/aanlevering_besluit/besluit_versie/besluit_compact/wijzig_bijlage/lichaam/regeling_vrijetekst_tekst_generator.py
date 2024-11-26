@@ -4,7 +4,6 @@ from uuid import UUID
 from bs4 import BeautifulSoup
 from lxml import etree
 
-from ........services.ow.ow_annotation_service import OWAnnotationService
 from ........services.tekst.middleware import middleware_enrich_table
 from ........services.tekst.tekst import Lichaam
 from ........services.utils.helpers import is_html_valid
@@ -16,10 +15,6 @@ from .......state_manager.state_manager import StateManager
 class RegelingVrijetekstTekstGenerator:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
-        self._ow_annotation_service: OWAnnotationService = OWAnnotationService(
-            werkingsgebied_repository=self._state_manager.input_data.resources.werkingsgebied_repository,
-            used_wid_map=self._state_manager.act_ewid_service.get_state_used_wid_map(),
-        )
 
     def create(self, html: str):
         tekst: str = self._html_to_xml_lichaam(html)
@@ -30,9 +25,6 @@ class RegelingVrijetekstTekstGenerator:
 
         tekst = self._add_ewids(tekst)
         self._set_debug("text-stage-ewids", tekst)
-
-        tekst = self._handle_annotation_refs(tekst)
-        self._set_debug("text-stage-annotation", tekst)
 
         tekst = self._remove_hints(tekst)
         self._set_debug("text-stage-deleted-hints", tekst)
@@ -85,22 +77,10 @@ class RegelingVrijetekstTekstGenerator:
         result: str = self._state_manager.act_ewid_service.add_ewids(xml_data)
         return result
 
-    def _handle_annotation_refs(self, xml_data: str) -> str:
-        result = self._ow_annotation_service.build_annotation_map(xml_source=xml_data)
-        self._state_manager.annotation_ref_lookup_map = self._ow_annotation_service.get_annotation_map()
-        return result
-
     def _remove_hints(self, xml_data: str) -> str:
         attributes = [
-            "data-hint-gebied-code",
             "data-hint-object-code",
             "data-hint-wid-code",
-            "data-hint-ambtsgebied",
-            "data-hint-locatie",
-            "data-hint-gebiedengroep",
-            "data-hint-gebiedsaanwijzingtype",
-            "data-hint-hoofdlijnen",
-            "data-hint-themas",
         ]
 
         root = etree.fromstring(xml_data)

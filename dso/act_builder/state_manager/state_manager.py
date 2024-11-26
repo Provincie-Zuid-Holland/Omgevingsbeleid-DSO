@@ -23,7 +23,6 @@ class StateManager:
         # What we send to DSO, might be different then `wordt` because of the renvooi
         self.regeling_vrijetekst_aangeleverd: Optional[str] = None
         self.used_asset_uuids: Set[str] = set()
-        self.annotation_ref_lookup_map: dict = {}
         # result state of ow object data after processing
         self.ow_object_state: Optional[OwData] = None
 

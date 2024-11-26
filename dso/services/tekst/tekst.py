@@ -18,25 +18,6 @@ def extract_object_code(text: str) -> Optional[str]:
     # format [OBJECT-CODE:object-code]
     return extract_data_hint(text, r"\[OBJECT-CODE:(.*?)\]")
 
-def extract_gebied_code(text: str) -> Optional[str]:
-    # format [GEBIED-CODE:gebied-code]
-    return extract_data_hint(text, r"\[GEBIED-CODE:(.*?)\]")
-
-def extract_thema_waardes(text: str) -> Optional[List[str]]:
-    # format [THEMA-WAARDES:thema1,thema2]
-    thema_str = extract_data_hint(text, r"\[THEMA-WAARDES:(.*?)\]")
-    if thema_str is None:
-        return None
-    return [theme.strip() for theme in thema_str.split(",")]
-
-def extract_hoofdlijn(text: str) -> Optional[Dict[str, str]]:
-    # format [HOOFDLIJN:soort|naam]
-    hoofdlijn_str = extract_data_hint(text, r"\[HOOFDLIJN:(.*?)\]")
-    if hoofdlijn_str is None:
-        return None
-    soort, naam = hoofdlijn_str.split("|", 1)
-    return {"soort": soort.strip(), "naam": naam.strip()}
-
 class AsXmlTrait(metaclass=ABCMeta):
     @abstractmethod
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
@@ -356,9 +337,6 @@ class GebiedsaanwijzingRef(SimpleElement):
             tag_name_overwrite="IntIoRef",
             tag_attrs_overwrite={
                 "ref": self.href,
-                "data-hint-gebiedsaanwijzingtype": self.type,
-                "data-hint-gebiedengroep": self.gebiedengroep,
-                "data-hint-locatie": self.gebiedsaanwijzing,
             },
         )
         return result
@@ -621,28 +599,9 @@ class Divisietekst(Element):
         raise RuntimeError(f"Consume string not implemented for Divisietekst for code {self.object_code}")
 
     def consume_comment(self, comment: Comment) -> LeftoverTag:
-        """
-        Divisietekst template comments:
-            - [OBJECT-CODE:objecttype-123]
-            - [GEBIED-CODE:werkingsgebied-123]
-            - [THEMA-WAARDES:thema1, thema2]
-            - [HOOFDLIJN:soort|name]
-        """
         object_code: Optional[str] = extract_object_code(str(comment))
         if object_code is not None:
             self.object_code = object_code
-
-        gebied_code: Optional[str] = extract_gebied_code(str(comment))
-        if gebied_code is not None:
-            self.gebied_code = gebied_code
-            
-        thema_waardes: Optional[List[str]] = extract_thema_waardes(str(comment))
-        if thema_waardes is not None:
-            self.thema_waardes = thema_waardes
-
-        hoofdlijn: Optional[Dict[str, str]] = extract_hoofdlijn(str(comment))
-        if hoofdlijn is not None:
-            self.hoofdlijnen.append(hoofdlijn)
 
         return None
 
@@ -653,25 +612,12 @@ class Divisietekst(Element):
         return self.inhoud
 
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
-        """
-        Builds Divisietekst Tag and adds additional data hint attributes
-        Edge case for gebied_code "ambtsgebied" which sets its own tag
-        instead of data-hint-gebied-code.
-        """
         tag_divisietekst: Tag = soup.new_tag("Divisietekst")
         wid_code = self.wid_code or self.object_code
 
         tag_divisietekst.attrs = {
             **({"data-hint-wid-code": wid_code} if wid_code else {}),
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
-            **(
-                {"data-hint-gebied-code": self.gebied_code}
-                if self.gebied_code and self.gebied_code != "ambtsgebied"
-                else {}
-            ),
-            **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
-            **({"data-hint-themas": ",".join(str(t).strip() for t in self.thema_waardes)} if self.thema_waardes else {}),
-            **({"data-hint-hoofdlijnen": ",".join(f"{h['soort']}|{h['naam']}" for h in self.hoofdlijnen)} if self.hoofdlijnen else {}),
         }
 
         if self.kop is not None:
@@ -691,10 +637,6 @@ class Divisie(Element):
         self.contents: List[Union["Divisie", Divisietekst]] = []
         self.wid_code = tag.get("data-hint-wid-code", None)
         self.object_code = tag.get("data-hint-object-code", None)
-        self.gebied_code = tag.get("data-hint-gebied-code", None)
-        self.ambtsgebied = tag.get("data-hint-ambtsgebied", None)
-        self.thema_waardes: Optional[List[str]] = None
-        self.hoofdlijnen: List[Dict[str, str]] = []
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         while True:
@@ -766,28 +708,9 @@ class Divisie(Element):
         raise RuntimeError(f"Consume string not implemented for Divisie. For code: {self.object_code}")
 
     def consume_comment(self, comment: Comment) -> LeftoverTag:
-        """
-        Divisie template comments:
-            - [OBJECT-CODE:objecttype-123]
-            - [GEBIED-CODE:werkingsgebied-123]
-            - [THEMA-WAARDES:thema1, thema2]
-            - [HOOFDLIJN:soort|name]
-        """
         object_code: Optional[str] = extract_object_code(str(comment))
         if object_code is not None:
             self.object_code = object_code
-
-        gebied_code: Optional[str] = extract_gebied_code(str(comment))
-        if gebied_code is not None:
-            self.gebied_code = gebied_code
-
-        thema_waardes: Optional[List[str]] = extract_thema_waardes(str(comment))
-        if thema_waardes is not None:
-            self.thema_waardes = thema_waardes
-
-        hoofdlijn: Optional[Dict[str, str]] = extract_hoofdlijn(str(comment))
-        if hoofdlijn is not None:
-            self.hoofdlijnen.append(hoofdlijn)
 
         return None
 
@@ -818,14 +741,6 @@ class Divisie(Element):
         tag_divisie.attrs = {
             **({"data-hint-wid-code": wid_code} if wid_code else {}),
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
-            **(
-                {"data-hint-gebied-code": self.gebied_code}
-                if self.gebied_code and self.gebied_code != "ambtsgebied"
-                else {}
-            ),
-            **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
-            **({"data-hint-themas": ",".join(str(t).strip() for t in self.thema_waardes)} if self.thema_waardes else {}),
-            **({"data-hint-hoofdlijnen": ",".join(f"{h['soort']}|{h['naam']}" for h in self.hoofdlijnen)} if self.hoofdlijnen else {}),
         }
 
         if self.kop is not None:
