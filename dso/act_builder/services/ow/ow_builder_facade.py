@@ -1,5 +1,6 @@
 from typing import Dict, List, Optional
 
+from ....services.ow.ow_annotation_service import OWAnnotationService
 from ....services.ow.enums import OwProcedureStatus
 from ....services.ow.ow_state_patcher import OWStatePatcher
 from ....services.utils.waardelijsten import ProcedureType
@@ -17,11 +18,18 @@ from .ow_builder_context import BuilderContext
 
 class OwBuilderFacade(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
-        ow_builder: OwBuilder = self._create_ow_builder(state_manager)
+        # build ow annotation map from policy objects data
+        annotation_service = OWAnnotationService(
+            werkingsgebied_repository=state_manager.input_data.resources.werkingsgebied_repository,
+            policy_object_repository=state_manager.input_data.resources.policy_object_repository,
+            used_wid_map=state_manager.act_ewid_service.get_state_used_wid_map()
+        )
+        annotation_map = annotation_service.build_annotation_map()
+
+        ow_builder: OwBuilder = self._create_ow_builder(state_manager, annotation_map)
         return ow_builder.apply(state_manager)
 
-    def _create_ow_builder(self, state_manager: StateManager) -> OwBuilder:
-        annotation_lookup_map: dict = state_manager.annotation_ref_lookup_map
+    def _create_ow_builder(self, state_manager: StateManager, annotation_lookup_map: dict) -> OwBuilder:
         context = self._create_builder_context(state_manager)
 
         locatie_builder = OwLocatieBuilder(
