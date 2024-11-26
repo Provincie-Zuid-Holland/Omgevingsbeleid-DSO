@@ -10,11 +10,11 @@ from ....services.ow import (
     OWGebied,
     OWGebiedenGroep,
     OWGebiedsaanwijzing,
+    OWHoofdlijn,
     OWLocatie,
     OWObject,
     OWRegelingsgebied,
     OWTekstdeel,
-    OWHoofdlijn,
 )
 from ..exceptions import OWStateMutationError
 
@@ -323,11 +323,9 @@ class OWStateRepository:
         ow_objects = itertools.chain(self.get_changed_ow_objects(), self._known_ow_state.ow_objects.values())
         return next(
             (
-                ow_obj 
-                for ow_obj in ow_objects 
-                if isinstance(ow_obj, OWHoofdlijn) 
-                and ow_obj.soort == soort 
-                and ow_obj.naam == naam
+                ow_obj
+                for ow_obj in ow_objects
+                if isinstance(ow_obj, OWHoofdlijn) and ow_obj.soort == soort and ow_obj.naam == naam
             ),
             None,
         )
@@ -335,11 +333,9 @@ class OWStateRepository:
     def get_known_hoofdlijn_by_soort_naam(self, soort: str, naam: str) -> Optional[OWHoofdlijn]:
         return next(
             (
-                ow_obj 
-                for ow_obj in self._known_ow_state.ow_objects.values() 
-                if isinstance(ow_obj, OWHoofdlijn) 
-                and ow_obj.soort == soort 
-                and ow_obj.naam == naam
+                ow_obj
+                for ow_obj in self._known_ow_state.ow_objects.values()
+                if isinstance(ow_obj, OWHoofdlijn) and ow_obj.soort == soort and ow_obj.naam == naam
             ),
             None,
         )
@@ -354,10 +350,9 @@ class OWStateRepository:
         ow_objects = itertools.chain(self.get_changed_ow_objects(), self._known_ow_state.ow_objects.values())
         return next(
             (
-                ow_obj 
-                for ow_obj in ow_objects 
-                if isinstance(ow_obj, (OWDivisie, OWDivisieTekst)) 
-                and ow_obj.mapped_policy_object_code == object_code
+                ow_obj
+                for ow_obj in ow_objects
+                if isinstance(ow_obj, (OWDivisie, OWDivisieTekst)) and ow_obj.mapped_policy_object_code == object_code
             ),
             None,
         )

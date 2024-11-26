@@ -5,8 +5,8 @@ from uuid import UUID
 from pydantic import BaseModel, Field, validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
-from .waardelijsten.imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
 from .ow_id import check_ow_id_imowtype
+from .waardelijsten.imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
 
 
 class OWObject(BaseModel):
@@ -70,12 +70,11 @@ class OWGebiedenGroep(OWLocatie):
     gebieden: List[str] = []
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
-        return (
-            all(gebied_id in used_ow_ids for gebied_id in self.gebieden) # no dead gebied refs
-            and ( # has ref from tekstdeel or gebiedsaanwijzing
-                self.OW_ID in reverse_ref_index.get("OWTekstdeel", set())
-                or self.OW_ID in reverse_ref_index.get("OWGebiedsaanwijzing", set())
-            )
+        return all(
+            gebied_id in used_ow_ids for gebied_id in self.gebieden
+        ) and (  # no dead gebied refs  # has ref from tekstdeel or gebiedsaanwijzing
+            self.OW_ID in reverse_ref_index.get("OWTekstdeel", set())
+            or self.OW_ID in reverse_ref_index.get("OWGebiedsaanwijzing", set())
         )
 
 
@@ -114,7 +113,9 @@ class OWTekstdeel(OWObject):
         return (
             self.divisie in used_ow_ids  # divisie exists
             and all(locatie_id in used_ow_ids for locatie_id in self.locaties)  # no dead location refs
-            and all(gebiedsaanwijzing_id in used_ow_ids for gebiedsaanwijzing_id in (self.gebiedsaanwijzingen or [])) # no dead gebiedsaanwijzing refs
+            and all(
+                gebiedsaanwijzing_id in used_ow_ids for gebiedsaanwijzing_id in (self.gebiedsaanwijzingen or [])
+            )  # no dead gebiedsaanwijzing refs
         )
 
     def dict(self, **kwargs):
@@ -156,10 +157,11 @@ class OWGebiedsaanwijzing(OWObject):
         raise ValueError(f"'{value}' is not a valid value for the groep field")
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
-        return (
-            all(locatie_id in used_ow_ids for locatie_id in self.locaties) # no dead location refs
-            and self.OW_ID in reverse_ref_index.get("OWTekstdeel", set()) # has ref from tekstdeel
-        )
+        return all(
+            locatie_id in used_ow_ids for locatie_id in self.locaties
+        ) and self.OW_ID in reverse_ref_index.get(  # no dead location refs
+            "OWTekstdeel", set()
+        )  # has ref from tekstdeel
 
 
 class OWHoofdlijn(OWObject):

@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
 
-from ....services.ow.ow_annotation_service import OWAnnotationService
 from ....services.ow.enums import OwProcedureStatus
+from ....services.ow.ow_annotation_service import OWAnnotationService
 from ....services.ow.ow_state_patcher import OWStatePatcher
 from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
@@ -22,7 +22,7 @@ class OwBuilderFacade(BuilderService):
         annotation_service = OWAnnotationService(
             werkingsgebied_repository=state_manager.input_data.resources.werkingsgebied_repository,
             policy_object_repository=state_manager.input_data.resources.policy_object_repository,
-            used_wid_map=state_manager.act_ewid_service.get_state_used_wid_map()
+            used_wid_map=state_manager.act_ewid_service.get_state_used_wid_map(),
         )
         annotation_map = annotation_service.build_annotation_map()
 
@@ -91,7 +91,7 @@ class OwBuilderFacade(BuilderService):
             levering_id=state_manager.input_data.publication_settings.opdracht.id_levering,
             ow_procedure_status=ow_procedure_status,
             orphaned_wids=orphaned_wids,
-            imow_value_list_version=None
+            imow_value_list_version=None,
         )
 
     def _calc_orphaned_wids(self, state_manager: StateManager) -> List[str]:

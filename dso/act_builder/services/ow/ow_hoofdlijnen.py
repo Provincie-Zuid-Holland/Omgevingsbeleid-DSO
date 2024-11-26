@@ -1,8 +1,8 @@
-from typing import List, Optional, Set, Tuple
+from typing import List, Optional
 
 from pydantic.main import BaseModel
 
-from ....services.ow.enums import IMOWTYPES, OwProcedureStatus, OwHoofdlijnObjectType
+from ....services.ow.enums import IMOWTYPES, OwHoofdlijnObjectType, OwProcedureStatus
 from ....services.ow.models import OWHoofdlijn, OWObject
 from ....services.ow.ow_id import generate_ow_id
 from ...state_manager.exceptions import OWStateError
@@ -33,10 +33,7 @@ class OwHoofdlijnBuilder(OwFileBuilder):
         super().__init__()
         self._context = context
         self._annotation_lookup = {
-            key: [
-                annotation for annotation in annotations
-                if annotation["type_annotation"] == "hoofdlijn"
-            ] or None
+            key: [annotation for annotation in annotations if annotation["type_annotation"] == "hoofdlijn"] or None
             for key, annotations in annotation_lookup_map.items()
         }
         self._ow_repository = ow_repository
@@ -60,33 +57,26 @@ class OwHoofdlijnBuilder(OwFileBuilder):
             for hoofdlijn_annotation in annotations:
                 tekstdeel = self._ow_repository.get_active_tekstdeel_by_object_code(object_code)
                 if not tekstdeel:
-                    raise OWStateError(
-                        f"Creating hoofdlijn for non-existing tekstdeel. object-code: {object_code}"
-                    )
+                    raise OWStateError(f"Creating hoofdlijn for non-existing tekstdeel. object-code: {object_code}")
 
                 hoofdlijn_refs = []
                 for hoofdlijn_values in hoofdlijn_annotation["hoofdlijnen"]:
                     # check if this hoofdlijn already exists in state
                     existing_hoofdlijn = self._ow_repository.get_active_hoofdlijn_by_soort_naam(
-                        soort=hoofdlijn_values["soort"],
-                        naam=hoofdlijn_values["naam"]
+                        soort=hoofdlijn_values["soort"], naam=hoofdlijn_values["naam"]
                     )
 
                     if existing_hoofdlijn:
                         hoofdlijn_refs.append(existing_hoofdlijn.OW_ID)
                     else:
                         new_hoofdlijn = self.new_ow_hoofdlijn(
-                            soort=hoofdlijn_values["soort"],
-                            naam=hoofdlijn_values["naam"]
+                            soort=hoofdlijn_values["soort"], naam=hoofdlijn_values["naam"]
                         )
                         hoofdlijn_refs.append(new_hoofdlijn.OW_ID)
 
                 # Update tekstdeel with new hoofdlijn refs, replacing any existing ones
                 tekstdeel.hoofdlijnen = hoofdlijn_refs
-                self._ow_repository.update_state_tekstdeel(
-                    state_ow_id=tekstdeel.OW_ID,
-                    updated_obj=tekstdeel
-                )
+                self._ow_repository.update_state_tekstdeel(state_ow_id=tekstdeel.OW_ID, updated_obj=tekstdeel)
 
     def new_ow_hoofdlijn(self, soort: str, naam: str) -> OWHoofdlijn:
         new_ow_id = generate_ow_id(IMOWTYPES.HOOFDLIJN, self._context.provincie_id)

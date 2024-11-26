@@ -1,5 +1,5 @@
-from pathlib import Path
 import json
+from pathlib import Path
 from typing import List, Optional
 
 
@@ -10,7 +10,7 @@ class GebiedsaanwijzingRegistry:
     _requested_version = None
     _groepen_data = {}
     _groepen_label_to_uri = {}
-    _type_to_groep_mapping = {}  
+    _type_to_groep_mapping = {}
 
     def __new__(cls, version: Optional[str] = None):
         if cls._instance is None:
@@ -36,22 +36,21 @@ class GebiedsaanwijzingRegistry:
     def _load_data(self):
         version = self._requested_version or self._get_latest_version()
         json_path = Path(__file__).parent / f"waardelijsten_IMOW_v{version}.json"
-        
+
         if not json_path.exists():
             raise ValueError(f"Waardelijst version {version} not found")
 
         with open(json_path) as f:
             data = json.load(f)
-        
+
         data = data["waardelijsten"]
         self._imow_version = data["versie"]
-        
+
         # Find the type gebiedsaanwijzing section
         type_gebiedsaanwijzing_section = next(
-            (section for section in data["waardelijst"] if section["label"] == "type gebiedsaanwijzing"),
-            None
+            (section for section in data["waardelijst"] if section["label"] == "type gebiedsaanwijzing"), None
         )
-        
+
         if not type_gebiedsaanwijzing_section:
             raise ValueError("Type gebiedsaanwijzing section not found in waardelijst")
 
@@ -61,22 +60,18 @@ class GebiedsaanwijzingRegistry:
                 "uri": item["uri"],
                 "label": item["label"],
                 "definitie": item.get("definitie"),
-                "term": item.get("term")
-            } 
+                "term": item.get("term"),
+            }
             for item in type_gebiedsaanwijzing_section["waarden"]["waarde"]
         }
 
         self._label_to_uri = {
-            item["label"]: item["uri"]
-            for item in type_gebiedsaanwijzing_section["waarden"]["waarde"]
+            item["label"]: item["uri"] for item in type_gebiedsaanwijzing_section["waarden"]["waarde"]
         }
 
         # Load all groep sections
-        groep_sections = [
-            section for section in data["waardelijst"] 
-            if section["label"].endswith("groep")
-        ]
-        
+        groep_sections = [section for section in data["waardelijst"] if section["label"].endswith("groep")]
+
         for groep_section in groep_sections:
             groep_type = groep_section["label"]
             # Store groep data
@@ -86,24 +81,21 @@ class GebiedsaanwijzingRegistry:
                     "label": item["label"],
                     "definitie": item.get("definitie"),
                     "term": item.get("term"),
-                    "symboolcode": item.get("symboolcode")
+                    "symboolcode": item.get("symboolcode"),
                 }
                 for item in groep_section["waarden"]["waarde"]
             }
-            
+
             # Store label to URI mapping for this groep
             self._groepen_label_to_uri[groep_type] = {
-                item["label"]: item["uri"]
-                for item in groep_section["waarden"]["waarde"]
+                item["label"]: item["uri"] for item in groep_section["waarden"]["waarde"]
             }
-            
+
             # Map type to groep based on naming convention
             # e.g., "recreatiegroep" maps to type with label "recreatie"
             type_label = groep_type.replace("groep", "").lower()
             matching_type_uri = next(
-                (uri for uri, type_data in self._data.items() 
-                 if type_data["label"].lower() == type_label),
-                None
+                (uri for uri, type_data in self._data.items() if type_data["label"].lower() == type_label), None
             )
             if matching_type_uri:
                 self._type_to_groep_mapping[matching_type_uri] = groep_type

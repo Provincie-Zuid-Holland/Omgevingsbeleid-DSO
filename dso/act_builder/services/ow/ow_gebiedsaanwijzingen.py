@@ -1,4 +1,4 @@
-from typing import List, Optional, Set
+from typing import List, Optional
 
 from pydantic.main import BaseModel
 
@@ -38,10 +38,8 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
         self._context = context
         # Filter to only include relevant type_annotations for this builder
         self._annotation_lookup = {
-            key: [
-                annotation for annotation in annotations
-                if annotation["type_annotation"] == "gebiedsaanwijzing"
-            ] or None
+            key: [annotation for annotation in annotations if annotation["type_annotation"] == "gebiedsaanwijzing"]
+            or None
             for key, annotations in annotation_lookup_map.items()
         }
         self._ow_repository = ow_repository
@@ -81,7 +79,9 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
                 # check if this gba already exists for this div
                 if ow_tekstdeel.gebiedsaanwijzingen:
                     for gba_ref in ow_tekstdeel.gebiedsaanwijzingen:
-                        known_gba: Optional[OWGebiedsaanwijzing] = self._ow_repository.get_known_state_object(ow_id=gba_ref)
+                        known_gba: Optional[OWGebiedsaanwijzing] = self._ow_repository.get_known_state_object(
+                            ow_id=gba_ref
+                        )
                         if known_gba and known_gba.locaties[0] == locatie.OW_ID:
                             new_gebiedsaanwijzing = False
                             if known_gba.type_ != gba["type"] or known_gba.groep != gba["groep"]:

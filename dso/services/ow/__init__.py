@@ -15,10 +15,10 @@ from .models import (
     OWGebied,
     OWGebiedenGroep,
     OWGebiedsaanwijzing,
+    OWHoofdlijn,
     OWLocatie,
     OWObject,
     OWRegelingsgebied,
     OWTekstdeel,
-    OWHoofdlijn
 )
 from .ow_id import generate_ow_id

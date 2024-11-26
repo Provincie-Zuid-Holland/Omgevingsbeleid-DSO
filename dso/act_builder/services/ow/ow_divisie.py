@@ -8,7 +8,6 @@ from ....services.ow import (
     OWDivisie,
     OwDivisieObjectType,
     OWDivisieTekst,
-    OWGebiedenGroep,
     OWObject,
     OWObjectGenerationError,
     OwProcedureStatus,
@@ -50,7 +49,8 @@ class OwDivisieBuilder(OwFileBuilder):
         # Filter to only include relevant type_annotations for this builder
         self._annotation_lookup = {
             key: [
-                annotation for annotation in annotations 
+                annotation
+                for annotation in annotations
                 if annotation["type_annotation"] in ["ambtsgebied", "gebied", "thema"]
             ]
             for key, annotations in annotation_lookup_map.items()
@@ -92,7 +92,9 @@ class OwDivisieBuilder(OwFileBuilder):
             match annotation["type_annotation"]:
                 case "ambtsgebied":
                     if not self._ambtsgebied:
-                        raise OWObjectStateException(message="Expected to find active ambtsgebied since uses_ambtsgebied")
+                        raise OWObjectStateException(
+                            message="Expected to find active ambtsgebied since uses_ambtsgebied"
+                        )
                     if known_tekstdeel.locaties[0] != self._ambtsgebied.OW_ID:
                         new_tekstdeel.locaties = [self._ambtsgebied.OW_ID]
                         needs_mutation = True
@@ -109,13 +111,10 @@ class OwDivisieBuilder(OwFileBuilder):
 
                 case "thema":
                     thema_uris = [
-                        self._context.thema_registry.get_uri_by_label(label) 
-                        for label in annotation["thema_waardes"]
+                        self._context.thema_registry.get_uri_by_label(label) for label in annotation["thema_waardes"]
                     ]
                     if None in thema_uris:
-                        raise OWObjectGenerationError(
-                            f"Invalid thema label(s) in: {annotation['thema_waardes']}"
-                        )
+                        raise OWObjectGenerationError(f"Invalid thema label(s) in: {annotation['thema_waardes']}")
                     if known_tekstdeel.themas != thema_uris:
                         new_tekstdeel.themas = thema_uris
                         needs_mutation = True
@@ -159,21 +158,14 @@ class OwDivisieBuilder(OwFileBuilder):
 
                 case "thema":
                     thema_uris = [
-                        self._context.thema_registry.get_uri_by_label(label) 
-                        for label in annotation["thema_waardes"]
+                        self._context.thema_registry.get_uri_by_label(label) for label in annotation["thema_waardes"]
                     ]
                     if None in thema_uris:
-                        raise OWObjectGenerationError(
-                            f"Invalid thema label(s) in: {annotation['thema_waardes']}"
-                        )
+                        raise OWObjectGenerationError(f"Invalid thema label(s) in: {annotation['thema_waardes']}")
                     thema_waardes = thema_uris
 
         if locaties or thema_waardes:
-            return self._new_text_mapping(
-                ow_div_id=new_div.OW_ID,
-                locatie_refs=locaties,
-                thema_waardes=thema_waardes
-            )
+            return self._new_text_mapping(ow_div_id=new_div.OW_ID, locatie_refs=locaties, thema_waardes=thema_waardes)
 
     def terminate_removed_wids(self, orphaned_wids: List[str]):
         for wid in orphaned_wids:
@@ -217,7 +209,9 @@ class OwDivisieBuilder(OwFileBuilder):
         self._ow_repository.add_new_ow(ow_div)
         return ow_div
 
-    def _new_text_mapping(self, ow_div_id: str, locatie_refs: List[str], thema_waardes: Optional[list[str]] = None) -> OWTekstdeel:
+    def _new_text_mapping(
+        self, ow_div_id: str, locatie_refs: List[str], thema_waardes: Optional[list[str]] = None
+    ) -> OWTekstdeel:
         """Create new tekstdeel with optional thema values"""
         ow_text_mapping = OWTekstdeel(
             OW_ID=generate_ow_id(IMOWTYPES.TEKSTDEEL, self._context.provincie_id),

@@ -3,7 +3,15 @@ from typing import Dict, List, Optional, Set
 from ...act_builder.state_manager.exceptions import OWObjectStateException
 from ...act_builder.state_manager.states.ow_repository import OWStateRepository
 from ...models import OwData
-from .models import OWGebied, OWGebiedenGroep, OWGebiedsaanwijzing, OWHoofdlijn, OWObject, OWRegelingsgebied, OWTekstdeel
+from .models import (
+    OWGebied,
+    OWGebiedenGroep,
+    OWGebiedsaanwijzing,
+    OWHoofdlijn,
+    OWObject,
+    OWRegelingsgebied,
+    OWTekstdeel,
+)
 
 
 class OWStatePatcher:
@@ -87,7 +95,7 @@ class OWStatePatcher:
     def _build_reverse_ref_index(self, ow_objects_map: Dict[str, "OWObject"]) -> Dict[str, Set[str]]:
         reverse_ref_index = {
             "OWTekstdeel": set(),
-            "OWGebiedenGroep": set(), 
+            "OWGebiedenGroep": set(),
             "OWRegelingsgebied": set(),
             "OWGebiedsaanwijzing": set(),
             "OWHoofdlijn": set(),
@@ -102,13 +110,13 @@ class OWStatePatcher:
                         reverse_ref_index["OWTekstdeel"].update(ow_obj.gebiedsaanwijzingen)
                     if ow_obj.hoofdlijnen:
                         reverse_ref_index["OWTekstdeel"].update(ow_obj.hoofdlijnen)
-                
+
                 case OWGebiedenGroep():
                     reverse_ref_index["OWGebiedenGroep"].update(ow_obj.gebieden)
-                
+
                 case OWRegelingsgebied():
                     reverse_ref_index["OWRegelingsgebied"].add(ow_obj.ambtsgebied)
-                
+
                 case OWGebiedsaanwijzing():
                     reverse_ref_index["OWGebiedsaanwijzing"].update(ow_obj.locaties)
 
