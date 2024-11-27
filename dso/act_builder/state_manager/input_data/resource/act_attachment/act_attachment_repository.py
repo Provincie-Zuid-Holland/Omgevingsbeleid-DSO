@@ -34,3 +34,9 @@ class ActAttachmentRepository:
     def to_dict(self) -> Dict[str, str]:
         serializable_data = {str(k): v.get_filename() for k, v in self._act_attachments.items()}
         return serializable_data
+
+    def get_for_object_code(self, owner_object_code: str) -> List[ActAttachment]:
+        result: List[ActAttachment] = [
+            a for _, a in self._act_attachments.items() if a.owner_object_code == owner_object_code
+        ]
+        return result

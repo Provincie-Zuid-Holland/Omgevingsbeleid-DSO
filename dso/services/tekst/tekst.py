@@ -194,6 +194,9 @@ class RefGenerator(ElementGenerator):
         if hint_type == "gebiedsaanwijzing":
             return GebiedsaanwijzingRef(tag)
 
+        if hint_type == "act-attachment":
+            return ActAttachmentRef(tag)
+
         if hint_type == "object":
             return TekstObjectRef(tag)
 
@@ -325,6 +328,35 @@ class TekstObjectRef(SimpleElement):
             tag_attrs_overwrite={
                 "ref": "",
                 "data-hint-object-code": self.object_code,
+            },
+        )
+        return result
+
+
+class ActAttachmentRef(SimpleElement):
+    """
+    Example input:
+    <a href="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-uuid="abc">Title</a>
+
+    Example output:
+    <ExtIoRef ref="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-uuid="abc">Title</ExtIoRef>
+
+    eId/wId will be added later with help of the data-hint-uuid
+    """
+
+    def __init__(self, tag: Tag):
+        super().__init__()
+        self._ref: Optional[str] = tag.get("href", None)
+        self._act_attachment_uuid: Optional[str] = tag.get("data-hint-act-attachment-uuid", None)
+
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+        result = SimpleElement.as_xml(
+            self,
+            soup=soup,
+            tag_name_overwrite="IntIoRef",
+            tag_attrs_overwrite={
+                "ref": self._ref,
+                "data-hint-act-attachment-uuid": self._act_attachment_uuid,
             },
         )
         return result

@@ -12,6 +12,7 @@ class ActAttachment(BaseModel):
     binary: bytes
     content_type: str
     frbr: GioFRBR
+    owner_object_code: str
 
     def get_filename(self) -> str:
         return self.filename
