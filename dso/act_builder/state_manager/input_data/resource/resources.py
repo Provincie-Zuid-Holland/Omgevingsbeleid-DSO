@@ -1,5 +1,9 @@
 from pydantic import BaseModel
 
+from dso.act_builder.state_manager.input_data.resource.act_attachment.act_attachment_repository import (
+    ActAttachmentRepository,
+)
+
 from .asset.asset_repository import AssetRepository
 from .besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
 from .policy_object.policy_object_repository import PolicyObjectRepository
@@ -11,6 +15,7 @@ class Resources(BaseModel):
     asset_repository: AssetRepository
     werkingsgebied_repository: WerkingsgebiedRepository
     besluit_pdf_repository: BesluitPdfRepository
+    act_attachment_repository: ActAttachmentRepository
 
     class Config:
         arbitrary_types_allowed = True
