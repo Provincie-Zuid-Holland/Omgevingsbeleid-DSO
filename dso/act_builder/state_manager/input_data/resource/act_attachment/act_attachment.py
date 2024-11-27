@@ -6,17 +6,20 @@ from ......models import GioFRBR
 
 
 class ActAttachment(BaseModel):
-    uuid: uuid.UUID
-    filename: str
-    title: str
-    binary: bytes
-    content_type: str
-    frbr: GioFRBR
-    owner_object_code: str
+    UUID: uuid.UUID
+    Code: str
+    Frbr: GioFRBR
+    New: bool
+    Filename: str
+    Title: str
+    Geboorteregeling: str
+    Content_Type: str
+    Binary: bytes
+    Hierarchy_Code: str
 
     def get_filename(self) -> str:
-        return self.filename
+        return self.Filename
 
     def get_io_filename(self) -> str:
-        filename: str = f"io_{self.filename.replace('.', '_')}.xml"
+        filename: str = f"io_{self.Filename.replace('.', '_')}.xml"
         return filename
