@@ -8,7 +8,7 @@ class ActAttachmentRepository:
         self._act_attachments: Dict[str, ActAttachment] = {}
 
     def add(self, act_attachment: dict):
-        uuidx: str = act_attachment["uuid"]
+        uuidx: str = act_attachment["UUID"]
         self._act_attachments[uuidx] = ActAttachment.parse_obj(act_attachment)
 
     def add_list(self, act_attachments: List[dict]):
