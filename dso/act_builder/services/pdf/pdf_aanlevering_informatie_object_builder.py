@@ -4,14 +4,14 @@ from ....models import ContentType
 from ....services.utils.hashlib import compute_sha512_of_output_file
 from ....services.utils.helpers import load_template
 from ...services import BuilderService
-from ...state_manager.input_data.resource.pdf.pdf import Pdf
+from ...state_manager.input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
 from ...state_manager.models import OutputFile, StrContentData
 from ...state_manager.state_manager import StateManager
 
 
 class PdfAanleveringInformatieObjectBuilder(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
-        pdfs: List[Pdf] = state_manager.input_data.resources.pdf_repository.all()
+        pdfs: List[BesluitPdf] = state_manager.input_data.resources.besluit_pdf_repository.all()
 
         for pdf in pdfs:
             output_file: OutputFile = self._generate_io(state_manager, pdf)
@@ -22,7 +22,7 @@ class PdfAanleveringInformatieObjectBuilder(BuilderService):
     def _generate_io(
         self,
         state_manager: StateManager,
-        pdf: Pdf,
+        pdf: BesluitPdf,
     ):
         pdf_filename = pdf.get_filename()
         output_file = state_manager.get_output_file_by_filename(pdf_filename)
