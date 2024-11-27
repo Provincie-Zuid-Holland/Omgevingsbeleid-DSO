@@ -15,7 +15,7 @@ from .....state_manager.state_manager import StateManager
 class BijlagenContent:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
-        self._besluit_pdf_repository: BesluitPdfRepository = state_manager.input_data.resources.pdf_repository
+        self._besluit_pdf_repository: BesluitPdfRepository = state_manager.input_data.resources.besluit_pdf_repository
         self._ref_bill_pdf_pattern = r"\[REF_BILL_PDF:([^\]]+)\]"
 
     def create(self) -> str:

@@ -10,7 +10,7 @@ from ...state_manager.state_manager import StateManager
 
 class PdfBuilder(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
-        pdf_repository: BesluitPdfRepository = state_manager.input_data.resources.pdf_repository
+        pdf_repository: BesluitPdfRepository = state_manager.input_data.resources.besluit_pdf_repository
         pdfs: List[BesluitPdf] = pdf_repository.all()
 
         for pdf in pdfs:
