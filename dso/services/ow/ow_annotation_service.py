@@ -69,7 +69,8 @@ class OWAnnotationService:
                 # add other possible annotations here..
                 # - thema
                 # - hoofdlijn
-            if element.tag == "IntIoRef":
+
+            if element.tag == "IntIoRef" and element.get("data-hint-gebiedsaanwijzingtype"):
                 self._add_gebiedsaanwijzing_annotation(element)
 
             # Gebiedsaanwijzing annotation
