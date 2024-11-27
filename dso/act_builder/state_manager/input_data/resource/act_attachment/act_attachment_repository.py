@@ -37,6 +37,6 @@ class ActAttachmentRepository:
 
     def get_for_object_code(self, owner_object_code: str) -> List[ActAttachment]:
         result: List[ActAttachment] = [
-            a for _, a in self._act_attachments.items() if a.owner_object_code == owner_object_code
+            a for _, a in self._act_attachments.items() if a.Hierarchy_Code == owner_object_code
         ]
         return result
