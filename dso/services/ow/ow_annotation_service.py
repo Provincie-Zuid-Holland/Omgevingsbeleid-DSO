@@ -29,9 +29,8 @@ class OWAnnotationService:
         for object_code, policy_object in self._policy_object_repository._data.items():
             policy_dict = policy_object.to_dict()
 
-            # TODO:
-            # if not Werkingsgebied_Code in policy dict, no gebied annotation
-            self._add_gebied_annotation(policy_dict, object_code)
+            if policy_dict.get("Werkingsgebied_Code"):
+                self._add_gebied_annotation(policy_dict, object_code)
 
             if policy_dict.get("Themas"):
                 self._add_thema_annotation(policy_dict, object_code)
