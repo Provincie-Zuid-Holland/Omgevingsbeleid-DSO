@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from ......models import PubdataFRBR
 
 
-class Pdf(BaseModel):
+class BesluitPdf(BaseModel):
     id: int
     uuid: uuid.UUID
     filename: str

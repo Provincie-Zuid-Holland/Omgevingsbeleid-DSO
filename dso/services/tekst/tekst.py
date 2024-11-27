@@ -193,7 +193,7 @@ class RefGenerator(ElementGenerator):
         hint_type: Optional[str] = tag.get("data-hint-type", None)
         if hint_type == "gebiedsaanwijzing":
             return GebiedsaanwijzingRef(tag)
-        
+
         if hint_type == "object":
             return TekstObjectRef(tag)
 

@@ -7,15 +7,15 @@ from ......models import PublicationSettings
 from ......services.tekst.tekst import Divisietekst
 from ......services.utils.helpers import load_template
 from .....state_manager.input_data.besluit import Bijlage
-from .....state_manager.input_data.resource.pdf.pdf import Pdf
-from .....state_manager.input_data.resource.pdf.pdf_repository import PdfRepository
+from .....state_manager.input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
+from .....state_manager.input_data.resource.besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
 from .....state_manager.state_manager import StateManager
 
 
 class BijlagenContent:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
-        self._pdf_repository: PdfRepository = state_manager.input_data.resources.pdf_repository
+        self._besluit_pdf_repository: BesluitPdfRepository = state_manager.input_data.resources.pdf_repository
         self._ref_bill_pdf_pattern = r"\[REF_BILL_PDF:([^\]]+)\]"
 
     def create(self) -> str:
@@ -69,7 +69,7 @@ class BijlagenContent:
     def _replace_ref_bill_pdf(self, content: str) -> str:
         matches = re.findall(self._ref_bill_pdf_pattern, content)
         for pdf_id in matches:
-            pdf: Pdf = self._pdf_repository.get(int(pdf_id))
+            pdf: BesluitPdf = self._besluit_pdf_repository.get(int(pdf_id))
             frbr: str = pdf.frbr.get_expression()
             search = f"[REF_BILL_PDF:{pdf_id}]"
             replacement = f"""<ExtRef soort="JOIN" ref="{frbr}">{frbr}</ExtRef>"""
