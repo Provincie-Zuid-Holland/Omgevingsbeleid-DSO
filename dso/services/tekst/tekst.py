@@ -339,9 +339,9 @@ class DocumentRef(SimpleElement):
     <a href="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-document-uuid="abc">Title</a>
 
     Example output:
-    <ExtIoRef ref="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-document-uuid="abc">Title</ExtIoRef>
+    <ExtIoRef ref="" data-hint-document-uuid="abc">Title</ExtIoRef>
 
-    eId/wId will be added later with help of the data-hint-document-uuid
+    The `ref` will be set later with help of the data-hint-document-uuid
     """
 
     def __init__(self, tag: Tag):

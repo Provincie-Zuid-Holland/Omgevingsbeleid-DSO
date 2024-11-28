@@ -45,10 +45,10 @@ class RegelingVrijetekstHtmlGenerator:
                 object_template = object_template_repository.get_by_code(object_code)
 
             policy_object = policy_object_repository.get_by_code(object_code)
-            object_attachments = document_repository.get_by_codes(policy_object.get("Documents") or [])
+            documents = document_repository.get_by_codes(policy_object.get("Documents") or [])
             object_html: str = object_template.render(
                 o=policy_object.data,
-                attachments=object_attachments,
+                documents=documents,
             )
 
             object_html = middleware_image_in_p(object_html)
