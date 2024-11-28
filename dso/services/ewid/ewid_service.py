@@ -5,6 +5,24 @@ from typing import Dict, List
 from . import ELEMENT_REF, EIDGenerationError
 
 
+def int_to_letter_sequence(num):
+    """
+    Transforms intergers to letters
+    1 -> A
+    26 -> Z
+    27 -> ZA
+    etc
+    """
+    if num < 1:
+        raise RuntimeError("Number should not be lower then 1")
+    result = []
+    while num > 0:
+        num -= 1
+        result.append(chr(num % 26 + 65))
+        num //= 26
+    return "".join(reversed(result))
+
+
 class EWIDService:
     """
     The EWIDService class is responsible for generating EWID for policy objects.
@@ -24,6 +42,9 @@ class EWIDService:
         self._element_refs: Dict[str, str] = ELEMENT_REF
         self._eid_counters = defaultdict(lambda: defaultdict(int))
         self._wid_counters = defaultdict(lambda: defaultdict(int))
+        self._tag_counter_format = {
+            "Bijlage": int_to_letter_sequence,
+        }
 
         # wId's used by indentifiers, for example beleidskeuze-4 by that object
         # Although it should be possible to add custom identifiers
@@ -59,8 +80,9 @@ class EWIDService:
 
         self._eid_counters[parent_key][eid_value] += 1
         count: int = self._eid_counters[parent_key][eid_value]
+        formatted_count: str = self._transform_count(tag_name, count)
 
-        new_eid = f"{eid_value}_o_{count}"
+        new_eid = f"{eid_value}_o_{formatted_count}"
         return f"{parent_eid}__{new_eid}" if parent_eid else new_eid
 
     def _generate_wid(self, tag_name: str, parent_wid: str, parent_tag_name: str) -> str:
@@ -69,8 +91,9 @@ class EWIDService:
 
         self._wid_counters[parent_key][wid_value] += 1
         count: int = self._wid_counters[parent_key][wid_value]
+        formatted_count: str = self._transform_count(tag_name, count)
 
-        new_wid = f"{wid_value}_o_{count}"
+        new_wid = f"{wid_value}_o_{formatted_count}"
         return f"{parent_wid}__{new_wid}"
 
     def _fill_ewid(self, element, parent_eid="", parent_wid="", parent_tag_name=""):
@@ -122,3 +145,8 @@ class EWIDService:
                 parent_wid,
                 tag_name,
             )
+
+    def _transform_count(self, tag_name: str, count: int) -> str:
+        if tag_name in self._tag_counter_format:
+            return self._tag_counter_format[tag_name](count)
+        return f"{count}"

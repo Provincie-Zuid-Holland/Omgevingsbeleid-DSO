@@ -1,7 +1,11 @@
 import re
-from typing import Set
+from typing import List, Set
 
 from lxml import etree
+
+from dso.act_builder.services.aanlevering_besluit.besluit_versie.besluit_compact.wijzig_bijlage.bijlage_documenten_content import (
+    BijlageDocumentenContent,
+)
 
 from ......models import PublicationSettings, RenvooiRegelingMutatie, VervangRegelingMutatie
 from ......services.utils.helpers import load_template
@@ -16,8 +20,11 @@ class WijzigBijlageContent:
         self._state_manager: StateManager = state_manager
 
     def create(self) -> str:
-        # bijlage_werkingsgebieden needs to go first because it changes the state_manager
+        # These bijlage needs to go first because it changes the state_manager
         bijlage_werkingsgebieden: str = BijlageWerkingsgebiedenContent(self._state_manager).create()
+        bijlage_documenten: str = BijlageDocumentenContent(self._state_manager).create()
+        bijlagen = [b for b in [bijlage_werkingsgebieden, bijlage_documenten] if b != ""]
+
         lichaam: str = LichaamContent(self._state_manager).create()
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
 
@@ -27,7 +34,7 @@ class WijzigBijlageContent:
         # - regeling_vrijetekst_wordt is how the RegelingVrijetekst would appear at the end.
         #       This is the same as with an initial regulation (case A); we store this in the environment cache
         regeling_vrijetekst_wordt, aanleveren_regeling_content = self._get_regeling_content(
-            bijlage_werkingsgebieden,
+            bijlagen,
             lichaam,
             settings,
         )
@@ -50,7 +57,7 @@ class WijzigBijlageContent:
 
     def _get_regeling_content(
         self,
-        bijlage_werkingsgebieden: str,
+        bijlagen: List[str],
         lichaam: str,
         settings: PublicationSettings,
     ) -> str:
@@ -61,7 +68,7 @@ class WijzigBijlageContent:
             was=None,
             wordt=settings.regeling_frbr.get_expression(),
             lichaam=lichaam,
-            bijlage_werkingsgebieden=bijlage_werkingsgebieden,
+            bijlagen=bijlagen,
             regeling_opschrift=self._state_manager.input_data.regeling.officiele_titel,
         )
 
@@ -86,7 +93,7 @@ class WijzigBijlageContent:
                     was=None,
                     wordt=None,
                     lichaam=lichaam,
-                    bijlage_werkingsgebieden=bijlage_werkingsgebieden,
+                    bijlagen=bijlagen,
                     regeling_opschrift=self._state_manager.input_data.regeling.officiele_titel,
                 )
                 regeling_content: str = load_template(

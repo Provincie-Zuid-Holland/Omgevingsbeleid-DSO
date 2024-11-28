@@ -1,11 +1,11 @@
 import uuid
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
-from ......models import GioFRBR
+from ......models import ContentType, GioFRBR
 
 
-class ActAttachment(BaseModel):
+class Document(BaseModel):
     UUID: uuid.UUID
     Code: str
     Frbr: GioFRBR
@@ -13,7 +13,7 @@ class ActAttachment(BaseModel):
     Filename: str
     Title: str
     Geboorteregeling: str
-    Content_Type: str
+    Content_Type: ContentType
     Binary: bytes
     Hierarchy_Code: str
 
@@ -23,3 +23,9 @@ class ActAttachment(BaseModel):
     def get_io_filename(self) -> str:
         filename: str = f"io_{self.Filename.replace('.', '_')}.xml"
         return filename
+
+    @validator("Content_Type", pre=True, always=True)
+    def _format_content_type(cls, v):
+        if v in ContentType.__members__.values():
+            return v
+        return ContentType[v]

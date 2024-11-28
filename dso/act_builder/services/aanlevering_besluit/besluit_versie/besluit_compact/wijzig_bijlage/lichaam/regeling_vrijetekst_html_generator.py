@@ -3,9 +3,7 @@ from copy import copy
 from lxml import etree
 from lxml import html as lxml_html
 
-from dso.act_builder.state_manager.input_data.resource.act_attachment.act_attachment_repository import (
-    ActAttachmentRepository,
-)
+from dso.act_builder.state_manager.input_data.resource.document.document_repository import DocumentRepository
 
 from ........services.tekst.middleware import middleware_image_in_p
 from .......state_manager.input_data.object_template_repository import ObjectTemplateRepository
@@ -27,9 +25,7 @@ class RegelingVrijetekstHtmlGenerator:
         policy_object_repository: PolicyObjectRepository = (
             self._state_manager.input_data.resources.policy_object_repository
         )
-        act_attachment_repository: ActAttachmentRepository = (
-            self._state_manager.input_data.resources.act_attachment_repository
-        )
+        document_repository: DocumentRepository = self._state_manager.input_data.resources.document_repository
         object_template_repository: ObjectTemplateRepository = self._state_manager.input_data.object_template_repository
         html_str: str = self._state_manager.input_data.regeling_vrijetekst
 
@@ -49,7 +45,7 @@ class RegelingVrijetekstHtmlGenerator:
                 object_template = object_template_repository.get_by_code(object_code)
 
             policy_object = policy_object_repository.get_by_code(object_code)
-            object_attachments = act_attachment_repository.get_for_object_code(object_code)
+            object_attachments = document_repository.get_for_object_code(object_code)
             object_html: str = object_template.render(
                 o=policy_object.data,
                 attachments=object_attachments,

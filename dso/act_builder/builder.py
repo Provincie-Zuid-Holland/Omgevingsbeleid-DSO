@@ -8,15 +8,17 @@ from ..services.assets.create_image import create_image, create_image_in_zip
 from .services import BuilderService
 from .services.aanlevering_besluit.aanlevering_besluit_builder import AanleveringBesluitBuilder
 from .services.asset.asset_builder import AssetBuilder
+from .services.besluit_pdf.besluit_pdf_aanlevering_informatie_object_builder import (
+    BesluitPdfAanleveringInformatieObjectBuilder,
+)
+from .services.besluit_pdf.besluit_pdf_builder import BesluitPdfBuilder
 from .services.geo.geo_informatie_object_vaststelling_builder import GeoInformatieObjectVaststellingBuilder
 from .services.geo.gio_aanlevering_informatie_object_builder import GioAanleveringInformatieObjectBuilder
 from .services.lvbb.manifest_builder import ManifestBuilder
 from .services.lvbb.opdracht_builder import OpdrachtBuilder
 from .services.ow.ow_builder_facade import OwBuilderFacade
-from .services.pdf.pdf_aanlevering_informatie_object_builder import PdfAanleveringInformatieObjectBuilder
-from .services.pdf.pdf_builder import PdfBuilder
 from .state_manager.input_data.input_data_loader import InputData
-from .state_manager.models import AssetContentData, PdfContentData, StrContentData
+from .state_manager.models import AssetContentData, DocumentContentData, PdfContentData, StrContentData
 from .state_manager.state_manager import StateManager
 
 
@@ -30,8 +32,10 @@ class Builder:
             OwBuilderFacade(),
             GeoInformatieObjectVaststellingBuilder(),
             GioAanleveringInformatieObjectBuilder(),
-            PdfBuilder(),
-            PdfAanleveringInformatieObjectBuilder(),
+            BesluitPdfBuilder(),
+            BesluitPdfAanleveringInformatieObjectBuilder(),
+            DocumentBuilder(),
+            DocumentAanleveringInformatieObjectBuilder(),
             AssetBuilder(),
             ManifestBuilder(),
         ]
@@ -58,6 +62,10 @@ class Builder:
                     with open(destination_path, "wb") as f:
                         f.write(output_file.content.pdf.binary)
 
+                case DocumentContentData():
+                    with open(destination_path, "wb") as f:
+                        f.write(output_file.content.document.binary)
+
     def zip_files(self) -> io.BytesIO:
         zip_buffer = io.BytesIO()
         with ZipFile(zip_buffer, "a", ZIP_DEFLATED, False) as zip_file:
@@ -71,6 +79,9 @@ class Builder:
 
                     case PdfContentData():
                         zip_file.writestr(output_file.filename, output_file.content.pdf.binary)
+
+                    case DocumentContentData():
+                        zip_file.writestr(output_file.filename, output_file.content.document.Binary)
 
         zip_buffer.seek(0)
         return zip_buffer

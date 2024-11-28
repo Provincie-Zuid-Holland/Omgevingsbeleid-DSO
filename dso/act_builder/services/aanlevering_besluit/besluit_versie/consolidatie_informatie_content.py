@@ -3,6 +3,8 @@ from typing import Dict, List
 from lxml import etree
 from pydantic import BaseModel
 
+from dso.act_builder.state_manager.input_data.resource.document.document import Document
+
 from .....models import PublicationSettings, VerwijderdWerkingsgebied
 from .....services.utils.helpers import load_template
 from ....state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
@@ -38,6 +40,17 @@ class ConsolidatieInformatieContent:
                 beoogd_informatieobjecten.append(
                     {
                         "instrument_versie": werkingsgebied.Frbr.get_expression(),
+                        "eid": f"!{settings.regeling_componentnaam}#{eid}",
+                    }
+                )
+
+        doocuments: List[Document] = self._state_manager.input_data.resources.document_repository.all()
+        for document in doocuments:
+            if document.New:
+                eid: str = self._state_manager.document_eid_lookup[str(document.UUID)]
+                beoogd_informatieobjecten.append(
+                    {
+                        "instrument_versie": document.Frbr.get_expression(),
                         "eid": f"!{settings.regeling_componentnaam}#{eid}",
                     }
                 )

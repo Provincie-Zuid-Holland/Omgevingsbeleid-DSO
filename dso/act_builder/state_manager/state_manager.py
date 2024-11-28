@@ -15,6 +15,7 @@ class StateManager:
 
         self.input_data: InputData = input_data
         self.werkingsgebied_eid_lookup: dict = {}
+        self.document_eid_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
         self.ow_repository: OWStateRepository = OWStateRepository(input_data.ow_data, self.debug_enabled)
         self.output_files: List[OutputFile] = []

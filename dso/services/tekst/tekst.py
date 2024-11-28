@@ -347,7 +347,7 @@ class ActAttachmentRef(SimpleElement):
     def __init__(self, tag: Tag):
         super().__init__()
         self._ref: Optional[str] = tag.get("href", None)
-        self._act_attachment_uuid: Optional[str] = tag.get("data-hint-act-attachment-uuid", None)
+        self._document_uuid: Optional[str] = tag.get("data-hint-document-uuid", None)
 
     def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
         result = SimpleElement.as_xml(
@@ -356,7 +356,7 @@ class ActAttachmentRef(SimpleElement):
             tag_name_overwrite="IntIoRef",
             tag_attrs_overwrite={
                 "ref": self._ref,
-                "data-hint-act-attachment-uuid": self._act_attachment_uuid,
+                "data-hint-act-attachment-uuid": self._document_uuid,
             },
         )
         return result
