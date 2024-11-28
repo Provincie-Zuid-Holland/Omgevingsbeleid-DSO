@@ -346,7 +346,6 @@ class DocumentRef(SimpleElement):
 
     def __init__(self, tag: Tag):
         super().__init__()
-        self._ref: Optional[str] = tag.get("href", None)
         self._document_uuid: Optional[str] = tag.get("data-hint-document-uuid", None)
 
     def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
@@ -355,7 +354,7 @@ class DocumentRef(SimpleElement):
             soup=soup,
             tag_name_overwrite="IntIoRef",
             tag_attrs_overwrite={
-                "ref": self._ref,
+                "ref": "",
                 "data-hint-document-uuid": self._document_uuid,
             },
         )
