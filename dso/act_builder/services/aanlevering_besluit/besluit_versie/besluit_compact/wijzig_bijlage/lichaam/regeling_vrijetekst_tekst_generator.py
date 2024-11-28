@@ -87,7 +87,7 @@ class RegelingVrijetekstTekstGenerator:
     def _add_ewids(self, xml_data: str) -> str:
         result: str = self._state_manager.act_ewid_service.add_ewids(xml_data)
         return result
-    
+
     def _set_document_refs(self, xml_data: str) -> str:
         document_eid_lookup = self._state_manager.document_eid_lookup
 
