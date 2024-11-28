@@ -194,8 +194,8 @@ class RefGenerator(ElementGenerator):
         if hint_type == "gebiedsaanwijzing":
             return GebiedsaanwijzingRef(tag)
 
-        if hint_type == "act-attachment":
-            return ActAttachmentRef(tag)
+        if hint_type == "document":
+            return DocumentRef(tag)
 
         if hint_type == "object":
             return TekstObjectRef(tag)
@@ -333,15 +333,15 @@ class TekstObjectRef(SimpleElement):
         return result
 
 
-class ActAttachmentRef(SimpleElement):
+class DocumentRef(SimpleElement):
     """
     Example input:
-    <a href="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-uuid="abc">Title</a>
+    <a href="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-document-uuid="abc">Title</a>
 
     Example output:
-    <ExtIoRef ref="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-uuid="abc">Title</ExtIoRef>
+    <ExtIoRef ref="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-document-uuid="abc">Title</ExtIoRef>
 
-    eId/wId will be added later with help of the data-hint-uuid
+    eId/wId will be added later with help of the data-hint-document-uuid
     """
 
     def __init__(self, tag: Tag):
@@ -356,7 +356,7 @@ class ActAttachmentRef(SimpleElement):
             tag_name_overwrite="IntIoRef",
             tag_attrs_overwrite={
                 "ref": self._ref,
-                "data-hint-act-attachment-uuid": self._document_uuid,
+                "data-hint-document-uuid": self._document_uuid,
             },
         )
         return result
