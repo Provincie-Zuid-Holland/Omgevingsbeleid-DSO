@@ -89,15 +89,15 @@ class RegelingVrijetekstTekstGenerator:
         return result
 
     def _set_document_refs(self, xml_data: str) -> str:
-        document_eid_lookup = self._state_manager.document_eid_lookup
+        document_wid_lookup = self._state_manager.document_wid_lookup
 
         parser = etree.XMLParser(remove_blank_text=False, encoding="utf-8")
         root = etree.fromstring(xml_data.encode("utf-8"), parser)
 
         for document_intio in root.xpath("//IntIoRef[@data-hint-document-uuid]"):
             document_uuid = document_intio.get("data-hint-document-uuid")
-            if document_uuid in document_eid_lookup:
-                ref_value = document_eid_lookup[document_uuid]
+            if document_uuid in document_wid_lookup:
+                ref_value = document_wid_lookup[document_uuid]
                 document_intio.set("ref", ref_value)
 
         output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")

@@ -33,9 +33,8 @@ class BijlageDocumentenContent:
 
         for element in elements:
             uuid = element.get("data-hint-document-uuid")
-            eid = element.get("eId")
-            # Set the document eid in the StateManager
-            self._state_manager.document_eid_lookup[uuid] = eid
+            self._state_manager.document_eid_lookup[uuid] = element.get("eId")
+            self._state_manager.document_wid_lookup[uuid] = element.get("wId")
 
         return etree.tostring(root, encoding="unicode", pretty_print=True)
 
