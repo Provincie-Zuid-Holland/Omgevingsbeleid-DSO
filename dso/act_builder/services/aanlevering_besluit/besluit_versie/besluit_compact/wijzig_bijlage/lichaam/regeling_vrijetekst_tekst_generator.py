@@ -31,6 +31,9 @@ class RegelingVrijetekstTekstGenerator:
         tekst = self._add_ewids(tekst)
         self._set_debug("text-stage-ewids", tekst)
 
+        tekst = self._set_document_refs(tekst)
+        self._set_debug("text-stage-document-refs", tekst)
+
         tekst = self._handle_annotation_refs(tekst)
         self._set_debug("text-stage-annotation", tekst)
 
@@ -84,6 +87,21 @@ class RegelingVrijetekstTekstGenerator:
     def _add_ewids(self, xml_data: str) -> str:
         result: str = self._state_manager.act_ewid_service.add_ewids(xml_data)
         return result
+    
+    def _set_document_refs(self, xml_data: str) -> str:
+        document_eid_lookup = self._state_manager.document_eid_lookup
+
+        parser = etree.XMLParser(remove_blank_text=False, encoding="utf-8")
+        root = etree.fromstring(xml_data.encode("utf-8"), parser)
+
+        for document_intio in root.xpath("//IntIoRef[@data-hint-document-uuid]"):
+            document_uuid = document_intio.get("data-hint-document-uuid")
+            if document_uuid in document_eid_lookup:
+                ref_value = document_eid_lookup[document_uuid]
+                document_intio.set("ref", ref_value)
+
+        output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
+        return output
 
     def _handle_annotation_refs(self, xml_data: str) -> str:
         result = self._ow_annotation_service.build_annotation_map(xml_source=xml_data)
@@ -99,6 +117,7 @@ class RegelingVrijetekstTekstGenerator:
             "data-hint-locatie",
             "data-hint-gebiedengroep",
             "data-hint-gebiedsaanwijzingtype",
+            "data-hint-document-uuid",
         ]
 
         root = etree.fromstring(xml_data)
