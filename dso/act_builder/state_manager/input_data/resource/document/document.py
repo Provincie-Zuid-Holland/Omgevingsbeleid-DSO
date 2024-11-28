@@ -15,7 +15,6 @@ class Document(BaseModel):
     Geboorteregeling: str
     Content_Type: ContentType
     Binary: bytes
-    Hierarchy_Code: str
 
     def get_filename(self) -> str:
         return self.Filename

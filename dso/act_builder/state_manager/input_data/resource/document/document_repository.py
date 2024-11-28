@@ -35,6 +35,6 @@ class DocumentRepository:
         serializable_data = {str(k): v.get_filename() for k, v in self._documents.items()}
         return serializable_data
 
-    def get_for_object_code(self, owner_object_code: str) -> List[Document]:
-        result: List[Document] = [a for _, a in self._documents.items() if a.Hierarchy_Code == owner_object_code]
+    def get_by_codes(self, codes: List[str]) -> List[Document]:
+        result: List[Document] = [d for _, d in self._documents.items() if d.Code in codes]
         return result
