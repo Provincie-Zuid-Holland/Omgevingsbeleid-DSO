@@ -327,7 +327,7 @@ class TekstObjectRef(SimpleElement):
             tag_name_overwrite="IntRef",
             tag_attrs_overwrite={
                 "ref": "",
-                "data-hint-object-code": self.object_code,
+                "data-hint-target-object-code": self.object_code,
             },
         )
         return result
