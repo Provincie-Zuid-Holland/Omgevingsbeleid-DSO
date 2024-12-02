@@ -34,6 +34,7 @@ class DocumentAanleveringInformatieObjectBuilder(BuilderService):
             document_frbr=document.Frbr,
             document_filename=document_filename,
             document_hash=document_hash,
+            geboorteregeling=document.Geboorteregeling,
             provincie_ref=state_manager.input_data.publication_settings.provincie_ref,
             naam_informatie_object=document.Title,
         )
