@@ -41,7 +41,7 @@ class RegelingVrijetekstTekstGenerator:
         tekst = self._add_ewids(tekst)
         self._set_debug("text-stage-ewids", tekst)
 
-        object_code_lookup: Dict[str, ObjectCodeElementData] = self._build_object_code_lookup()
+        object_code_lookup: Dict[str, ObjectCodeElementData] = self._build_object_code_lookup(tekst)
         tekst = self._resolve_object_intrefs(tekst, object_code_lookup)
         self._set_debug("text-stage-object-intrefs", tekst)
 
