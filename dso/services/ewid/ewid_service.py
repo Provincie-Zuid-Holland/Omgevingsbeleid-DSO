@@ -43,7 +43,7 @@ class EWIDService:
         self._eid_counters = defaultdict(lambda: defaultdict(int))
         self._wid_counters = defaultdict(lambda: defaultdict(int))
         self._tag_counter_format = {
-            "Bijlage": int_to_letter_sequence,
+            # "Bijlage": int_to_letter_sequence,
         }
 
         # wId's used by indentifiers, for example beleidskeuze-4 by that object
