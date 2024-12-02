@@ -107,6 +107,7 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
             "groep": groep,
             "locaties": [locatie_ref],
             "wid": element_wid,
+            "procedure_status": self._context.ow_procedure_status,
         }
         gebiedawz = OWGebiedsaanwijzing(**input_dict)
         self._ow_repository.add_new_ow(gebiedawz)
