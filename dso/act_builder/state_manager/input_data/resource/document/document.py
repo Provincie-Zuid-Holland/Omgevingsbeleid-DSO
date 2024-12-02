@@ -20,7 +20,7 @@ class Document(BaseModel):
         return self.Filename
 
     def get_io_filename(self) -> str:
-        filename: str = f"io_{self.Filename.replace('.', '_')}.xml"
+        filename: str = f"IO_{self.Filename.replace('.', '_')}.xml"
         return filename
 
     @validator("Content_Type", pre=True, always=True)
