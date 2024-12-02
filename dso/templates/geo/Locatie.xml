@@ -1,7 +1,7 @@
 <geo:Locatie>
     <geo:naam>{{ locatie.naam }}</geo:naam>
     <geo:geometrie>
-        <basisgeo:Geometrie gml:id="{{ locatie.gml_id }}-xx">
+        <basisgeo:Geometrie gml:id="id-{{ locatie.gml_id }}">
             <basisgeo:id>{{ locatie.basis_id }}</basisgeo:id>
             <basisgeo:geometrie>
                 {{ locatie.geometry_xml }}
