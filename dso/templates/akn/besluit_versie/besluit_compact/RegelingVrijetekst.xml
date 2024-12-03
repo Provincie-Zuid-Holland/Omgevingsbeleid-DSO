@@ -6,5 +6,7 @@
         <Al>{{ regeling_opschrift }}</Al>
     </RegelingOpschrift>
     {{ lichaam }}
-    {{ bijlage_werkingsgebieden }}
+    {% for bijlage in bijlagen %}
+        {{ bijlage }}
+    {% endfor %}
 </RegelingVrijetekst>

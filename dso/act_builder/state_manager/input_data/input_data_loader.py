@@ -20,7 +20,7 @@ from .besluit import Besluit
 from .object_template_repository import ObjectTemplateRepository
 from .regeling import Regeling
 from .resource.asset.asset_repository import AssetRepository
-from .resource.pdf.pdf_repository import PdfRepository
+from .resource.besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
 from .resource.policy_object.policy_object_repository import PolicyObjectRepository
 from .resource.resource_loader import ResourceLoader
 from .resource.resources import Resources
@@ -46,7 +46,7 @@ class InputData(BaseModel):
             AssetRepository: lambda v: {k: w.dict() for k, w in v.to_dict().items()},
             WerkingsgebiedRepository: lambda v: {k: w.dict() for k, w in v.to_dict().items()},
             ObjectTemplateRepository: lambda v: v.to_dict() if v is not None else None,
-            PdfRepository: lambda v: v.to_dict() if v is not None else None,
+            BesluitPdfRepository: lambda v: v.to_dict() if v is not None else None,
         }
 
     def get_known_wid_map(self) -> Dict[str, str]:

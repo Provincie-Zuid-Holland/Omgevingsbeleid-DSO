@@ -1,3 +1,12 @@
+import re
+from typing import List, Set
+
+from lxml import etree
+
+from dso.act_builder.services.aanlevering_besluit.besluit_versie.besluit_compact.wijzig_bijlage.bijlage_documenten_content import (
+    BijlageDocumentenContent,
+)
+
 from ......models import PublicationSettings, RenvooiRegelingMutatie, VervangRegelingMutatie
 from ......services.utils.helpers import load_template
 from .....state_manager.state_manager import StateManager
@@ -11,8 +20,11 @@ class WijzigBijlageContent:
         self._state_manager: StateManager = state_manager
 
     def create(self) -> str:
-        # bijlage_werkingsgebieden needs to go first because it changes the state_manager
+        # These bijlage needs to go first because it changes the state_manager
         bijlage_werkingsgebieden: str = BijlageWerkingsgebiedenContent(self._state_manager).create()
+        bijlage_documenten: str = BijlageDocumentenContent(self._state_manager).create()
+        bijlagen = [b for b in [bijlage_werkingsgebieden, bijlage_documenten] if b != ""]
+
         lichaam: str = LichaamContent(self._state_manager).create()
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
 
@@ -22,10 +34,13 @@ class WijzigBijlageContent:
         # - regeling_vrijetekst_wordt is how the RegelingVrijetekst would appear at the end.
         #       This is the same as with an initial regulation (case A); we store this in the environment cache
         regeling_vrijetekst_wordt, aanleveren_regeling_content = self._get_regeling_content(
-            bijlage_werkingsgebieden,
+            bijlagen,
             lichaam,
             settings,
         )
+
+        used_asset_uuids: Set[str] = self._calculate_used_asset_uuids(aanleveren_regeling_content)
+        self._state_manager.used_asset_uuids = used_asset_uuids
 
         # We store the RegelingVrijetekst for the future mutations
         self._state_manager.regeling_vrijetekst_wordt = regeling_vrijetekst_wordt
@@ -42,7 +57,7 @@ class WijzigBijlageContent:
 
     def _get_regeling_content(
         self,
-        bijlage_werkingsgebieden: str,
+        bijlagen: List[str],
         lichaam: str,
         settings: PublicationSettings,
     ) -> str:
@@ -53,7 +68,7 @@ class WijzigBijlageContent:
             was=None,
             wordt=settings.regeling_frbr.get_expression(),
             lichaam=lichaam,
-            bijlage_werkingsgebieden=bijlage_werkingsgebieden,
+            bijlagen=bijlagen,
             regeling_opschrift=self._state_manager.input_data.regeling.officiele_titel,
         )
 
@@ -78,7 +93,7 @@ class WijzigBijlageContent:
                     was=None,
                     wordt=None,
                     lichaam=lichaam,
-                    bijlage_werkingsgebieden=bijlage_werkingsgebieden,
+                    bijlagen=bijlagen,
                     regeling_opschrift=self._state_manager.input_data.regeling.officiele_titel,
                 )
                 regeling_content: str = load_template(
@@ -92,3 +107,41 @@ class WijzigBijlageContent:
             case _:
                 # What we send and what we store is the same for the initial regeling
                 return regeling_vrijetekst_wordt, regeling_vrijetekst_wordt
+
+    def _calculate_used_asset_uuids(self, aanleveren_regeling_content: str) -> Set[str]:
+        # We only need to add images that are used in the resulting text.
+        # - On an initial act that would be all the images
+        # - On a regular renvooi that would be all current used, and removed images
+        # - On a replace text that would be all current images
+        # - The renvooi could deside to result into a replace text
+        #
+        # All in all, its safer to just check the text which images are used
+        # and have that as the source of which images we should add to the zip
+        parser: ActTextAssetParser = ActTextAssetParser()
+        asset_uuids: Set[str] = parser.get_asset_uuids(aanleveren_regeling_content)
+        return asset_uuids
+
+
+class ActTextAssetParser:
+    def __init__(self):
+        self._uuid_regex = r"img_([a-f0-9\-]+)\.(png|jpg|jpeg|gif|bmp|tiff|webp)"
+
+    def get_asset_uuids(self, act_text: str) -> Set[str]:
+        parser = etree.XMLParser(ns_clean=True)
+        tree = etree.fromstring(act_text, parser)
+        namespaces = {"ns": "https://standaarden.overheid.nl/stop/imop/tekst/"}
+        illustraties = tree.xpath("//ns:Illustratie", namespaces=namespaces)
+
+        asset_uuids: Set[str] = set()
+        for illustratie in illustraties:
+            uuidx = self._extract_uuid(illustratie.attrib.get("naam", ""))
+            asset_uuids.add(uuidx)
+
+        return asset_uuids
+
+    def _extract_uuid(self, name: str) -> str:
+        match = re.search(self._uuid_regex, name)
+        if match:
+            return match.group(1)
+
+        raise RuntimeError("Unable to find asset uuid in the name: '{name}'")

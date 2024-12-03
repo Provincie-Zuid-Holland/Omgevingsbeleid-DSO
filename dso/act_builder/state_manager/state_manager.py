@@ -1,5 +1,5 @@
 import os
-from typing import List, Optional
+from typing import List, Optional, Set
 
 from ...models import OwData
 from ...services.ewid.ewid_service import EWIDService
@@ -15,6 +15,8 @@ class StateManager:
 
         self.input_data: InputData = input_data
         self.werkingsgebied_eid_lookup: dict = {}
+        self.document_eid_lookup: dict = {}
+        self.document_wid_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
         self.ow_repository: OWStateRepository = OWStateRepository(input_data.ow_data, self.debug_enabled)
         self.output_files: List[OutputFile] = []
@@ -22,6 +24,7 @@ class StateManager:
         self.regeling_vrijetekst_wordt: Optional[str] = None
         # What we send to DSO, might be different then `wordt` because of the renvooi
         self.regeling_vrijetekst_aangeleverd: Optional[str] = None
+        self.used_asset_uuids: Set[str] = set()
         self.annotation_ref_lookup_map: dict = {}
         # result state of ow object data after processing
         self.ow_object_state: Optional[OwData] = None

@@ -25,9 +25,10 @@ def xsd_all(path):
     files = list_files_recursive(path, ["xml", "gml"])
 
     for file in files:
+        filename: str = os.path.basename(file)
         namespace = resolve_namespace(file)
         if not namespace in schemas:
-            click.echo(click.style(f"Nothing to test {file} against", fg="yellow"))
+            click.echo(click.style(f"Nothing to test {filename} against", fg="yellow"))
             continue
         for xsd in schemas.get(namespace).xsds:
             cmd = [
@@ -42,11 +43,11 @@ def xsd_all(path):
 
             if result.returncode == 0:
                 click.echo(
-                    click.style(file, fg="green") + click.style(f" against {xsd} is ") + click.style("valid", fg="green", bold=True))
+                    click.style(filename, fg="green") + click.style(f" against {xsd} is ") + click.style("valid", fg="green", bold=True))
             
             else:
                 click.echo(
-                    click.style(file, fg="yellow") + click.style(f" against {xsd} ") + click.style("failed", fg="red", bold=True))
+                    click.style(filename, fg="yellow") + click.style(f" against {xsd} ") + click.style("failed", fg="red", bold=True))
                 click.echo(click.style(result.stderr,  fg="red"))
 
 
@@ -77,16 +78,17 @@ def schematron_all(path):
                 f'-o:{report_filename}',
             ]
             result = subprocess.run(cmd, capture_output=True, text=True)
+            filename: str = os.path.basename(file)
 
             if result.returncode == 0:
                 color = "red"
                 if not report_contains_errors(report_filename):
                     color = "green"
                     os.remove(report_filename)
-                click.echo(f"Report generated for {file} with " + click.style(schematron.local, fg=color))
+                click.echo(f"Report generated for {filename} with " + click.style(schematron.local, fg=color))
 
             else:
-                click.echo(click.style(f"Could not generate report for {file} with {schematron.local}", fg="red"))
+                click.echo(click.style(f"Could not generate report for {filename} with {schematron.local}", fg="red"))
 
 
 @click.command()

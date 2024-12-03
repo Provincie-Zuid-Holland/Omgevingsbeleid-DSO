@@ -91,8 +91,10 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
                 )
                 if not ow_tekstdeel.gebiedsaanwijzingen:
                     ow_tekstdeel.gebiedsaanwijzingen = [new_gba.OW_ID]
+                    ow_tekstdeel.procedure_status = self._context.ow_procedure_status
                 else:
                     ow_tekstdeel.gebiedsaanwijzingen.append(new_gba.OW_ID)
+                    ow_tekstdeel.procedure_status = self._context.ow_procedure_status
 
             self._ow_repository.update_state_tekstdeel(state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel)
 
@@ -107,6 +109,7 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
             "groep": groep,
             "locaties": [locatie_ref],
             "wid": element_wid,
+            "procedure_status": self._context.ow_procedure_status,
         }
         gebiedawz = OWGebiedsaanwijzing(**input_dict)
         self._ow_repository.add_new_ow(gebiedawz)

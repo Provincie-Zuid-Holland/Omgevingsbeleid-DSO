@@ -1,11 +1,11 @@
 import hashlib
+import importlib.resources
 import json
 import os
 import zipfile
 from io import StringIO
 from xml.dom import minidom
 
-import pkg_resources
 from jinja2 import Environment, FileSystemLoader
 from lxml import etree
 
@@ -14,7 +14,7 @@ from .jinja_filters import jinja2_filter_has_text
 
 # env = Environment(loader=FileSystemLoader("."))
 
-template_path = pkg_resources.resource_filename("dso", "templates")
+template_path = importlib.resources.files("dso") / "templates"
 
 jinja2_env = Environment(
     loader=FileSystemLoader(template_path),

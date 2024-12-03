@@ -10,13 +10,13 @@ asttokens==2.4.1
     #   stack-data
 autoflake==2.3.1
     # via -r requirements-dev.in
-bandit==1.7.10
+bandit==1.8.0
     # via -r requirements-dev.in
 black==24.10.0
     # via -r requirements-dev.in
 click==8.1.7
     # via black
-debugpy==1.8.7
+debugpy==1.8.9
     # via -r requirements-dev.in
 decorator==5.1.1
     # via ipython
@@ -32,11 +32,11 @@ executing==2.1.0
     #   stack-data
 iniconfig==2.0.0
     # via pytest
-ipython==8.28.0
+ipython==8.30.0
     # via -r requirements-dev.in
 isort==5.13.2
     # via -r requirements-dev.in
-jedi==0.19.1
+jedi==0.19.2
     # via ipython
 markdown-it-py==3.0.0
     # via rich
@@ -48,7 +48,7 @@ mypy-extensions==1.0.0
     # via
     #   -r requirements-dev.in
     #   black
-packaging==24.1
+packaging==24.2
     # via
     #   black
     #   pytest
@@ -77,19 +77,19 @@ pygments==2.18.0
     #   devtools
     #   ipython
     #   rich
-pytest==8.3.3
+pytest==8.3.4
     # via -r requirements-dev.in
 pyyaml==6.0.2
     # via bandit
-rich==13.9.2
+rich==13.9.4
     # via bandit
 six==1.16.0
     # via asttokens
 stack-data==0.6.3
     # via ipython
-stevedore==5.3.0
+stevedore==5.4.0
     # via bandit
-tomli==2.0.2
+tomli==2.2.1
     # via
     #   autoflake
     #   black

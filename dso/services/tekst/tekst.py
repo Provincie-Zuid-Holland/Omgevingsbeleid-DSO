@@ -186,24 +186,21 @@ class LiGenerator(ElementGenerator):
 
 
 class RefGenerator(ElementGenerator):
-    def __init__(self, tag_name: str):
-        self._tag_name: str = tag_name
-
     def can_consume_tag(self, tag: Tag) -> bool:
-        return tag.name == self._tag_name
+        return tag.name == "a"
 
     def generate(self, tag: Tag, context: dict = {}) -> Element:
-        tag_soort: Optional[str] = tag.get("soort", None)
-        tag_gebiedsaanwijzing: Optional[str] = tag.get("data-hint-locatie", None)
-        if tag_gebiedsaanwijzing is not None:
-            element = IntIoRef(tag)
-            return element
+        hint_type: Optional[str] = tag.get("data-hint-type", None)
+        if hint_type == "gebiedsaanwijzing":
+            return GebiedsaanwijzingRef(tag)
 
-        if tag_soort:
-            element = ExtRef(tag)
-            return element
+        if hint_type == "document":
+            return DocumentRef(tag)
 
-        raise RuntimeError("Missing required attribute soort or data-hint-locatie for `a`")
+        if hint_type == "object":
+            return TekstObjectRef(tag)
+
+        return ExtRef(tag)
 
 
 class I(SimpleElement):
@@ -295,36 +292,6 @@ class Figuur(SimpleElement):
         return figuur
 
 
-class Ref(SimpleElement):
-    def __init__(self, tag: Tag):
-        super().__init__()
-
-    def consume_tag(self, tag: Tag) -> LeftoverTag:
-        for element_generator in self.element_generators:
-            if not element_generator.can_consume_tag(tag):
-                continue
-            content: Element = element_generator.generate(
-                tag=tag,
-                context=self._get_generate_context(),
-            )
-            content.consume_children(tag.children)
-            self.contents.append(content)
-            return None
-        return tag
-
-    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
-        result = SimpleElement.as_xml(
-            self,
-            soup=soup,
-            tag_name_overwrite="ExtRef",
-            tag_attrs_overwrite={
-                "ref": self.href,
-                "soort": self.soort,
-            },
-        )
-        return result
-
-
 class ExtRef(SimpleElement):
     AKN_PATTERN = r"^/akn/"
 
@@ -348,7 +315,53 @@ class ExtRef(SimpleElement):
         return result
 
 
-class IntIoRef(SimpleElement):
+class TekstObjectRef(SimpleElement):
+    def __init__(self, tag: Tag):
+        super().__init__()
+        self.object_code: str = tag["data-hint-value"]
+
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+        result = SimpleElement.as_xml(
+            self,
+            soup=soup,
+            tag_name_overwrite="IntRef",
+            tag_attrs_overwrite={
+                "ref": "",
+                "data-hint-target-object-code": self.object_code,
+            },
+        )
+        return result
+
+
+class DocumentRef(SimpleElement):
+    """
+    Example input:
+    <a href="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-document-uuid="abc">Title</a>
+
+    Example output:
+    <ExtIoRef ref="" data-hint-document-uuid="abc">Title</ExtIoRef>
+
+    The `ref` will be set later with help of the data-hint-document-uuid
+    """
+
+    def __init__(self, tag: Tag):
+        super().__init__()
+        self._document_uuid: Optional[str] = tag.get("data-hint-document-uuid", None)
+
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+        result = SimpleElement.as_xml(
+            self,
+            soup=soup,
+            tag_name_overwrite="IntIoRef",
+            tag_attrs_overwrite={
+                "ref": "",
+                "data-hint-document-uuid": self._document_uuid,
+            },
+        )
+        return result
+
+
+class GebiedsaanwijzingRef(SimpleElement):
     def __init__(self, tag: Tag):
         super().__init__()
         self.href: str = tag.get("href")
@@ -880,7 +893,7 @@ element_h3_tussenkop_handler = SimpleGenerator("h3", TussenKop)
 element_h4_tussenkop_handler = SimpleGenerator("h4", TussenKop)
 element_h5_tussenkop_handler = SimpleGenerator("h5", TussenKop)
 element_h6_tussenkop_handler = SimpleGenerator("h6", TussenKop)
-a_handler = RefGenerator("a")
+a_handler = RefGenerator()
 
 
 I.element_generators = [

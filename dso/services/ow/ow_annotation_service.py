@@ -24,7 +24,7 @@ class OWAnnotationService:
         "tag": "Divisietekst",
         "object_code": "beleidskeuze-756",
         "gebied_code": "werkingsgebied-28",
-        "gebied_uuid": "6cee5d12-beaa-4ea8-9464-5697a6e85931",
+        "gio_ref": "6cee5d12-beaa-4ea8-9464-5697a6e85931",
         "uses_ambtsgebied": False,
     },
 
@@ -69,7 +69,8 @@ class OWAnnotationService:
                 # add other possible annotations here..
                 # - thema
                 # - hoofdlijn
-            if element.tag == "IntIoRef":
+
+            if element.tag == "IntIoRef" and element.get("data-hint-gebiedsaanwijzingtype"):
                 self._add_gebiedsaanwijzing_annotation(element)
 
             # Gebiedsaanwijzing annotation
@@ -104,7 +105,7 @@ class OWAnnotationService:
                 "tag": element.tag,
                 "object_code": object_code,
                 "gebied_code": gebied_code,
-                "gebied_uuid": str(werkingsgebied.UUID),
+                "gio_ref": werkingsgebied.Identifier,
             }
 
         return
@@ -126,8 +127,8 @@ class OWAnnotationService:
 
         # gebiedsaanwijzing tag attributes
         gba_locatie = element.get("data-hint-locatie", None)
-        gba_type = element.get("data-hint-gebiedengroep", None)
-        gba_groep = element.get("data-hint-gebiedsaanwijzingtype", None)
+        gba_groep = element.get("data-hint-gebiedengroep", None)
+        gba_type = element.get("data-hint-gebiedsaanwijzingtype", None)
 
         if not all([gba_locatie, gba_type, gba_groep]):
             raise ValueError("Missing data-hint-* attributes for gebiedsaanwijzing")

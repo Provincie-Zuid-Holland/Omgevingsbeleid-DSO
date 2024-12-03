@@ -1,7 +1,9 @@
 from typing import List
 
+from dso.act_builder.state_manager.input_data.resource.document.document import Document
+
 from .....services.utils.helpers import load_template
-from ....state_manager.input_data.resource.pdf.pdf import Pdf
+from ....state_manager.input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
 from ....state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from ....state_manager.state_manager import StateManager
 
@@ -20,7 +22,12 @@ class BesluitMetadataContent:
             if werkingsgebied.New:
                 informatieobject_refs.append(werkingsgebied.Frbr.get_expression())
 
-        pdfs: List[Pdf] = self._state_manager.input_data.resources.pdf_repository.all()
+        documents: List[Document] = self._state_manager.input_data.resources.document_repository.all()
+        for document in documents:
+            if document.New:
+                informatieobject_refs.append(document.Frbr.get_expression())
+
+        pdfs: List[BesluitPdf] = self._state_manager.input_data.resources.besluit_pdf_repository.all()
         for pdf in pdfs:
             informatieobject_refs.append(pdf.frbr.get_expression())
 

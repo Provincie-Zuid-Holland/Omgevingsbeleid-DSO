@@ -190,6 +190,7 @@ class OwDivisieBuilder(OwFileBuilder):
     def _update_tekstdeel_location(self, ow_tekstdeel: OWTekstdeel, ow_location_id: str) -> None:
         new_ow_tekstdeel = ow_tekstdeel.copy(deep=True, exclude={"locaties"})
         new_ow_tekstdeel.locaties = [ow_location_id]  # Supporting only 1 reference for now.
+        new_ow_tekstdeel.procedure_status = self._context.ow_procedure_status
         if ow_location_id == ow_tekstdeel.locaties[0]:
             raise OWObjectStateException(
                 message="Mutating tekstdeel but location refs are the same",

@@ -1,9 +1,11 @@
 from abc import ABC
 from dataclasses import dataclass, field
 
+from dso.act_builder.state_manager.input_data.resource.document.document import Document
+
 from ...models import ContentType
 from .input_data.resource.asset.asset import Asset
-from .input_data.resource.pdf.pdf import Pdf
+from .input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
 
 
 class ContentData(ABC):
@@ -21,8 +23,13 @@ class AssetContentData(ContentData):
 
 
 class PdfContentData(ContentData):
-    def __init__(self, pdf: Pdf):
-        self.pdf: Pdf = pdf
+    def __init__(self, pdf: BesluitPdf):
+        self.pdf: BesluitPdf = pdf
+
+
+class DocumentContentData(ContentData):
+    def __init__(self, document: Document):
+        self.document: Document = document
 
 
 @dataclass

@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 from typing import Optional
 
@@ -28,6 +29,10 @@ def run_generate(input_dir: str, base_output_dir: Optional[str], json_file: str)
     # mirror output path to input
     relative_path = str(Path(input_dir).relative_to(Path(input_dir).parents[0]))
     output_dir = Path(base_output_dir) / relative_path
+
+    # Delete existing content of the output_dir
+    if output_dir.exists() and output_dir.is_dir():
+        shutil.rmtree(output_dir)
 
     builder = Builder(data)
     builder.build_publication_files()

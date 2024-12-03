@@ -1,0 +1,333 @@
+{
+    "publication_settings": {
+        "document_type": "Omgevingsvisie",
+        "datum_bekendmaking": "2025-01-01",
+        "provincie_id": "pv28",
+        "soort_bestuursorgaan": "/tooi/def/thes/kern/c_411b4e4a",
+        "regeling_componentnaam": "pv28_omgevingsvisie_1",
+        "provincie_ref": "/tooi/id/provincie/pv28",
+        "dso_versioning": {
+            "STOP": "1.3.0",
+            "TPOD": "2.0.2",
+            "LVBB": "1.2.0"
+        },
+        "besluit_frbr": {
+            "Work_Province_ID": "pv28",
+            "Work_Date": "2024",
+            "Work_Other": "omgevingsvisie-1-2",
+            "Expression_Language": "nld",
+            "Expression_Date": "2024-10-20",
+            "Expression_Version": 1,
+            "Work_Country": "nl"
+        },
+        "regeling_frbr": {
+            "Work_Province_ID": "pv28",
+            "Work_Date": "2024",
+            "Work_Other": "omgevingsvisie-1",
+            "Expression_Language": "nld",
+            "Expression_Date": "2024-10-20",
+            "Expression_Version": 2,
+            "Work_Country": "nl"
+        },
+        "opdracht": {
+            "opdracht_type": "PUBLICATIE",
+            "id_levering": "77777777-7777-7777-7777-777777777777",
+            "id_bevoegdgezag": "11111111111111111111",
+            "id_aanleveraar": "22222222222222222222",
+            "publicatie_bestand": "akn_nl_bill_pv28-pub-2024-omgevingsvisie-1-2.xml",
+            "datum_bekendmaking": "2025-01-01"
+        },
+        "instelling_doel": {
+            "frbr": {
+                "Work_Province_ID": "pv28",
+                "Work_Date": "2024",
+                "Work_Other": "mutatie-omgevingsvisie-1",
+                "Expression_Language": "",
+                "Expression_Date": "",
+                "Expression_Version": 1
+            },
+            "datum_juridisch_werkend_vanaf": "2025-01-01"
+        },
+        "intrekking": null
+    },
+    "besluit": {
+        "officiele_titel": "Omgevingsvisie van Zuid-Holland",
+        "citeertitel": "",
+        "aanhef": "<p>Mutatie Omgevingsvisie Provincie Zuid-Holland.</p>",
+        "wijzig_artikel": {
+            "label": "Artikel",
+            "nummer": "I",
+            "inhoud": "De Omgevingsvisie wordt vastgesteld zoals gegeven in <IntRef ref=\"cmp_1\">Bijlage 1</IntRef> van dit Besluit."
+        },
+        "wijzig_bijlage": {
+            "nummer": "1",
+            "opschrift": "bij Artikel I"
+        },
+        "tekst_artikelen": [
+            {
+                "label": "Artikel",
+                "nummer": "III",
+                "inhoud": "<p>Hierbij nog meer tekst</p>"
+            }
+        ],
+        "tijd_artikel": {
+            "label": "Artikel",
+            "nummer": "II",
+            "inhoud": "<Al>Deze Omgevingsvisie treedt in werking op 10 juli 2024.</Al>"
+        },
+        "sluiting": "<p>Aldus vastgesteld in de vergadering van 3 juli 2024.</p>",
+        "ondertekening": "<p>Gedeputeerde Staten</p>",
+        "rechtsgebieden": [
+            "/tooi/def/concept/c_638d8062"
+        ],
+        "onderwerpen": [
+            "/tooi/def/concept/c_9af4b880"
+        ],
+        "soort_procedure": "/join/id/stop/proceduretype_definitief",
+        "bijlagen": [],
+        "motivering": null
+    },
+    "regeling": {
+        "versienummer": "2",
+        "officiele_titel": "Omgevingsvisie van Zuid-Holland",
+        "citeertitel": "Omgevingsvisie van Zuid-Holland",
+        "is_officieel": "true",
+        "rechtsgebieden": [
+            "/tooi/def/concept/c_638d8062"
+        ],
+        "onderwerpen": [
+            "/tooi/def/concept/c_9af4b880"
+        ]
+    },
+    "regeling_vrijetekst": "./regelingvrijetekst_template.xml",
+    "regeling_mutatie": {
+        "type": "vervang",
+        "was_regeling_frbr": {
+            "Work_Province_ID": "pv28",
+            "Work_Date": "2024",
+            "Work_Other": "omgevingsvisie-1",
+            "Expression_Language": "nld",
+            "Expression_Date": "2024-07-08",
+            "Expression_Version": 1,
+            "Work_Country": "nl"
+        },
+        "bekend_wid_map": {
+            "bijlage-werkingsgebieden": "pv28_1__cmp_o_1",
+            "bijlage-werkingsgebieden-divisietekst": "pv28_1__cmp_o_1__content_o_1",
+            "bijlage-werkingsgebieden-divisietekst-referenties": "pv28_1__cmp_o_1__content_o_1__list_o_1",
+            "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-1": "pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_1",
+            "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-1-ref": "pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1",
+            "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-2": "pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_2",
+            "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-2-ref": "pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1",
+            "visie_algemeen-1": "pv28_1__content_o_1",
+            "omgevingsvisie-custom-ambities-wrapper": "pv28_1__div_o_1",
+            "ambitie-2": "pv28_1__div_o_1__content_o_1",
+            "ambitie-1": "pv28_1__div_o_1__content_o_2",
+            "omgevingsvisie-custom-beleidsdoelen-and-beleidskeuzes-wrapper": "pv28_1__div_o_2",
+            "omgevingsvisie-custom-beleidsdoel-beleidsdoel-1-wrapper": "pv28_1__div_o_2__div_o_1",
+            "beleidsdoel-1": "pv28_1__div_o_2__div_o_1__content_o_1",
+            "omgevingsvisie-custom-beleidskeuze-beleidsdoel-1-wrapper": "pv28_1__div_o_2__div_o_1__div_o_1",
+            "beleidskeuze-1": "pv28_1__div_o_2__div_o_1__div_o_1__content_o_1",
+            "beleidskeuze-2": "pv28_1__div_o_2__div_o_1__div_o_1__content_o_2",
+            "beleidskeuze-3": "pv28_1__div_o_2__div_o_1__div_o_1__content_o_3",
+            "visie_algemeen-2": "pv28_1__content_o_2"
+        },
+        "bekend_wids": [
+            "pv28_1__cmp_o_1",
+            "pv28_1__cmp_o_1__content_o_1",
+            "pv28_1__cmp_o_1__content_o_1__list_o_1",
+            "pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_1",
+            "pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1",
+            "pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_2",
+            "pv28_1__cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1",
+            "pv28_1__content_o_1",
+            "pv28_1__div_o_1",
+            "pv28_1__div_o_1__content_o_1",
+            "pv28_1__div_o_1__content_o_2",
+            "pv28_1__div_o_2",
+            "pv28_1__div_o_2__div_o_1",
+            "pv28_1__div_o_2__div_o_1__content_o_1",
+            "pv28_1__div_o_2__div_o_1__div_o_1",
+            "pv28_1__div_o_2__div_o_1__div_o_1__content_o_1",
+            "pv28_1__div_o_2__div_o_1__div_o_1__content_o_1__img_o_1",
+            "pv28_1__div_o_2__div_o_1__div_o_1__content_o_2",
+            "pv28_1__div_o_2__div_o_1__div_o_1__content_o_3",
+            "pv28_1__content_o_2"
+        ],
+        "te_verwijderden_werkingsgebieden": [
+            {
+                "UUID": "00000000-0000-0005-0000-000000000002",
+                "code": "werkingsgebied-2",
+                "object_id": 2,
+                "frbr": {
+                    "Work_Province_ID": "pv28",
+                    "Work_Date": "2024",
+                    "Work_Other": "1-2",
+                    "Expression_Language": "nld",
+                    "Expression_Date": "2024-10-10",
+                    "Expression_Version": 1
+                },
+                "geboorteregeling": "omgevingsvisie-1",
+                "titel": "Testgebied 2"
+            }
+        ]
+    },
+    "procedure_verloop": {
+        "bekend_op": "2024-09-20",
+        "stappen": [
+            {
+                "soort_stap": "/join/id/stop/procedure/stap_002",
+                "voltooid_op": "2024-09-19"
+            },
+            {
+                "soort_stap": "/join/id/stop/procedure/stap_003",
+                "voltooid_op": "2024-09-20"
+            }
+        ]
+    },
+    "resources": {
+        "policy_object_repository": "./policy_objects.json",
+        "asset_repository": "./assets.json",
+        "werkingsgebied_repository": "./werkingsgebieden.json"
+    },
+    "object_template_repository": {
+        "visie_algemeen": "\n<h1>{{ o.Title }}</h1>\n<!--[OBJECT-CODE:{{o.Code}}]-->\n{{ o.Description | default('', true) }}\n",
+        "ambitie": "\n<h1>Ambitie {{ o.Title }}</h1>\n<!--[OBJECT-CODE:{{o.Code}}]-->\n{{ o.Description | default('', true) }}\n",
+        "beleidsdoel": "\n<h1>{{ o.Title }}</h1>\n<!--[OBJECT-CODE:{{o.Code}}]-->\n{{ o.Description | default('', true) }}\n",
+        "beleidskeuze": "\n<h1>{{ o.Title }}</h1>\n<!--[OBJECT-CODE:{{o.Code}}]-->\n{% if o.Werkingsgebied_Code is not none %}\n<!--[GEBIED-CODE:{{o.Werkingsgebied_Code}}]-->\n{% else %}\n<!--[GEBIED-CODE:ambtsgebied]-->\n{% endif %}\n\n{% if o.Description | has_text %}\n    <h6>Wat gaat de provincie doen?</h6>\n    {{ o.Description }}\n{% endif %}\n\n{% if o.Cause | has_text %}\n    <h6>Aanleiding</h6>\n    {{ o.Cause }}\n{% endif %}\n\n{% if o.Provincial_Interest | has_text %}\n    <h6>Motivering Provinciaal Belang</h6>\n    {{ o.Provincial_Interest }}\n{% endif %}\n\n{% if o.Explanation | has_text %}\n    <h6>Nadere uitwerking</h6>\n    {{ o.Explanation }}\n{% endif %}\n"
+    },
+    "ambtsgebied": {
+        "UUID": "90000004-0000-0000-0000-000000000001",
+        "titel": "Provincie Zuid-Holland",
+        "identificatie_suffix": "PV28",
+        "domein": "NL.BI.BestuurlijkGebied",
+        "geldig_op": "2023-09-29"
+    },
+    "ow_data": {
+        "ow_objects": {
+            "nl.imow-pv28.ambtsgebied.1067234921254f1ab412f530d662c71b": {
+                "OW_ID": "nl.imow-pv28.ambtsgebied.1067234921254f1ab412f530d662c71b",
+                "status": null,
+                "procedure_status": null,
+                "noemer": "Provincie Zuid-Holland",
+                "bestuurlijke_grenzen_verwijzing": {
+                    "bestuurlijke_grenzen_id": "PV28",
+                    "domein": "NL.BI.BestuurlijkGebied",
+                    "geldig_op": "2023-09-29"
+                },
+                "mapped_uuid": "90000004-0000-0000-0000-000000000001",
+                "ow_type": "OWAmbtsgebied"
+            },
+            "nl.imow-pv28.gebied.02798bb496504680aa1745f93d17a672": {
+                "OW_ID": "nl.imow-pv28.gebied.02798bb496504680aa1745f93d17a672",
+                "status": null,
+                "procedure_status": null,
+                "gio_ref": "lo-1-00000000-0000-0005-0000-000000000001",
+                "noemer": "Testgebied 1",
+                "mapped_geo_code": "werkingsgebied-1",
+                "ow_type": "OWGebied"
+            },
+            "nl.imow-pv28.gebiedengroep.9ecebee30ed94dc893cc5734efbafcaa": {
+                "OW_ID": "nl.imow-pv28.gebiedengroep.9ecebee30ed94dc893cc5734efbafcaa",
+                "status": null,
+                "procedure_status": null,
+                "gio_ref": "wg-1-00000000-0000-0005-0000-000000000001",
+                "noemer": "Testgebied 1",
+                "mapped_geo_code": "werkingsgebied-1",
+                "gebieden": [
+                    "nl.imow-pv28.gebied.02798bb496504680aa1745f93d17a672"
+                ],
+                "ow_type": "OWGebiedenGroep"
+            },
+            "nl.imow-pv28.gebied.d43a703e14c64867a3e244d08aa3d66c": {
+                "OW_ID": "nl.imow-pv28.gebied.d43a703e14c64867a3e244d08aa3d66c",
+                "status": null,
+                "procedure_status": null,
+                "gio_ref": "lo-1-00000000-0000-0005-0000-000000000002",
+                "noemer": "Testgebied 2",
+                "mapped_geo_code": "werkingsgebied-2",
+                "ow_type": "OWGebied"
+            },
+            "nl.imow-pv28.gebiedengroep.6fee69033f7a4b68973d067348235e5b": {
+                "OW_ID": "nl.imow-pv28.gebiedengroep.6fee69033f7a4b68973d067348235e5b",
+                "status": null,
+                "procedure_status": null,
+                "gio_ref": "wg-1-00000000-0000-0005-0000-000000000002",
+                "noemer": "Testgebied 2",
+                "mapped_geo_code": "werkingsgebied-2",
+                "gebieden": [
+                    "nl.imow-pv28.gebied.d43a703e14c64867a3e244d08aa3d66c"
+                ],
+                "ow_type": "OWGebiedenGroep"
+            },
+            "nl.imow-pv28.divisietekst.6c9502a67552494d832da3f5d39cb14b": {
+                "OW_ID": "nl.imow-pv28.divisietekst.6c9502a67552494d832da3f5d39cb14b",
+                "status": null,
+                "procedure_status": null,
+                "wid": "pv28_1__div_o_2__div_o_1__div_o_1__content_o_1",
+                "mapped_policy_object_code": "beleidskeuze-1",
+                "ow_type": "OWDivisieTekst"
+            },
+            "nl.imow-pv28.tekstdeel.c8731e77fe264e2184ce5c67e89d5e7d": {
+                "OW_ID": "nl.imow-pv28.tekstdeel.c8731e77fe264e2184ce5c67e89d5e7d",
+                "status": null,
+                "procedure_status": null,
+                "divisie": "nl.imow-pv28.divisietekst.6c9502a67552494d832da3f5d39cb14b",
+                "locaties": [
+                    "nl.imow-pv28.gebiedengroep.9ecebee30ed94dc893cc5734efbafcaa"
+                ],
+                "gebiedsaanwijzingen": [],
+                "ow_type": "OWTekstdeel",
+                "divisie_type": "divisietekst"
+            },
+            "nl.imow-pv28.divisietekst.817df5a675bb421eabe627e7aff5b5e9": {
+                "OW_ID": "nl.imow-pv28.divisietekst.817df5a675bb421eabe627e7aff5b5e9",
+                "status": null,
+                "procedure_status": null,
+                "wid": "pv28_1__div_o_2__div_o_1__div_o_1__content_o_2",
+                "mapped_policy_object_code": "beleidskeuze-2",
+                "ow_type": "OWDivisieTekst"
+            },
+            "nl.imow-pv28.tekstdeel.9ba8189e9608468988477a429ee0a720": {
+                "OW_ID": "nl.imow-pv28.tekstdeel.9ba8189e9608468988477a429ee0a720",
+                "status": null,
+                "procedure_status": null,
+                "divisie": "nl.imow-pv28.divisietekst.817df5a675bb421eabe627e7aff5b5e9",
+                "locaties": [
+                    "nl.imow-pv28.gebiedengroep.6fee69033f7a4b68973d067348235e5b"
+                ],
+                "gebiedsaanwijzingen": [],
+                "ow_type": "OWTekstdeel",
+                "divisie_type": "divisietekst"
+            },
+            "nl.imow-pv28.divisietekst.c1cbb63788714d178aba8b35a1e68cce": {
+                "OW_ID": "nl.imow-pv28.divisietekst.c1cbb63788714d178aba8b35a1e68cce",
+                "status": null,
+                "procedure_status": null,
+                "wid": "pv28_1__div_o_2__div_o_1__div_o_1__content_o_3",
+                "mapped_policy_object_code": "beleidskeuze-3",
+                "ow_type": "OWDivisieTekst"
+            },
+            "nl.imow-pv28.tekstdeel.5c0cfe10d0324aec8b81394280fcee43": {
+                "OW_ID": "nl.imow-pv28.tekstdeel.5c0cfe10d0324aec8b81394280fcee43",
+                "status": null,
+                "procedure_status": null,
+                "divisie": "nl.imow-pv28.divisietekst.c1cbb63788714d178aba8b35a1e68cce",
+                "locaties": [
+                    "nl.imow-pv28.ambtsgebied.1067234921254f1ab412f530d662c71b"
+                ],
+                "gebiedsaanwijzingen": [],
+                "ow_type": "OWTekstdeel",
+                "divisie_type": "divisietekst"
+            },
+            "nl.imow-pv28.regelingsgebied.a482996c725846eb8f8f0a3a4f6778b4": {
+                "OW_ID": "nl.imow-pv28.regelingsgebied.a482996c725846eb8f8f0a3a4f6778b4",
+                "status": null,
+                "procedure_status": null,
+                "ambtsgebied": "nl.imow-pv28.ambtsgebied.1067234921254f1ab412f530d662c71b",
+                "ow_type": "OWRegelingsgebied"
+            }
+        },
+        "terminated_ow_ids": []
+    }
+}
