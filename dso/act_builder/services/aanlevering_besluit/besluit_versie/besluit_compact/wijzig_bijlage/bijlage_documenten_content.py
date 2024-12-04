@@ -15,6 +15,8 @@ class BijlageDocumentenContent:
     def create(self) -> str:
         documenten: List[Document] = self._state_manager.input_data.resources.document_repository.all()
         documenten = sorted(documenten, key=lambda d: d.Title)
+        if len(documenten) == 0:
+            return ""
 
         content = load_template(
             "akn/besluit_versie/besluit_compact/wijzig_bijlage/BijlageDocumenten.xml",
