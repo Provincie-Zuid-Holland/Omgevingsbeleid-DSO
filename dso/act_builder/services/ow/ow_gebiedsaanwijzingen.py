@@ -75,20 +75,17 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
                         f"Creating gebiedsaanwijzing for non-existing tekstdeel. divisie owid: {parent_divisie.OW_ID}"
                     )
 
-            if new_gebiedsaanwijzing:
-                new_gba = self.new_ow_gebiedsaanwijzing(
-                    element_wid=wid,
-                    naam=locatie.noemer,
-                    type=annotation["type"],
-                    groep=annotation["groep"],
-                    locatie_ref=locatie.OW_ID,
-                )
-                if not ow_tekstdeel.gebiedsaanwijzingen:
-                    ow_tekstdeel.gebiedsaanwijzingen = [new_gba.OW_ID]
-                    ow_tekstdeel.procedure_status = self._context.ow_procedure_status
-                else:
-                    ow_tekstdeel.gebiedsaanwijzingen.append(new_gba.OW_ID)
-                    ow_tekstdeel.procedure_status = self._context.ow_procedure_status
+                new_gebiedsaanwijzing = True
+                # check if this gba already exists for this div
+                if ow_tekstdeel.gebiedsaanwijzingen:
+                    for gba_ref in ow_tekstdeel.gebiedsaanwijzingen:
+                        known_gba: Optional[OWGebiedsaanwijzing] = self._ow_repository.get_known_state_object(
+                            ow_id=gba_ref
+                        )
+                        if known_gba and known_gba.locaties[0] == locatie.OW_ID:
+                            new_gebiedsaanwijzing = False
+                            if known_gba.type_ != gba["type"] or known_gba.groep != gba["groep"]:
+                                pass  # mutate
 
                 if new_gebiedsaanwijzing:
                     new_gba = self.new_ow_gebiedsaanwijzing(
@@ -100,8 +97,10 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
                     )
                     if not ow_tekstdeel.gebiedsaanwijzingen:
                         ow_tekstdeel.gebiedsaanwijzingen = [new_gba.OW_ID]
+                        ow_tekstdeel.procedure_status = self._context.ow_procedure_status
                     else:
                         ow_tekstdeel.gebiedsaanwijzingen.append(new_gba.OW_ID)
+                        ow_tekstdeel.procedure_status = self._context.ow_procedure_status
 
                 if new_gebiedsaanwijzing:
                     self._ow_repository.update_state_tekstdeel(state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel)
