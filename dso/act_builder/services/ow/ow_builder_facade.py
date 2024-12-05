@@ -1,11 +1,13 @@
 from typing import Dict, List, Optional
 
 from ....services.ow.enums import OwProcedureStatus
+from ....services.ow.ow_annotation_service import OWAnnotationService
 from ....services.ow.ow_state_patcher import OWStatePatcher
 from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
 from ...services.ow.ow_divisie import OwDivisieBuilder
 from ...services.ow.ow_gebiedsaanwijzingen import OwGebiedsaanwijzingBuilder
+from ...services.ow.ow_hoofdlijnen import OwHoofdlijnBuilder
 from ...services.ow.ow_locaties import OwLocatieBuilder
 from ...services.ow.ow_manifest import OwManifestBuilder
 from ...services.ow.ow_regelinggebied import OwRegelingsgebiedBuilder
@@ -16,11 +18,18 @@ from .ow_builder_context import BuilderContext
 
 class OwBuilderFacade(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
-        ow_builder: OwBuilder = self._create_ow_builder(state_manager)
+        # build ow annotation map from policy objects data
+        annotation_service = OWAnnotationService(
+            werkingsgebied_repository=state_manager.input_data.resources.werkingsgebied_repository,
+            policy_object_repository=state_manager.input_data.resources.policy_object_repository,
+            used_wid_map=state_manager.act_ewid_service.get_state_used_wid_map(),
+        )
+        annotation_map = annotation_service.build_annotation_map()
+
+        ow_builder: OwBuilder = self._create_ow_builder(state_manager, annotation_map)
         return ow_builder.apply(state_manager)
 
-    def _create_ow_builder(self, state_manager: StateManager) -> OwBuilder:
-        annotation_lookup_map: dict = state_manager.annotation_ref_lookup_map
+    def _create_ow_builder(self, state_manager: StateManager, annotation_lookup_map: dict) -> OwBuilder:
         context = self._create_builder_context(state_manager)
 
         locatie_builder = OwLocatieBuilder(
@@ -48,6 +57,12 @@ class OwBuilderFacade(BuilderService):
             ow_repository=state_manager.ow_repository,
         )
 
+        hoofdlijn_builder = OwHoofdlijnBuilder(
+            context=context,
+            annotation_lookup_map=annotation_lookup_map,
+            ow_repository=state_manager.ow_repository,
+        )
+
         ow_manifest_builder = OwManifestBuilder(
             regeling_frbr=state_manager.input_data.publication_settings.regeling_frbr,
             doel_frbr=state_manager.input_data.publication_settings.instelling_doel.frbr,
@@ -60,6 +75,7 @@ class OwBuilderFacade(BuilderService):
             divisie_builder=divisie_builder,
             gb_aanwijzing_builder=gb_aanwijzing_builder,
             regelinggebied_builder=regelinggebied_builder,
+            hoofdlijn_builder=hoofdlijn_builder,
             ow_manifest_builder=ow_manifest_builder,
             ow_state_patcher=ow_state_patcher,
         )
@@ -75,6 +91,7 @@ class OwBuilderFacade(BuilderService):
             levering_id=state_manager.input_data.publication_settings.opdracht.id_levering,
             ow_procedure_status=ow_procedure_status,
             orphaned_wids=orphaned_wids,
+            imow_value_list_version=None,
         )
 
     def _calc_orphaned_wids(self, state_manager: StateManager) -> List[str]:

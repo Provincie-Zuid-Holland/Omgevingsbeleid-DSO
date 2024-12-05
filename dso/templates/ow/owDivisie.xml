@@ -45,6 +45,11 @@
                     {% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
+                    {% if ow_object.themas is not none and ow_object.themas | length > 0 %}
+                    {% for thema in ow_object.themas %}
+                    <vt:thema>{{ thema }}</vt:thema>
+                    {% endfor %}
+                    {% endif %}
 					<vt:divisieaanduiding>
 						{% if ow_object.divisie_type == "divisie" %}
 							<vt:DivisieRef xlink:href="{{ ow_object.divisie }}"/>
@@ -52,11 +57,20 @@
 							<vt:DivisietekstRef xlink:href="{{ ow_object.divisie }}"/>
 						{% endif %}
 					</vt:divisieaanduiding>
+					{% if ow_object.hoofdlijnen is not none and ow_object.hoofdlijnen | length > 0 %}
+					<vt:hoofdlijnaanduiding>
+						{% for hoofdlijn_ref in ow_object.hoofdlijnen %}
+						<vt:HoofdlijnRef xlink:href="{{ hoofdlijn_ref }}"/>
+						{% endfor %}
+					</vt:hoofdlijnaanduiding>
+					{% endif %}
+					{% if ow_object.locaties is not none and ow_object.locaties | length > 0 %}
 					<vt:locatieaanduiding>
 						{% for locatie_ref in ow_object.locaties %}
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
+					{% endif %}
 					{% if ow_object.gebiedsaanwijzingen is not none and ow_object.gebiedsaanwijzingen | length > 0 %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
@@ -103,6 +117,11 @@
 					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
+                    {% if ow_object.themas is not none and ow_object.themas | length > 0 %}
+                    {% for thema in ow_object.themas %}
+                    <vt:thema>{{ thema }}</vt:thema>
+                    {% endfor %}
+                    {% endif %}
 					<vt:divisieaanduiding>
 						{% if ow_object.divisie_type == "divisie" %}
 							<vt:DivisieRef xlink:href="{{ ow_object.divisie }}"/>
@@ -110,11 +129,20 @@
 							<vt:DivisietekstRef xlink:href="{{ ow_object.divisie }}"/>
 						{% endif %}
 					</vt:divisieaanduiding>
+					{% if ow_object.hoofdlijnen is not none and ow_object.hoofdlijnen | length > 0 %}
+					<vt:hoofdlijnaanduiding>
+						{% for hoofdlijn_ref in ow_object.hoofdlijnen %}
+						<vt:HoofdlijnRef xlink:href="{{ hoofdlijn_ref }}"/>
+						{% endfor %}
+					</vt:hoofdlijnaanduiding>
+					{% endif %}
+					{% if ow_object.locaties is not none and ow_object.locaties | length > 0 %}
 					<vt:locatieaanduiding>
 						{% for locatie_ref in ow_object.locaties %}
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
+					{% endif %}
 					{% if ow_object.gebiedsaanwijzingen is not none and ow_object.gebiedsaanwijzingen | length > 0 %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}
@@ -170,6 +198,11 @@
 					{% endif %}
 					<vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
 					<vt:idealisatie>http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief</vt:idealisatie>
+                    {% if ow_object.themas is not none and ow_object.themas | length > 0 %}
+                    {% for thema in ow_object.themas %}
+                    <vt:thema>{{ thema }}</vt:thema>
+                    {% endfor %}
+                    {% endif %}
 					<vt:divisieaanduiding>
 						{% if ow_object.divisie_type == "divisie" %}
 							<vt:DivisieRef xlink:href="{{ ow_object.divisie }}"/>
@@ -177,11 +210,20 @@
 							<vt:DivisietekstRef xlink:href="{{ ow_object.divisie }}"/>
 						{% endif %}
 					</vt:divisieaanduiding>
+					{% if ow_object.hoofdlijnen is not none and ow_object.hoofdlijnen | length > 0 %}
+					<vt:hoofdlijnaanduiding>
+						{% for hoofdlijn_ref in ow_object.hoofdlijnen %}
+						<vt:HoofdlijnRef xlink:href="{{ hoofdlijn_ref }}"/>
+						{% endfor %}
+					</vt:hoofdlijnaanduiding>
+					{% endif %}
+					{% if ow_object.locaties is not none and ow_object.locaties | length > 0 %}
 					<vt:locatieaanduiding>
 						{% for locatie_ref in ow_object.locaties %}
 						<l:LocatieRef xlink:href="{{ locatie_ref }}"/>
 						{% endfor %}
 					</vt:locatieaanduiding>
+					{% endif %}
 					{% if ow_object.gebiedsaanwijzingen is not none and ow_object.gebiedsaanwijzingen | length > 0 %}
 					<vt:gebiedsaanwijzing>
 						{% for gba_ref in ow_object.gebiedsaanwijzingen %}

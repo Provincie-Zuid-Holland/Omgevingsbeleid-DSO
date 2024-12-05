@@ -25,7 +25,7 @@ from .resource.policy_object.policy_object_repository import PolicyObjectReposit
 from .resource.resource_loader import ResourceLoader
 from .resource.resources import Resources
 from .resource.werkingsgebied.werkingsgebied_repository import WerkingsgebiedRepository
-
+from .resource.document.document_repository import DocumentRepository
 
 class InputData(BaseModel):
     publication_settings: PublicationSettings
@@ -47,6 +47,7 @@ class InputData(BaseModel):
             WerkingsgebiedRepository: lambda v: {k: w.dict() for k, w in v.to_dict().items()},
             ObjectTemplateRepository: lambda v: v.to_dict() if v is not None else None,
             BesluitPdfRepository: lambda v: v.to_dict() if v is not None else None,
+            DocumentRepository: lambda v: v.to_dict() if v is not None else None,
         }
 
     def get_known_wid_map(self) -> Dict[str, str]:

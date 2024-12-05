@@ -15,6 +15,7 @@ from .models import (
     OWGebied,
     OWGebiedenGroep,
     OWGebiedsaanwijzing,
+    OWHoofdlijn,
     OWLocatie,
     OWObject,
     OWRegelingsgebied,

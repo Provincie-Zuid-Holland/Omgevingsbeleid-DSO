@@ -4,6 +4,7 @@ from ....services.ow.ow_state_patcher import OWStatePatcher
 from ...services import BuilderService
 from ...services.ow.ow_divisie import OwDivisieBuilder, OwFileBuilder
 from ...services.ow.ow_gebiedsaanwijzingen import OwGebiedsaanwijzingBuilder
+from ...services.ow.ow_hoofdlijnen import OwHoofdlijnBuilder
 from ...services.ow.ow_locaties import OwLocatieBuilder
 from ...services.ow.ow_manifest import OwManifestBuilder
 from ...services.ow.ow_regelinggebied import OwRegelingsgebiedBuilder
@@ -16,6 +17,7 @@ class OwBuilder(BuilderService):
         locatie_builder: OwLocatieBuilder,
         divisie_builder: OwDivisieBuilder,
         gb_aanwijzing_builder: OwGebiedsaanwijzingBuilder,
+        hoofdlijn_builder: OwHoofdlijnBuilder,
         regelinggebied_builder: OwRegelingsgebiedBuilder,
         ow_manifest_builder: OwManifestBuilder,
         ow_state_patcher: OWStatePatcher,
@@ -24,6 +26,7 @@ class OwBuilder(BuilderService):
             locatie_builder,
             divisie_builder,
             gb_aanwijzing_builder,
+            hoofdlijn_builder,
             regelinggebied_builder,
         ]
         self._ow_manifest_builder = ow_manifest_builder
