@@ -38,8 +38,8 @@ geo:
     - /join/id/regdata/pv28/2024/1-1/nld@2024-10-10;1
     - /join/id/regdata/pv28/2024/1-3/nld@2024-11-10;1
   identifiers:
-    - lo-1-00000000-0000-0005-0000-000000000001
-    - lo-1-20000000-0000-0005-0000-000000000003
+    - 6179858d-cbb6-4d44-ab26-1d843f777e0d
+    - d60b4bf6-5f46-4a33-9fd1-aaa4c47e6c7e
 
 owLocaties:
   total: 4
@@ -48,7 +48,7 @@ owLocaties:
     new:
       - noemer: "Testgebied 3"
         gebied-code: "werkingsgebied-3"
-        geometrie_href: "lo-1-20000000-0000-0005-0000-000000000003"
+        geometrie_href: "d60b4bf6-5f46-4a33-9fd1-aaa4c47e6c7e"
     mutated: []
     terminated:
       - 'nl.imow-pv28.gebiedengroep.6fee69033f7a4b68973d067348235e5b'

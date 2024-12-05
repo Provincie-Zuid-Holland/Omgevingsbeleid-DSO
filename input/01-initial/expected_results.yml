@@ -39,8 +39,8 @@ geo:
     - /join/id/regdata/pv28/2024/1-1/nld@2024-10-10;1
     - /join/id/regdata/pv28/2024/1-2/nld@2024-10-10;1
   identifiers:
-    - lo-1-00000000-0000-0005-0000-000000000001
-    - lo-1-00000000-0000-0005-0000-000000000002
+    - 6179858d-cbb6-4d44-ab26-1d843f777e0d
+    - e773af24-1e6c-401f-ae06-e7345d1f7862
 
 owLocaties:
   total: 5
@@ -54,10 +54,10 @@ owLocaties:
     new:
       - noemer: "Testgebied 1"
         gebied-code: "werkingsgebied-1"
-        geometrie_href: "lo-1-00000000-0000-0005-0000-000000000001"
+        geometrie_href: "6179858d-cbb6-4d44-ab26-1d843f777e0d"
       - noemer: "Testgebied 2"
         gebied-code: "werkingsgebied-2"
-        geometrie_href: "lo-1-00000000-0000-0005-0000-000000000002"
+        geometrie_href: "e773af24-1e6c-401f-ae06-e7345d1f7862"
     mutated: []
     terminated: []
 

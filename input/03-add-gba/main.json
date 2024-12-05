@@ -206,7 +206,7 @@
                 "OW_ID": "nl.imow-pv28.gebied.02798bb496504680aa1745f93d17a672",
                 "status": null,
                 "procedure_status": null,
-                "gio_ref": "lo-1-00000000-0000-0005-0000-000000000001",
+                "gio_ref": "6179858d-cbb6-4d44-ab26-1d843f777e0d",
                 "noemer": "Testgebied 1",
                 "mapped_geo_code": "werkingsgebied-1",
                 "ow_type": "OWGebied"
@@ -215,7 +215,7 @@
                 "OW_ID": "nl.imow-pv28.gebiedengroep.9ecebee30ed94dc893cc5734efbafcaa",
                 "status": null,
                 "procedure_status": null,
-                "gio_ref": "wg-1-00000000-0000-0005-0000-000000000001",
+                "gio_ref": "d00ccb51-a6d3-4e26-8300-3e0a05c21882",
                 "noemer": "Testgebied 1",
                 "mapped_geo_code": "werkingsgebied-1",
                 "gebieden": [
@@ -274,7 +274,7 @@
                 "OW_ID": "nl.imow-pv28.gebied.9b2dff7b646b49638694f90f9671ab1d",
                 "status": null,
                 "procedure_status": null,
-                "gio_ref": "lo-1-20000000-0000-0005-0000-000000000003",
+                "gio_ref": "d60b4bf6-5f46-4a33-9fd1-aaa4c47e6c7e",
                 "noemer": "Testgebied 3",
                 "mapped_geo_code": "werkingsgebied-3",
                 "ow_type": "OWGebied"
@@ -283,7 +283,7 @@
                 "OW_ID": "nl.imow-pv28.gebiedengroep.ca23e835864b451b954c455e7ac092e1",
                 "status": null,
                 "procedure_status": null,
-                "gio_ref": "wg-1-20000000-0000-0005-0000-000000000003",
+                "gio_ref": "935f817b-c051-4262-820a-5aaefc18496f",
                 "noemer": "Testgebied 3",
                 "mapped_geo_code": "werkingsgebied-3",
                 "gebieden": [
