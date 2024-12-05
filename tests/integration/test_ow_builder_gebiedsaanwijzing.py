@@ -41,13 +41,13 @@ class TestOWGebiedsaanwijzingBuilder:
             OW_ID="nl.imow-pv28.gebied.01",
             noemer="Gebied 1",
             mapped_geo_code="werkingsgebied-1",
-            gio_ref="lo-1-00000000-0000-0005-0000-000000000001",
+            gio_ref="3f53cd4c-b46c-48be-b060-326b30b554cd",
         )
         mock_gebiedengroep_1 = OWGebiedenGroep(
             OW_ID="nl.imow-pv28.gebiedengroep.01",
             noemer="Gebiedengroep 1",
             mapped_geo_code=mock_gebied_1.mapped_geo_code,
-            gio_ref="wg-1-00000000-0000-0005-0000-000000000001",
+            gio_ref="d869c993-6f7f-4504-9e93-c7b1a144310d",
             gebieden=[mock_gebied_1.OW_ID],
         )
         mock_divisie_1 = OWDivisieTekst(

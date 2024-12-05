@@ -24,6 +24,9 @@ class OWAnnotationService:
         self._state_used_wid_map = used_wid_map
         self._annotation_map: defaultdict = defaultdict(list)
 
+    def get_annotation_map(self) -> Dict[str, str]:
+        return self._annotation_map
+
     def build_annotation_map(self):
         """Build annotation map from policy objects instead of XML"""
         for object_code, policy_object in self._policy_object_repository._data.items():
@@ -127,5 +130,3 @@ class OWAnnotationService:
                 return value
         return ""
 
-    def get_annotation_map(self) -> Dict[str, str]:
-        return self._annotation_map
