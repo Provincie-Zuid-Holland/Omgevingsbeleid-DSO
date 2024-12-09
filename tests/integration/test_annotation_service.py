@@ -24,8 +24,8 @@ class TestOWAnnotationService:
             used_wid_map={
                 "beleidskeuze-1": "pv28_4__content_o_1",
                 "beleidskeuze-2": "pv28_4__content_o_2",
-                "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-1-ref": "mock-ref-werkingsgebied-1",
-                "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-2-ref": "mock-ref-werkingsgebied-2",
+                "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-1-ref": "pv28_4__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1",
+                "bijlage-werkingsgebieden-divisietekst-referentie-werkingsgebied-2-ref": "pv28_4__cmp_o_1__content_o_1__list_o_1__item_o_3__ref_o_1",
             },
         )
 
@@ -65,7 +65,6 @@ class TestOWAnnotationService:
         self.annotation_service.build_annotation_map()
         annotation_map = self.annotation_service.get_annotation_map()
 
-        # pv28_3__div_o_2__div_o_1__div_o_1__content_o_3__ref_o_1
         # Expecting one gebied annotation and one GBA annotation under the same object_code
         expected_annotations = [
             {
@@ -79,8 +78,7 @@ class TestOWAnnotationService:
             {
                 "type_annotation": "gebiedsaanwijzing",
                 "tag": "IntIoRef",
-                "ref": "mock-ref-werkingsgebied-1",
-                "wid": "pv28_4__content_o_1__ref_o_1",
+                "wid": "hark",
                 "werkingsgebied_code": "werkingsgebied-1",
                 "groep": "AandachtsgebiedLuchtkwaliteit",
                 "type": "Lucht",

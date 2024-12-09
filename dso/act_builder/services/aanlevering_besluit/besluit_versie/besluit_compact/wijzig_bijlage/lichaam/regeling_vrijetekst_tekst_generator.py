@@ -1,3 +1,4 @@
+import re
 from copy import copy
 from dataclasses import dataclass
 from typing import Dict
@@ -35,6 +36,9 @@ class RegelingVrijetekstTekstGenerator:
 
         tekst = self._add_ewids(tekst)
         self._set_debug("text-stage-ewids", tekst)
+
+        tekst = self._resolve_intiorefs(tekst)
+        self._set_debug("text-stage-intiorefs", tekst)
 
         tekst = self._remove_hints(tekst)
         self._set_debug("text-stage-deleted-hints", tekst)
@@ -87,11 +91,29 @@ class RegelingVrijetekstTekstGenerator:
         result: str = self._state_manager.act_ewid_service.add_ewids(xml_data)
         return result
 
+    def _resolve_intiorefs(self, xml_data: str) -> str:
+        # updates IntIoRef.ref for gebiedsaanwijzingen after EWIDs are set.
+        parser = etree.XMLParser(remove_blank_text=False, encoding="utf-8")
+        root = etree.fromstring(xml_data.encode("utf-8"), parser)
+
+        data_hinted_elements = root.xpath("//*[@data-hint-locatie]")
+        for element in data_hinted_elements:
+            gba_locatie = element.get("data-hint-locatie", None)
+            wid_ref_key_pattern = f"bijlage-werkingsgebieden-divisietekst-referentie-{gba_locatie}-ref"
+            for key, value in self._state_manager.act_ewid_service.get_state_used_wid_map().items():
+                if re.match(wid_ref_key_pattern, key):
+                    element.attrib["ref"] = value
+                    break
+
+        output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
+        return output
+
     def _remove_hints(self, xml_data: str) -> str:
         attributes = [
             "data-hint-object-code",
             "data-hint-target-object-code",
             "data-hint-wid-code",
+            "data-hint-locatie",
         ]
 
         root = etree.fromstring(xml_data)

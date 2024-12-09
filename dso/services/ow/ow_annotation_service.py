@@ -102,13 +102,12 @@ class OWAnnotationService:
 
         for a_tag in soup.find_all("a", attrs={"data-hint-type": "gebiedsaanwijzing"}):
             locatie = a_tag["data-hint-locatie"]
-            gba_wid = self._get_ref_from_wid_map(locatie)
+            gba_wid = "hark" # TODO: Find GBA WID somehow
 
             annotation = {
                 "type_annotation": "gebiedsaanwijzing",
                 "tag": "IntIoRef",
-                "ref": gba_wid,
-                "wid": f"{gba_wid}_ref",  # Append _ref to the gebiedsaanwijzing wid
+                "wid": gba_wid,
                 "werkingsgebied_code": locatie,
                 "groep": a_tag["data-hint-gebiedengroep"],
                 "type": a_tag["data-hint-gebiedsaanwijzingtype"],
@@ -121,12 +120,3 @@ class OWAnnotationService:
             }
 
             self._annotation_map[object_code].append(annotation)
-
-    def _get_ref_from_wid_map(self, locatie: str) -> str:
-        """Helper to get ref from wid map using locatie pattern"""
-        pattern = f"bijlage-werkingsgebieden-divisietekst-referentie-{locatie}-ref"
-        for key, value in self._state_used_wid_map.items():
-            if re.match(pattern, key):
-                return value
-        return ""
-

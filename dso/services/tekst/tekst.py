@@ -367,7 +367,8 @@ class GebiedsaanwijzingRef(SimpleElement):
             soup=soup,
             tag_name_overwrite="IntIoRef",
             tag_attrs_overwrite={
-                "ref": self.href,
+                "ref": self.href,  # will be overwritten with location wid
+                "data-hint-locatie": self.gebiedsaanwijzing,
             },
         )
         return result
