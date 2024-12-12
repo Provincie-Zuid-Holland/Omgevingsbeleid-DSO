@@ -100,9 +100,11 @@ class OWAnnotationService:
         soup = BeautifulSoup(policy_dict["Description"], "html.parser")
         parent_wid = self._state_used_wid_map.get(object_code)
 
-        for a_tag in soup.find_all("a", attrs={"data-hint-type": "gebiedsaanwijzing"}):
+        gba_list = soup.find_all("a", attrs={"data-hint-type": "gebiedsaanwijzing"})
+
+        for idx, a_tag in enumerate(gba_list, start=1):
             locatie = a_tag["data-hint-locatie"]
-            gba_wid = "hark" # TODO: Find GBA WID somehow
+            gba_wid = self._state_used_wid_map.get(f"{object_code}-gebiedsaanwijzing-{idx}")
 
             annotation = {
                 "type_annotation": "gebiedsaanwijzing",
