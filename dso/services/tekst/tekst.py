@@ -14,9 +14,11 @@ def extract_data_hint(text: str, regex: str) -> Optional[str]:
     result = matched.group(1)
     return result
 
+
 def extract_object_code(text: str) -> Optional[str]:
     # format [OBJECT-CODE:object-code]
     return extract_data_hint(text, r"\[OBJECT-CODE:(.*?)\]")
+
 
 class AsXmlTrait(metaclass=ABCMeta):
     @abstractmethod
@@ -34,6 +36,9 @@ class IsEmptyTrait(metaclass=ABCMeta):
 
 
 class Element(AsXmlTrait, metaclass=ABCMeta):
+    def __init__(self):
+        self.parent: Optional[Element] = None
+
     def consume_children(self, children: List[Any]):
         for element in children:
             if isinstance(element, Comment):
@@ -77,6 +82,7 @@ class SimpleElement(Element, metaclass=ABCMeta):
     element_generators: List[ElementGenerator] = []
 
     def __init__(self, xml_tag_name: str = "", xml_tag_attrs: Dict[str, str] = {}):
+        super().__init__()
         self.contents: List[Union[Element, str]] = []
         self.xml_tag_name: str = xml_tag_name
         self.xml_tag_attrs: Dict[str, str] = xml_tag_attrs
@@ -89,6 +95,7 @@ class SimpleElement(Element, metaclass=ABCMeta):
                 tag=tag,
                 context=self._get_generate_context(),
             )
+            content.parent = self
             content.consume_children(tag.children)
             self.contents.append(content)
             return None
@@ -362,12 +369,23 @@ class GebiedsaanwijzingRef(SimpleElement):
         self.gebiedsaanwijzing: Optional[str] = tag.get("data-hint-locatie", None)
 
     def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+        # traverse upwards to divisietekst parent
+        parent_element = self.parent
+        while parent_element is not None and not isinstance(parent_element, Divisietekst):
+            parent_element = parent_element.parent
+        obj_code = parent_element.object_code if parent_element is not None else None
+
+        if self.parent and hasattr(self.parent, "contents"):
+            siblings = [child for child in self.parent.contents if isinstance(child, GebiedsaanwijzingRef)]
+            gba_index = siblings.index(self) + 1
+
         result = SimpleElement.as_xml(
             self,
             soup=soup,
             tag_name_overwrite="IntIoRef",
             tag_attrs_overwrite={
                 "ref": self.href,  # will be overwritten with location wid
+                "data-hint-wid-code": f"{obj_code}-gebiedsaanwijzing-{gba_index}",
                 "data-hint-locatie": self.gebiedsaanwijzing,
             },
         )
@@ -465,6 +483,7 @@ class Thead(SimpleElement):
 
 class Table(Element):
     def __init__(self, tag: Optional[Tag] = None):
+        super().__init__()
         self.columns: int = int(tag.attrs.get("data-columns"))
         self.thead: Optional[Thead] = None
         self.tbody: Optional[Tbody] = None
@@ -589,20 +608,15 @@ class Lijst(SimpleElement):
 
 class Divisietekst(Element):
     def __init__(self, tag: Optional[Tag] = None):
+        super().__init__()
         self.kop: Optional[Kop] = None
         self.inhoud: Optional[Inhoud] = None
         self.wid_code: Optional[str] = None
         self.object_code: Optional[str] = None
-        self.gebied_code: Optional[str] = None
-        self.ambtsgebied: Optional[bool] = None
-        self.thema_waardes: Optional[List[str]] = None
-        self.hoofdlijnen: List[Dict[str, str]] = []
 
         if tag is not None:
             self.wid_code = tag.get("data-hint-wid-code", None)
             self.object_code = tag.get("data-hint-object-code", None)
-            self.gebied_code = tag.get("data-hint-gebied-code", None)
-            self.ambtsgebied = tag.get("data-hint-ambtsgebied", None)
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         # A div requires a new Divisie which a Divisietekst can not create
@@ -620,6 +634,7 @@ class Divisietekst(Element):
 
         # Any other tags will just be send in a Inhoud
         inhoud: Inhoud = self._get_inhoud()
+        inhoud.parent = self
         leftoverTag: LeftoverTag = inhoud.consume_tag(tag)
 
         return leftoverTag
@@ -665,6 +680,7 @@ class Divisietekst(Element):
 
 class Divisie(Element):
     def __init__(self, tag: Optional[Tag] = None):
+        super().__init__()
         self.kop: Optional[Kop] = None
         self.contents: List[Union["Divisie", Divisietekst]] = []
         self.wid_code = tag.get("data-hint-wid-code", None)
@@ -690,6 +706,7 @@ class Divisie(Element):
                 #     return leftover
                 # else:
                 content: Divisietekst = Divisietekst()
+                content.parent = self
                 self.contents.append(content)
                 leftover = content.consume_tag(tag)
                 return leftover
@@ -702,6 +719,7 @@ class Divisie(Element):
                 # leftover = content.consume_tag(tag)
                 # @note: scrapped above, i think we should create a new divisietekst in this case
                 content: Divisietekst = Divisietekst()
+                content.parent = self
                 self.contents.append(content)
                 leftover = content.consume_tag(tag)
                 return leftover
@@ -812,6 +830,7 @@ class Lichaam(SimpleElement):
         else:
             content: Element = Divisie(tag)
 
+        content.parent = self
         content.consume_children(tag.children)
         self.contents.append(content)
         return None
