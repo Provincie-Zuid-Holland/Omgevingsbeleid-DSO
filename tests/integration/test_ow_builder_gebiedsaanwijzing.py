@@ -114,7 +114,7 @@ class TestOWGebiedsaanwijzingBuilder:
                     "tag": "Divisietekst",
                     "wid": "pv28_4__content_o_2",  # existing ow annotation
                     "object_code": "beleidskeuze-2",  # existing policy obj code
-                }, 
+                },
                 {
                     "type_annotation": "gebiedsaanwijzing",
                     "wid": "pv28_4__content_o_2__ref_o_1",
@@ -128,7 +128,7 @@ class TestOWGebiedsaanwijzingBuilder:
                         "gebied-code": None,
                         "uses_ambtsgebied": True,
                     },
-                }
+                },
             ],
             # new in state
             "beleidskeuze-3": [
@@ -137,7 +137,7 @@ class TestOWGebiedsaanwijzingBuilder:
                     "tag": "Divisietekst",
                     "wid": "pv28_4__content_o_3",
                     "object_code": "beleidskeuze-3",
-                }, 
+                },
                 {
                     "type_annotation": "gebiedsaanwijzing",
                     "wid": "pv28_4__content_o_3__ref_o_1",
@@ -151,7 +151,8 @@ class TestOWGebiedsaanwijzingBuilder:
                         "gebied-code": None,
                         "uses_ambtsgebied": True,
                     },
-                }],
+                },
+            ],
         }
         self.ow_repository = OWStateRepository(ow_input_data=mock_ow_data)
 
@@ -173,15 +174,13 @@ class TestOWGebiedsaanwijzingBuilder:
         self.ow_repository._new_ow_objects = [new_divisie, new_ow_tekstdeel]
 
         self.builder = OwGebiedsaanwijzingBuilder(
-            context=self.context, 
-            annotation_lookup_map=self.annotation_lookup_map, 
-            ow_repository=self.ow_repository
+            context=self.context, annotation_lookup_map=self.annotation_lookup_map, ow_repository=self.ow_repository
         )
 
     def test_builder_init(self):
         assert self.builder._context == self.context
         # ensure filter correct - should find 2 gebiedsaanwijzing annotations
-        assert len(self.builder._annotation_lookup) == 2  
+        assert len(self.builder._annotation_lookup) == 2
         assert self.builder._ow_repository == self.ow_repository
 
     def test_handle_ow_objects(self, mock_ow_objects):

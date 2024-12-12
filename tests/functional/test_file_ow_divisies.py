@@ -4,11 +4,8 @@ import pytest
 from lxml import etree
 
 # These scenarios will run as input for every test case
-TEST_SCENARIO_DIRS = [
-    "./input/01-initial",
-    "./input/02-mutation",
-    "./input/03-add-gba"
-]
+TEST_SCENARIO_DIRS = ["./input/01-initial", "./input/02-mutation", "./input/03-add-gba"]
+
 
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
 @pytest.mark.usefixtures("initialize_dso_builder")
@@ -44,8 +41,8 @@ class TestOWDivisiesFileOutput:
 
         for div_id in ow_divisie_ids:
             tekstdeel = root.xpath(
-                f".//vt:Tekstdeel[vt:divisieaanduiding/vt:DivisietekstRef/@xlink:href='{div_id}']", namespaces=namespaces
+                f".//vt:Tekstdeel[vt:divisieaanduiding/vt:DivisietekstRef/@xlink:href='{div_id}']",
+                namespaces=namespaces,
             )
             assert tekstdeel, f"Expected a new Tekstdeel with DivisietekstRef {div_id}."
             # TODO: assert correct locationRef?
-

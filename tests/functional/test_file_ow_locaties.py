@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from typing import List, Optional
 import pytest
@@ -10,6 +9,7 @@ TEST_SCENARIO_DIRS = [
     "./input/02-mutation",
     "./input/03-add-gba",
 ]
+
 
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
 @pytest.mark.usefixtures("initialize_dso_builder")

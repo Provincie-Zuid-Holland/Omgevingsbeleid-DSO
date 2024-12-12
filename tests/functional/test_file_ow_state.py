@@ -1,8 +1,11 @@
 from typing import Set
 import pytest
 
+from dso.act_builder.builder import Builder
+from dso.act_builder.services.ow.ow_builder_facade import OwBuilderFacade
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.services.ow.models import OWGebiedenGroep, OWGebied, OWTekstdeel, OWDivisieTekst, OWDivisie
+from dso.services.ow.ow_annotation_service import OWAnnotationService
 
 
 # These scenarios will be testing with functional test case
@@ -21,6 +24,7 @@ class TestOWState:
     maintaining expected results files.
     """
 
+    dso_builder: Builder
     state_manager: StateManager
 
     def test_unused_locations_terminated(self):
@@ -134,7 +138,9 @@ class TestOWState:
         """
         loop the annotation map and check if the expected OW objects are present
         """
-        assert len(self.state_manager.annotation_ref_lookup_map) > 0, "No annotations were added to the state manager"
+        ow_builder_facade: OwBuilderFacade = self.dso_builder._services[2]
+        ow_annotation_service: OWAnnotationService = ow_builder_facade.annotation_service
+        annotation_map = ow_annotation_service.get_annotation_map()
         assert self.state_manager.ow_object_state is not None, "OW object state expected to be set"
 
         annotation_type_count = {
@@ -143,7 +149,7 @@ class TestOWState:
             "gebiedsaanwijzing": 0,
         }
 
-        for object_code, annotations in self.state_manager.annotation_ref_lookup_map.items():
+        for object_code, annotations in annotation_map.items():
             for annotation_ref in annotations:
                 match annotation_ref["type_annotation"]:
                     case "gebied":
@@ -171,7 +177,9 @@ class TestOWState:
                             and obj.wid == annotation_ref["wid"]
                             for obj in self.state_manager.ow_object_state.ow_objects.values()
                         )
-                        assert ow_divisie_found, f"Expected ambtsgebied annotated OWDivisie with object_code {object_code}"
+                        assert (
+                            ow_divisie_found
+                        ), f"Expected ambtsgebied annotated OWDivisie with object_code {object_code}"
                     case "gebiedsaanwijzing":
                         annotation_type_count["gebiedsaanwijzing"] += 1
                         # TOOD: add assertions for gebiedsaanwijzing

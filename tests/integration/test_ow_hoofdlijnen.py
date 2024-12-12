@@ -85,14 +85,14 @@ class TestOWHoofdlijnBuilder:
             "beleidskeuze-1": [
                 {
                     "type_annotation": "ambtsgebied",
-                    "tag": "Divisietekst", 
+                    "tag": "Divisietekst",
                     "wid": "pv28_4__content_o_1",
                     "object_code": "beleidskeuze-1",
                 },
                 {
                     "type_annotation": "thema",
                     "tag": "Divisietekst",
-                    "wid": "pv28_4__content_o_1", 
+                    "wid": "pv28_4__content_o_1",
                     "object_code": "beleidskeuze-1",
                     "thema_waardes": ["geluid"],
                 },
@@ -101,8 +101,8 @@ class TestOWHoofdlijnBuilder:
                     "tag": "Divisietekst",
                     "wid": "pv28_4__content_o_1",
                     "object_code": "beleidskeuze-1",
-                    "hoofdlijnen": [{'soort': 'hoofdlijn_soort1', 'naam': 'Example Value 1'}],
-                }
+                    "hoofdlijnen": [{"soort": "hoofdlijn_soort1", "naam": "Example Value 1"}],
+                },
             ],
             "beleidskeuze-2": [
                 {
@@ -116,10 +116,7 @@ class TestOWHoofdlijnBuilder:
                     "tag": "Divisietekst",
                     "wid": "pv28_4__content_o_2",
                     "object_code": "beleidskeuze-2",
-                    "thema_waardes": [
-                        "bodem",
-                        "water"
-                    ],
+                    "thema_waardes": ["bodem", "water"],
                 },
                 {
                     "type_annotation": "hoofdlijn",
@@ -127,10 +124,10 @@ class TestOWHoofdlijnBuilder:
                     "wid": "pv28_4__content_o_2",
                     "object_code": "beleidskeuze-2",
                     "hoofdlijnen": [
-                        {'soort': 'hoofdlijn_soort1', 'naam': 'Example Value 2'},
-                        {'soort': 'hoofdlijn_soort1', 'naam': 'Example Value 3'}
+                        {"soort": "hoofdlijn_soort1", "naam": "Example Value 2"},
+                        {"soort": "hoofdlijn_soort1", "naam": "Example Value 3"},
                     ],
-                }
+                },
             ],
             "beleidskeuze-3": [
                 {
@@ -141,19 +138,17 @@ class TestOWHoofdlijnBuilder:
                 },
                 {
                     "type_annotation": "hoofdlijn",
-                    "tag": "Divisietekst", 
+                    "tag": "Divisietekst",
                     "wid": "pv28_4__content_o_3",
                     "object_code": "beleidskeuze-3",
-                    "hoofdlijnen": [{'soort': 'hoofdlijn_soort1', 'naam': 'Example Value 1'}],
-                }
-            ]
+                    "hoofdlijnen": [{"soort": "hoofdlijn_soort1", "naam": "Example Value 1"}],
+                },
+            ],
         }
 
         self.ow_repository = OWStateRepository(ow_input_data=mock_ow_data)
         self.builder = OwHoofdlijnBuilder(
-            context=self.context,
-            annotation_lookup_map=self.annotation_lookup_map,
-            ow_repository=self.ow_repository
+            context=self.context, annotation_lookup_map=self.annotation_lookup_map, ow_repository=self.ow_repository
         )
 
     def test_builder_init(self):
@@ -168,7 +163,7 @@ class TestOWHoofdlijnBuilder:
 
         new_objects = self.ow_repository._new_ow_objects
         assert len(new_objects) == 3  # 3 unique hoofdlijnen across both tekstdelen
-        
+
         for hoofdlijn in new_objects:
             assert isinstance(hoofdlijn, OWHoofdlijn)
             assert hoofdlijn.soort == "hoofdlijn_soort1"
@@ -177,7 +172,7 @@ class TestOWHoofdlijnBuilder:
     def test_handle_ow_objects_updates_tekstdeel_with_single_hoofdlijn(self, mock_ow_objects):
         """Test that tekstdelen with single hoofdlijn are updated correctly"""
         self.builder.handle_ow_object_changes()
-        
+
         mutated_objects = self.ow_repository._mutated_ow_objects
         new_objects = self.ow_repository._new_ow_objects
 
