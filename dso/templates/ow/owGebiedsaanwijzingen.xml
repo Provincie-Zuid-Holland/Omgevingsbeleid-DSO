@@ -35,7 +35,7 @@
                   <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                   {% endif %}
                   <ga:identificatie>{{ ow_object.OW_ID }}</ga:identificatie>
-                  <ga:type>{{ ow_object.type_.value }}</ga:type>
+                  <ga:type>{{ ow_object.type_ }}</ga:type>
                   <ga:naam>{{ ow_object.naam }}</ga:naam>
                   <ga:groep>{{ ow_object.groep}}</ga:groep>
                   <ga:locatieaanduiding>
@@ -57,7 +57,7 @@
                   <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                   {% endif %}
                   <ga:identificatie>{{ ow_object.OW_ID }}</ga:identificatie>
-                  <ga:type>{{ ow_object.type_.value }}</ga:type>
+                  <ga:type>{{ ow_object.type_ }}</ga:type>
                   <ga:naam>{{ ow_object.naam }}</ga:naam>
                   <ga:groep>{{ ow_object.groep}}</ga:groep>
                   <ga:locatieaanduiding>
@@ -82,7 +82,7 @@
                   <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
                   {% endif %}
                   <ga:identificatie>{{ ow_object.OW_ID }}</ga:identificatie>
-                  <ga:type>{{ ow_object.type_.value }}</ga:type>
+                  <ga:type>{{ ow_object.type_ }}</ga:type>
                   <ga:naam>{{ ow_object.naam }}</ga:naam>
                   <ga:groep>{{ ow_object.groep}}</ga:groep>
                   <ga:locatieaanduiding>

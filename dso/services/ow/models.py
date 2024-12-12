@@ -2,11 +2,13 @@ from abc import abstractmethod
 from typing import Dict, List, Optional, Set
 from uuid import UUID
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, root_validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
 from .ow_id import check_ow_id_imowtype
-from .waardelijsten.imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
+# from .waardelijsten.imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
+from .waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING
+from .waardelijsten.waardelijsten import TYPE_GEBIEDSAANWIJZING_VALUES
 
 
 class OWObject(BaseModel):
@@ -126,42 +128,40 @@ class OWTekstdeel(OWObject):
 
 class OWGebiedsaanwijzing(OWObject):
     naam: str  # locatie/gio noemer
-    type_: TypeGebiedsaanwijzingEnum  # TypeGebiedsaanwijzing waarde
-    groep: str  # gebiedsaanwijzinggroep waarde
+    type_: str 
+    groep: str
     locaties: List[str]  # locatieaanduiding + LocatieRefs
     wid: str
 
     @validator("type_", pre=True)
     def validate_type(cls, value):
-        if isinstance(value, str):
-            try:
-                return TypeGebiedsaanwijzingEnum[value]
-            except KeyError:
-                for enum_member in TypeGebiedsaanwijzingEnum:
-                    if enum_member.value == value:
-                        return enum_member
-        return value
+        for entry in TYPE_GEBIEDSAANWIJZING_VALUES.waarden.waarde:
+            if value == entry.uri or value == entry.term or value == entry.label:
+                return entry.uri
+        raise ValueError(f"'{value}' is not a valid TypeGebiedsaanwijzing")
 
     @validator("groep", pre=True)
     def validate_groep(cls, value, values):
-        if "type_" in values:
-            type_enum = values["type_"]
-            groep_enum_class = GEBIEDSAANWIJZING_TO_GROEP_MAPPING[type_enum]
-            if isinstance(value, str):
-                try:
-                    return groep_enum_class[value]
-                except KeyError:
-                    for enum_member in groep_enum_class:
-                        if enum_member.value == value:
-                            return enum_member
-        raise ValueError(f"'{value}' is not a valid value for the groep field")
+        if "type_" not in values:
+            raise ValueError("type_ must be validated before groep")
+
+        type_uri = values["type_"]
+        groep_value_list = GEBIEDSAANWIJZING_TO_GROEP_MAPPING.get(type_uri)
+        if not groep_value_list:
+            raise ValueError(f"No groep mapping found for type '{type_uri}'")
+
+        # search for a matching uri, term, or label in the groep_value_list
+        for entry in groep_value_list.waarden.waarde:
+            if value == entry.uri or value == entry.term or value == entry.label:
+                return entry.uri
+
+        raise ValueError(f"'{value}' is not a valid groep value for type '{type_uri}'")
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
-        return all(
-            locatie_id in used_ow_ids for locatie_id in self.locaties
-        ) and self.OW_ID in reverse_ref_index.get(  # no dead location refs
-            "OWTekstdeel", set()
-        )  # has ref from tekstdeel
+        return (
+            all(locatie_id in used_ow_ids for locatie_id in self.locaties) and
+            self.OW_ID in reverse_ref_index.get("OWTekstdeel", set())
+        )
 
 
 class OWHoofdlijn(OWObject):
