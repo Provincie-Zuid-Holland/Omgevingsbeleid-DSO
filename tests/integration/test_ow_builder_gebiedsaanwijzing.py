@@ -41,13 +41,13 @@ class TestOWGebiedsaanwijzingBuilder:
             OW_ID="nl.imow-pv28.gebied.01",
             noemer="Gebied 1",
             mapped_geo_code="werkingsgebied-1",
-            gio_ref="lo-1-00000000-0000-0005-0000-000000000001",
+            gio_ref="3f53cd4c-b46c-48be-b060-326b30b554cd",
         )
         mock_gebiedengroep_1 = OWGebiedenGroep(
             OW_ID="nl.imow-pv28.gebiedengroep.01",
             noemer="Gebiedengroep 1",
             mapped_geo_code=mock_gebied_1.mapped_geo_code,
-            gio_ref="wg-1-00000000-0000-0005-0000-000000000001",
+            gio_ref="d869c993-6f7f-4504-9e93-c7b1a144310d",
             gebieden=[mock_gebied_1.OW_ID],
         )
         mock_divisie_1 = OWDivisieTekst(
@@ -108,45 +108,51 @@ class TestOWGebiedsaanwijzingBuilder:
         )
 
         self.annotation_lookup_map = {
-            "beleidskeuze-2": {
-                "type_annotation": "ambtsgebied",
-                "tag": "Divisietekst",
-                "wid": "pv28_4__content_o_2",  # existing ow annotation
-                "object_code": "beleidskeuze-2",  # existing policy obj code
-            },
-            "pv28_4__content_o_2__ref_o_1": {
-                "type_annotation": "gebiedsaanwijzing",
-                "ref": "mock-ref-werkingsgebied-1",
-                "werkingsgebied_code": "werkingsgebied-1",
-                "groep": "NationaalLandschap",
-                "type": "Landschap",
-                "parent_div": {
-                    "wid": "pv28_4__content_o_2",
-                    "object-code": "beleidskeuze-2",
-                    "gebied-code": None,
-                    "uses_ambtsgebied": True,
+            "beleidskeuze-2": [
+                {
+                    "type_annotation": "ambtsgebied",
+                    "tag": "Divisietekst",
+                    "wid": "pv28_4__content_o_2",  # existing ow annotation
+                    "object_code": "beleidskeuze-2",  # existing policy obj code
                 },
-            },
+                {
+                    "type_annotation": "gebiedsaanwijzing",
+                    "wid": "pv28_4__content_o_2__ref_o_1",
+                    "ref": "mock-ref-werkingsgebied-1",
+                    "werkingsgebied_code": "werkingsgebied-1",
+                    "groep": "NationaalLandschap",
+                    "type": "Landschap",
+                    "parent_div": {
+                        "wid": "pv28_4__content_o_2",
+                        "object-code": "beleidskeuze-2",
+                        "gebied-code": None,
+                        "uses_ambtsgebied": True,
+                    },
+                },
+            ],
             # new in state
-            "beleidskeuze-3": {
-                "type_annotation": "ambtsgebied",
-                "tag": "Divisietekst",
-                "wid": "pv28_4__content_o_3",
-                "object_code": "beleidskeuze-3",
-            },
-            "pv28_4__content_o_3__ref_o_1": {
-                "type_annotation": "gebiedsaanwijzing",
-                "ref": "mock-ref-werkingsgebied-1",
-                "werkingsgebied_code": "werkingsgebied-1",
-                "groep": "NationaalLandschap",
-                "type": "Landschap",
-                "parent_div": {
+            "beleidskeuze-3": [
+                {
+                    "type_annotation": "ambtsgebied",
+                    "tag": "Divisietekst",
                     "wid": "pv28_4__content_o_3",
-                    "object-code": "beleidskeuze-3",
-                    "gebied-code": None,
-                    "uses_ambtsgebied": True,
+                    "object_code": "beleidskeuze-3",
                 },
-            },
+                {
+                    "type_annotation": "gebiedsaanwijzing",
+                    "wid": "pv28_4__content_o_3__ref_o_1",
+                    "ref": "mock-ref-werkingsgebied-1",
+                    "werkingsgebied_code": "werkingsgebied-1",
+                    "groep": "NationaalLandschap",
+                    "type": "Landschap",
+                    "parent_div": {
+                        "wid": "pv28_4__content_o_3",
+                        "object-code": "beleidskeuze-3",
+                        "gebied-code": None,
+                        "uses_ambtsgebied": True,
+                    },
+                },
+            ],
         }
         self.ow_repository = OWStateRepository(ow_input_data=mock_ow_data)
 
@@ -173,8 +179,8 @@ class TestOWGebiedsaanwijzingBuilder:
 
     def test_builder_init(self):
         assert self.builder._context == self.context
-        assert len(self.builder._annotation_lookup) == 2  # ensure filter correct
-        assert self.builder._used_object_types == set()
+        # ensure filter correct - should find 2 gebiedsaanwijzing annotations
+        assert len(self.builder._annotation_lookup) == 2
         assert self.builder._ow_repository == self.ow_repository
 
     def test_handle_ow_objects(self, mock_ow_objects):

@@ -10,6 +10,7 @@ TEST_SCENARIO_DIRS = [
     "./input/03-add-gba",
 ]
 
+
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
 @pytest.mark.usefixtures("initialize_dso_builder")
 class TestPackageFileOutput:
@@ -19,6 +20,7 @@ class TestPackageFileOutput:
     uses the expected_results.yaml/json file for each scenario folder to
     validate the xml output.
     """
+
     output_dir: Optional[Path] = None
 
     def test_expected_files_exist(self, expected_results):

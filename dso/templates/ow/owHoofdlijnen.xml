@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ow-dc:owBestand xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:ga="http://www.geostandaarden.nl/imow/gebiedsaanwijzing"
+   xmlns:da="http://www.geostandaarden.nl/imow/datatypenalgemeen"
+   xmlns:sl="http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek"
+   xmlns:ow-dc="http://www.geostandaarden.nl/imow/bestanden/deelbestand"
+   xmlns:ow="http://www.geostandaarden.nl/imow/owobject"
+   xmlns:rol="http://www.geostandaarden.nl/imow/regelsoplocatie"
+   xmlns:rg="http://www.geostandaarden.nl/imow/regelingsgebied"
+   xmlns:p="http://www.geostandaarden.nl/imow/pons"
+   xmlns:l="http://www.geostandaarden.nl/imow/locatie"
+   xmlns:r="http://www.geostandaarden.nl/imow/regels"
+   xmlns:k="http://www.geostandaarden.nl/imow/kaart"
+   xmlns:vt="http://www.geostandaarden.nl/imow/vrijetekst"
+   xmlns:op="http://www.geostandaarden.nl/imow/opobject"
+   xsi:schemaLocation="http://www.geostandaarden.nl/imow/bestanden/deelbestand https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/bestanden-ow/deelbestand-ow/IMOW_Deelbestand.xsd">
+   <sl:standBestand>
+      <sl:dataset>provincie Zuid-holland</sl:dataset>
+      <sl:inhoud>
+         <sl:gebied>provincie Zuid-holland</sl:gebied>
+         <sl:leveringsId>{{ data.levering_id }}</sl:leveringsId>
+         <sl:objectTypen>
+            <sl:objectType>Hoofdlijn</sl:objectType>
+         </sl:objectTypen>
+      </sl:inhoud>
+
+      <!-- new -->
+      {% for ow_object in data.new_ow_objects %}
+      <sl:stand>
+         <ow-dc:owObject>
+            <vt:Hoofdlijn>
+               {% if ow_object.procedure_status is not none %}
+               <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+               {% endif %}
+               <vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
+               <vt:soort>{{ ow_object.soort }}</vt:soort>
+               <vt:naam>{{ ow_object.naam }}</vt:naam>
+            </vt:Hoofdlijn>
+         </ow-dc:owObject>
+      </sl:stand>
+      {% endfor %}
+
+      <!-- mutated -->
+      {% for ow_object in data.mutated_ow_objects %}
+      <sl:stand>
+         <ow-dc:owObject>
+            <vt:Hoofdlijn>
+               {% if ow_object.procedure_status is not none %}
+               <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+               {% endif %}
+               <vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
+               <vt:soort>{{ ow_object.soort }}</vt:soort>
+               <vt:naam>{{ ow_object.naam }}</vt:naam>
+            </vt:Hoofdlijn>
+         </ow-dc:owObject>
+      </sl:stand>
+      {% endfor %}
+
+      <!-- terminated -->
+      {% for ow_object in data.terminated_ow_objects %}
+      <sl:stand>
+         <ow-dc:owObject>
+            <vt:Hoofdlijn>
+               {% if ow_object.status is not none %}
+               <ow:status>{{ ow_object.status.value }}</ow:status>
+               {% endif %}
+               {% if ow_object.procedure_status is not none %}
+               <ow:procedurestatus>{{ ow_object.procedure_status.value }}</ow:procedurestatus>
+               {% endif %}
+               <vt:identificatie>{{ ow_object.OW_ID }}</vt:identificatie>
+               <vt:soort>{{ ow_object.soort }}</vt:soort>
+               <vt:naam>{{ ow_object.naam }}</vt:naam>
+            </vt:Hoofdlijn>
+         </ow-dc:owObject>
+      </sl:stand>
+      {% endfor %}
+   </sl:standBestand>
+</ow-dc:owBestand> 

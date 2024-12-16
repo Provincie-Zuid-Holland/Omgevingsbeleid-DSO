@@ -2,11 +2,13 @@ from abc import abstractmethod
 from typing import Dict, List, Optional, Set
 from uuid import UUID
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, root_validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
-from .imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
 from .ow_id import check_ow_id_imowtype
+# from .waardelijsten.imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
+from .waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING
+from .waardelijsten.waardelijsten import TYPE_GEBIEDSAANWIJZING_VALUES
 
 
 class OWObject(BaseModel):
@@ -70,15 +72,12 @@ class OWGebiedenGroep(OWLocatie):
     gebieden: List[str] = []
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
-        # tests if gebieden are used
-        if not all(gebied_id in used_ow_ids for gebied_id in self.gebieden):
-            return False
-        # tests if referenced by tekstdeel or gebiedsaanwijzing
-        tekstdeel_refs = reverse_ref_index.get("OWTekstdeel", set())
-        gebiedsaanwijzing_refs = reverse_ref_index.get("OWGebiedsaanwijzing", set())
-        if self.OW_ID not in tekstdeel_refs and self.OW_ID not in gebiedsaanwijzing_refs:
-            return False
-        return True
+        return all(
+            gebied_id in used_ow_ids for gebied_id in self.gebieden
+        ) and (  # no dead gebied refs  # has ref from tekstdeel or gebiedsaanwijzing
+            self.OW_ID in reverse_ref_index.get("OWTekstdeel", set())
+            or self.OW_ID in reverse_ref_index.get("OWGebiedsaanwijzing", set())
+        )
 
 
 class OWDivisie(OWObject):
@@ -99,13 +98,13 @@ class OWDivisieTekst(OWObject):
 
 class OWTekstdeel(OWObject):
     divisie: str  # imow DivisieRef / DivisieTekstRef
-    locaties: List[str]  # imow LocatieRef
-    gebiedsaanwijzingen: Optional[List[str]] = Field(default_factory=list)  # imow GebiedsaanwijzingRef
+    locaties: List[str] = Field(default_factory=list)
+    gebiedsaanwijzingen: Optional[List[str]] = Field(default_factory=list)
+    themas: List[str] = Field(default_factory=list)
+    hoofdlijnen: List[str] = Field(default_factory=list)
 
     # idealisatie: Optional[str]
-    # thema: Optional[str] = None
     # kaartaanduiding: Optional[str] = None
-    # hoofdlijnaanduiding: Optional[str] = None
 
     @property
     def divisie_type(self) -> str:
@@ -113,15 +112,13 @@ class OWTekstdeel(OWObject):
         return result
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
-        if self.divisie not in used_ow_ids:
-            return False
-        if not all(locatie_id in used_ow_ids for locatie_id in self.locaties):
-            return False
-        if self.gebiedsaanwijzingen and not all(
-            gebiedsaanwijzing_id in used_ow_ids for gebiedsaanwijzing_id in self.gebiedsaanwijzingen
-        ):
-            return False
-        return True
+        return (
+            self.divisie in used_ow_ids  # divisie exists
+            and all(locatie_id in used_ow_ids for locatie_id in self.locaties)  # no dead location refs
+            and all(
+                gebiedsaanwijzing_id in used_ow_ids for gebiedsaanwijzing_id in (self.gebiedsaanwijzingen or [])
+            )  # no dead gebiedsaanwijzing refs
+        )
 
     def dict(self, **kwargs):
         base_dict = super().dict(**kwargs)
@@ -131,37 +128,47 @@ class OWTekstdeel(OWObject):
 
 class OWGebiedsaanwijzing(OWObject):
     naam: str  # locatie/gio noemer
-    type_: TypeGebiedsaanwijzingEnum  # TypeGebiedsaanwijzing waarde
-    groep: str  # gebiedsaanwijzinggroep waarde
+    type_: str 
+    groep: str
     locaties: List[str]  # locatieaanduiding + LocatieRefs
     wid: str
 
     @validator("type_", pre=True)
     def validate_type(cls, value):
-        if isinstance(value, str):
-            try:
-                return TypeGebiedsaanwijzingEnum[value]
-            except KeyError:
-                for enum_member in TypeGebiedsaanwijzingEnum:
-                    if enum_member.value == value:
-                        return enum_member
-        return value
+        for entry in TYPE_GEBIEDSAANWIJZING_VALUES.waarden.waarde:
+            if value == entry.uri or value == entry.term or value == entry.label:
+                return entry.uri
+        raise ValueError(f"'{value}' is not a valid TypeGebiedsaanwijzing")
 
     @validator("groep", pre=True)
     def validate_groep(cls, value, values):
-        if "type_" in values:
-            type_enum = values["type_"]
-            groep_enum_class = GEBIEDSAANWIJZING_TO_GROEP_MAPPING[type_enum]
-            if isinstance(value, str):
-                try:
-                    return groep_enum_class[value]
-                except KeyError:
-                    for enum_member in groep_enum_class:
-                        if enum_member.value == value:
-                            return enum_member
-        raise ValueError(f"'{value}' is not a valid value for the groep field")
+        if "type_" not in values:
+            raise ValueError("type_ must be validated before groep")
+
+        type_uri = values["type_"]
+        groep_value_list = GEBIEDSAANWIJZING_TO_GROEP_MAPPING.get(type_uri)
+        if not groep_value_list:
+            raise ValueError(f"No groep mapping found for type '{type_uri}'")
+
+        # search for a matching uri, term, or label in the groep_value_list
+        for entry in groep_value_list.waarden.waarde:
+            if value == entry.uri or value == entry.term or value == entry.label:
+                return entry.uri
+
+        raise ValueError(f"'{value}' is not a valid groep value for type '{type_uri}'")
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
-        if not all(locatie_id in used_ow_ids for locatie_id in self.locaties):
-            return False
-        return True
+        return (
+            all(locatie_id in used_ow_ids for locatie_id in self.locaties) and
+            self.OW_ID in reverse_ref_index.get("OWTekstdeel", set())
+        )
+
+
+class OWHoofdlijn(OWObject):
+    soort: str
+    naam: str
+    related_hoofdlijnen: Optional[List[str]] = None
+
+    def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
+        # TODO: check if related_hoofdlijnen are used in OWTekstdeel when supported
+        return self.OW_ID in reverse_ref_index.get("OWTekstdeel", set())

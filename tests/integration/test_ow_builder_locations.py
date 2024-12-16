@@ -37,26 +37,26 @@ class TestOWLocatieBuilder:
             OW_ID="nl.imow-pv28.gebied.01",
             noemer="Gebied 1",
             mapped_geo_code="werkingsgebied-1",
-            gio_ref="lo-1-00000000-0000-0005-0000-000000000001",
+            gio_ref="3f53cd4c-b46c-48be-b060-326b30b554cd",
         )
         mock_gebiedengroep_1 = OWGebiedenGroep(
             OW_ID="nl.imow-pv28.gebiedengroep.01",
             noemer="Gebiedengroep 1",
             mapped_geo_code=mock_gebied_1.mapped_geo_code,
-            gio_ref="wg-1-00000000-0000-0005-0000-000000000001",
+            gio_ref="d869c993-6f7f-4504-9e93-c7b1a144310d",
             gebieden=[mock_gebied_1.OW_ID],
         )
         mock_gebied_2 = OWGebied(
             OW_ID="nl.imow-pv28.gebied.02",
             noemer="Gebied 2",
             mapped_geo_code="werkingsgebied-2",
-            gio_ref="lo-1-00000000-0000-0005-0000-000000000002",
+            gio_ref="78de49f3-291d-4058-a487-b0da4f70c481",
         )
         mock_gebiedengroep_2 = OWGebiedenGroep(
             OW_ID="nl.imow-pv28.gebiedengroep.02",
             noemer="Gebiedengroep 2",
             mapped_geo_code=mock_gebied_2.mapped_geo_code,
-            gio_ref="wg-1-00000000-0000-0005-0000-000000000002",
+            gio_ref="0ebf544d-5f58-4cd0-82ff-f5941081d746",
             gebieden=[mock_gebied_2.OW_ID],
         )
 
