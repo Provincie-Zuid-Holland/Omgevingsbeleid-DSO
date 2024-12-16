@@ -1,14 +1,18 @@
-from pydantic import BaseModel
 from typing import List, Optional, Union
+
+from pydantic import BaseModel
+
 
 class CodeEntry(BaseModel):
     id: str
     content: str
 
+
 class Symboolcode(BaseModel):
     lijn: Optional[CodeEntry]
     punt: Optional[CodeEntry]
     vlak: Optional[CodeEntry]
+
 
 class ValueEntry(BaseModel):
     label: str
@@ -21,8 +25,10 @@ class ValueEntry(BaseModel):
     specialisatie: str
     symboolcode: Optional[Union[str, Symboolcode]] = None
 
+
 class Waarden(BaseModel):
     waarde: List[ValueEntry]
+
 
 class ValueList(BaseModel):
     label: str
@@ -34,10 +40,12 @@ class ValueList(BaseModel):
     version: Optional[str] = None
     waarden: Waarden
 
+
 class Waardelijsten(BaseModel):
     versie: str
     set: str
     waardelijst: List[ValueList]
+
 
 class WaardelijstenRoot(BaseModel):
     waardelijsten: Waardelijsten

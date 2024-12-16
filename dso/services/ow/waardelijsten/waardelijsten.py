@@ -1,7 +1,7 @@
 # This file is auto-generated. Do not edit manually.
 # Generated from version: 4.2.0
 
-from .models import ValueEntry, ValueList, Symboolcode, CodeEntry, Waarden
+from .models import CodeEntry, Symboolcode, ValueEntry, ValueList, Waarden
 
 VERSION = "4.2.0"
 

@@ -1,5 +1,7 @@
 from typing import List, Optional
 
+from dso.services.ow.waardelijsten.models import ValueEntry, ValueList
+
 from .waardelijsten import (
     BEPERKINGENGEBIEDGROEP_VALUES,
     BODEMGROEP_VALUES,
@@ -11,15 +13,17 @@ from .waardelijsten import (
     FUNCTIEGROEP_VALUES,
     GELUIDGROEP_VALUES,
     GEURGROEP_VALUES,
+    LANDSCHAPGROEP_VALUES,
     LEIDINGGROEP_VALUES,
     LUCHTGROEP_VALUES,
     MIJNBOUWGROEP_VALUES,
     NATUURGROEP_VALUES,
     RECREATIEGROEP_VALUES,
     RUIMTELIJK_GEBRUIKGROEP_VALUES,
+    THEMA_VALUES,
+    TYPE_GEBIEDSAANWIJZING_VALUES,
     VERKEERGROEP_VALUES,
     WATER_EN_WATERSYSTEEMGROEP_VALUES,
-    LANDSCHAPGROEP_VALUES,
 )
 
 GEBIEDSAANWIJZING_TO_GROEP_MAPPING = {
@@ -57,17 +61,20 @@ NON_ALLOWED_DOCUMENT_TYPE_MAPPING = {
     ],
 }
 
-def get_groep_values_for_gebiedsaanwijzing_type(aanwijzingtype_uri: str) -> Optional[List[str]]:
-    groep_value_list = GEBIEDSAANWIJZING_TO_GROEP_MAPPING.get(aanwijzingtype_uri)
-    if not groep_value_list:
-        return None
-    return [entry.uri for entry in groep_value_list.waarden.waarde]
 
-def get_groep_options_for_gebiedsaanwijzing_type(aanwijzingtype_uri: str) -> Optional[List[str]]:
+def get_groep_values_for_gebiedsaanwijzing_type(aanwijzingtype_uri: str) -> Optional[List[ValueEntry]]:
     groep_value_list = GEBIEDSAANWIJZING_TO_GROEP_MAPPING.get(aanwijzingtype_uri)
     if not groep_value_list:
         return None
-    return [entry.label for entry in groep_value_list.waarden.waarde]
+    return groep_value_list.waarden.waarde
+
+
+def get_groep_options_for_gebiedsaanwijzing_type(aanwijzingtype_uri: str) -> Optional[List[ValueEntry]]:
+    groep_value_list = GEBIEDSAANWIJZING_TO_GROEP_MAPPING.get(aanwijzingtype_uri)
+    if not groep_value_list:
+        return None
+    return groep_value_list.waarden.waarde
+
 
 def is_uri_allowed_for_document_type(doc_type: str, uri: str) -> bool:
     non_allowed = NON_ALLOWED_DOCUMENT_TYPE_MAPPING.get(doc_type, [])

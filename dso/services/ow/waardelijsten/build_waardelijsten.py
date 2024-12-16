@@ -1,9 +1,11 @@
 import json
 from pathlib import Path
+
 from models import WaardelijstenRoot
 
 INPUT_JSON = "waardelijsten_IMOW_v4.2.0.json"
 OUTPUT_FILE = Path("waardelijsten.py")
+
 
 def main():
     with open(INPUT_JSON, "r", encoding="utf-8") as f:
@@ -21,12 +23,12 @@ def main():
         "from .models import ValueEntry, ValueList, Symboolcode, CodeEntry, Waarden",
         "",
         f"VERSION = '{version}'",
-        ""
+        "",
     ]
 
     for vl in value_lists:
         var_name = vl.label.upper().replace(" ", "_")
-        
+
         value_entry_lines = []
         for entry in vl.waarden.waarde:
             if entry.symboolcode is None:
@@ -34,9 +36,10 @@ def main():
             elif isinstance(entry.symboolcode, str):
                 symboolcode_str = repr(entry.symboolcode)
             else:
+
                 def code_entry_str(ce):
                     return f"CodeEntry(id={ce.id!r}, content={ce.content!r})"
-                
+
                 parts = []
                 for field_name in ["lijn", "punt", "vlak"]:
                     ce = getattr(entry.symboolcode, field_name)
@@ -68,6 +71,7 @@ def main():
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_FILE.write_text("\n".join(lines), encoding="utf-8")
     print(f"Generated {OUTPUT_FILE} successfully.")
+
 
 if __name__ == "__main__":
     main()
