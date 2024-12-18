@@ -20,7 +20,7 @@ class AanleveringBesluitBuilder(BuilderService):
 
         content = load_template(
             "akn/AanleveringBesluit.xml",
-            pretty_print=False,
+            pretty_print=True,
             besluit_versie=besluit_versie,
             regeling_versie_informatie_content=regeling_versie_informatie_content,
         )
