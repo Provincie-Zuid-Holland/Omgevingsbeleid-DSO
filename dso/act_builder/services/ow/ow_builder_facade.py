@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
 
 from ....services.ow.enums import OwProcedureStatus
-from ....services.ow.ow_annotation_service import OWAnnotationService
+from ....services.ow.ow_annotation_service import OWAnnotationService, AnnotationType
 from ....services.ow.ow_state_patcher import OWStatePatcher
 from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService
@@ -17,53 +17,48 @@ from .ow_builder_context import BuilderContext
 
 
 class OwBuilderFacade(BuilderService):
-    def __init__(self):
-        self.annotation_service: Optional[OWAnnotationService] = None
-        self.builder_context: Optional[BuilderContext] = None
-
     def apply(self, state_manager: StateManager) -> StateManager:
-        # Build OW annotation map from policy objects data
-        self.annotation_service = OWAnnotationService(
+        annotation_service = OWAnnotationService(
             werkingsgebied_repository=state_manager.input_data.resources.werkingsgebied_repository,
             policy_object_repository=state_manager.input_data.resources.policy_object_repository,
             used_wid_map=state_manager.act_ewid_service.get_state_used_wid_map(),
         )
-        annotation_map = self.annotation_service.build_annotation_map()
-
-        ow_builder: OwBuilder = self._create_ow_builder(state_manager, annotation_map)
+        annotation_map: Dict[str, List[AnnotationType]] = annotation_service.build_annotation_map()
+        state_manager.ow_annotation_map = annotation_map
+        ow_builder: OwBuilder = self._create_ow_builder(state_manager)
         return ow_builder.apply(state_manager)
 
-    def _create_ow_builder(self, state_manager: StateManager, annotation_lookup_map: dict) -> OwBuilder:
-        self.builder_context = self._create_builder_context(state_manager)
+    def _create_ow_builder(self, state_manager: StateManager) -> OwBuilder:
+        builder_context = self._create_builder_context(state_manager)
 
         locatie_builder = OwLocatieBuilder(
-            context=self.builder_context,
+            context=builder_context,
             werkingsgebieden=state_manager.input_data.resources.werkingsgebied_repository.all(),
             ambtsgebied=state_manager.input_data.ambtsgebied,
             ow_repository=state_manager.ow_repository,
         )
 
         divisie_builder = OwDivisieBuilder(
-            context=self.builder_context,
-            annotation_lookup_map=annotation_lookup_map,
+            context=builder_context,
+            annotation_lookup_map=state_manager.ow_annotation_map,
             ow_repository=state_manager.ow_repository,
             debug_enabled=state_manager.debug_enabled,
         )
 
         gb_aanwijzing_builder = OwGebiedsaanwijzingBuilder(
-            context=self.builder_context,
-            annotation_lookup_map=annotation_lookup_map,
+            context=builder_context,
+            annotation_lookup_map=state_manager.ow_annotation_map,
             ow_repository=state_manager.ow_repository,
         )
 
         regelinggebied_builder = OwRegelingsgebiedBuilder(
-            context=self.builder_context,
+            context=builder_context,
             ow_repository=state_manager.ow_repository,
         )
 
         hoofdlijn_builder = OwHoofdlijnBuilder(
-            context=self.builder_context,
-            annotation_lookup_map=annotation_lookup_map,
+            context=builder_context,
+            annotation_lookup_map=state_manager.ow_annotation_map,
             ow_repository=state_manager.ow_repository,
         )
 
@@ -89,14 +84,13 @@ class OwBuilderFacade(BuilderService):
         ow_procedure_status: Optional[OwProcedureStatus] = self._get_ow_procedure_status(
             state_manager.input_data.besluit.soort_procedure
         )
-
-        self.builder_context = BuilderContext(
+        builder_context = BuilderContext(
             provincie_id=state_manager.input_data.publication_settings.provincie_id,
             levering_id=state_manager.input_data.publication_settings.opdracht.id_levering,
             ow_procedure_status=ow_procedure_status,
             orphaned_wids=orphaned_wids,
         )
-        return self.builder_context
+        return builder_context
 
     def _calc_orphaned_wids(self, state_manager: StateManager) -> List[str]:
         known_wid_map: Dict[str, str] = state_manager.input_data.get_known_wid_map()

@@ -1,5 +1,8 @@
 import os
-from typing import List, Optional, Set
+from collections import defaultdict
+from typing import Dict, List, Optional, Set
+
+from dso.services.ow.ow_annotation_service import AnnotationType
 
 from ...models import OwData
 from ...services.ewid.ewid_service import EWIDService
@@ -18,6 +21,7 @@ class StateManager:
         self.document_eid_lookup: dict = {}
         self.document_wid_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
+        self.ow_annotation_map: Dict[str, List[AnnotationType]] = defaultdict(list) 
         self.ow_repository: OWStateRepository = OWStateRepository(input_data.ow_data, self.debug_enabled)
         self.output_files: List[OutputFile] = []
         # The full act text as how the conclusion would be
