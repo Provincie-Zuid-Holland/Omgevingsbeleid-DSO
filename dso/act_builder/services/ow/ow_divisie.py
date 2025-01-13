@@ -1,4 +1,4 @@
-from typing import List, Optional, Set
+from typing import Dict, List, Optional, Set, Type
 
 from pydantic.main import BaseModel
 
@@ -14,6 +14,7 @@ from ....services.ow import (
     OWTekstdeel,
     generate_ow_id,
 )
+from ....services.ow.ow_annotation_service import AnnotationType, AmbtsgebiedAnnotation, GebiedAnnotation, ThemaAnnotation
 from ...state_manager import OWObjectStateException
 from ...state_manager.states.ow_repository import OWStateRepository
 from .ow_builder_context import BuilderContext
@@ -36,25 +37,21 @@ class OwDivisieFileData(BaseModel):
 class OwDivisieBuilder(OwFileBuilder):
     FILE_NAME = "owDivisies.xml"
     TEMPLATE_PATH = "ow/owDivisie.xml"
+    OW_ANNOTATION_TYPES: List[Type[AnnotationType]] = [
+        AmbtsgebiedAnnotation,
+        GebiedAnnotation,
+    ]
 
     def __init__(
         self,
         context: BuilderContext,
-        annotation_lookup_map: dict,
+        annotation_lookup_map: Dict[str, List[AnnotationType]],
         ow_repository: OWStateRepository,
         debug_enabled: bool = False,
     ) -> None:
         super().__init__()
         self._context = context
-        # Filter to only include relevant type_annotations for this builder
-        self._annotation_lookup = {
-            key: [
-                annotation
-                for annotation in annotations
-                if annotation["type_annotation"] in ["ambtsgebied", "gebied", "thema"]
-            ]
-            for key, annotations in annotation_lookup_map.items()
-        }
+        self._annotation_lookup: Dict[str, List[AnnotationType]] = self._filter_annotation_types(annotation_lookup_map)
         self._used_object_types: Set[OwDivisieObjectType] = set()
 
         self._debug_enabled: bool = debug_enabled
@@ -77,7 +74,7 @@ class OwDivisieBuilder(OwFileBuilder):
                 if annotations:
                     self.process_new_divisie(annotations=annotations)
 
-    def process_existing_divisie(self, known_divisie: OWObject, annotations: List[dict]):
+    def process_existing_divisie(self, known_divisie: OWObject, annotations: List[AnnotationType]):
         """Process all annotations for an existing divisie"""
         known_tekstdeel = self._ow_repository.get_existing_tekstdeel_by_divisie(known_divisie.OW_ID)
         if not known_tekstdeel:
@@ -89,8 +86,8 @@ class OwDivisieBuilder(OwFileBuilder):
         new_tekstdeel = known_tekstdeel.copy(deep=True)
 
         for annotation in annotations:
-            match annotation["type_annotation"]:
-                case "ambtsgebied":
+            match annotation:
+                case AmbtsgebiedAnnotation():
                     if not self._ambtsgebied:
                         raise OWObjectStateException(
                             message="Expected to find active ambtsgebied since uses_ambtsgebied"
@@ -99,22 +96,22 @@ class OwDivisieBuilder(OwFileBuilder):
                         new_tekstdeel.locaties = [self._ambtsgebied.OW_ID]
                         needs_mutation = True
 
-                case "gebied":
-                    ow_gebiedengroep = self._ow_repository.get_active_gebiedengroep_by_code(annotation["gebied_code"])
+                case GebiedAnnotation():
+                    ow_gebiedengroep = self._ow_repository.get_active_gebiedengroep_by_code(annotation.gebied_code)
                     if not ow_gebiedengroep:
                         raise OWObjectStateException(
-                            message=f"Mutating tekstdeel but: {annotation['gebied_code']} missing owlocation in state",
+                            message=f"Mutating tekstdeel but: {annotation.gebied_code} missing owlocation in state",
                         )
                     if known_tekstdeel.locaties[0] != ow_gebiedengroep.OW_ID:
                         new_tekstdeel.locaties = [ow_gebiedengroep.OW_ID]
                         needs_mutation = True
 
-                case "thema":
+                case ThemaAnnotation():
                     thema_uris = [
-                        self._context.thema_registry.get_uri_by_label(label) for label in annotation["thema_waardes"]
+                        self._context.thema_registry.get_uri_by_label(label) for label in annotation.thema_waardes
                     ]
                     if None in thema_uris:
-                        raise OWObjectGenerationError(f"Invalid thema label(s) in: {annotation['thema_waardes']}")
+                        raise OWObjectGenerationError(f"Invalid thema label(s) in: {annotation.thema_waardes}")
                     if known_tekstdeel.themas != thema_uris:
                         new_tekstdeel.themas = thema_uris
                         needs_mutation = True
@@ -122,14 +119,14 @@ class OwDivisieBuilder(OwFileBuilder):
         if needs_mutation:
             self._ow_repository.add_mutated_ow(new_tekstdeel)
 
-    def process_new_divisie(self, annotations: List[dict]) -> Optional[OWTekstdeel]:
+    def process_new_divisie(self, annotations: List[AnnotationType]) -> Optional[OWTekstdeel]:
         """Process all annotations for a new divisie"""
         # use first annotation for this obj code to generate new divisie
         first_annotation = annotations[0]
         new_div = self._new_divisie(
-            tag=first_annotation["tag"],
-            wid=first_annotation["wid"],
-            object_code=first_annotation["object_code"],
+            tag=first_annotation.tag,
+            wid=first_annotation.wid,
+            object_code=first_annotation.object_code,
         )
 
         # Initialize tekstdeel properties
@@ -138,14 +135,14 @@ class OwDivisieBuilder(OwFileBuilder):
 
         # Process each annotation type
         for annotation in annotations:
-            match annotation["type_annotation"]:
-                case "ambtsgebied":
+            match annotation:
+                case AmbtsgebiedAnnotation():
                     if not self._ambtsgebied:
                         raise OWObjectStateException(message="Expected to find active ambtsgebied in ow_repository")
                     locaties = [self._ambtsgebied.OW_ID]
 
-                case "gebied":
-                    werkingsgebied_code = annotation["gebied_code"]
+                case GebiedAnnotation():
+                    werkingsgebied_code = annotation.gebied_code
                     active_gebiedengroep = self._ow_repository.get_gebiedengroep_by_code(werkingsgebied_code)
                     if not active_gebiedengroep:
                         active_gebiedengroep = self._ow_repository.get_known_gebiedengroep_by_code(werkingsgebied_code)
@@ -156,12 +153,12 @@ class OwDivisieBuilder(OwFileBuilder):
                         )
                     locaties = [active_gebiedengroep.OW_ID]
 
-                case "thema":
+                case ThemaAnnotation():
                     thema_uris = [
-                        self._context.thema_registry.get_uri_by_label(label) for label in annotation["thema_waardes"]
+                        self._context.thema_registry.get_uri_by_label(label) for label in annotation.thema_waardes
                     ]
                     if None in thema_uris:
-                        raise OWObjectGenerationError(f"Invalid thema label(s) in: {annotation['thema_waardes']}")
+                        raise OWObjectGenerationError(f"Invalid thema label(s) in: {annotation.thema_waardes}")
                     thema_waardes = thema_uris
 
         if locaties or thema_waardes:
