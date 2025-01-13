@@ -1,0 +1,29 @@
+{% extends "ow/ow_base.xml" %}
+
+{% block content %}
+{% for ow_object in ow_objects %}
+    <ow-dc:owObject>
+        <vt:Tekstdeel>
+            <!-- {{ ow_object.object_status.value }} -->
+            {% if ow_object.is_deleted() %}
+            <ow:status>{{ ow_object.get_deleted_status() }}</ow:status>
+            {% endif %}
+            {% if ow_object.procedure_status is not none %}
+            <ow:procedurestatus>{{ ow_object.procedure_status }}</ow:procedurestatus>
+            {% endif %}
+            <vt:identificatie>{{ ow_object.identification }}</vt:identificatie>
+            <vt:idealisatie>{{ ow_object.idealization }}</vt:idealisatie>
+            <vt:divisieaanduiding>
+                <vt:{{ ow_object.text_ref.get_xml_element_name() }} xlink:href="{{ ow_object.text_ref.get_href() }}"/>
+            </vt:divisieaanduiding>
+            {% if ow_object.location_refs | length > 0 %}
+            <vt:locatieaanduiding>
+                {% for location_ref in ow_object.location_refs %}
+                <l:LocatieRef xlink:href="{{ location_ref.get_href() }}"/>
+                {% endfor %}
+            </vt:locatieaanduiding>
+            {% endif %}
+        </vt:Tekstdeel>
+    </ow-dc:owObject>
+{% endfor %}
+{% endblock %}

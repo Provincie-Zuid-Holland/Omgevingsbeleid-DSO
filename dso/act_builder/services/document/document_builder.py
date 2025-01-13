@@ -3,9 +3,9 @@ from typing import List
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
 from dso.act_builder.state_manager.input_data.resource.document.document_repository import DocumentRepository
 
+from ...builder_service import BuilderService
 from ...state_manager.models import DocumentContentData, OutputFile
 from ...state_manager.state_manager import StateManager
-from .. import BuilderService
 
 
 class DocumentBuilder(BuilderService):

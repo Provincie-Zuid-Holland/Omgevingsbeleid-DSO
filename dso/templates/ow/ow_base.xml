@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ow-dc:owBestand xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:r="http://www.geostandaarden.nl/imow/regels"
+    xmlns:vt="http://www.geostandaarden.nl/imow/vrijetekst"
+    xmlns:rol="http://www.geostandaarden.nl/imow/regelsoplocatie"
+    xmlns:p="http://www.geostandaarden.nl/imow/pons"
+    xmlns:l="http://www.geostandaarden.nl/imow/locatie"
+    xmlns:k="http://www.geostandaarden.nl/imow/kaart"
+    xmlns:op="http://www.geostandaarden.nl/imow/opobject"
+    xmlns:ga="http://www.geostandaarden.nl/imow/gebiedsaanwijzing"
+    xmlns:sl="http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek"
+    xmlns:da="http://www.geostandaarden.nl/imow/datatypenalgemeen"
+    xmlns:ow="http://www.geostandaarden.nl/imow/owobject"
+    xmlns:rg="http://www.geostandaarden.nl/imow/regelingsgebied"
+    xmlns:ow-dc="http://www.geostandaarden.nl/imow/bestanden/deelbestand">
+    <sl:standBestand>
+        <sl:dataset>{{ dataset }}</sl:dataset>
+        <sl:inhoud>
+            <sl:gebied>{{ area_title }}</sl:gebied>
+            <sl:leveringsId>{{ delivery_id }}</sl:leveringsId>
+            <sl:objectTypen>
+                {% for object_type in object_types %}
+                <sl:objectType>{{ object_type }}</sl:objectType>
+                {% endfor %}
+            </sl:objectTypen>
+        </sl:inhoud>
+        <sl:stand>
+        {% block content %}{% endblock %}
+        </sl:stand>
+    </sl:standBestand>
+</ow-dc:owBestand>

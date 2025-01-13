@@ -3,7 +3,7 @@ from typing import List
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from ..services.utils.os import empty_directory
-from .services import BuilderService
+from .builder_service import BuilderService
 from .services.aanlevering_kennisgeving.aanlevering_kennisgeving_builder import AanleveringKennisgevingBuilder
 from .services.lvbb.manifest_builder import ManifestBuilder
 from .services.lvbb.opdracht_builder import OpdrachtBuilder

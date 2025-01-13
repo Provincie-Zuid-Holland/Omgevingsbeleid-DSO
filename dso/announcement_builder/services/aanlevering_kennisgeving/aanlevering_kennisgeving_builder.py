@@ -1,6 +1,6 @@
 from ....models import ContentType
 from ....services.utils.helpers import load_template
-from ...services import BuilderService
+from ...builder_service import BuilderService
 from ...state_manager.models import OutputFile, StrContentData
 from ...state_manager.state_manager import StateManager
 from .kennisgeving_versie.expression_identificatie_content import ExpressionIdentificatieContent

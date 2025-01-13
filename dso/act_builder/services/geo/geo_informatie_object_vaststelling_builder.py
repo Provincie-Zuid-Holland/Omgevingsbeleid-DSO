@@ -2,7 +2,7 @@ from typing import List
 
 from ....models import ContentType
 from ....services.utils.helpers import load_template
-from ...services import BuilderService
+from ...builder_service import BuilderService
 from ...services.geo.gml_geometry_generator import GMLGeometryGenerator
 from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Locatie, Werkingsgebied
 from ...state_manager.models import OutputFile, StrContentData

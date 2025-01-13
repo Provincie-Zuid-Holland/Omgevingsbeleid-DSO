@@ -12,7 +12,7 @@
                     <Term>{{ document.Title }}</Term>
                     <Definitie>
                         <Al>
-                            <ExtIoRef data-hint-wid-code="bijlage-documenten-divisietekst-referentie-{{ document.Code }}-ref" data-hint-document-uuid="{{ document.UUID }}" ref="{{ document.Frbr.get_expression() }}">{{ document.Frbr.get_expression() }}</ExtIoRef>
+                            <ExtIoRef data-hint-wid-code="bijlage-documenten-divisietekst-referentie-{{ document.Code }}-ref" data-hint-document-code="{{ document.Code }}" ref="{{ document.Frbr.get_expression() }}">{{ document.Frbr.get_expression() }}</ExtIoRef>
                         </Al>
                     </Definitie>
                 </Begrip>

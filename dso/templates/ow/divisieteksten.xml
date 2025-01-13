@@ -1,0 +1,18 @@
+{% extends "ow/ow_base.xml" %}
+
+{% block content %}
+{% for ow_object in ow_objects %}
+    <ow-dc:owObject>
+        <vt:Divisietekst wId="{{ ow_object.wid }}">
+            <!-- {{ ow_object.object_status.value }} -->
+            {% if ow_object.is_deleted() %}
+            <op:status>{{ ow_object.get_deleted_status() }}</op:status>
+            {% endif %}
+            {% if ow_object.procedure_status is not none %}
+            <op:procedurestatus>{{ ow_object.procedure_status }}</op:procedurestatus>
+            {% endif %}
+            <vt:identificatie>{{ ow_object.identification }}</vt:identificatie>
+        </vt:Divisietekst>
+    </ow-dc:owObject>
+{% endfor %}
+{% endblock %}

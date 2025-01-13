@@ -1,0 +1,26 @@
+{% extends "ow/ow_base.xml" %}
+
+{% block content %}
+{% for ow_object in ow_objects %}
+    <ow-dc:owObject>
+        <ga:Gebiedsaanwijzing>
+            <!-- {{ ow_object.object_status.value }} -->
+            {% if ow_object.is_deleted() %}
+            <ow:status>{{ ow_object.get_deleted_status() }}</ow:status>
+            {% endif %}
+            {% if ow_object.procedure_status is not none %}
+            <ow:procedurestatus>{{ ow_object.procedure_status }}</ow:procedurestatus>
+            {% endif %}
+            <ga:identificatie>{{ ow_object.identification }}</ga:identificatie>
+            <ga:type>{{ ow_object.indication_type }}</ga:type>
+            <ga:naam>{{ ow_object.title }}</ga:naam>
+            <ga:groep>{{ ow_object.indication_group }}</ga:groep>
+            <ga:locatieaanduiding>
+                {% for location_ref in ow_object.location_refs %}
+                <l:LocatieRef xlink:href="{{ location_ref.get_href() }}"/>
+                {% endfor %}
+            </ga:locatieaanduiding>
+        </ga:Gebiedsaanwijzing>
+    </ow-dc:owObject>
+{% endfor %}
+{% endblock %}

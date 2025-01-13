@@ -10,23 +10,14 @@ class WerkingsgebiedRepository:
         self._werkingsgebieden: Dict[str, Werkingsgebied] = {}
 
     def add(self, werkingsgebied: dict) -> None:
-        """
-        Add single werkingsgebied to the repository.
-        """
         werkingsgebied_id = werkingsgebied["UUID"]
         self._werkingsgebieden[werkingsgebied_id] = Werkingsgebied.parse_obj(werkingsgebied)
 
     def add_list(self, werkingsgebieden: List[dict]) -> None:
-        """
-        Add multiple werkingsgebieden objs to the repository.
-        """
         for werkingsgebied in werkingsgebieden:
             self.add(werkingsgebied)
 
     def add_from_dict(self, werkingsgebieden: Dict[str, dict]) -> None:
-        """
-        Add multiple from key-value pairs.
-        """
         for werkingsgebied_uuid, werkingsgebied in werkingsgebieden.items():
             self.add(werkingsgebied)
 

@@ -4,8 +4,9 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
+from dso.act_builder.services.ow.state.ow_state import OwState
+
 from ....models import (
-    OwData,
     ProcedureStap,
     ProcedureVerloop,
     PublicationSettings,
@@ -37,7 +38,9 @@ class InputData(BaseModel):
     resources: Resources
     object_template_repository: ObjectTemplateRepository
     ambtsgebied: Ambtsgebied
-    ow_data: OwData
+    ow_state: OwState = Field(default_factory=OwState)
+    ow_dataset: str
+    ow_gebied: str
 
     class Config:
         arbitrary_types_allowed = True
@@ -99,7 +102,7 @@ class InputDataLoader:
 
         ambtsgebied = Ambtsgebied.from_json(main_config["ambtsgebied"])
 
-        ow_data = OwData.from_json(main_config["ow_data"])
+        ow_state = OwState.parse_obj(main_config.get("ow_state", {}))
 
         data = InputData(
             publication_settings=publication_settings,
@@ -111,7 +114,7 @@ class InputDataLoader:
             resources=resources,
             object_template_repository=object_template_repository,
             ambtsgebied=ambtsgebied,
-            ow_data=ow_data,
+            ow_state=ow_state,
         )
         return data
 

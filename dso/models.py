@@ -1,11 +1,10 @@
 import os
 from abc import ABCMeta, abstractmethod
 from enum import Enum
-from typing import Any, Dict, List, Optional, Type
+from typing import Dict, List, Optional, Type
 
 from pydantic import BaseModel, Field, ValidationError, root_validator, validator
 
-from .services.ow.models import OWObject
 from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappen, Provincie
 
 
@@ -318,76 +317,3 @@ class RenvooiRegelingMutatie(RegelingMutatie):
         if env_key:
             return env_key
         return v
-
-
-class OwIdMapping(BaseModel):
-    gebieden: Dict[str, str] = Field(default_factory=dict)
-    gebiedengroep: Dict[str, str] = Field(default_factory=dict)
-    ambtsgebied: Dict[str, str] = Field(default_factory=dict)
-    wid: Dict[str, str] = Field(default_factory=dict)
-    regelingsgebied: Dict[str, str] = Field(default_factory=dict)
-
-
-class OwTekstdeelMap(BaseModel):
-    divisie: str
-    location: str
-
-
-class OwObjectMap(BaseModel):
-    id_mapping: OwIdMapping = Field(default_factory=OwIdMapping)
-    tekstdeel_mapping: Dict[str, OwTekstdeelMap] = Field(default_factory=dict)
-
-
-class OwDataV1(BaseModel):
-    object_ids: List[str] = Field(default_factory=list)
-    object_map: OwObjectMap = Field(default_factory=OwObjectMap)
-
-    @classmethod
-    def from_json(cls, json_data):
-        return cls(**json_data)
-
-
-def build_ow_type_mapping(base_class: Type[BaseModel]) -> Dict[str, Type[BaseModel]]:
-    subclasses = base_class.__subclasses__()
-    mapping = {subclass.__name__: subclass for subclass in subclasses}
-    for subclass in subclasses:
-        mapping.update(build_ow_type_mapping(subclass))
-    return mapping
-
-
-class OwData(BaseModel):
-    ow_objects: Dict[str, OWObject] = Field(default_factory=dict)
-    terminated_ow_ids: List[str] = Field(default_factory=list)
-
-    @property
-    def used_ow_ids(self) -> List[str]:
-        return list(self.ow_objects.keys())
-
-    @classmethod
-    def load_ow_objects(cls, ow_objects_data: Dict[str, Any]) -> Dict[str, OWObject]:
-        OW_TYPE_MAPPING = build_ow_type_mapping(OWObject)
-        ow_objects = {}
-        for ow_id, ow_obj_data in ow_objects_data.items():
-            ow_type = ow_obj_data.get("ow_type")
-            ow_class = OW_TYPE_MAPPING.get(ow_type)
-            if ow_class:
-                ow_objects[ow_id] = ow_class(**ow_obj_data)
-            else:
-                raise ValueError(f"Unknown ow_type '{ow_type}' encountered in data.")
-        return ow_objects
-
-    @classmethod
-    def from_json(cls, json_data: Dict[str, Any]) -> "OwData":
-        ow_objects = cls.load_ow_objects(json_data.get("ow_objects", {}))
-        return cls(
-            ow_objects=ow_objects,
-            terminated_ow_ids=json_data.get("terminated_ow_ids", []),
-        )
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "OwData":
-        ow_objects = cls.load_ow_objects(data.get("ow_objects", {}))
-        return cls(
-            ow_objects=ow_objects,
-            terminated_ow_ids=data.get("terminated_ow_ids", []),
-        )
