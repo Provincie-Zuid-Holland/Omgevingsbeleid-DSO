@@ -18,15 +18,17 @@ from .ow_builder_context import BuilderContext
 
 class OwBuilderFacade(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
+        state_manager.ow_annotation_map = self._create_annotation_map(state_manager)
+        ow_builder = self._create_ow_builder(state_manager)
+        return ow_builder.apply(state_manager)
+
+    def _create_annotation_map(self, state_manager: StateManager) -> Dict[str, List[AnnotationType]]:
         annotation_service = OWAnnotationService(
             werkingsgebied_repository=state_manager.input_data.resources.werkingsgebied_repository,
             policy_object_repository=state_manager.input_data.resources.policy_object_repository,
             used_wid_map=state_manager.act_ewid_service.get_state_used_wid_map(),
         )
-        annotation_map: Dict[str, List[AnnotationType]] = annotation_service.build_annotation_map()
-        state_manager.ow_annotation_map = annotation_map
-        ow_builder: OwBuilder = self._create_ow_builder(state_manager)
-        return ow_builder.apply(state_manager)
+        return annotation_service.build_annotation_map()
 
     def _create_ow_builder(self, state_manager: StateManager) -> OwBuilder:
         builder_context = self._create_builder_context(state_manager)
