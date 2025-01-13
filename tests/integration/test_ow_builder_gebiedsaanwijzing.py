@@ -16,6 +16,7 @@ from dso.services.ow import (
     OWTekstdeel,
 )
 from dso.services.ow.models import OWGebiedsaanwijzing
+from dso.services.ow.annotation_models import GebiedsaanwijzingAnnotation, ParentDiv
 
 
 class TestOWGebiedsaanwijzingBuilder:
@@ -109,49 +110,36 @@ class TestOWGebiedsaanwijzingBuilder:
 
         self.annotation_lookup_map = {
             "beleidskeuze-2": [
-                {
-                    "type_annotation": "ambtsgebied",
-                    "tag": "Divisietekst",
-                    "wid": "pv28_4__content_o_2",  # existing ow annotation
-                    "object_code": "beleidskeuze-2",  # existing policy obj code
-                },
-                {
-                    "type_annotation": "gebiedsaanwijzing",
-                    "wid": "pv28_4__content_o_2__ref_o_1",
-                    "ref": "mock-ref-werkingsgebied-1",
-                    "werkingsgebied_code": "werkingsgebied-1",
-                    "groep": "NationaalLandschap",
-                    "type": "Landschap",
-                    "parent_div": {
-                        "wid": "pv28_4__content_o_2",
-                        "object-code": "beleidskeuze-2",
-                        "gebied-code": None,
-                        "uses_ambtsgebied": True,
-                    },
-                },
+                GebiedsaanwijzingAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_2__ref_o_1",
+                    object_code="beleidskeuze-2",
+                    werkingsgebied_code="werkingsgebied-1",
+                    groep="NationaalLandschap",
+                    type="Landschap",
+                    parent_div=ParentDiv(
+                        wid="pv28_4__content_o_2",
+                        object_code="beleidskeuze-2",
+                        gebied_code=None,
+                        uses_ambtsgebied=True,
+                    ),
+                ),
             ],
-            # new in state
             "beleidskeuze-3": [
-                {
-                    "type_annotation": "ambtsgebied",
-                    "tag": "Divisietekst",
-                    "wid": "pv28_4__content_o_3",
-                    "object_code": "beleidskeuze-3",
-                },
-                {
-                    "type_annotation": "gebiedsaanwijzing",
-                    "wid": "pv28_4__content_o_3__ref_o_1",
-                    "ref": "mock-ref-werkingsgebied-1",
-                    "werkingsgebied_code": "werkingsgebied-1",
-                    "groep": "NationaalLandschap",
-                    "type": "Landschap",
-                    "parent_div": {
-                        "wid": "pv28_4__content_o_3",
-                        "object-code": "beleidskeuze-3",
-                        "gebied-code": None,
-                        "uses_ambtsgebied": True,
-                    },
-                },
+                GebiedsaanwijzingAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_3__ref_o_1",
+                    object_code="beleidskeuze-3",
+                    werkingsgebied_code="werkingsgebied-1",
+                    groep="NationaalLandschap",
+                    type="Landschap",
+                    parent_div=ParentDiv(
+                        wid="pv28_4__content_o_3",
+                        object_code="beleidskeuze-3",
+                        gebied_code=None,
+                        uses_ambtsgebied=True,
+                    ),
+                ),
             ],
         }
         self.ow_repository = OWStateRepository(ow_input_data=mock_ow_data)
@@ -174,7 +162,9 @@ class TestOWGebiedsaanwijzingBuilder:
         self.ow_repository._new_ow_objects = [new_divisie, new_ow_tekstdeel]
 
         self.builder = OwGebiedsaanwijzingBuilder(
-            context=self.context, annotation_lookup_map=self.annotation_lookup_map, ow_repository=self.ow_repository
+            context=self.context,
+            annotation_lookup_map=self.annotation_lookup_map,
+            ow_repository=self.ow_repository
         )
 
     def test_builder_init(self):

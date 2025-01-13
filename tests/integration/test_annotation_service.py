@@ -9,6 +9,14 @@ from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsge
     WerkingsgebiedRepository,
 )
 from dso.services.ow.ow_annotation_service import OWAnnotationService
+from dso.services.ow.annotation_models import (
+    AmbtsgebiedAnnotation,
+    GebiedAnnotation,
+    GebiedsaanwijzingAnnotation,
+    HoofdlijnAnnotation,
+    ParentDiv,
+    ThemaAnnotation,
+)
 
 
 class TestOWAnnotationService:
@@ -74,54 +82,34 @@ class TestOWAnnotationService:
 
         # Expecting one gebied annotation and one GBA annotation under the same object_code
         expected_annotations = [
-            {
-                "type_annotation": "gebied",
-                "wid": "pv28_4__content_o_1",
-                "tag": "Divisietekst",
-                "object_code": "beleidskeuze-1",
-                "gebied_code": "werkingsgebied-2",
-                "gio_ref": "0ebf544d-5f58-4cd0-82ff-f5941081d746",
-            },
-            {
-                "type_annotation": "gebiedsaanwijzing",
-                "tag": "IntIoRef",
-                "wid": "pv28_4__content_o_1__ref_o_1",
-                "werkingsgebied_code": "werkingsgebied-1",
-                "groep": "AandachtsgebiedLuchtkwaliteit",
-                "type": "Lucht",
-                "parent_div": {
-                    "wid": "pv28_4__content_o_1",
-                    "object-code": "beleidskeuze-1",
-                    "gebied-code": "werkingsgebied-2",
-                    "uses_ambtsgebied": False,
-                },
-            },
+            GebiedAnnotation(
+                wid="pv28_4__content_o_1",
+                tag="Divisietekst",
+                object_code="beleidskeuze-1",
+                gebied_code="werkingsgebied-2",
+                gio_ref="0ebf544d-5f58-4cd0-82ff-f5941081d746",
+            ),
+            GebiedsaanwijzingAnnotation(
+                tag="IntIoRef",
+                wid="pv28_4__content_o_1__ref_o_1",
+                werkingsgebied_code="werkingsgebied-1",
+                groep="AandachtsgebiedLuchtkwaliteit",
+                type="Lucht",
+                parent_div=ParentDiv(
+                    wid="pv28_4__content_o_1",
+                    **{
+                        "object-code": "beleidskeuze-1",
+                        "gebied-code": "werkingsgebied-2",
+                        "uses_ambtsgebied": False,
+                    }
+                ),
+                object_code="beleidskeuze-1",
+            ),
         ]
 
-        assert annotation_map["beleidskeuze-1"] == expected_annotations
-
-    # @pytest.fixture
-    # def gba_policy_object_with_wrong_type(self, gba_policy_object):
-    #     hint_groep_1 = "AandachtsgebiedLuchtkwaliteit"
-    #     hint_locatie_1 = "werkingsgebied-1"
-    #     hint_type_1 = "Lucht"
-
-    #     gba = f"""<a data-hint-type="gebiedsaanwijzing" 
-    #                data-hint-gebiedengroep="{hint_groep_1}"
-    #                data-hint-locatie="{hint_locatie_1}"
-    #                data-hint-gebiedsaanwijzingtype="{hint_type_1}"
-    #                href="#">Testgebied 1</a>"""
-
-    #     gba_policy_object["Description"] = f"<p>Lorem ipsum {gba} dolor sit amet, consectetur adipiscing elit.<p>"
-
-    #     return gba_policy_object
-
-    # def test_fail_annotation_map_gba_type(self, gba_policy_object_with_wrong_type):
-    #     self.policy_object_repository.add("beleidskeuze-1", gba_policy_object_with_wrong_type)
-
-    #     # TODO: raise validation error again
-    #     with pytest.raises(ValueError):
-    #         self.annotation_service.build_annotation_map()
+        assert len(annotation_map["beleidskeuze-1"]) == len(expected_annotations)
+        for actual, expected in zip(annotation_map["beleidskeuze-1"], expected_annotations):
+            assert actual.dict() == expected.dict()
 
     @pytest.fixture
     def policy_object_with_ambtsgebied(self):
@@ -151,15 +139,16 @@ class TestOWAnnotationService:
 
         # Expecting one ambtsgebied annotation
         expected_annotations = [
-            {
-                "type_annotation": "ambtsgebied",
-                "wid": "pv28_4__content_o_3",
-                "tag": "Divisietekst",
-                "object_code": "beleidskeuze-3",
-            }
+            AmbtsgebiedAnnotation(
+                wid="pv28_4__content_o_3",
+                tag="Divisietekst",
+                object_code="beleidskeuze-3",
+            )
         ]
 
-        assert annotation_map["beleidskeuze-3"] == expected_annotations
+        assert len(annotation_map["beleidskeuze-3"]) == len(expected_annotations)
+        for actual, expected in zip(annotation_map["beleidskeuze-3"], expected_annotations):
+            assert actual.dict() == expected.dict()
 
     @pytest.fixture
     def policy_object_with_gebied_annotation(self):
@@ -189,17 +178,18 @@ class TestOWAnnotationService:
 
         # expecting one gebied annotation
         expected_annotations = [
-            {
-                "type_annotation": "gebied",
-                "wid": "pv28_4__content_o_2",
-                "tag": "Divisietekst",
-                "object_code": "beleidskeuze-2",
-                "gebied_code": "werkingsgebied-2",
-                "gio_ref": "0ebf544d-5f58-4cd0-82ff-f5941081d746",
-            }
+            GebiedAnnotation(
+                wid="pv28_4__content_o_2",
+                tag="Divisietekst",
+                object_code="beleidskeuze-2",
+                gebied_code="werkingsgebied-2",
+                gio_ref="0ebf544d-5f58-4cd0-82ff-f5941081d746",
+            )
         ]
 
-        assert annotation_map["beleidskeuze-2"] == expected_annotations
+        assert len(annotation_map["beleidskeuze-2"]) == len(expected_annotations)
+        for actual, expected in zip(annotation_map["beleidskeuze-2"], expected_annotations):
+            assert actual.dict() == expected.dict()
 
     @pytest.fixture
     def multiple_gba_policy_object(self):
@@ -240,44 +230,58 @@ class TestOWAnnotationService:
         self.annotation_service.build_annotation_map()
         annotation_map = self.annotation_service.get_annotation_map()
 
-        expected_annotation_1 = {
-            "type_annotation": "gebiedsaanwijzing",
-            "tag": "IntIoRef",
-            "wid": "pv28_4__content_o_4__ref_o_1",
-            "werkingsgebied_code": "werkingsgebied-1",
-            "groep": "AandachtsgebiedLuchtkwaliteit",
-            "type": "Lucht",
-            "parent_div": {
-                "wid": "pv28_4__content_o_4",
-                "object-code": "beleidskeuze-4",
-                "gebied-code": None,
-                "uses_ambtsgebied": True,
-            },
-        }
-        expected_annotation_2 = {
-            "type_annotation": "gebiedsaanwijzing",
-            "tag": "IntIoRef",
-            "wid": "pv28_4__content_o_4__ref_o_2",
-            "werkingsgebied_code": "werkingsgebied-2",
-            "groep": "AandachtsgebiedLuchtkwaliteit",
-            "type": "Lucht",
-            "parent_div": {
-                "wid": "pv28_4__content_o_4",
-                "object-code": "beleidskeuze-4",
-                "gebied-code": None,
-                "uses_ambtsgebied": True,
-            },
-        }
+        expected_annotations = [
+            AmbtsgebiedAnnotation(
+                type_annotation="ambtsgebied",
+                wid="pv28_4__content_o_4",
+                tag="Divisietekst",
+                object_code="beleidskeuze-4",
+            ),
+            GebiedsaanwijzingAnnotation(
+                type_annotation="gebiedsaanwijzing",
+                tag="IntIoRef",
+                wid="pv28_4__content_o_4__ref_o_1",
+                werkingsgebied_code="werkingsgebied-1",
+                groep="AandachtsgebiedLuchtkwaliteit",
+                type="Lucht",
+                parent_div=ParentDiv(
+                    wid="pv28_4__content_o_4",
+                    **{
+                        "object-code": "beleidskeuze-4",
+                        "gebied-code": None,
+                        "uses_ambtsgebied": True,
+                    }
+                ),
+                object_code="beleidskeuze-4",
+            ),
+            GebiedsaanwijzingAnnotation(
+                type_annotation="gebiedsaanwijzing",
+                tag="IntIoRef",
+                wid="pv28_4__content_o_4__ref_o_2",
+                werkingsgebied_code="werkingsgebied-2",
+                groep="AandachtsgebiedLuchtkwaliteit",
+                type="Lucht",
+                parent_div=ParentDiv(
+                    wid="pv28_4__content_o_4",
+                    **{
+                        "object-code": "beleidskeuze-4",
+                        "gebied-code": None,
+                        "uses_ambtsgebied": True,
+                    }
+                ),
+                object_code="beleidskeuze-4",
+            ),
+        ]
 
-        assert len(annotation_map["beleidskeuze-4"]) == 3
-        assert annotation_map["beleidskeuze-4"][1] == expected_annotation_1
-        assert annotation_map["beleidskeuze-4"][2] == expected_annotation_2
+        assert len(annotation_map["beleidskeuze-4"]) == len(expected_annotations)
+        for actual, expected in zip(annotation_map["beleidskeuze-4"], expected_annotations):
+            assert actual.dict() == expected.dict()
 
     @pytest.fixture
     def policy_object_with_hoofdlijn_annotation(self, policy_object_with_ambtsgebied):
         policy_object_with_ambtsgebied["Hoofdlijnen"] = [
-            {"soort": "omgevingsvisie", "naam": "Mock Hoofdlijn Value"},
-            {"soort": "omgevingsvisie", "naam": "Example Hoofdlijn 2"},
+            {"soort": "hoofdlijn-soort-1", "naam": "hoofdlijn-naam-1"},
+            {"soort": "hoofdlijn-soort-2", "naam": "hoofdlijn-naam-2"},
         ]
         return policy_object_with_ambtsgebied
 
@@ -286,25 +290,35 @@ class TestOWAnnotationService:
         self.annotation_service.build_annotation_map()
         annotation_map = self.annotation_service.get_annotation_map()
 
-        expected_hoofdlijn = {
-            "type_annotation": "hoofdlijn",
-            "tag": "Divisietekst",
-            "wid": "pv28_4__content_o_3",
-            "object_code": "beleidskeuze-3",
-            "hoofdlijnen": [
-                {"soort": "omgevingsvisie", "naam": "Mock Hoofdlijn Value"},
-                {"soort": "omgevingsvisie", "naam": "Example Hoofdlijn 2"},
-            ],
-        }
-        assert len(annotation_map["beleidskeuze-3"]) == 2
-        assert annotation_map["beleidskeuze-3"][1] == expected_hoofdlijn
+        expected_annotations = [
+            AmbtsgebiedAnnotation(
+                wid="pv28_4__content_o_3",
+                tag="Divisietekst",
+                object_code="beleidskeuze-3",
+            ),
+            HoofdlijnAnnotation(
+                tag="Divisietekst",
+                wid="pv28_4__content_o_3",
+                object_code="beleidskeuze-3",
+                soort="hoofdlijn-soort-1",
+                naam="hoofdlijn-naam-1",
+            ),
+            HoofdlijnAnnotation(
+                tag="Divisietekst",
+                wid="pv28_4__content_o_3",
+                object_code="beleidskeuze-3",
+                soort="hoofdlijn-soort-2",
+                naam="hoofdlijn-naam-2",
+            ),
+        ]
+
+        assert len(annotation_map["beleidskeuze-3"]) == len(expected_annotations)
+        for actual, expected in zip(annotation_map["beleidskeuze-3"], expected_annotations):
+            assert actual.dict() == expected.dict()
 
     @pytest.fixture
     def policy_object_with_thema_annotation(self, policy_object_with_ambtsgebied):
-        policy_object_with_ambtsgebied["Themas"] = [
-            "bodem",
-            "water",
-        ]
+        policy_object_with_ambtsgebied["Themas"] = ["thema-1", "thema-2"]
         return policy_object_with_ambtsgebied
 
     def test_build_annotation_map_thema(self, policy_object_with_thema_annotation):
@@ -312,26 +326,20 @@ class TestOWAnnotationService:
         self.annotation_service.build_annotation_map()
         annotation_map = self.annotation_service.get_annotation_map()
 
-        expected_thema = {
-            "type_annotation": "thema",
-            "tag": "Divisietekst",
-            "wid": "pv28_4__content_o_3",
-            "object_code": "beleidskeuze-3",
-            "thema_waardes": [
-                "bodem",
-                "water",
-            ],
-        }
-        assert len(annotation_map["beleidskeuze-3"]) == 2
-        assert annotation_map["beleidskeuze-3"][1] == expected_thema
+        expected_annotations = [
+            AmbtsgebiedAnnotation(
+                wid="pv28_4__content_o_3",
+                tag="Divisietekst",
+                object_code="beleidskeuze-3",
+            ),
+            ThemaAnnotation(
+                tag="Divisietekst",
+                wid="pv28_4__content_o_3",
+                object_code="beleidskeuze-3",
+                thema_waardes=["thema-1", "thema-2"],
+            ),
+        ]
 
-    # @pytest.fixture
-    # def policy_object_invalid_thema_annotation(self, policy_object_with_ambtsgebied):
-    #     policy_object_with_ambtsgebied["Themas"] = ["noexist"]
-    #     return policy_object_with_ambtsgebied
-
-    # def test_fail_annotation_map_thema(self, policy_object_invalid_thema_annotation):
-    #     self.policy_object_repository.add("beleidskeuze-3", policy_object_invalid_thema_annotation)
-
-    #     with pytest.raises(ValueError):
-    #         self.annotation_service.build_annotation_map()
+        assert len(annotation_map["beleidskeuze-3"]) == len(expected_annotations)
+        for actual, expected in zip(annotation_map["beleidskeuze-3"], expected_annotations):
+            assert actual.dict() == expected.dict()

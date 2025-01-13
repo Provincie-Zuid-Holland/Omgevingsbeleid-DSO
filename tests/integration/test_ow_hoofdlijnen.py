@@ -11,6 +11,11 @@ from dso.services.ow import (
     OWTekstdeel,
 )
 from dso.services.ow.models import OWHoofdlijn
+from dso.services.ow.annotation_models import (
+    AmbtsgebiedAnnotation,
+    ThemaAnnotation,
+    HoofdlijnAnnotation,
+)
 
 
 class TestOWHoofdlijnBuilder:
@@ -83,66 +88,65 @@ class TestOWHoofdlijnBuilder:
 
         self.annotation_lookup_map = {
             "beleidskeuze-1": [
-                {
-                    "type_annotation": "ambtsgebied",
-                    "tag": "Divisietekst",
-                    "wid": "pv28_4__content_o_1",
-                    "object_code": "beleidskeuze-1",
-                },
-                {
-                    "type_annotation": "thema",
-                    "tag": "Divisietekst",
-                    "wid": "pv28_4__content_o_1",
-                    "object_code": "beleidskeuze-1",
-                    "thema_waardes": ["geluid"],
-                },
-                {
-                    "type_annotation": "hoofdlijn",
-                    "tag": "Divisietekst",
-                    "wid": "pv28_4__content_o_1",
-                    "object_code": "beleidskeuze-1",
-                    "hoofdlijnen": [{"soort": "hoofdlijn_soort1", "naam": "Example Value 1"}],
-                },
+                AmbtsgebiedAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_1",
+                    object_code="beleidskeuze-1",
+                ),
+                ThemaAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_1",
+                    object_code="beleidskeuze-1",
+                    thema_waardes=["geluid"],
+                ),
+                HoofdlijnAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_1",
+                    object_code="beleidskeuze-1",
+                    soort="hoofdlijn_soort1",
+                    naam="Example Value 1",
+                ),
             ],
             "beleidskeuze-2": [
-                {
-                    "type_annotation": "ambtsgebied",
-                    "wid": "pv28_4__content_o_2",
-                    "tag": "Divisietekst",
-                    "object_code": "beleidskeuze-2",
-                },
-                {
-                    "type_annotation": "thema",
-                    "tag": "Divisietekst",
-                    "wid": "pv28_4__content_o_2",
-                    "object_code": "beleidskeuze-2",
-                    "thema_waardes": ["bodem", "water"],
-                },
-                {
-                    "type_annotation": "hoofdlijn",
-                    "tag": "Divisietekst",
-                    "wid": "pv28_4__content_o_2",
-                    "object_code": "beleidskeuze-2",
-                    "hoofdlijnen": [
-                        {"soort": "hoofdlijn_soort1", "naam": "Example Value 2"},
-                        {"soort": "hoofdlijn_soort1", "naam": "Example Value 3"},
-                    ],
-                },
+                AmbtsgebiedAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_2",
+                    object_code="beleidskeuze-2",
+                ),
+                ThemaAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_2",
+                    object_code="beleidskeuze-2",
+                    thema_waardes=["bodem", "water"],
+                ),
+                HoofdlijnAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_2",
+                    object_code="beleidskeuze-2",
+                    soort="hoofdlijn_soort1",
+                    naam="Example Value 2",
+                ),
+                HoofdlijnAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_2",
+                    object_code="beleidskeuze-2",
+                    soort="hoofdlijn_soort1",
+                    naam="Example Value 3",
+                ),
             ],
             "beleidskeuze-3": [
-                {
-                    "type_annotation": "ambtsgebied",
-                    "tag": "Divisietekst",
-                    "wid": "pv28_4__content_o_3",
-                    "object_code": "beleidskeuze-3",
-                },
-                {
-                    "type_annotation": "hoofdlijn",
-                    "tag": "Divisietekst",
-                    "wid": "pv28_4__content_o_3",
-                    "object_code": "beleidskeuze-3",
-                    "hoofdlijnen": [{"soort": "hoofdlijn_soort1", "naam": "Example Value 1"}],
-                },
+                AmbtsgebiedAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_3",
+                    object_code="beleidskeuze-3",
+                ),
+                HoofdlijnAnnotation(
+                    tag="Divisietekst",
+                    wid="pv28_4__content_o_3",
+                    object_code="beleidskeuze-3",
+                    soort="hoofdlijn_soort1",
+                    naam="Example Value 1",
+                ),
             ],
         }
 
@@ -193,7 +197,10 @@ class TestOWHoofdlijnBuilder:
         mutated_objects = self.ow_repository._mutated_ow_objects
         new_objects = self.ow_repository._new_ow_objects
 
-        tekstdeel_2 = mutated_objects[1]  # beleidskeuze-2
-        assert isinstance(tekstdeel_2, OWTekstdeel)
-        assert len(tekstdeel_2.hoofdlijnen) == 2
-        assert all(h_id in [obj.OW_ID for obj in new_objects] for h_id in tekstdeel_2.hoofdlijnen)
+        tekstdeel_bk_2: OWTekstdeel = mutated_objects[1]  # beleidskeuze-2
+        assert isinstance(tekstdeel_bk_2, OWTekstdeel)
+
+        # ensure expected 2 hoofdlijnen exists
+        assert len(tekstdeel_bk_2.hoofdlijnen) == 2
+        assert all(h_id in [obj.OW_ID for obj in new_objects] for h_id in tekstdeel_bk_2.hoofdlijnen)
+
