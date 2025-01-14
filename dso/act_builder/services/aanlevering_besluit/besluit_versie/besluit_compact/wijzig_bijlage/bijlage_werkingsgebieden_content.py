@@ -17,6 +17,8 @@ class BijlageWerkingsgebiedenContent:
         )
         # werkingsgebieden: List[Werkingsgebied] = [w for w in all_werkingsgebieden if w.New]
         werkingsgebieden = sorted(all_werkingsgebieden, key=lambda w: w.Title)
+        if len(werkingsgebieden) == 0:
+            return ""
 
         content = load_template(
             "akn/besluit_versie/besluit_compact/wijzig_bijlage/BijlageWerkingsgebieden.xml",
