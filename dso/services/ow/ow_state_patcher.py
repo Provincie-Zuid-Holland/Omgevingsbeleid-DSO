@@ -75,7 +75,8 @@ class OWStatePatcher:
                 # we can cascade delete its owgebied ref objects
                 if isinstance(dangling_obj, OWGebiedenGroep):
                     for gebied_ref in dangling_obj.gebieden:
-                        gebied_obj = new_ow_state.ow_objects.get(gebied_ref)
+                        # ensure terminated obj is retrieved in exact previous state
+                        gebied_obj = self._ow_repository.get_known_state_object(gebied_ref)
                         if isinstance(gebied_obj, OWGebied):
                             del new_ow_state.ow_objects[gebied_obj.OW_ID]
                             new_ow_state.terminated_ow_ids.append(gebied_obj.OW_ID)

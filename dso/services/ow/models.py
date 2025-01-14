@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import Dict, List, Optional, Set
 from uuid import UUID
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, root_validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
 from .imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
@@ -45,8 +45,15 @@ class OWRegelingsgebied(OWObject):
 
 
 class OWLocatie(OWObject):
-    gio_ref: Optional[str] = None  # GeometrieRef -> GIO Identifier
-    noemer: Optional[str] = None
+    gio_ref: Optional[str] = None
+    mapped_geo_code: Optional[str] = None
+    noemer: str
+
+    @root_validator(pre=True)
+    def handle_legacy_gio_ref(cls, values):
+        if "gio_ref" not in values and "mapped_uuid" in values:
+            values["gio_ref"] = values.pop("mapped_uuid")
+        return values
 
 
 class OWAmbtsgebied(OWObject):
@@ -59,14 +66,14 @@ class OWAmbtsgebied(OWObject):
 
 
 class OWGebied(OWLocatie):
-    mapped_geo_code: Optional[str] = None
+    gio_ref: str
+    noemer: str
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
         return self.OW_ID in reverse_ref_index.get("OWGebiedenGroep", set())
 
 
 class OWGebiedenGroep(OWLocatie):
-    mapped_geo_code: Optional[str] = None
     gebieden: List[str] = []
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
