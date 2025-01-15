@@ -90,6 +90,12 @@ class IMOWValueRepository:
     def get_type_gebiedsaanwijzing_labels(self) -> List[str]:
         return self._type_gebiedsaanwijzingen.get_labels()
 
+    def get_type_gebiedsaanwijzing_terms(self) -> List[str]:
+        return [item.term for item in self._type_gebiedsaanwijzingen.get_all()]
+
+    def get_type_gebiedsaanwijzing_by_any(self, value: str) -> TypeGebiedsaanwijzingValue | None:
+        return self._type_gebiedsaanwijzingen.get_by_any(value)
+
     def get_gebiedsaanwijzing_groep_labels(self) -> List[str]:
         return self._gebiedsaanwijzing_groepen.get_labels()
 
