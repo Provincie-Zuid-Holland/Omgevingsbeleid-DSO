@@ -21,11 +21,12 @@ from .object_template_repository import ObjectTemplateRepository
 from .regeling import Regeling
 from .resource.asset.asset_repository import AssetRepository
 from .resource.besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
+from .resource.document.document_repository import DocumentRepository
 from .resource.policy_object.policy_object_repository import PolicyObjectRepository
 from .resource.resource_loader import ResourceLoader
 from .resource.resources import Resources
 from .resource.werkingsgebied.werkingsgebied_repository import WerkingsgebiedRepository
-from .resource.document.document_repository import DocumentRepository
+
 
 class InputData(BaseModel):
     publication_settings: PublicationSettings

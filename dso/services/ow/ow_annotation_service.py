@@ -124,7 +124,7 @@ class OWAnnotationService:
                     "object-code": object_code,
                     "gebied-code": policy_dict.get("Werkingsgebied_Code"),
                     "uses_ambtsgebied": policy_dict.get("Werkingsgebied_Code") is None,
-                }
+                },
             )
 
             annotation = GebiedsaanwijzingAnnotation(

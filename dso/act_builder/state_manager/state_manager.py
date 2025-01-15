@@ -21,7 +21,7 @@ class StateManager:
         self.document_eid_lookup: dict = {}
         self.document_wid_lookup: dict = {}
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
-        self.ow_annotation_map: Dict[str, List[AnnotationType]] = defaultdict(list) 
+        self.ow_annotation_map: Dict[str, List[AnnotationType]] = defaultdict(list)
         self.ow_repository: OWStateRepository = OWStateRepository(input_data.ow_data, self.debug_enabled)
         self.output_files: List[OutputFile] = []
         # The full act text as how the conclusion would be

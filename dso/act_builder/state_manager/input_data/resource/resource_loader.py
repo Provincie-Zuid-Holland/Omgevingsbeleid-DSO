@@ -1,8 +1,8 @@
 from .....models import PublicationSettings
 from .asset.asset_resource_loader import AssetResourceLoader
 from .besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
-from .policy_object.policy_object_resource_loader import PolicyObjectResourceLoader
 from .document.document_repository import DocumentRepository
+from .policy_object.policy_object_resource_loader import PolicyObjectResourceLoader
 from .resources import Resources
 from .werkingsgebied.werkingsgebied_resource_loader import WerkingsgebiedResourceLoader
 

@@ -2,9 +2,9 @@ from typing import Dict, List, Optional, Type
 
 from pydantic.main import BaseModel
 
-from ....services.ow.ow_annotation_service import AnnotationType, HoofdlijnAnnotation
 from ....services.ow.enums import IMOWTYPES, OwHoofdlijnObjectType, OwProcedureStatus
 from ....services.ow.models import OWHoofdlijn, OWObject
+from ....services.ow.ow_annotation_service import AnnotationType, HoofdlijnAnnotation
 from ....services.ow.ow_id import generate_ow_id
 from ...state_manager.exceptions import OWStateError
 from ...state_manager.states.ow_repository import OWStateRepository
@@ -36,7 +36,9 @@ class OwHoofdlijnBuilder(OwFileBuilder):
     ) -> None:
         super().__init__()
         self._context = context
-        self._annotation_lookup: Dict[str, List[HoofdlijnAnnotation]] = self._filter_annotation_types(annotation_lookup_map)
+        self._annotation_lookup: Dict[str, List[HoofdlijnAnnotation]] = self._filter_annotation_types(
+            annotation_lookup_map
+        )
         self._ow_repository = ow_repository
 
     def handle_ow_object_changes(self) -> None:

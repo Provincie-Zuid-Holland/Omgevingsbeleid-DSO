@@ -14,7 +14,12 @@ from ....services.ow import (
     OWTekstdeel,
     generate_ow_id,
 )
-from ....services.ow.ow_annotation_service import AnnotationType, AmbtsgebiedAnnotation, GebiedAnnotation, ThemaAnnotation
+from ....services.ow.ow_annotation_service import (
+    AmbtsgebiedAnnotation,
+    AnnotationType,
+    GebiedAnnotation,
+    ThemaAnnotation,
+)
 from ...state_manager import OWObjectStateException
 from ...state_manager.states.ow_repository import OWStateRepository
 from .ow_builder_context import BuilderContext

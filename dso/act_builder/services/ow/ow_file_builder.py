@@ -18,7 +18,6 @@ class OwFileBuilder(ABC):
         self.template_path = self.TEMPLATE_PATH
         self.template_data = None
 
-
     @abstractmethod
     def handle_ow_object_changes(self) -> None:
         pass
@@ -30,7 +29,7 @@ class OwFileBuilder(ABC):
     def _filter_annotation_types(self, annotation_lookup_map: Dict[str, List[AnnotationType]]):
         filtered_annotation_map = {
             key: [
-                annotation 
+                annotation
                 for annotation in annotations
                 if any(isinstance(annotation, t) for t in self.OW_ANNOTATION_TYPES)
             ]

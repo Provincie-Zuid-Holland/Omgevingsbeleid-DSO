@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
 
 from ....services.ow.enums import OwProcedureStatus
-from ....services.ow.ow_annotation_service import OWAnnotationService, AnnotationType
+from ....services.ow.ow_annotation_service import AnnotationType, OWAnnotationService
 from ....services.ow.ow_state_patcher import OWStatePatcher
 from ....services.utils.waardelijsten import ProcedureType
 from ...services import BuilderService

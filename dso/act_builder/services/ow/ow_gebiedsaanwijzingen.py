@@ -2,11 +2,9 @@ from typing import Dict, List, Optional, Type
 
 from pydantic.main import BaseModel
 
-
-from ....services.ow.ow_annotation_service import AnnotationType, GebiedsaanwijzingAnnotation
-
 from ....services.ow.enums import IMOWTYPES, OwGebiedsaanwijzingObjectType, OwProcedureStatus
 from ....services.ow.models import OWGebiedsaanwijzing, OWObject
+from ....services.ow.ow_annotation_service import AnnotationType, GebiedsaanwijzingAnnotation
 from ....services.ow.ow_id import generate_ow_id
 from ...state_manager.exceptions import OWStateError
 from ...state_manager.states.ow_repository import OWStateRepository
@@ -73,7 +71,9 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
                                 f"Creating gebiedsaanwijzing for non-existing divisie wid {annotation.parent_div.wid}"
                             )
 
-                        ow_tekstdeel = self._ow_repository.get_active_tekstdeel_by_div(divisie_ow_id=parent_divisie.OW_ID)
+                        ow_tekstdeel = self._ow_repository.get_active_tekstdeel_by_div(
+                            divisie_ow_id=parent_divisie.OW_ID
+                        )
                         if not ow_tekstdeel:
                             raise OWStateError(
                                 f"Creating gebiedsaanwijzing for non-existing tekstdeel. divisie owid: {parent_divisie.OW_ID}"
@@ -106,7 +106,9 @@ class OwGebiedsaanwijzingBuilder(OwFileBuilder):
                                 ow_tekstdeel.procedure_status = self._context.ow_procedure_status
 
                         if new_gebiedsaanwijzing:
-                            self._ow_repository.update_state_tekstdeel(state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel)
+                            self._ow_repository.update_state_tekstdeel(
+                                state_ow_id=ow_tekstdeel.OW_ID, updated_obj=ow_tekstdeel
+                            )
 
     def new_ow_gebiedsaanwijzing(
         self, element_wid: str, naam: str, type: str, groep: str, locatie_ref: str
