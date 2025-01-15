@@ -2,13 +2,11 @@ from abc import abstractmethod
 from typing import Dict, List, Optional, Set
 from uuid import UUID
 
-from pydantic import BaseModel, Field, validator, root_validator
+from pydantic import BaseModel, Field, validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
 from .ow_id import check_ow_id_imowtype
-# from .waardelijsten.imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
-from .waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING
-from .waardelijsten.waardelijsten import TYPE_GEBIEDSAANWIJZING_VALUES
+from .waardelijsten.imow_value_repository import imow_value_repository
 
 
 class OWObject(BaseModel):
@@ -128,39 +126,37 @@ class OWTekstdeel(OWObject):
 
 class OWGebiedsaanwijzing(OWObject):
     naam: str  # locatie/gio noemer
-    type_: str 
+    type_: str
     groep: str
     locaties: List[str]  # locatieaanduiding + LocatieRefs
     wid: str
 
     @validator("type_", pre=True)
     def validate_type(cls, value):
-        for entry in TYPE_GEBIEDSAANWIJZING_VALUES.waarden.waarde:
-            if value == entry.uri or value == entry.term or value == entry.label:
-                return entry.uri
-        raise ValueError(f"'{value}' is not a valid TypeGebiedsaanwijzing")
+        type_uri = imow_value_repository.get_type_gebiedsaanwijzing_uri(value)
+        if not type_uri:
+            raise ValueError(f"'{value}' is not a valid TypeGebiedsaanwijzing")
+        return type_uri
 
     @validator("groep", pre=True)
     def validate_groep(cls, value, values):
         if "type_" not in values:
             raise ValueError("type_ must be validated before groep")
 
-        type_uri = values["type_"]
-        groep_value_list = GEBIEDSAANWIJZING_TO_GROEP_MAPPING.get(type_uri)
-        if not groep_value_list:
-            raise ValueError(f"No groep mapping found for type '{type_uri}'")
+        gba_type_value = values["type_"]
+        groups = imow_value_repository.get_groups_for_type(gba_type_value)
+        if not groups:
+            raise ValueError(f"No groep mapping found for type '{gba_type_value}'")
 
-        # search for a matching uri, term, or label in the groep_value_list
-        for entry in groep_value_list.waarden.waarde:
-            if value == entry.uri or value == entry.term or value == entry.label:
-                return entry.uri
+        for group in groups:
+            if value == group.uri or value == group.term or value == group.label:
+                return group.uri
 
-        raise ValueError(f"'{value}' is not a valid groep value for type '{type_uri}'")
+        raise ValueError(f"'{value}' is not a valid groep value for type '{gba_type_value}'")
 
     def has_valid_refs(self, used_ow_ids: List[str], reverse_ref_index: Dict[str, Set[str]]) -> bool:
-        return (
-            all(locatie_id in used_ow_ids for locatie_id in self.locaties) and
-            self.OW_ID in reverse_ref_index.get("OWTekstdeel", set())
+        return all(locatie_id in used_ow_ids for locatie_id in self.locaties) and self.OW_ID in reverse_ref_index.get(
+            "OWTekstdeel", set()
         )
 
 
