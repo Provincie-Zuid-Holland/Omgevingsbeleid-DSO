@@ -12,16 +12,23 @@ T = TypeVar("T")
 class IMOWValueRegistry(Generic[T]):
     def __init__(self, values: List[T], key_attr: str = "uri"):
         self._values = values
-        self._values_by_key: Dict[str, T] = {getattr(v, key_attr): v for v in values}
+        self._values_by_uri: Dict[str, T] = {getattr(v, key_attr): v for v in values}
+        self._values_by_term: Dict[str, T] = {getattr(v, "term"): v for v in values}
 
     def get_all(self) -> List[T]:
         return self._values
 
-    def get_by_key(self, key: str) -> T | None:
-        return self._values_by_key.get(key)
+    def get_by_uri(self, uri: str) -> T | None:
+        return self._values_by_uri.get(uri)
+
+    def get_by_term(self, term: str) -> T | None:
+        return self._values_by_term.get(term)
+
+    def get_by_any(self, value: str) -> T | None:
+        return self.get_by_uri(value) or self.get_by_term(value)
 
     def get_uris(self) -> List[str]:
-        return list(self._values_by_key.keys())
+        return list(self._values_by_uri.keys())
 
     def get_labels(self) -> List[str]:
         return [v.label for v in self._values]
@@ -63,16 +70,9 @@ class IMOWValueRepository:
         return self._gebiedsaanwijzing_groepen.get_all()
 
     def get_groups_for_type(self, type_value: str) -> List[GebiedsaanwijzingGroepValue]:
-        type_gebiedsaanwijzing = self._type_gebiedsaanwijzingen.get_by_key(type_value)
-        if not type_gebiedsaanwijzing:
-            for value in self._type_gebiedsaanwijzingen.get_all():
-                if type_value in (value.term, value.label):
-                    type_gebiedsaanwijzing = value
-                    break
-
+        type_gebiedsaanwijzing = self._type_gebiedsaanwijzingen.get_by_any(type_value)
         if not type_gebiedsaanwijzing:
             return []
-
         return self._groups_by_type.get(type_gebiedsaanwijzing.uri, [])
 
     def get_thema_uris(self) -> List[str]:
@@ -94,11 +94,11 @@ class IMOWValueRepository:
         return self._gebiedsaanwijzing_groepen.get_labels()
 
     def get_type_gebiedsaanwijzing_uri(self, value: str) -> Optional[str]:
-        type_gebiedsaanwijzing = self._type_gebiedsaanwijzingen.get_by_key(value)
+        type_gebiedsaanwijzing = self._type_gebiedsaanwijzingen.get_by_any(value)
         return type_gebiedsaanwijzing.uri if type_gebiedsaanwijzing else None
 
     def get_gebiedsaanwijzing_groep_uri(self, value: str) -> Optional[str]:
-        gebiedsaanwijzing_groep = self._gebiedsaanwijzing_groepen.get_by_key(value)
+        gebiedsaanwijzing_groep = self._gebiedsaanwijzing_groepen.get_by_any(value)
         return gebiedsaanwijzing_groep.uri if gebiedsaanwijzing_groep else None
 
 
