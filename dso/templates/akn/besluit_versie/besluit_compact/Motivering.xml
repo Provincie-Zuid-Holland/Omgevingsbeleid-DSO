@@ -1,6 +1,5 @@
 <Motivering eId="{{ motivering_eid }}" wId="{{ motivering_wid }}">
     <Kop>
-        <Label>Motivering</Label>
         {% if motivering.nummer is not none %}
         <Nummer>{{ motivering.nummer }}</Nummer>
         {% endif %}
