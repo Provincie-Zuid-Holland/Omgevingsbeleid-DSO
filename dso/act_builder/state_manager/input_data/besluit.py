@@ -23,8 +23,10 @@ class WijzigBijlage(BaseModel):
 
 
 class Motivering(BaseModel):
+    nummer: Optional[str] = Field(None)
     opschrift: str
     content: str
+    bijlagen: List[Bijlage] = Field(default_factory=list)
 
 
 class Besluit(BaseModel):
@@ -48,7 +50,7 @@ class Besluit(BaseModel):
     rechtsgebieden: List[RechtsgebiedType]
     onderwerpen: List[OnderwerpType]
     soort_procedure: ProcedureType
-    bijlagen: List[Bijlage] = Field([])
+    bijlagen: List[Bijlage] = Field(default_factory=list)
     motivering: Optional[Motivering] = Field(None)
 
     @validator("rechtsgebieden", pre=True, always=True)
