@@ -24,7 +24,7 @@ markupsafe==3.0.2
     # via
     #   -r requirements.in
     #   jinja2
-numpy==2.2.2
+numpy==2.2.3
     # via shapely
 packaging==24.2
     # via -r requirements.in
@@ -34,7 +34,7 @@ platformdirs==4.3.6
     # via -r requirements.in
 pydantic==1.10.21
     # via -r requirements.in
-pyproj==3.7.0
+pyproj==3.7.1
     # via -r requirements.in
 requests==2.32.3
     # via
