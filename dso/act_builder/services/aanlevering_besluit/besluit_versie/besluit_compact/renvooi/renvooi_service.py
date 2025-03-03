@@ -4,7 +4,7 @@ import requests
 from lxml import etree
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
-from .......exceptions import RenvooiInternalServerError, RenvooiUnauthorizedError, RenvooiUnkownError, RenvooiXmlError
+from .......exceptions import RenvooiInternalServerError, RenvooiUnauthorizedError, RenvooiUnknownError, RenvooiXmlError
 from .......models import ActFRBR, RenvooiRegelingMutatie
 from .......services.utils.helpers import load_template
 
@@ -57,7 +57,7 @@ class RenvooiService:
             case 500:
                 raise RenvooiInternalServerError(response.text)
             case _ as code:
-                raise RenvooiUnkownError(response.text, code)
+                raise RenvooiUnknownError(response.text, code)
 
     def _get_was_xml(self) -> str:
         regeling_versie: str = load_template(
