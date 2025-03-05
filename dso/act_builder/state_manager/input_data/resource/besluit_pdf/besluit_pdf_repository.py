@@ -9,7 +9,7 @@ class BesluitPdfRepository:
 
     def add(self, pdf: dict):
         pdf_id = pdf["id"]
-        self._pdfs[pdf_id] = BesluitPdf.parse_obj(pdf)
+        self._pdfs[pdf_id] = BesluitPdf.model_validate(pdf)
 
     def add_list(self, pdfs: List[dict]):
         for pdf in pdfs:

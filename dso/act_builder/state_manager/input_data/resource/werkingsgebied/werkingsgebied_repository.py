@@ -14,7 +14,7 @@ class WerkingsgebiedRepository:
         Add single werkingsgebied to the repository.
         """
         werkingsgebied_id = werkingsgebied["UUID"]
-        self._werkingsgebieden[werkingsgebied_id] = Werkingsgebied.parse_obj(werkingsgebied)
+        self._werkingsgebieden[werkingsgebied_id] = Werkingsgebied.model_validate(werkingsgebied)
 
     def add_list(self, werkingsgebieden: List[dict]) -> None:
         """

@@ -120,11 +120,11 @@ class InputDataLoader:
         return data
 
     def _create_besluit(self, besluit_config: dict):
-        besluit = Besluit.parse_obj(besluit_config)
+        besluit = Besluit.model_validate(besluit_config)
         return besluit
 
     def _create_regeling(self, regeling_config: dict):
-        regeling = Regeling.parse_obj(regeling_config)
+        regeling = Regeling.model_validate(regeling_config)
         return regeling
 
     def _create_regeling_mutation(self, regeling_mutatie_config: dict):
@@ -143,7 +143,7 @@ class InputDataLoader:
         publication_settings: PublicationSettings,
         procedure_config: dict,
     ) -> ProcedureVerloop:
-        stappen: List[ProcedureStap] = [ProcedureStap.parse_obj(s) for s in procedure_config["stappen"]]
+        stappen: List[ProcedureStap] = [ProcedureStap.model_validate(s) for s in procedure_config["stappen"]]
         procedure_verloop = ProcedureVerloop(
             bekend_op=publication_settings.datum_bekendmaking,
             stappen=stappen,
