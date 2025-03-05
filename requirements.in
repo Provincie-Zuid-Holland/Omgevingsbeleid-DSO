@@ -6,7 +6,7 @@ pathspec
 platformdirs
 tomli
 typing_extensions
-pydantic==1.*
+pydantic
 lxml
 pyproj
 shapely

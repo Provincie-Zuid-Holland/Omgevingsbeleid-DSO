@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from dso.act_builder.state_manager.input_data.resource.document.document_repository import DocumentRepository
 
@@ -14,6 +14,4 @@ class Resources(BaseModel):
     werkingsgebied_repository: WerkingsgebiedRepository
     besluit_pdf_repository: BesluitPdfRepository
     document_repository: DocumentRepository
-
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)

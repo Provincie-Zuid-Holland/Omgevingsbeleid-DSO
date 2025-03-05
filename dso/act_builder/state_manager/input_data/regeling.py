@@ -1,6 +1,6 @@
 from typing import List
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 
 from ....services.utils.waardelijsten import OnderwerpType, RechtsgebiedType
 
@@ -13,7 +13,7 @@ class Regeling(BaseModel):
     rechtsgebieden: List[RechtsgebiedType]
     onderwerpen: List[OnderwerpType]
 
-    @validator("rechtsgebieden", pre=True, always=True)
+    @field_validator("rechtsgebieden", mode="before")
     def _format_rechtsgebieden(cls, v):
         result = []
         for entry in v:
@@ -23,7 +23,7 @@ class Regeling(BaseModel):
                 result.append(RechtsgebiedType[entry])
         return result
 
-    @validator("onderwerpen", pre=True, always=True)
+    @field_validator("onderwerpen", mode="before")
     def _format_onderwerpen(cls, v):
         result = []
         for entry in v:
@@ -33,6 +33,6 @@ class Regeling(BaseModel):
                 result.append(OnderwerpType[entry])
         return result
 
-    @validator("is_officieel", pre=True, always=True)
+    @field_validator("is_officieel", mode="before")
     def _format_is_officieel(cls, v):
         return str(v).lower()

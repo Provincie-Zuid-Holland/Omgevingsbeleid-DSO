@@ -1,6 +1,6 @@
 import uuid
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 
 from ......models import ContentType, GioFRBR
 
@@ -23,7 +23,7 @@ class Document(BaseModel):
         filename: str = f"IO_{self.Filename.replace('.', '_')}.xml"
         return filename
 
-    @validator("Content_Type", pre=True, always=True)
+    @field_validator("Content_Type", mode="before")
     def _format_content_type(cls, v):
         if v in ContentType.__members__.values():
             return v
