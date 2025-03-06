@@ -35,12 +35,12 @@ setup(
         'tomli>=2.0.1',
         'typing-extensions>=4.9.0',
     ],
-    python_requires='>=3.11',
+    python_requires='>=3.13',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: DSO Developers',
         'License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)',
-        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.13',
     ],
     entry_points={
         # 'console_scripts': [
