@@ -9,7 +9,7 @@ class DocumentRepository:
 
     def add(self, document: dict):
         uuidx: str = document["UUID"]
-        self._documents[uuidx] = Document.parse_obj(document)
+        self._documents[uuidx] = Document.model_validate(document)
 
     def add_list(self, documents: List[dict]):
         for document in documents:

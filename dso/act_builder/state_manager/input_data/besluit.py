@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 from ....services.utils.waardelijsten import OnderwerpType, ProcedureType, RechtsgebiedType
 
@@ -31,7 +31,7 @@ class Motivering(BaseModel):
 
 class Besluit(BaseModel):
     officiele_titel: str
-    citeertitel: Optional[str]
+    citeertitel: Optional[str] = Field(None)
     aanhef: str
     wijzig_artikel: Artikel
     wijzig_bijlage: WijzigBijlage = Field(
@@ -43,7 +43,7 @@ class Besluit(BaseModel):
     tekst_artikelen: List[Artikel]
 
     # tijd_artikel does not exist on drafts and should then be set to reserved
-    tijd_artikel: Optional[Artikel]
+    tijd_artikel: Optional[Artikel] = Field(None)
 
     sluiting: str
     ondertekening: str
@@ -53,7 +53,7 @@ class Besluit(BaseModel):
     bijlagen: List[Bijlage] = Field(default_factory=list)
     motivering: Optional[Motivering] = Field(None)
 
-    @validator("rechtsgebieden", pre=True, always=True)
+    @field_validator("rechtsgebieden", mode="before")
     def _format_rechtsgebieden(cls, v):
         result = []
         for entry in v:
@@ -63,7 +63,7 @@ class Besluit(BaseModel):
                 result.append(RechtsgebiedType[entry])
         return result
 
-    @validator("onderwerpen", pre=True, always=True)
+    @field_validator("onderwerpen", mode="before")
     def _format_onderwerpen(cls, v):
         result = []
         for entry in v:
@@ -73,7 +73,7 @@ class Besluit(BaseModel):
                 result.append(OnderwerpType[entry])
         return result
 
-    @validator("soort_procedure", pre=True, always=True)
+    @field_validator("soort_procedure", mode="before")
     def _format_soort_procedure(cls, v):
         if v in ProcedureType.__members__.values():
             return v

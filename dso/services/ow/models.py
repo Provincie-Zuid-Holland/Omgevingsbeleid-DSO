@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import Dict, List, Optional, Set
 from uuid import UUID
 
-from pydantic import BaseModel, Field, root_validator, validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
 from .imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
@@ -32,7 +32,7 @@ class BestuurlijkeGrenzenVerwijzing(BaseModel):
     domein: str
     geldig_op: str
 
-    @validator("bestuurlijke_grenzen_id", pre=True, always=True)
+    @field_validator("bestuurlijke_grenzen_id", mode="before")
     def convert_to_upper(cls, v):
         return v.upper() if isinstance(v, str) else v
 
@@ -49,7 +49,7 @@ class OWLocatie(OWObject):
     mapped_geo_code: Optional[str] = None
     noemer: str
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def handle_legacy_gio_ref(cls, values):
         if "gio_ref" not in values and "mapped_uuid" in values:
             values["gio_ref"] = values.pop("mapped_uuid")
@@ -143,7 +143,7 @@ class OWGebiedsaanwijzing(OWObject):
     locaties: List[str]  # locatieaanduiding + LocatieRefs
     wid: str
 
-    @validator("type_", pre=True)
+    @field_validator("type_", mode="before")
     def validate_type(cls, value):
         if isinstance(value, str):
             try:
@@ -154,7 +154,7 @@ class OWGebiedsaanwijzing(OWObject):
                         return enum_member
         return value
 
-    @validator("groep", pre=True)
+    @field_validator("groep", mode="before")
     def validate_groep(cls, value, values):
         if "type_" in values:
             type_enum = values["type_"]
