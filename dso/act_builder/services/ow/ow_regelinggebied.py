@@ -19,7 +19,7 @@ from .ow_file_builder import OwFileBuilder
 
 class OwRegelingsgebiedFileData(BaseModel):
     levering_id: str
-    procedure_status: Optional[OwProcedureStatus]
+    procedure_status: Optional[OwProcedureStatus] = None
     object_types: List[OwRegelingsgebiedObjectType]
     new_ow_objects: List[OWObject] = []
     mutated_ow_objects: List[OWObject] = []

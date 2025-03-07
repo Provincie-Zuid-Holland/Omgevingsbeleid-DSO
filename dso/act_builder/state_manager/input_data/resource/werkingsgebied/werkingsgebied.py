@@ -2,7 +2,7 @@ import re
 import uuid
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, root_validator, validator
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator, model_validator
 
 from ......models import GioFRBR
 
@@ -16,11 +16,11 @@ class Locatie(BaseModel):
     Gml: Optional[str] = Field(None)
     Geometry: Optional[str] = Field(None)
 
-    @root_validator
-    def _must_have_a_source(cls, v):
-        if v["Gml"] is None and v["Geometry"] is None:
+    @model_validator(mode="after")
+    def _must_have_a_source(cls, values: dict) -> dict:
+        if values.get("Gml") is None and values.get("Geometry") is None:
             raise ValueError("Must provide Gml or Geometry for Locatie")
-        return v
+        return values
 
 
 class Werkingsgebied(BaseModel):
@@ -35,10 +35,10 @@ class Werkingsgebied(BaseModel):
     Achtergrond_Actualiteit: str
     Locaties: List[Locatie] = Field(default_factory=list, alias="Onderverdelingen")
 
-    @validator("Locaties", pre=True, always=True)
-    def handle_locaties_alias(cls, v, values, **kwargs):
-        if not v and "Onderverdelingen" in values:
-            return values["Onderverdelingen"]
+    @field_validator("Locaties", mode="before")
+    def handle_locaties_alias(cls, v, info):
+        if not v and "Onderverdelingen" in info.data:
+            return info.data["Onderverdelingen"]
         return v
 
     def get_name(self) -> str:
@@ -53,6 +53,8 @@ class Werkingsgebied(BaseModel):
     def get_gio_filename(self) -> str:
         return f"GIO_locaties_{self.get_name()}.xml"
 
-    class Config:
-        allow_population_by_field_name = True
-        json_encoders = {uuid.UUID: str}
+    @field_serializer("UUID")
+    def serialize_uuid(cls, v: uuid.UUID) -> str:
+        return str(v)
+
+    model_config = ConfigDict(populate_by_name=True)

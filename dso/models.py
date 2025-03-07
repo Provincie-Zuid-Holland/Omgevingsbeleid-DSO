@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 from enum import Enum
 from typing import Any, Dict, List, Optional, Type
 
-from pydantic import BaseModel, Field, ValidationError, root_validator, validator
+from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
 
 from .services.ow.models import OWObject
 from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappen, Provincie
@@ -15,7 +15,7 @@ class FRBR(BaseModel, metaclass=ABCMeta):
     Work_Other: str
     Expression_Language: str
     Expression_Date: str
-    Expression_Version: Optional[int]
+    Expression_Version: Optional[int] = None
 
     @abstractmethod
     def get_work(self) -> str:
@@ -134,7 +134,7 @@ class ProcedureStap(BaseModel):
     soort_stap: ProcedureStappen
     voltooid_op: str
 
-    @validator("soort_stap", pre=True)
+    @field_validator("soort_stap", mode="before")
     def map_enum_value(cls, v):
         if v in ProcedureStappen.__members__.values():
             return v
@@ -199,7 +199,7 @@ class PublicatieOpdracht(BaseModel):
     publicatie_bestand: str
     datum_bekendmaking: str
 
-    @validator("opdracht_type", pre=True, always=True)
+    @field_validator("opdracht_type", mode="before")
     def _format_opdracht_type(cls, v):
         if v in OpdrachtType.__members__.values():
             return v
@@ -213,7 +213,7 @@ class DocumentType(str, Enum):
 
 class InstellingDoel(BaseModel):
     frbr: DoelFRBR
-    datum_juridisch_werkend_vanaf: Optional[str]
+    datum_juridisch_werkend_vanaf: Optional[str] = None
 
 
 class InstrekkingDoel(BaseModel):
@@ -239,7 +239,7 @@ class PublicationSettings(BaseModel):
     instelling_doel: InstellingDoel
     intrekking: Optional[Intrekking] = Field(None)
 
-    @validator("document_type", pre=True, always=True)
+    @field_validator("document_type", mode="before")
     def _format_document_type(cls, v):
         if v in DocumentType.__members__.values():
             return v
@@ -248,7 +248,7 @@ class PublicationSettings(BaseModel):
         except KeyError:
             raise ValueError(f"{v} is not a valid DocumentType")
 
-    @validator("soort_bestuursorgaan", pre=True)
+    @field_validator("soort_bestuursorgaan", mode="before")
     def _format_soort_bestuursorgaan(cls, v):
         if v in BestuursorgaanSoort.__members__.values():
             return v
@@ -257,7 +257,7 @@ class PublicationSettings(BaseModel):
         except KeyError:
             raise ValueError(f"{v} is geen valide Bestuursorgaan uit de waardelijst")
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def _generate_opdracht(cls, v):
         opdracht = PublicatieOpdracht(**v["opdracht"])
         v["opdracht"] = opdracht
@@ -312,7 +312,7 @@ class RenvooiRegelingMutatie(RegelingMutatie):
     renvooi_api_url: str
     renvooi_api_key: str
 
-    @validator("renvooi_api_key", pre=False, always=True)
+    @field_validator("renvooi_api_key", mode="after")
     def _overwrite_renvooi_api_key_from_env(cls, v):
         env_key: Optional[str] = os.getenv("RENVOOI_API_KEY")
         if env_key:

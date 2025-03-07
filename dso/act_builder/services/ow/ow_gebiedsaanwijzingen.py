@@ -13,7 +13,7 @@ from .ow_file_builder import OwFileBuilder
 
 class OwGebiedsaanwijzingTemplateData(BaseModel):
     levering_id: str
-    procedure_status: Optional[OwProcedureStatus]
+    procedure_status: Optional[OwProcedureStatus] = None
     object_types: List[OwGebiedsaanwijzingObjectType]
     new_ow_objects: List[OWObject] = []
     mutated_ow_objects: List[OWObject] = []

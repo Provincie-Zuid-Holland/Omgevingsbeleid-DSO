@@ -1,7 +1,7 @@
 import uuid
 from enum import Enum
 
-from pydantic import BaseModel, Field, root_validator
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, model_validator
 
 
 class IllustratieFormaat(str, Enum):
@@ -25,14 +25,13 @@ class Meta(BaseModel):
     Uitlijning: IllustratieUitlijning = Field(IllustratieUitlijning.start)
     Dpi: int = Field(150)
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def generate_formaat(cls, values: dict):
         if "Formaat" not in values:
             values["Formaat"] = IllustratieFormaat[values.get("ext", values.get("Ext"))]
         return values
 
-    class Config:
-        allow_population_by_field_name = True
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class Asset(BaseModel):
@@ -44,6 +43,8 @@ class Asset(BaseModel):
         filename: str = f"img_{self.UUID}.{self.Meta.Ext}"
         return filename
 
-    class Config:
-        allow_population_by_field_name = True
-        json_encoders = {uuid.UUID: str}
+    @field_serializer("UUID")
+    def serialize_uuid(cls, v: uuid.UUID) -> str:
+        return str(v)
+
+    model_config = ConfigDict(populate_by_name=True)
