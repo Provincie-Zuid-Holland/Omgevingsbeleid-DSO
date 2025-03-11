@@ -54,9 +54,9 @@ class Besluit(BaseModel):
     motivering: Optional[Motivering] = Field(None)
 
     @field_validator("rechtsgebieden", mode="before")
-    def _format_rechtsgebieden(cls, v):
+    def _format_rechtsgebieden(cls, value):
         result = []
-        for entry in v:
+        for entry in value:
             if entry in RechtsgebiedType.__members__.values():
                 result.append(entry)
             else:
@@ -64,9 +64,9 @@ class Besluit(BaseModel):
         return result
 
     @field_validator("onderwerpen", mode="before")
-    def _format_onderwerpen(cls, v):
+    def _format_onderwerpen(cls, value):
         result = []
-        for entry in v:
+        for entry in value:
             if entry in OnderwerpType.__members__.values():
                 result.append(entry)
             else:
@@ -74,7 +74,7 @@ class Besluit(BaseModel):
         return result
 
     @field_validator("soort_procedure", mode="before")
-    def _format_soort_procedure(cls, v):
-        if v in ProcedureType.__members__.values():
-            return v
-        return ProcedureType[v]
+    def _format_soort_procedure(cls, value):
+        if value in ProcedureType.__members__.values():
+            return value
+        return ProcedureType[value]

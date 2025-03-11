@@ -2,7 +2,7 @@ import re
 import uuid
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_serializer, field_validator, model_validator
 
 from ......models import GioFRBR
 
@@ -36,10 +36,10 @@ class Werkingsgebied(BaseModel):
     Locaties: List[Locatie] = Field(default_factory=list, alias="Onderverdelingen")
 
     @field_validator("Locaties", mode="before")
-    def handle_locaties_alias(cls, v, info):
-        if not v and "Onderverdelingen" in info.data:
+    def handle_locaties_alias(cls, value, info: ValidationInfo):
+        if not value and "Onderverdelingen" in info.data:
             return info.data["Onderverdelingen"]
-        return v
+        return value
 
     def get_name(self) -> str:
         s: str = self.Title.lower()
