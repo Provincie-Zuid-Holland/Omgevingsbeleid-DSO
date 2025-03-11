@@ -17,10 +17,10 @@ class Locatie(BaseModel):
     Geometry: Optional[str] = Field(None)
 
     @model_validator(mode="after")
-    def _must_have_a_source(cls, values: dict) -> dict:
-        if values.get("Gml") is None and values.get("Geometry") is None:
+    def _must_have_a_source(self) -> Self:
+        if self.Gml is None and self.Geometry is None:
             raise ValueError("Must provide Gml or Geometry for Locatie")
-        return values
+        return self
 
 
 class Werkingsgebied(BaseModel):

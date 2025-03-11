@@ -50,10 +50,10 @@ class OWLocatie(OWObject):
     noemer: str
 
     @model_validator(mode="before")
-    def handle_legacy_gio_ref(cls, values):
-        if "gio_ref" not in values and "mapped_uuid" in values:
-            values["gio_ref"] = values.pop("mapped_uuid")
-        return values
+    def handle_legacy_gio_ref(cls, data):
+        if "gio_ref" not in data and "mapped_uuid" in data:
+            data["gio_ref"] = data.pop("mapped_uuid")
+        return data
 
 
 class OWAmbtsgebied(OWObject):

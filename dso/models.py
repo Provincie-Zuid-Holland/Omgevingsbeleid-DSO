@@ -258,10 +258,10 @@ class PublicationSettings(BaseModel):
             raise ValueError(f"{v} is geen valide Bestuursorgaan uit de waardelijst")
 
     @model_validator(mode="before")
-    def _generate_opdracht(cls, v):
-        opdracht = PublicatieOpdracht(**v["opdracht"])
-        v["opdracht"] = opdracht
-        return v
+    def _generate_opdracht(cls, data):
+        opdracht = PublicatieOpdracht(**data["opdracht"])
+        data["opdracht"] = opdracht
+        return data
 
     @classmethod
     def from_json(cls, json_data):
