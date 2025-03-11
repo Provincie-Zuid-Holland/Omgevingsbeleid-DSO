@@ -1,6 +1,6 @@
 import re
 import uuid
-from typing import List, Optional
+from typing import List, Optional, Self
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_serializer, field_validator, model_validator
 
