@@ -1,8 +1,8 @@
 import re
 import uuid
-from typing import List, Optional
+from typing import List, Optional, Self
 
-from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_serializer, field_validator, model_validator
 
 from ......models import GioFRBR
 
@@ -17,10 +17,10 @@ class Locatie(BaseModel):
     Geometry: Optional[str] = Field(None)
 
     @model_validator(mode="after")
-    def _must_have_a_source(cls, values: dict) -> dict:
-        if values.get("Gml") is None and values.get("Geometry") is None:
+    def _must_have_a_source(self) -> Self:
+        if self.Gml is None and self.Geometry is None:
             raise ValueError("Must provide Gml or Geometry for Locatie")
-        return values
+        return self
 
 
 class Werkingsgebied(BaseModel):
@@ -36,10 +36,10 @@ class Werkingsgebied(BaseModel):
     Locaties: List[Locatie] = Field(default_factory=list, alias="Onderverdelingen")
 
     @field_validator("Locaties", mode="before")
-    def handle_locaties_alias(cls, v, info):
-        if not v and "Onderverdelingen" in info.data:
+    def handle_locaties_alias(cls, value, info: ValidationInfo):
+        if not value and "Onderverdelingen" in info.data:
             return info.data["Onderverdelingen"]
-        return v
+        return value
 
     def get_name(self) -> str:
         s: str = self.Title.lower()

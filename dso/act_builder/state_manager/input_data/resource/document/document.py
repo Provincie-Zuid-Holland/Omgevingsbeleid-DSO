@@ -24,7 +24,7 @@ class Document(BaseModel):
         return filename
 
     @field_validator("Content_Type", mode="before")
-    def _format_content_type(cls, v):
-        if v in ContentType.__members__.values():
-            return v
-        return ContentType[v]
+    def _format_content_type(cls, value):
+        if value in ContentType.__members__.values():
+            return value
+        return ContentType[value]

@@ -31,9 +31,9 @@ class Kennisgeving(BaseModel):
     mededeling_over_frbr: BillFRBR
 
     @field_validator("onderwerpen", mode="before")
-    def _format_onderwerpen(cls, v):
+    def _format_onderwerpen(cls, value):
         result = []
-        for entry in v:
+        for entry in value:
             if entry in OnderwerpType.__members__.values():
                 result.append(entry)
             else:

@@ -26,10 +26,10 @@ class Meta(BaseModel):
     Dpi: int = Field(150)
 
     @model_validator(mode="before")
-    def generate_formaat(cls, values: dict):
-        if "Formaat" not in values:
-            values["Formaat"] = IllustratieFormaat[values.get("ext", values.get("Ext"))]
-        return values
+    def generate_formaat(cls, data: dict):
+        if "Formaat" not in data:
+            data["Formaat"] = IllustratieFormaat[data.get("ext", data.get("Ext"))]
+        return data
 
     model_config = ConfigDict(populate_by_name=True)
 

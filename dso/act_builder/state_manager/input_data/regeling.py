@@ -14,9 +14,9 @@ class Regeling(BaseModel):
     onderwerpen: List[OnderwerpType]
 
     @field_validator("rechtsgebieden", mode="before")
-    def _format_rechtsgebieden(cls, v):
+    def _format_rechtsgebieden(cls, value):
         result = []
-        for entry in v:
+        for entry in value:
             if entry in RechtsgebiedType.__members__.values():
                 result.append(entry)
             else:
@@ -24,9 +24,9 @@ class Regeling(BaseModel):
         return result
 
     @field_validator("onderwerpen", mode="before")
-    def _format_onderwerpen(cls, v):
+    def _format_onderwerpen(cls, value):
         result = []
-        for entry in v:
+        for entry in value:
             if entry in OnderwerpType.__members__.values():
                 result.append(entry)
             else:
@@ -34,5 +34,5 @@ class Regeling(BaseModel):
         return result
 
     @field_validator("is_officieel", mode="before")
-    def _format_is_officieel(cls, v):
-        return str(v).lower()
+    def _format_is_officieel(cls, value):
+        return str(value).lower()

@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import Dict, List, Optional, Set
 from uuid import UUID
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, ValidationInfo, field_validator, model_validator
 
 from .enums import OwObjectStatus, OwProcedureStatus
 from .imow_waardelijsten import GEBIEDSAANWIJZING_TO_GROEP_MAPPING, TypeGebiedsaanwijzingEnum
@@ -33,8 +33,8 @@ class BestuurlijkeGrenzenVerwijzing(BaseModel):
     geldig_op: str
 
     @field_validator("bestuurlijke_grenzen_id", mode="before")
-    def convert_to_upper(cls, v):
-        return v.upper() if isinstance(v, str) else v
+    def convert_to_upper(cls, value):
+        return value.upper() if isinstance(value, str) else value
 
 
 class OWRegelingsgebied(OWObject):
@@ -50,10 +50,10 @@ class OWLocatie(OWObject):
     noemer: str
 
     @model_validator(mode="before")
-    def handle_legacy_gio_ref(cls, values):
-        if "gio_ref" not in values and "mapped_uuid" in values:
-            values["gio_ref"] = values.pop("mapped_uuid")
-        return values
+    def handle_legacy_gio_ref(cls, data):
+        if "gio_ref" not in data and "mapped_uuid" in data:
+            data["gio_ref"] = data.pop("mapped_uuid")
+        return data
 
 
 class OWAmbtsgebied(OWObject):
@@ -155,9 +155,9 @@ class OWGebiedsaanwijzing(OWObject):
         return value
 
     @field_validator("groep", mode="before")
-    def validate_groep(cls, value, values):
-        if "type_" in values:
-            type_enum = values["type_"]
+    def validate_groep(cls, value, info: ValidationInfo):
+        if "type_" in info.data:
+            type_enum = info.data["type_"]
             groep_enum_class = GEBIEDSAANWIJZING_TO_GROEP_MAPPING[type_enum]
             if isinstance(value, str):
                 try:
