@@ -11,7 +11,7 @@ class WerkingsgebiedRepository:
 
     def add(self, werkingsgebied: dict) -> None:
         werkingsgebied_id = werkingsgebied["UUID"]
-        self._werkingsgebieden[werkingsgebied_id] = Werkingsgebied.parse_obj(werkingsgebied)
+        self._werkingsgebieden[werkingsgebied_id] = Werkingsgebied.model_validate(werkingsgebied)
 
     def add_list(self, werkingsgebieden: List[dict]) -> None:
         for werkingsgebied in werkingsgebieden:

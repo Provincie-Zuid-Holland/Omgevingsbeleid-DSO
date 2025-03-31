@@ -34,7 +34,7 @@ def load_template(template_name: str, pretty_print: bool = False, **context) -> 
     if pretty_print:
         try:
             if output.startswith("<?xml"):
-                parser = etree.XMLParser(remove_blank_text=True)
+                parser = etree.XMLParser(remove_blank_text=False)
                 tree = etree.fromstring(output.encode("utf-8"), parser=parser)
             else:
                 tree = etree.fromstring(output)

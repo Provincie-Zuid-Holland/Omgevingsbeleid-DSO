@@ -17,10 +17,13 @@ class BijlageWerkingsgebiedenContent:
         self._data_hint_cleaner: DataHintCleaner = DataHintCleaner()
 
     def create(self) -> str:
-        werkingsgebieden: List[Werkingsgebied] = (
+        all_werkingsgebieden: List[Werkingsgebied] = (
             self._state_manager.input_data.resources.werkingsgebied_repository.all()
         )
-        werkingsgebieden = sorted(werkingsgebieden, key=lambda w: w.Title)
+        if len(all_werkingsgebieden) == 0:
+            return ""
+
+        werkingsgebieden = sorted(all_werkingsgebieden, key=lambda w: w.Title)
 
         content = load_template(
             "akn/besluit_versie/besluit_compact/wijzig_bijlage/BijlageWerkingsgebieden.xml",

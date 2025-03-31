@@ -2,6 +2,8 @@ from typing import Optional
 
 from bs4 import BeautifulSoup
 
+from dso.act_builder.services.services.appendices_service import AppendicesService, AppendixDestination
+
 from ......models import PublicationSettings
 from ......services.tekst.tekst import Divisietekst
 from ......services.utils.helpers import load_template
@@ -12,6 +14,7 @@ from .....state_manager.state_manager import StateManager
 class MotiveringContent:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
+        self._appendices_service: AppendicesService = AppendicesService(state_manager)
 
     def create(self) -> str:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
@@ -31,12 +34,19 @@ class MotiveringContent:
             "Motivering",
         )
 
+        bijlagen: str = self._appendices_service.generate_xml(
+            AppendixDestination.BILL,
+            motivering.bijlagen,
+            eid_prefix="acc__",
+        )
+
         content = load_template(
             "akn/besluit_versie/besluit_compact/Motivering.xml",
             motivering_eid=motivering_eid,
             motivering_wid=motivering_wid,
-            opschrift=motivering.opschrift,
+            motivering=motivering,
             inhoud=motivering_content,
+            bijlagen=bijlagen,
         )
 
         return content

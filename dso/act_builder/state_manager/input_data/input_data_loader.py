@@ -2,7 +2,7 @@ import json
 import os
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
 from dso.act_builder.services.ow.state.ow_state import OwState
 
@@ -20,12 +20,8 @@ from .ambtsgebied import Ambtsgebied
 from .besluit import Besluit
 from .object_template_repository import ObjectTemplateRepository
 from .regeling import Regeling
-from .resource.asset.asset_repository import AssetRepository
-from .resource.besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
-from .resource.policy_object.policy_object_repository import PolicyObjectRepository
 from .resource.resource_loader import ResourceLoader
 from .resource.resources import Resources
-from .resource.werkingsgebied.werkingsgebied_repository import WerkingsgebiedRepository
 
 
 class InputData(BaseModel):
@@ -42,15 +38,9 @@ class InputData(BaseModel):
     ow_dataset: str
     ow_gebied: str
 
-    class Config:
-        arbitrary_types_allowed = True
-        json_encoders = {
-            PolicyObjectRepository: lambda v: v.to_dict() if v is not None else None,
-            AssetRepository: lambda v: {k: w.dict() for k, w in v.to_dict().items()},
-            WerkingsgebiedRepository: lambda v: {k: w.dict() for k, w in v.to_dict().items()},
-            ObjectTemplateRepository: lambda v: v.to_dict() if v is not None else None,
-            BesluitPdfRepository: lambda v: v.to_dict() if v is not None else None,
-        }
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+    )
 
     def get_known_wid_map(self) -> Dict[str, str]:
         if self.regeling_mutatie is None:
@@ -63,6 +53,20 @@ class InputData(BaseModel):
             return []
 
         return self.regeling_mutatie.bekend_wids
+
+    @field_serializer("resources")
+    def serialize_resources(cls, v: Resources) -> dict:
+        return {
+            "policy_object_repository": v.policy_object_repository.to_dict(),
+            "asset_repository": {k: w.dict() for k, w in v.asset_repository.to_dict().items()},
+            "werkingsgebied_repository": {k: w.dict() for k, w in v.werkingsgebied_repository.to_dict().items()},
+            "besluit_pdf_repository": v.besluit_pdf_repository.to_dict(),
+            "document_repository": v.document_repository.to_dict(),
+        }
+
+    @field_serializer("object_template_repository")
+    def serialize_object_template_repository(cls, v: ObjectTemplateRepository) -> dict:
+        return v.to_dict() if v is not None else None
 
 
 class InputDataLoader:
@@ -119,11 +123,11 @@ class InputDataLoader:
         return data
 
     def _create_besluit(self, besluit_config: dict):
-        besluit = Besluit.parse_obj(besluit_config)
+        besluit = Besluit.model_validate(besluit_config)
         return besluit
 
     def _create_regeling(self, regeling_config: dict):
-        regeling = Regeling.parse_obj(regeling_config)
+        regeling = Regeling.model_validate(regeling_config)
         return regeling
 
     def _create_regeling_mutation(self, regeling_mutatie_config: dict):
@@ -142,7 +146,7 @@ class InputDataLoader:
         publication_settings: PublicationSettings,
         procedure_config: dict,
     ) -> ProcedureVerloop:
-        stappen: List[ProcedureStap] = [ProcedureStap.parse_obj(s) for s in procedure_config["stappen"]]
+        stappen: List[ProcedureStap] = [ProcedureStap.model_validate(s) for s in procedure_config["stappen"]]
         procedure_verloop = ProcedureVerloop(
             bekend_op=publication_settings.datum_bekendmaking,
             stappen=stappen,

@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 from enum import Enum
 from typing import Dict, List, Optional, Type
 
-from pydantic import BaseModel, Field, ValidationError, root_validator, validator
+from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
 
 from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappen, Provincie
 
@@ -14,7 +14,7 @@ class FRBR(BaseModel, metaclass=ABCMeta):
     Work_Other: str
     Expression_Language: str
     Expression_Date: str
-    Expression_Version: Optional[int]
+    Expression_Version: Optional[int] = None
 
     @abstractmethod
     def get_work(self) -> str:
@@ -133,14 +133,14 @@ class ProcedureStap(BaseModel):
     soort_stap: ProcedureStappen
     voltooid_op: str
 
-    @validator("soort_stap", pre=True)
-    def map_enum_value(cls, v):
-        if v in ProcedureStappen.__members__.values():
-            return v
+    @field_validator("soort_stap", mode="before")
+    def map_enum_value(cls, value):
+        if value in ProcedureStappen.__members__.values():
+            return value
         try:
-            return ProcedureStappen[v].value
+            return ProcedureStappen[value].value
         except KeyError:
-            raise ValueError(f"{v} is geen valide ProcedureStap uit de waardelijst")
+            raise ValueError(f"{value} is geen valide ProcedureStap uit de waardelijst")
 
 
 class ProcedureVerloop(BaseModel):
@@ -198,11 +198,11 @@ class PublicatieOpdracht(BaseModel):
     publicatie_bestand: str
     datum_bekendmaking: str
 
-    @validator("opdracht_type", pre=True, always=True)
-    def _format_opdracht_type(cls, v):
-        if v in OpdrachtType.__members__.values():
-            return v
-        return OpdrachtType[v]
+    @field_validator("opdracht_type", mode="before")
+    def _format_opdracht_type(cls, value):
+        if value in OpdrachtType.__members__.values():
+            return value
+        return OpdrachtType[value]
 
 
 class DocumentType(str, Enum):
@@ -212,7 +212,7 @@ class DocumentType(str, Enum):
 
 class InstellingDoel(BaseModel):
     frbr: DoelFRBR
-    datum_juridisch_werkend_vanaf: Optional[str]
+    datum_juridisch_werkend_vanaf: Optional[str] = None
 
 
 class InstrekkingDoel(BaseModel):
@@ -238,29 +238,29 @@ class PublicationSettings(BaseModel):
     instelling_doel: InstellingDoel
     intrekking: Optional[Intrekking] = Field(None)
 
-    @validator("document_type", pre=True, always=True)
-    def _format_document_type(cls, v):
-        if v in DocumentType.__members__.values():
-            return v
+    @field_validator("document_type", mode="before")
+    def _format_document_type(cls, value):
+        if value in DocumentType.__members__.values():
+            return value
         try:
-            return DocumentType[v]
+            return DocumentType[value]
         except KeyError:
-            raise ValueError(f"{v} is not a valid DocumentType")
+            raise ValueError(f"{value} is not a valid DocumentType")
 
-    @validator("soort_bestuursorgaan", pre=True)
-    def _format_soort_bestuursorgaan(cls, v):
-        if v in BestuursorgaanSoort.__members__.values():
-            return v
+    @field_validator("soort_bestuursorgaan", mode="before")
+    def _format_soort_bestuursorgaan(cls, value):
+        if value in BestuursorgaanSoort.__members__.values():
+            return value
         try:
-            return BestuursorgaanSoort[v].value
+            return BestuursorgaanSoort[value].value
         except KeyError:
-            raise ValueError(f"{v} is geen valide Bestuursorgaan uit de waardelijst")
+            raise ValueError(f"{value} is geen valide Bestuursorgaan uit de waardelijst")
 
-    @root_validator(pre=True)
-    def _generate_opdracht(cls, v):
-        opdracht = PublicatieOpdracht(**v["opdracht"])
-        v["opdracht"] = opdracht
-        return v
+    @model_validator(mode="before")
+    def _generate_opdracht(cls, data):
+        opdracht = PublicatieOpdracht(**data["opdracht"])
+        data["opdracht"] = opdracht
+        return data
 
     @classmethod
     def from_json(cls, json_data):
@@ -311,9 +311,9 @@ class RenvooiRegelingMutatie(RegelingMutatie):
     renvooi_api_url: str
     renvooi_api_key: str
 
-    @validator("renvooi_api_key", pre=False, always=True)
-    def _overwrite_renvooi_api_key_from_env(cls, v):
+    @field_validator("renvooi_api_key", mode="after")
+    def _overwrite_renvooi_api_key_from_env(cls, value):
         env_key: Optional[str] = os.getenv("RENVOOI_API_KEY")
         if env_key:
             return env_key
-        return v
+        return value

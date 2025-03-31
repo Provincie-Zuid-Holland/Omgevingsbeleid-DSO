@@ -2,7 +2,7 @@ from abc import ABC
 from dataclasses import dataclass, field
 from typing import List
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 
 from ...models import BillFRBR, ContentType, DocFRBR, ProcedureVerloop, PublicatieOpdracht
 from ...services.utils.waardelijsten import OnderwerpType
@@ -30,10 +30,10 @@ class Kennisgeving(BaseModel):
     onderwerpen: List[OnderwerpType]
     mededeling_over_frbr: BillFRBR
 
-    @validator("onderwerpen", pre=True, always=True)
-    def _format_onderwerpen(cls, v):
+    @field_validator("onderwerpen", mode="before")
+    def _format_onderwerpen(cls, value):
         result = []
-        for entry in v:
+        for entry in value:
             if entry in OnderwerpType.__members__.values():
                 result.append(entry)
             else:

@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 from ....services.utils.waardelijsten import OnderwerpType, ProcedureType, RechtsgebiedType
 
@@ -23,13 +23,15 @@ class WijzigBijlage(BaseModel):
 
 
 class Motivering(BaseModel):
+    nummer: Optional[str] = Field(None)
     opschrift: str
     content: str
+    bijlagen: List[Bijlage] = Field(default_factory=list)
 
 
 class Besluit(BaseModel):
     officiele_titel: str
-    citeertitel: Optional[str]
+    citeertitel: Optional[str] = Field(None)
     aanhef: str
     wijzig_artikel: Artikel
     wijzig_bijlage: WijzigBijlage = Field(
@@ -41,38 +43,38 @@ class Besluit(BaseModel):
     tekst_artikelen: List[Artikel]
 
     # tijd_artikel does not exist on drafts and should then be set to reserved
-    tijd_artikel: Optional[Artikel]
+    tijd_artikel: Optional[Artikel] = Field(None)
 
     sluiting: str
     ondertekening: str
     rechtsgebieden: List[RechtsgebiedType]
     onderwerpen: List[OnderwerpType]
     soort_procedure: ProcedureType
-    bijlagen: List[Bijlage] = Field([])
+    bijlagen: List[Bijlage] = Field(default_factory=list)
     motivering: Optional[Motivering] = Field(None)
 
-    @validator("rechtsgebieden", pre=True, always=True)
-    def _format_rechtsgebieden(cls, v):
+    @field_validator("rechtsgebieden", mode="before")
+    def _format_rechtsgebieden(cls, value):
         result = []
-        for entry in v:
+        for entry in value:
             if entry in RechtsgebiedType.__members__.values():
                 result.append(entry)
             else:
                 result.append(RechtsgebiedType[entry])
         return result
 
-    @validator("onderwerpen", pre=True, always=True)
-    def _format_onderwerpen(cls, v):
+    @field_validator("onderwerpen", mode="before")
+    def _format_onderwerpen(cls, value):
         result = []
-        for entry in v:
+        for entry in value:
             if entry in OnderwerpType.__members__.values():
                 result.append(entry)
             else:
                 result.append(OnderwerpType[entry])
         return result
 
-    @validator("soort_procedure", pre=True, always=True)
-    def _format_soort_procedure(cls, v):
-        if v in ProcedureType.__members__.values():
-            return v
-        return ProcedureType[v]
+    @field_validator("soort_procedure", mode="before")
+    def _format_soort_procedure(cls, value):
+        if value in ProcedureType.__members__.values():
+            return value
+        return ProcedureType[value]
