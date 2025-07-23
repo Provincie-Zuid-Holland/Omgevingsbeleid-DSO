@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from enum import Enum
-from typing import List, Optional
+from typing import Annotated, List, Literal, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -14,18 +14,21 @@ class AbstractRef(BaseModel):
         raise RuntimeError("Can not get href of unresolved reference")
 
 
-#  Locatie
+# Locatie
 class AbstractLocationRef(AbstractRef):
-    pass
+    ref_type: str = Field(..., description="Type discriminator")
 
 
 # Ambtsgebied
 class UnresolvedAmbtsgebiedRef(AbstractLocationRef):
+    ref_type: Literal["unresolved_ambtsgebied"] = "unresolved_ambtsgebied"
+
     def get_key(self) -> str:
         return "ambtsgebied"
 
 
 class AmbtsgebiedRef(UnresolvedAmbtsgebiedRef):
+    ref_type: Literal["ambtsgebied"] = "ambtsgebied"
     ref: str
 
     def get_href(self) -> str:
@@ -34,6 +37,7 @@ class AmbtsgebiedRef(UnresolvedAmbtsgebiedRef):
 
 # Gebied
 class UnresolvedGebiedRef(AbstractLocationRef):
+    ref_type: Literal["unresolved_gebied"] = "unresolved_gebied"
     target_code: str
 
     def get_key(self) -> str:
@@ -41,6 +45,7 @@ class UnresolvedGebiedRef(AbstractLocationRef):
 
 
 class GebiedRef(UnresolvedGebiedRef):
+    ref_type: Literal["gebied"] = "gebied"
     ref: str
 
     def get_href(self) -> str:
@@ -49,6 +54,7 @@ class GebiedRef(UnresolvedGebiedRef):
 
 # Gebiedengroep
 class UnresolvedGebiedengroepRef(AbstractLocationRef):
+    ref_type: Literal["unresolved_gebiedengroep"] = "unresolved_gebiedengroep"
     target_code: str
 
     def get_key(self) -> str:
@@ -56,14 +62,31 @@ class UnresolvedGebiedengroepRef(AbstractLocationRef):
 
 
 class GebiedengroepRef(UnresolvedGebiedengroepRef):
+    ref_type: Literal["gebiedengroep"] = "gebiedengroep"
     ref: str
 
     def get_href(self) -> str:
         return self.ref
 
 
+# Define the union type for all location references
+LocationRefUnion = Annotated[
+    Union[
+        AmbtsgebiedRef,
+        UnresolvedAmbtsgebiedRef, 
+        GebiedRef,
+        UnresolvedGebiedRef,
+        GebiedengroepRef,
+        UnresolvedGebiedengroepRef,
+    ],
+    Field(discriminator='ref_type')
+]
+
+
 # Tekst / wid
 class AbstractWidRef(AbstractRef):
+    ref_type: str = Field(..., description="Type discriminator")
+
     @abstractmethod
     def get_xml_element_name(self) -> str:
         pass
@@ -71,6 +94,7 @@ class AbstractWidRef(AbstractRef):
 
 #  Divisie
 class UnresolvedDivisieRef(AbstractWidRef):
+    ref_type: Literal["unresolved_divisie"] = "unresolved_divisie"
     target_wid: str
 
     def get_key(self) -> str:
@@ -81,6 +105,7 @@ class UnresolvedDivisieRef(AbstractWidRef):
 
 
 class DivisieRef(UnresolvedDivisieRef):
+    ref_type: Literal["divisie"] = "divisie"
     ref: str
 
     def get_href(self) -> str:
@@ -89,6 +114,7 @@ class DivisieRef(UnresolvedDivisieRef):
 
 # Divisietekst
 class UnresolvedDivisietekstRef(AbstractWidRef):
+    ref_type: Literal["unresolved_divisietekst"] = "unresolved_divisietekst"
     target_wid: str
 
     def get_key(self) -> str:
@@ -99,10 +125,22 @@ class UnresolvedDivisietekstRef(AbstractWidRef):
 
 
 class DivisietekstRef(UnresolvedDivisietekstRef):
+    ref_type: Literal["divisietekst"] = "divisietekst"
     ref: str
 
     def get_href(self) -> str:
         return self.ref
+
+
+WidRefUnion = Annotated[
+    Union[
+        DivisieRef,
+        UnresolvedDivisieRef,
+        DivisietekstRef,
+        UnresolvedDivisietekstRef,
+    ],
+    Field(discriminator='ref_type')
+]
 
 
 # Objects
@@ -211,7 +249,7 @@ class OwAmbtsgebied(BaseOwObject):
 
 class OwRegelingsgebied(BaseOwObject):
     source_uuid: str
-    locatie_ref: AbstractLocationRef
+    locatie_ref: LocationRefUnion
 
     def get_key(self) -> str:
         return "regelingsgebied"
@@ -280,7 +318,7 @@ class OwGebiedengroep(BaseOwObject):
     source_uuid: str
     source_code: str
     title: str
-    gebieden_refs: List[AbstractLocationRef] = Field(default_factory=list)
+    gebieden_refs: List[LocationRefUnion] = Field(default_factory=list)
 
     def get_key(self) -> str:
         return self.source_code
@@ -388,7 +426,7 @@ class OwGebiedsaanwijzing(BaseOwObject):
     title: str
     indication_type: str
     indication_group: str
-    location_refs: List[AbstractLocationRef] = Field(default_factory=list)
+    location_refs: List[LocationRefUnion] = Field(default_factory=list)
 
     def get_key(self) -> str:
         return self.source_code
@@ -430,8 +468,8 @@ class OwTekstdeel(BaseOwObject):
     source_uuid: str
     source_code: str
     idealization: str
-    text_ref: AbstractWidRef
-    location_refs: List[AbstractLocationRef] = Field(default_factory=list)
+    text_ref: WidRefUnion
+    location_refs: List[LocationRefUnion] = Field(default_factory=list)
 
     def get_key(self) -> str:
         return self.source_code
