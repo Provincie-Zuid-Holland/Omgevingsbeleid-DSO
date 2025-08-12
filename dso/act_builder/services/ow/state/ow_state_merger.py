@@ -18,8 +18,8 @@ class OwStateMerger:
         self._reference_resolver: OwReferenceResolver = OwReferenceResolver()
 
     def apply_into(self, new_state: OwState, active_state: OwState):
-        new_state = new_state.copy(deep=True)
-        active_state = active_state.copy(deep=True)
+        new_state = new_state.model_copy(deep=True)
+        active_state = active_state.model_copy(deep=True)
 
         # We flag everyting in the active state as deleted
         # As it will be flagged to changed or unchanged when we merge the new state

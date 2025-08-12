@@ -1,5 +1,5 @@
 from typing import Set
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 
 
 class Schematron(BaseModel):

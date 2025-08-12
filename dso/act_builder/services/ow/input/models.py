@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class OwInputAbstractLocatieRef(BaseModel):
@@ -52,11 +52,10 @@ class OwInputGebiedsaanwijzing(BaseModel):
     indication_group: str
     location_refs: List[OwInputAbstractLocatieRef]
 
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     def get_unique_key(self) -> str:
         return f"{self.source_werkingsgebied_code}-{self.indication_type}-{self.indication_group}"
-
-    class Config:
-        arbitrary_types_allowed = True
 
     def __hash__(self):
         return hash((self.source_werkingsgebied_code, self.indication_type, self.indication_group))
@@ -74,5 +73,4 @@ class OwInputPolicyObject(BaseModel):
     element: str
     location_refs: List[OwInputAbstractLocatieRef]
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)

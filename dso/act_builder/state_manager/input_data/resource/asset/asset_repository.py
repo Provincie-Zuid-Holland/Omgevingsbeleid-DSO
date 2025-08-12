@@ -38,4 +38,4 @@ class AssetRepository:
         return not self._assets
 
     def to_dict(self):
-        return {str(k): json.loads(v.json()) for k, v in self._assets.items()}
+        return {str(k): json.loads(v.model_dump_json()) for k, v in self._assets.items()}

@@ -2,7 +2,7 @@ from abc import abstractmethod
 from enum import Enum
 from typing import Annotated, List, Literal, Optional, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class AbstractRef(BaseModel):
@@ -199,8 +199,7 @@ class BaseOwObject(BaseModel):
     def merge_from(self, other: "BaseOwObject") -> bool:
         pass
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class OwAmbtsgebied(BaseOwObject):
