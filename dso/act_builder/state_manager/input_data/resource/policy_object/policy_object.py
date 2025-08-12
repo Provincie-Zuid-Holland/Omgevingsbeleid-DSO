@@ -33,9 +33,7 @@ class PolicyObject:
 
         This could be made clear with custom class hierarchy but seems overkill for now
         """
-        return self.data.get("Object_Type") in ["beleidskeuze", "maatregel"]
-        # @todo: implement in api code
-        # return "Werkingsgebied_Code" in self.data
+        return "Werkingsgebied_Code" in self.data
 
     def get_werkingsgebied(self) -> Optional[str]:
         return self.get("Werkingsgebied_Code")

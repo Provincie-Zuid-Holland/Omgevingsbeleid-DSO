@@ -337,18 +337,18 @@ class TekstObjectRef(SimpleElement):
 class DocumentRef(SimpleElement):
     """
     Example input:
-    <a href="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-document-code="document-1">Title</a>
+    <a href="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-document-code="document-1" data-hint-wid-code="document-maatregel-5-document-1-ref">Title</a>
 
     Example output:
-    <ExtIoRef ref="" data-hint-document-code="document-1">Title</ExtIoRef>
+    <ExtIoRef ref="" data-hint-document-code="document-1" data-hint-wid-code="document-maatregel-5-document-1-ref">Title</ExtIoRef>
 
     The `ref` will be set later with help of the data-hint-document-code
     """
 
     def __init__(self, tag: Tag):
         super().__init__()
-        # @TODO: FIX HACK
-        self._document_code: Optional[str] = tag.get("data-hint-document-code", tag.get("data-hint-wid-code", "-"))
+        self._document_code: Optional[str] = tag.get("data-hint-document-code")
+        self._wid_code: Optional[str] = tag.get("data-hint-wid-code")
 
     def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
         result = SimpleElement.as_xml(
@@ -359,6 +359,7 @@ class DocumentRef(SimpleElement):
                 "ref": "",
                 "data-hint-type": "document",
                 "data-hint-document-code": self._document_code,
+                "data-hint-wid-code": self._wid_code,
             },
         )
         return result

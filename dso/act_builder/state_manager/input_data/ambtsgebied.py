@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class Ambtsgebied(BaseModel):
     UUID: uuid.UUID
-    identificatie_suffix: str  # @todo: rename? Administrative_Borders_ID
+    identificatie_suffix: str  # Administrative_Borders_ID
     domein: str
     geldig_op: str
     titel: str
