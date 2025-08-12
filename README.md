@@ -1,10 +1,10 @@
 # Omgevingsbeleid-DSO
 
-A Python library for generating STOP/TPOD-compliant publication packages for the Dutch Digital System for the Physical Environment (DSO - Digitaal Stelsel Omgevingswet), with current support for Omgevingsvisie and Programma document types.
+<p align="center">
+   <img src="https://avatars.githubusercontent.com/u/60095455?s=400&u=72f83477004260f0a11c119f40f27f30c6e4a12c&v=4" alt="Provincie Zuid-Holland" width="400">
+</p>
 
-## About
-
-This tool, developed and maintained by Provincie Zuid-Holland, generates the required XML publication files for submitting environmental policies to the Dutch DSO platform. It enables provinces to create official Omgevingsvisie (Environmental Vision) and Programma (Program) publications that comply with national standards.
+A Python library developed and maintained by Provincie Zuid-Holland for generating STOP/TPOD-compliant publication packages for the Dutch Digital System for the Physical Environment (DSO - Digitaal Stelsel Omgevingswet). This tool creates the required XML files for submitting Omgevingsvisie (Environmental Vision) and Programma (Program) documents to the DSO platform, enabling provinces to publish official environmental policies that comply with national standards.
 
 ### Key Features
 
