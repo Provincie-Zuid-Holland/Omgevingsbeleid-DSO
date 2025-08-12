@@ -1,6 +1,5 @@
-
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 import pytest
 from lxml import etree
 
@@ -10,6 +9,7 @@ TEST_SCENARIO_DIRS = [
     "./input/02-mutation",
     "./input/03-add-gba",
 ]
+
 
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
 @pytest.mark.usefixtures("initialize_dso_builder")
@@ -48,15 +48,15 @@ class TestOWLocatiesFileOutput:
 
             # Check the GeometrieRef href
             geometrie_ref = gebied.find(".//l:GeometrieRef", namespaces=namespaces)
-            assert (
-                geometrie_ref.get("{http://www.w3.org/1999/xlink}href") == geometrie_href
-            ), f"GeometrieRef href does not match for Gebied '{noemer}'"
+            assert geometrie_ref.get("{http://www.w3.org/1999/xlink}href") == geometrie_href, (
+                f"GeometrieRef href does not match for Gebied '{noemer}'"
+            )
 
             # Find the corresponding Gebiedengroep
             gebiedengroep = root.xpath(f".//l:Gebiedengroep[l:noemer='{noemer}']", namespaces=namespaces)
-            assert (
-                len(gebiedengroep) == 1
-            ), f"Expected one Gebiedengroep with noemer '{noemer}', found {len(gebiedengroep)}"
+            assert len(gebiedengroep) == 1, (
+                f"Expected one Gebiedengroep with noemer '{noemer}', found {len(gebiedengroep)}"
+            )
             gebiedengroep = gebiedengroep[0]
 
             # Check the GebiedRef href matches the identificatie of the Gebied

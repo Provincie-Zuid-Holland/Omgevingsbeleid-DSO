@@ -203,7 +203,7 @@ class RefGenerator(ElementGenerator):
         return ExtRef(tag)
 
 
-class I(SimpleElement):
+class I(SimpleElement):  # noqa: E742
     def __init__(self, tag: Optional[Tag] = None):
         super().__init__(xml_tag_name="i")
 
@@ -502,7 +502,7 @@ class Table(Element):
         raw: str = str(string).strip()
         if len(raw) == 0:
             return
-        raise RuntimeError(f"Consume string not implemented for Table")
+        raise RuntimeError("Consume string not implemented for Table")
 
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
         table: Tag = soup.new_tag("table")
@@ -735,8 +735,10 @@ class Divisie(Element):
                 content: Divisie = Divisie(tag)
                 self.contents.append(content)
                 leftover_maybe = content.consume_children(tag.children)
-                if leftover_maybe is not None:
-                    a = True
+                if leftover_maybe:
+                    raise RuntimeError(
+                        "I'm not expecting that there is still text. This might mean that we are going to drop text."
+                    )
                 return None
 
         # Else we will let the last Divisietekst consume the tag

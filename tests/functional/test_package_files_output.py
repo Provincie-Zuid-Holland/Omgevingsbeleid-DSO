@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 import pytest
 from lxml import etree
 
@@ -10,6 +10,7 @@ TEST_SCENARIO_DIRS = [
     "./input/03-add-gba",
 ]
 
+
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
 @pytest.mark.usefixtures("initialize_dso_builder")
 class TestPackageFileOutput:
@@ -19,6 +20,7 @@ class TestPackageFileOutput:
     uses the expected_results.yaml/json file for each scenario folder to
     validate the xml output.
     """
+
     output_dir: Optional[Path] = None
 
     def test_expected_files_exist(self, expected_results):
@@ -39,9 +41,9 @@ class TestPackageFileOutput:
         root = tree.getroot()
         wids = expected_results["wids_used"]
         for wId in wids:
-            assert root.xpath(
-                f".//*[@wId='{wId}']", namespaces=namespaces
-            ), f"Expected wId {wId} not found in {bill_file}"
+            assert root.xpath(f".//*[@wId='{wId}']", namespaces=namespaces), (
+                f"Expected wId {wId} not found in {bill_file}"
+            )
 
     def test_manifest_content(self, expected_results, namespaces):
         expected_manifest = expected_results["package_files"]
@@ -57,9 +59,9 @@ class TestPackageFileOutput:
 
         # ensure every expected file is found in the manifest bestandsnaam
         for file in expected_manifest:
-            assert any(
-                file in result["bestandsnaam"] for result in manifest_results
-            ), f"Expected file {file} not found in manifest"
+            assert any(file in result["bestandsnaam"] for result in manifest_results), (
+                f"Expected file {file} not found in manifest"
+            )
 
     def test_gml_file_ids(self, expected_results, namespaces):
         expected_geo_identifiers = expected_results["geo"]["identifiers"]

@@ -8,15 +8,9 @@ asttokens==2.4.1
     # via
     #   devtools
     #   stack-data
-autoflake==2.3.1
+bandit==1.8.6
     # via -r requirements-dev.in
-bandit==1.8.3
-    # via -r requirements-dev.in
-black==25.1.0
-    # via -r requirements-dev.in
-click==8.1.8
-    # via black
-debugpy==1.8.13
+debugpy==1.8.16
     # via -r requirements-dev.in
 decorator==5.2.1
     # via ipython
@@ -28,60 +22,49 @@ executing==2.2.0
     #   stack-data
 iniconfig==2.1.0
     # via pytest
-ipython==9.0.2
+ipython==9.4.0
     # via -r requirements-dev.in
 ipython-pygments-lexers==1.1.1
     # via ipython
-isort==6.0.1
-    # via -r requirements-dev.in
 jedi==0.19.2
     # via ipython
-markdown-it-py==3.0.0
+markdown-it-py==4.0.0
     # via rich
 matplotlib-inline==0.1.7
     # via ipython
 mdurl==0.1.2
     # via markdown-it-py
-mypy-extensions==1.0.0
-    # via
-    #   -r requirements-dev.in
-    #   black
-packaging==24.2
-    # via
-    #   black
-    #   pytest
+packaging==25.0
+    # via pytest
 parso==0.8.4
     # via jedi
-pathspec==0.12.1
-    # via black
 pbr==6.1.1
     # via stevedore
 pexpect==4.9.0
     # via ipython
-platformdirs==4.3.7
-    # via black
-pluggy==1.5.0
+pluggy==1.6.0
     # via pytest
-prompt-toolkit==3.0.50
+prompt-toolkit==3.0.51
     # via ipython
 ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.3
     # via stack-data
-pyflakes==3.3.1
-    # via autoflake
-pygments==2.19.1
+pygments==2.19.2
     # via
     #   devtools
     #   ipython
     #   ipython-pygments-lexers
+    #   pytest
     #   rich
-pytest==8.3.5
+pytest==8.4.1
     # via -r requirements-dev.in
 pyyaml==6.0.2
     # via bandit
-rich==14.0.0
+rich==14.1.0
     # via bandit
+ruff==0.12.8
+    # via -r requirements-dev.in
 six==1.17.0
     # via asttokens
 stack-data==0.6.3
@@ -92,8 +75,6 @@ traitlets==5.14.3
     # via
     #   ipython
     #   matplotlib-inline
-vulture==2.14
-    # via -r requirements-dev.in
 wcwidth==0.2.13
     # via prompt-toolkit
 

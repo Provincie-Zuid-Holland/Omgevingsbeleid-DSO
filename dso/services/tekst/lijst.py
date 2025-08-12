@@ -40,7 +40,7 @@ class NumberingFactory:
         if current_strategy is None:
             return self._strategies[0]
 
-        if not current_strategy in self._strategies:
+        if current_strategy not in self._strategies:
             return self._strategies[0]
 
         current_index: int = self._strategies.index(current_strategy)

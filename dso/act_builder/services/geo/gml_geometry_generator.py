@@ -13,7 +13,7 @@ class GMLGeometryGenerator:
             return self._multipolygon_to_xml()
 
     def _polygon_to_xml(self):
-        xml_string = f'<gml:Polygon srsName="urn:ogc:def:crs:EPSG::28992">'
+        xml_string = '<gml:Polygon srsName="urn:ogc:def:crs:EPSG::28992">'
         xml_string += self._ring_gml(self._geom.exterior, "exterior")
         for interior in self._geom.interiors:
             xml_string += self._ring_gml(interior, "interior")
@@ -30,7 +30,7 @@ class GMLGeometryGenerator:
         return xml_string
 
     def _polygon_gml(self, polygon, gml_id):
-        xml_string = f"<gml:Polygon>"
+        xml_string = "<gml:Polygon>"
         xml_string += self._ring_gml(polygon.exterior, "exterior")
         for interior in polygon.interiors:
             xml_string += self._ring_gml(interior, "interior")
