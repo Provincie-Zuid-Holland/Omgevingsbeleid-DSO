@@ -2,6 +2,7 @@
 
 {% block content %}
 {% for ow_object in ow_objects %}
+  <sl:stand>
     <ow-dc:owObject>
         <vt:Tekstdeel>
             <!-- {{ ow_object.object_status.value }} -->
@@ -25,5 +26,6 @@
             {% endif %}
         </vt:Tekstdeel>
     </ow-dc:owObject>
+  </sl:stand>
 {% endfor %}
 {% endblock %}
