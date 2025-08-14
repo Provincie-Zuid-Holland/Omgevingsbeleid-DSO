@@ -2,6 +2,7 @@
 
 {% block content %}
 {% for ow_object in ow_objects %}
+  <sl:stand>
     <ow-dc:owObject>
         <ga:Gebiedsaanwijzing>
             <!-- {{ ow_object.object_status.value }} -->
@@ -22,5 +23,6 @@
             </ga:locatieaanduiding>
         </ga:Gebiedsaanwijzing>
     </ow-dc:owObject>
+  </sl:stand>
 {% endfor %}
 {% endblock %}

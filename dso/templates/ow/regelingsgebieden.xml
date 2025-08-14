@@ -2,6 +2,7 @@
 
 {% block content %}
 {% for ow_object in ow_objects %}
+  <sl:stand>
     <ow-dc:owObject>
         <rg:Regelingsgebied>
             <!-- {{ ow_object.object_status.value }} -->
@@ -17,5 +18,6 @@
             </rg:locatieaanduiding>
         </rg:Regelingsgebied>
     </ow-dc:owObject>
+  </sl:stand>
 {% endfor %}
 {% endblock %}

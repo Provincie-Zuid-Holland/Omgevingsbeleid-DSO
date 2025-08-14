@@ -24,8 +24,6 @@
                 {% endfor %}
             </sl:objectTypen>
         </sl:inhoud>
-        <sl:stand>
         {% block content %}{% endblock %}
-        </sl:stand>
     </sl:standBestand>
 </ow-dc:owBestand>
