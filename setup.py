@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dso',
-    version='0.0.1',
+    use_scm_version=True,
     description='STOP/TPOD Publication Generator',  
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',  
