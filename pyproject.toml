@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "dso"
 # Version comes from Git tags via setuptools-scm:
 dynamic = ["version"]
+license = { text = "EUPL-1.2" }
 
 description = "STOP/TPOD Publication Generator"
 readme = { file = "README.md", content-type = "text/markdown" }
