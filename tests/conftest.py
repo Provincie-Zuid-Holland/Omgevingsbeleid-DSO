@@ -9,6 +9,7 @@ from dso.cmds import build_input_data_from_dir
 from dso.act_builder.builder import Builder
 from dso.act_builder.state_manager.input_data.input_data_loader import InputData
 
+
 @pytest.fixture
 def enable_debugpy():
     """Fixture to enable debugpy for debugging when needed."""
@@ -32,6 +33,7 @@ def input_data_werkingsgebieden():
 def input_dir(request):
     return request.param
 
+
 @pytest.fixture(scope="class")
 def output_dir(request, input_dir) -> Path:
     relative_path = str(Path(input_dir).relative_to(Path(input_dir).parents[0]))
@@ -40,10 +42,12 @@ def output_dir(request, input_dir) -> Path:
     request.cls.output_dir = output_dir
     return output_dir
 
+
 @pytest.fixture(scope="class")
 def expected_results(input_dir):
     with open(f"{input_dir}/expected_results.yml") as f:
         return yaml.safe_load(f)
+
 
 @pytest.fixture(scope="class")
 def initialize_dso_builder(request, input_dir, output_dir) -> Builder:
@@ -70,6 +74,7 @@ def initialize_dso_builder(request, input_dir, output_dir) -> Builder:
     request.cls.dso_builder = dso_builder
     request.cls.state_manager = dso_builder._state_manager
     return dso_builder
+
 
 @pytest.fixture(scope="class")
 def namespaces():
@@ -98,6 +103,6 @@ def namespaces():
         "rg": "http://www.geostandaarden.nl/imow/regelingsgebied",
         "tekst": "https://standaarden.overheid.nl/stop/imop/tekst/",
         "vt": "http://www.geostandaarden.nl/imow/vrijetekst",
-        "ga": "http://www.geostandaarden.nl/imow/gebiedsaanwijzing"
+        "ga": "http://www.geostandaarden.nl/imow/gebiedsaanwijzing",
     }
     return namespaces

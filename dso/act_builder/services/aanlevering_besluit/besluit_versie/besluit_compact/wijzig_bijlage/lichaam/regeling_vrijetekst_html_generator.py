@@ -35,7 +35,7 @@ class RegelingVrijetekstHtmlGenerator:
         for obj_xml in objects:
             attributes = copy(obj_xml.attrib)
             if "code" not in attributes:
-                raise RuntimeError(f"Missing required attribute code for object")
+                raise RuntimeError("Missing required attribute code for object")
             object_code: str = attributes["code"]
 
             if "template_name" in attributes:

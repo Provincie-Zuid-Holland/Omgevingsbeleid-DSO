@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 import pytest
 from lxml import etree
 
@@ -9,6 +9,7 @@ TEST_SCENARIO_DIRS = [
     "./input/02-mutation",
     "./input/03-add-gba",
 ]
+
 
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
 @pytest.mark.usefixtures("initialize_dso_builder")
@@ -39,11 +40,12 @@ class TestOWGebiedsaanwijzingenFileOutput:
             status = gba.find("ow:status", namespaces=namespaces)
             assert status is None, f"Found unexpected status tag in object {expected_obj['noemer']}"
             assert gba is not None, f"Expected object {expected_obj} not found"
-            assert gba.find("ga:type", namespaces=namespaces).text == expected_obj["type_"], \
+            assert gba.find("ga:type", namespaces=namespaces).text == expected_obj["type_"], (
                 f"Expected type {expected_obj['type_']}, found {gba.find('ga:type', namespaces=namespaces).text}"
-            assert gba.find("ga:groep", namespaces=namespaces).text == expected_obj["groep"], \
+            )
+            assert gba.find("ga:groep", namespaces=namespaces).text == expected_obj["groep"], (
                 f"Expected groep {expected_obj['groep']}, found {gba.find('ga:groep', namespaces=namespaces).text}"
-
+            )
 
     def test_mutated_ow_gebiedsaanwijzing_content(self, expected_results, namespaces):
         expected_obj_list = expected_results["owGebiedsaanwijzingen"]["gebiedsaanwijzing"]["mutated"]
@@ -55,10 +57,12 @@ class TestOWGebiedsaanwijzingenFileOutput:
             status = gba.find("ow:status", namespaces=namespaces)
             assert status is None, f"Found unexpected status tag in object {expected_obj['noemer']}"
             assert gba is not None, f"Expected object {expected_obj} not found"
-            assert gba.find("ga:type", namespaces=namespaces).text == expected_obj["type_"], \
+            assert gba.find("ga:type", namespaces=namespaces).text == expected_obj["type_"], (
                 f"Expected type {expected_obj['type_']}, found {gba.find('ga:type', namespaces=namespaces).text}"
-            assert gba.find("ga:groep", namespaces=namespaces).text == expected_obj["groep"], \
+            )
+            assert gba.find("ga:groep", namespaces=namespaces).text == expected_obj["groep"], (
                 f"Expected groep {expected_obj['groep']}, found {gba.find('ga:groep', namespaces=namespaces).text}"
+            )
 
     def test_terminated_ow_gebiedsaanwijzing_content(self, expected_results, namespaces):
         expected_obj_list = expected_results["owGebiedsaanwijzingen"]["gebiedsaanwijzing"]["terminated"]
@@ -70,7 +74,9 @@ class TestOWGebiedsaanwijzingenFileOutput:
             status = gba.find("ow:status", namespaces=namespaces)
             assert status is not None, f"Expected status tag in object {expected_obj['noemer']}"
             assert gba is not None, f"Expected object {expected_obj} not found"
-            assert gba.find("ga:type", namespaces=namespaces).text == expected_obj["type_"], \
+            assert gba.find("ga:type", namespaces=namespaces).text == expected_obj["type_"], (
                 f"Expected type {expected_obj['type_']}, found {gba.find('ga:type', namespaces=namespaces).text}"
-            assert gba.find("ga:groep", namespaces=namespaces).text == expected_obj["groep"], \
+            )
+            assert gba.find("ga:groep", namespaces=namespaces).text == expected_obj["groep"], (
                 f"Expected groep {expected_obj['groep']}, found {gba.find('ga:groep', namespaces=namespaces).text}"
+            )

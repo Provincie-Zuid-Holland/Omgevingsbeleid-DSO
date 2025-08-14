@@ -6,62 +6,62 @@
 #
 annotated-types==0.7.0
     # via pydantic
-beautifulsoup4==4.13.3
+beautifulsoup4==4.13.4
     # via -r requirements.in
-certifi==2025.1.31
+certifi==2025.8.3
     # via
     #   pyproj
     #   requests
-charset-normalizer==3.4.1
+charset-normalizer==3.4.3
     # via requests
-click==8.1.8
+click==8.2.1
     # via -r requirements.in
 idna==3.10
     # via requests
 jinja2==3.1.6
     # via -r requirements.in
-lxml==5.3.1
+lxml==6.0.0
     # via -r requirements.in
 markupsafe==3.0.2
     # via
     #   -r requirements.in
     #   jinja2
-numpy==2.2.4
+numpy==2.3.2
     # via shapely
-packaging==24.2
+packaging==25.0
     # via -r requirements.in
 pathspec==0.12.1
     # via -r requirements.in
-platformdirs==4.3.7
+platformdirs==4.3.8
     # via -r requirements.in
-pydantic==2.11.1
+pydantic==2.11.7
     # via -r requirements.in
-pydantic-core==2.33.0
+pydantic-core==2.33.2
     # via pydantic
 pyproj==3.7.1
     # via -r requirements.in
-requests==2.32.3
+requests==2.32.4
     # via
     #   -r requirements.in
     #   requests-toolbelt
 requests-toolbelt==1.0.0
     # via -r requirements.in
-roman==5.0
+roman==5.1
     # via -r requirements.in
-shapely==2.0.7
+shapely==2.1.1
     # via -r requirements.in
-soupsieve==2.6
+soupsieve==2.7
     # via beautifulsoup4
 tomli==2.2.1
     # via -r requirements.in
-typing-extensions==4.13.0
+typing-extensions==4.14.1
     # via
     #   -r requirements.in
     #   beautifulsoup4
     #   pydantic
     #   pydantic-core
     #   typing-inspection
-typing-inspection==0.4.0
+typing-inspection==0.4.1
     # via pydantic
-urllib3==2.3.0
+urllib3==2.5.0
     # via requests

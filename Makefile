@@ -40,7 +40,13 @@ pip-upgrade:
 	pip-compile --upgrade requirements.in
 	pip-compile --upgrade requirements-dev.in
 
-fix:
-	python -m isort dso/
-	python -m black dso/ stubs/
-	python -m autoflake -ri --exclude=__init__.py --remove-all-unused-imports dso/ stubs/
+check: ## Check without fixing via Ruff
+	python -m ruff check dso/ tests/
+
+check-fix: ## Fix issues found by Ruff
+	python -m ruff check --fix dso/
+
+format: ## Format code via Ruff
+	python -m ruff format dso/ tests/
+
+fix: check-fix format ## Fix and Format the code via Ruff
