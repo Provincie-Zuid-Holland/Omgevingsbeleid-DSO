@@ -4,12 +4,59 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dso"
+# Version comes from Git tags via setuptools-scm:
 dynamic = ["version"]
+license = { text = "EUPL-1.2" }
+
+description = "STOP/TPOD Publication Generator"
+readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.13"
+authors = [
+  { name = "Arvin Wijsman", email = "aa.wijsman@pzh.nl" },
+  { name = "Jordy Moos",   email = "jm.moos@pzh.nl"     },
+]
+
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python :: 3.13",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
+]
+
+dependencies = [
+  "beautifulsoup4>=4.12.2",
+  "certifi>=2023.11.17",
+  "click>=8.1.7",
+  "jinja2>=3.1.3",
+  "lxml>=5.1.0",
+  "markupsafe>=2.1.3",
+  "numpy>=1.26.3",
+  "packaging>=23.2",
+  "pathspec>=0.12.1",
+  "platformdirs>=4.1.0",
+  "pydantic>=1.10.13",
+  "pyproj>=3.6.1",
+  "roman>=4.1",
+  "shapely>=2.0.2",
+  "soupsieve>=2.5",
+  "tomli>=2.0.1",
+  "typing-extensions>=4.9.0",
+]
+
+# [project.scripts]
+# dso-generate = "dso.cli:main"
 
 [tool.setuptools_scm]
-version_scheme = "guess-next-dev"
-local_scheme = "node-and-date"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["dso*"]
+
+[tool.setuptools.package-data]
+dso = ["templates/*", "templates/**/*"]
 
 [tool.ruff]
 line-length = 120
@@ -18,10 +65,9 @@ line-length = 120
 ignore = []
 
 [tool.ruff.lint.extend-per-file-ignores]
-"__init__.py" = ["F401"] # unused-import: Which is oke for __init__.py files
+"__init__.py" = ["F401"]
 
 [tool.pytest.ini_options]
 norecursedirs = "*venv* *.venv* *.pytest_cache*"
 testpaths = ["tests"]
 addopts = "-s"
-
