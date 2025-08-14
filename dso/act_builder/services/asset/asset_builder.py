@@ -1,6 +1,6 @@
 from typing import List
 
-from ...services import BuilderService
+from ...builder_service import BuilderService
 from ...state_manager.input_data.resource.asset.asset import Asset
 from ...state_manager.input_data.resource.asset.asset_repository import AssetRepository
 from ...state_manager.models import AssetContentData, OutputFile

@@ -1,0 +1,28 @@
+{% extends "ow/ow_base.xml" %}
+
+{% block content %}
+{% for ow_object in ow_objects %}
+  <sl:stand>
+    <ow-dc:owObject>
+        <l:Ambtsgebied>
+            <!-- {{ ow_object.object_status.value }} -->
+            {% if ow_object.is_deleted() %}
+            <ow:status>{{ ow_object.get_deleted_status() }}</ow:status>
+            {% endif %}
+            {% if ow_object.procedure_status is not none %}
+            <ow:procedurestatus>{{ ow_object.procedure_status }}</ow:procedurestatus>
+            {% endif %}
+            <l:identificatie>{{ ow_object.identification }}</l:identificatie>
+            <l:noemer>{{ ow_object.title }}</l:noemer>
+            <l:bestuurlijkeGrenzenVerwijzing>
+                <l:BestuurlijkeGrenzenVerwijzing>
+                    <l:bestuurlijkeGrenzenID>{{ ow_object.administrative_borders_id }}</l:bestuurlijkeGrenzenID>
+                    <l:domein>{{ ow_object.domain }}</l:domein>
+                    <l:geldigOp>{{ ow_object.valid_on }}</l:geldigOp>
+                </l:BestuurlijkeGrenzenVerwijzing>
+            </l:bestuurlijkeGrenzenVerwijzing>
+        </l:Ambtsgebied>
+    </ow-dc:owObject>
+  </sl:stand>
+{% endfor %}
+{% endblock %}

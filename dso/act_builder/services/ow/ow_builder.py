@@ -1,60 +1,35 @@
-from typing import List
+from dso.act_builder.services.ow.input.ow_input_factory import OwInputFactory
+from dso.act_builder.services.ow.state.ow_state_builder import OwStateBuilder
+from dso.act_builder.services.ow.state.ow_state_merger import MergeResult, OwStateMerger
+from dso.act_builder.services.ow.xml.xml_builder import XmlBuilder
 
-from ....services.ow.ow_state_patcher import OWStatePatcher
-from ...services import BuilderService
-from ...services.ow.ow_divisie import OwDivisieBuilder, OwFileBuilder
-from ...services.ow.ow_gebiedsaanwijzingen import OwGebiedsaanwijzingBuilder
-from ...services.ow.ow_locaties import OwLocatieBuilder
-from ...services.ow.ow_manifest import OwManifestBuilder
-from ...services.ow.ow_regelinggebied import OwRegelingsgebiedBuilder
-from ...state_manager.state_manager import OutputFile, StateManager
+from ...builder_service import BuilderService
+from ...state_manager.state_manager import StateManager
 
 
 class OwBuilder(BuilderService):
-    def __init__(
-        self,
-        locatie_builder: OwLocatieBuilder,
-        divisie_builder: OwDivisieBuilder,
-        gb_aanwijzing_builder: OwGebiedsaanwijzingBuilder,
-        regelinggebied_builder: OwRegelingsgebiedBuilder,
-        ow_manifest_builder: OwManifestBuilder,
-        ow_state_patcher: OWStatePatcher,
-    ):
-        self._ow_builders: List[OwFileBuilder] = [
-            locatie_builder,
-            divisie_builder,
-            gb_aanwijzing_builder,
-            regelinggebied_builder,
-        ]
-        self._ow_manifest_builder = ow_manifest_builder
-        self._ow_state_patcher = ow_state_patcher
-
     def apply(self, state_manager: StateManager) -> StateManager:
-        """Handles OW object changes using the builders for each file, then patches the new ow state."""
-        for builder in self._ow_builders:
-            builder.handle_ow_object_changes()
+        state_builder: OwStateBuilder = OwStateBuilder(
+            state_manager.input_data.publication_settings.provincie_id,
+            state_manager.input_data.besluit.soort_procedure,
+        )
 
-        patched_ow_data = self._ow_state_patcher.patch(input_state_ow_data=state_manager.input_data.ow_data)
-        state_manager.ow_object_state = patched_ow_data
+        input_factory: OwInputFactory = OwInputFactory(state_manager)
+        state_builder.add_ambtsgebied(input_factory.get_ambtsgebied())
+        state_builder.add_regelingsgebied(input_factory.get_regelingsgebied())
+        state_builder.add_gebiedsaanwijzingen(input_factory.get_gebiedsaanwijzingen())
+        state_builder.add_policy_objects(input_factory.get_policy_objects())
+        state_builder.add_werkingsgebieden(input_factory.get_werkingsgebieden())
 
-        self._build_output_files(state_manager)
+        state_merger: OwStateMerger = OwStateMerger()
+        merge_result: MergeResult = state_merger.apply_into(
+            state_builder.get_state(),
+            state_manager.input_data.ow_state,
+        )
+
+        xml_builder = XmlBuilder(state_manager)
+        xml_builder.build_files(merge_result.changeset)
+
+        state_manager.output_ow_state = merge_result.result_state
 
         return state_manager
-
-    def _build_output_files(self, state_manager: StateManager) -> None:
-        """Prepare the template data and create the output files for each ow file builder."""
-        output_files: List[OutputFile] = []
-
-        for builder in self._ow_builders:
-            template_data = builder.build_template_data()
-            if not template_data:
-                continue  # only build files that have changed objs
-            data_dict = template_data.dict()
-            output_files.append(builder.create_file(template_data=data_dict))
-            self._ow_manifest_builder.add_manifest_item(builder.FILE_NAME, template_data.object_type_list)
-
-        ow_manifest_template_data = self._ow_manifest_builder.build_template_data()
-        manifest_data = ow_manifest_template_data.dict()
-        output_files.append(self._ow_manifest_builder.create_file(template_data=manifest_data))
-
-        state_manager.add_output_files(output_files=output_files)

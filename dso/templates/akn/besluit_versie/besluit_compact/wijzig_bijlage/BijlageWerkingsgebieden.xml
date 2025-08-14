@@ -12,7 +12,7 @@
                     <Term>{{ werkingsgebied.Title }}</Term>
                     <Definitie>
                         <Al>
-                            <ExtIoRef data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ werkingsgebied.Code }}-ref" data-hint-werkingsgebied-uuid="{{ werkingsgebied.UUID }}" ref="{{ werkingsgebied.Frbr.get_expression() }}">{{ werkingsgebied.Frbr.get_expression() }}</ExtIoRef>
+                            <ExtIoRef data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ werkingsgebied.Code }}-ref" data-hint-werkingsgebied-code="{{ werkingsgebied.Code }}" ref="{{ werkingsgebied.Frbr.get_expression() }}">{{ werkingsgebied.Frbr.get_expression() }}</ExtIoRef>
                         </Al>
                     </Definitie>
                 </Begrip>

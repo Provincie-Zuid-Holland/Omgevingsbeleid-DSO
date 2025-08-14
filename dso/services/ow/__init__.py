@@ -7,17 +7,3 @@ from .enums import (
     OwRegelingsgebiedObjectType,
 )
 from .exceptions import OWObjectGenerationError
-from .models import (
-    BestuurlijkeGrenzenVerwijzing,
-    OWAmbtsgebied,
-    OWDivisie,
-    OWDivisieTekst,
-    OWGebied,
-    OWGebiedenGroep,
-    OWGebiedsaanwijzing,
-    OWLocatie,
-    OWObject,
-    OWRegelingsgebied,
-    OWTekstdeel,
-)
-from .ow_id import generate_ow_id

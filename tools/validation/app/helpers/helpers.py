@@ -5,7 +5,7 @@ from pprint import pprint
 import subprocess
 from typing import Dict, List, Optional, Set, Tuple
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 from lxml import etree
 
 from config import SCHEMATRON_MAP

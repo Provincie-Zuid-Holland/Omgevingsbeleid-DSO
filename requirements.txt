@@ -26,17 +26,17 @@ markupsafe==3.0.2
     # via
     #   -r requirements.in
     #   jinja2
-numpy==2.2.3
+numpy==2.2.4
     # via shapely
 packaging==24.2
     # via -r requirements.in
 pathspec==0.12.1
     # via -r requirements.in
-platformdirs==4.3.6
+platformdirs==4.3.7
     # via -r requirements.in
-pydantic==2.10.6
+pydantic==2.11.1
     # via -r requirements.in
-pydantic-core==2.27.2
+pydantic-core==2.33.0
     # via pydantic
 pyproj==3.7.1
     # via -r requirements.in
@@ -54,11 +54,14 @@ soupsieve==2.6
     # via beautifulsoup4
 tomli==2.2.1
     # via -r requirements.in
-typing-extensions==4.12.2
+typing-extensions==4.13.0
     # via
     #   -r requirements.in
     #   beautifulsoup4
     #   pydantic
     #   pydantic-core
+    #   typing-inspection
+typing-inspection==0.4.0
+    # via pydantic
 urllib3==2.3.0
     # via requests

@@ -4,6 +4,11 @@ from lxml import etree
 from pydantic import BaseModel
 
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
+from dso.act_builder.state_manager.states.text_manipulator.models import (
+    TekstBijlageDocument,
+    TekstBijlageWerkingsgebied,
+    TextData,
+)
 
 from .....models import PublicationSettings, VerwijderdWerkingsgebied
 from .....services.utils.helpers import load_template
@@ -24,6 +29,7 @@ class ConsolidatieInformatieContent:
     def create(self) -> str:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
         instelling_doel: str = settings.instelling_doel.frbr.get_work()
+        text_data: TextData = self._state_manager.text_data
 
         beoogde_regeling = {
             "instrument_versie": settings.regeling_frbr.get_expression(),
@@ -36,22 +42,24 @@ class ConsolidatieInformatieContent:
         )
         for werkingsgebied in werkingsgebieden:
             if werkingsgebied.New:
-                eid: str = self._state_manager.werkingsgebied_eid_lookup[str(werkingsgebied.UUID)]
+                text_werkingsgebied: TekstBijlageWerkingsgebied = text_data.get_werkingsgebied_by_code(
+                    werkingsgebied.Code
+                )
                 beoogd_informatieobjecten.append(
                     {
                         "instrument_versie": werkingsgebied.Frbr.get_expression(),
-                        "eid": f"!{settings.regeling_componentnaam}#{eid}",
+                        "eid": f"!{settings.regeling_componentnaam}#{text_werkingsgebied.eid}",
                     }
                 )
 
         doocuments: List[Document] = self._state_manager.input_data.resources.document_repository.all()
         for document in doocuments:
             if document.New:
-                eid: str = self._state_manager.document_eid_lookup[str(document.UUID)]
+                text_document: TekstBijlageDocument = text_data.get_document_by_code(document.Code)
                 beoogd_informatieobjecten.append(
                     {
                         "instrument_versie": document.Frbr.get_expression(),
-                        "eid": f"!{settings.regeling_componentnaam}#{eid}",
+                        "eid": f"!{settings.regeling_componentnaam}#{text_document.eid}",
                     }
                 )
 

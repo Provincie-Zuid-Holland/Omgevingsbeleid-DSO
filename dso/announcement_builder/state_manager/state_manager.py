@@ -11,7 +11,6 @@ class StateManager:
         self.debug: dict = {}
 
         self.input_data: InputData = input_data
-        self.werkingsgebied_eid_lookup: dict = {}
         self.output_files: List[OutputFile] = []
 
         # Service is in the state manager

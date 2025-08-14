@@ -1,7 +1,7 @@
 from ....models import ContentType
 from ....services.utils.hashlib import compute_sha512_of_output_file
 from ....services.utils.helpers import load_template
-from ...services import BuilderService
+from ...builder_service import BuilderService
 from ...state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from ...state_manager.models import OutputFile, StrContentData
 from ...state_manager.state_manager import StateManager

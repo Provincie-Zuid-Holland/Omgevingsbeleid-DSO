@@ -1,0 +1,23 @@
+{% extends "ow/ow_base.xml" %}
+
+{% block content %}
+{% for ow_object in ow_objects %}
+  <sl:stand>
+    <ow-dc:owObject>
+        <rg:Regelingsgebied>
+            <!-- {{ ow_object.object_status.value }} -->
+            {% if ow_object.is_deleted() %}
+                <ow:status>{{ ow_object.get_deleted_status() }}</ow:status>
+            {% endif %}
+            {% if ow_object.procedure_status is not none %}
+                <ow:procedurestatus>{{ ow_object.procedure_status }}</ow:procedurestatus>
+            {% endif %}
+            <rg:identificatie>{{ ow_object.identification }}</rg:identificatie>
+            <rg:locatieaanduiding>
+                <l:LocatieRef xlink:href="{{ ow_object.locatie_ref.get_href() }}" />
+            </rg:locatieaanduiding>
+        </rg:Regelingsgebied>
+    </ow-dc:owObject>
+  </sl:stand>
+{% endfor %}
+{% endblock %}

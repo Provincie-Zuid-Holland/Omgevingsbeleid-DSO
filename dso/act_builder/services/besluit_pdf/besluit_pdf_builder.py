@@ -1,11 +1,11 @@
 from typing import List
 
 from ....models import ContentType
+from ...builder_service import BuilderService
 from ...state_manager.input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
 from ...state_manager.input_data.resource.besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
 from ...state_manager.models import OutputFile, PdfContentData
 from ...state_manager.state_manager import StateManager
-from .. import BuilderService
 
 
 class BesluitPdfBuilder(BuilderService):

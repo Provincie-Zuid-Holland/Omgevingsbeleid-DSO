@@ -1,11 +1,13 @@
 import os
 from typing import List, Optional, Set
 
-from ...models import OwData
+from dso.act_builder.services.ow.state.ow_state import OwState
+from dso.act_builder.state_manager.states.text_manipulator.models import TextData
+
 from ...services.ewid.ewid_service import EWIDService
 from .input_data.input_data_loader import InputData
 from .models import OutputFile
-from .states import ArtikelEidRepository, OWStateRepository
+from .states import ArtikelEidRepository
 
 
 class StateManager:
@@ -14,20 +16,22 @@ class StateManager:
         self.debug: dict = {}
 
         self.input_data: InputData = input_data
-        self.werkingsgebied_eid_lookup: dict = {}
-        self.document_eid_lookup: dict = {}
-        self.document_wid_lookup: dict = {}
+
+        # Stores eid-wid etc information from the text
+        self.text_data: TextData = TextData()
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
-        self.ow_repository: OWStateRepository = OWStateRepository(input_data.ow_data, self.debug_enabled)
+
         self.output_files: List[OutputFile] = []
+
         # The full act text as how the conclusion would be
         self.regeling_vrijetekst_wordt: Optional[str] = None
         # What we send to DSO, might be different then `wordt` because of the renvooi
         self.regeling_vrijetekst_aangeleverd: Optional[str] = None
+
         self.used_asset_uuids: Set[str] = set()
-        self.annotation_ref_lookup_map: dict = {}
+
         # result state of ow object data after processing
-        self.ow_object_state: Optional[OwData] = None
+        self.output_ow_state: Optional[OwState] = None
 
         # Service is in the state manager
         # As we use it on multiple places, and the internal state should be updates for each use

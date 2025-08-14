@@ -4,8 +4,9 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
+from dso.act_builder.services.ow.state.ow_state import OwState
+
 from ....models import (
-    OwData,
     ProcedureStap,
     ProcedureVerloop,
     PublicationSettings,
@@ -33,7 +34,9 @@ class InputData(BaseModel):
     resources: Resources
     object_template_repository: ObjectTemplateRepository
     ambtsgebied: Ambtsgebied
-    ow_data: OwData
+    ow_state: OwState = Field(default_factory=OwState)
+    ow_dataset: str
+    ow_gebied: str
 
     model_config = ConfigDict(
         arbitrary_types_allowed=True,
@@ -55,8 +58,8 @@ class InputData(BaseModel):
     def serialize_resources(cls, v: Resources) -> dict:
         return {
             "policy_object_repository": v.policy_object_repository.to_dict(),
-            "asset_repository": {k: w.dict() for k, w in v.asset_repository.to_dict().items()},
-            "werkingsgebied_repository": {k: w.dict() for k, w in v.werkingsgebied_repository.to_dict().items()},
+            "asset_repository": {k: w.model_dump() for k, w in v.asset_repository.to_dict().items()},
+            "werkingsgebied_repository": {k: w.model_dump() for k, w in v.werkingsgebied_repository.to_dict().items()},
             "besluit_pdf_repository": v.besluit_pdf_repository.to_dict(),
             "document_repository": v.document_repository.to_dict(),
         }
@@ -103,7 +106,7 @@ class InputDataLoader:
 
         ambtsgebied = Ambtsgebied.from_json(main_config["ambtsgebied"])
 
-        ow_data = OwData.from_json(main_config["ow_data"])
+        ow_state = OwState.model_validate(main_config.get("ow_state", {}))
 
         data = InputData(
             publication_settings=publication_settings,
@@ -115,7 +118,7 @@ class InputDataLoader:
             resources=resources,
             object_template_repository=object_template_repository,
             ambtsgebied=ambtsgebied,
-            ow_data=ow_data,
+            ow_state=ow_state,
         )
         return data
 
@@ -163,10 +166,10 @@ class InputDataExporter:
         os.makedirs(self._output_dir, exist_ok=True)
 
     def to_dict(self) -> dict:
-        return self._input_data.dict()
+        return self._input_data.model_dump()
 
     def to_json(self) -> str:
-        return self._input_data.json()
+        return self._input_data.model_dump_json()
 
     def export_regelingvrijetekst_template(self, filename: str = "regelingvrijetekst_template.xml") -> None:
         xml_content = self._input_data.regeling_vrijetekst
@@ -243,7 +246,7 @@ class InputDataExporter:
                     # dump was to file and update dict to reference the file
                     was_filename = "was_regelingvrijetekst.xml"
                     self.export_was_regelingvrijetekst(filename=was_filename)
-                    regeling_mutatie_dict = self._input_data.regeling_mutatie.dict()
+                    regeling_mutatie_dict = self._input_data.regeling_mutatie.model_dump()
                     regeling_mutatie_dict.update(
                         {
                             "was_regeling_vrijetekst": f"./{was_filename}",
@@ -252,7 +255,7 @@ class InputDataExporter:
                         }
                     )
                 case VervangRegelingMutatie():
-                    regeling_mutatie_dict = self._input_data.regeling_mutatie.dict()
+                    regeling_mutatie_dict = self._input_data.regeling_mutatie.model_dump()
                     regeling_mutatie_dict.update({"type": "vervang"})
                 case _:
                     raise RuntimeError("Missing clause")
@@ -260,7 +263,7 @@ class InputDataExporter:
             export_dict_updates["regeling_mutatie"] = regeling_mutatie_dict
 
         # replace the values for split file path refs in main.json
-        updated_input_data = self._input_data.copy(update=export_dict_updates)
+        updated_input_data = self._input_data.model_copy(update=export_dict_updates)
 
         file_path = os.path.join(self._output_dir, "main.json")
         with open(file_path, "w") as file:

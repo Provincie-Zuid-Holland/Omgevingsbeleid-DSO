@@ -285,7 +285,7 @@ class Figuur(SimpleElement):
         figuur: Tag = soup.new_tag("Figuur")
         illustratie: Tag = soup.new_tag("Illustratie")
         illustratie.attrs = {
-            "data-info-asset-uuid": self._asset_uuid,
+            "data-hint-asset-uuid": self._asset_uuid,
         }
 
         figuur.append(illustratie)
@@ -327,6 +327,7 @@ class TekstObjectRef(SimpleElement):
             tag_name_overwrite="IntRef",
             tag_attrs_overwrite={
                 "ref": "",
+                "data-hint-type": "object",
                 "data-hint-target-object-code": self.object_code,
             },
         )
@@ -336,17 +337,18 @@ class TekstObjectRef(SimpleElement):
 class DocumentRef(SimpleElement):
     """
     Example input:
-    <a href="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-document-uuid="abc">Title</a>
+    <a href="/join/id/regdata/pv28/2024/at-14-4-28/nld@2024-11-14;1" data-hint-document-code="document-1" data-hint-wid-code="document-maatregel-5-document-1-ref">Title</a>
 
     Example output:
-    <ExtIoRef ref="" data-hint-document-uuid="abc">Title</ExtIoRef>
+    <ExtIoRef ref="" data-hint-document-code="document-1" data-hint-wid-code="document-maatregel-5-document-1-ref">Title</ExtIoRef>
 
-    The `ref` will be set later with help of the data-hint-document-uuid
+    The `ref` will be set later with help of the data-hint-document-code
     """
 
     def __init__(self, tag: Tag):
         super().__init__()
-        self._document_uuid: Optional[str] = tag.get("data-hint-document-uuid", None)
+        self._document_code: Optional[str] = tag.get("data-hint-document-code")
+        self._wid_code: Optional[str] = tag.get("data-hint-wid-code")
 
     def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
         result = SimpleElement.as_xml(
@@ -355,7 +357,9 @@ class DocumentRef(SimpleElement):
             tag_name_overwrite="IntIoRef",
             tag_attrs_overwrite={
                 "ref": "",
-                "data-hint-document-uuid": self._document_uuid,
+                "data-hint-type": "document",
+                "data-hint-document-code": self._document_code,
+                "data-hint-wid-code": self._wid_code,
             },
         )
         return result
@@ -376,6 +380,7 @@ class GebiedsaanwijzingRef(SimpleElement):
             tag_name_overwrite="IntIoRef",
             tag_attrs_overwrite={
                 "ref": self.href,
+                "data-hint-type": "gebiedsaanwijzing",
                 "data-hint-gebiedsaanwijzingtype": self.type,
                 "data-hint-gebiedengroep": self.gebiedengroep,
                 "data-hint-locatie": self.gebiedsaanwijzing,
@@ -603,14 +608,10 @@ class Divisietekst(Element):
         self.inhoud: Optional[Inhoud] = None
         self.wid_code: Optional[str] = None
         self.object_code: Optional[str] = None
-        self.gebied_code: Optional[str] = None
-        self.ambtsgebied: Optional[bool] = None
 
         if tag is not None:
             self.wid_code = tag.get("data-hint-wid-code", None)
             self.object_code = tag.get("data-hint-object-code", None)
-            self.gebied_code = tag.get("data-hint-gebied-code", None)
-            self.ambtsgebied = tag.get("data-hint-ambtsgebied", None)
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         # A div requires a new Divisie which a Divisietekst can not create
@@ -642,15 +643,10 @@ class Divisietekst(Element):
         """
         Divisietekst template comments:
             - [OBJECT-CODE:objecttype-123]
-            - [GEBIED-CODE:werkingsgebied-123]
         """
         object_code: Optional[str] = extract_object_code(str(comment))
         if object_code is not None:
             self.object_code = object_code
-
-        gebied_code: Optional[str] = extract_gebied_code(str(comment))
-        if gebied_code is not None:
-            self.gebied_code = gebied_code
 
         return None
 
@@ -661,23 +657,12 @@ class Divisietekst(Element):
         return self.inhoud
 
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
-        """
-        Builds Divisietekst Tag and adds additional data hint attributes
-        Edge case for gebied_code "ambtsgebied" which sets its own tag
-        instead of data-hint-gebied-code.
-        """
         tag_divisietekst: Tag = soup.new_tag("Divisietekst")
         wid_code = self.wid_code or self.object_code
 
         tag_divisietekst.attrs = {
             **({"data-hint-wid-code": wid_code} if wid_code else {}),
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
-            **(
-                {"data-hint-gebied-code": self.gebied_code}
-                if self.gebied_code and self.gebied_code != "ambtsgebied"
-                else {}
-            ),
-            **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
         }
 
         if self.kop is not None:
@@ -697,8 +682,6 @@ class Divisie(Element):
         self.contents: List[Union["Divisie", Divisietekst]] = []
         self.wid_code = tag.get("data-hint-wid-code", None)
         self.object_code = tag.get("data-hint-object-code", None)
-        self.gebied_code = tag.get("data-hint-gebied-code", None)
-        self.ambtsgebied = tag.get("data-hint-ambtsgebied", None)
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         while True:
@@ -773,15 +756,10 @@ class Divisie(Element):
         """
         Divisie template comments:
             - [OBJECT-CODE:objecttype-123]
-            - [GEBIED-CODE:werkingsgebied-123]
         """
         object_code: Optional[str] = extract_object_code(str(comment))
         if object_code is not None:
             self.object_code = object_code
-
-        gebied_code: Optional[str] = extract_gebied_code(str(comment))
-        if gebied_code is not None:
-            self.gebied_code = gebied_code
 
         return None
 
@@ -801,23 +779,12 @@ class Divisie(Element):
         return self.contents[-1]
 
     def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
-        """
-        Builds Divisie Tag and adds additional data hint attributes
-        Edge case for gebied_code "ambtsgebied" which sets its own tag
-        instead of data-hint-gebied-code.
-        """
         tag_divisie: Tag = soup.new_tag("Divisie")
         wid_code = self.wid_code or self.object_code
 
         tag_divisie.attrs = {
             **({"data-hint-wid-code": wid_code} if wid_code else {}),
             **({"data-hint-object-code": self.object_code} if self.object_code else {}),
-            **(
-                {"data-hint-gebied-code": self.gebied_code}
-                if self.gebied_code and self.gebied_code != "ambtsgebied"
-                else {}
-            ),
-            **({"data-hint-ambtsgebied": True} if self.gebied_code == "ambtsgebied" else {}),
         }
 
         if self.kop is not None:
