@@ -73,13 +73,13 @@ class GebiedengroepRef(UnresolvedGebiedengroepRef):
 LocationRefUnion = Annotated[
     Union[
         AmbtsgebiedRef,
-        UnresolvedAmbtsgebiedRef,
+        UnresolvedAmbtsgebiedRef, 
         GebiedRef,
         UnresolvedGebiedRef,
         GebiedengroepRef,
         UnresolvedGebiedengroepRef,
     ],
-    Field(discriminator="ref_type"),
+    Field(discriminator='ref_type')
 ]
 
 
@@ -139,7 +139,7 @@ WidRefUnion = Annotated[
         DivisietekstRef,
         UnresolvedDivisietekstRef,
     ],
-    Field(discriminator="ref_type"),
+    Field(discriminator='ref_type')
 ]
 
 
@@ -159,7 +159,7 @@ class BaseOwObject(BaseModel):
     procedure_status: Optional[str] = Field(None)
 
     def assert_same_class(self, other: "BaseOwObject"):
-        if type(self) is not type(other):
+        if type(self) != type(other):
             raise RuntimeError("Can not handle different classes")
 
     def get_deleted_status(self) -> str:

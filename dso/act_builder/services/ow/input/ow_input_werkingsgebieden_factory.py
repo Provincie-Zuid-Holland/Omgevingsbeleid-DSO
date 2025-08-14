@@ -19,12 +19,12 @@ class OwInputWerkingsgebiedenFactory:
         for werkingsgebied in self._werkingsgebieden_repository.all():
             input_locations = [
                 OwInputLocatie(
-                    source_uuid=str(location.UUID),
+                    source_uuid=str(l.UUID),
                     source_code=f"{werkingsgebied.Code}-{i}",
-                    geometry_id=location.Identifier,
-                    title=location.Title,
+                    geometry_id=l.Identifier,
+                    title=l.Title,
                 )
-                for i, location in enumerate(werkingsgebied.Locaties)
+                for i, l in enumerate(werkingsgebied.Locaties)
             ]
             input_werkingsgebied = OwInputWerkingsgebied(
                 source_uuid=werkingsgebied.Identifier,

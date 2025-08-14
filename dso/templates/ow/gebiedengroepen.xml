@@ -2,6 +2,7 @@
 
 {% block content %}
 {% for ow_object in ow_objects %}
+  <sl:stand>
     <ow-dc:owObject>
         <l:Gebiedengroep>
             <!-- {{ ow_object.object_status.value }} -->
@@ -20,5 +21,6 @@
             </l:groepselement>
         </l:Gebiedengroep>
     </ow-dc:owObject>
+  </sl:stand>
 {% endfor %}
 {% endblock %}

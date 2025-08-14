@@ -2,6 +2,7 @@
 
 {% block content %}
 {% for ow_object in ow_objects %}
+  <sl:stand>
     <ow-dc:owObject>
         <vt:Divisietekst wId="{{ ow_object.wid }}">
             <!-- {{ ow_object.object_status.value }} -->
@@ -14,5 +15,6 @@
             <vt:identificatie>{{ ow_object.identification }}</vt:identificatie>
         </vt:Divisietekst>
     </ow-dc:owObject>
+  </sl:stand>
 {% endfor %}
 {% endblock %}

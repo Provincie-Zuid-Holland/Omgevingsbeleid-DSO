@@ -2,6 +2,7 @@
 
 {% block content %}
 {% for ow_object in ow_objects %}
+  <sl:stand>
     <ow-dc:owObject>
         <l:Gebied>
             <!-- {{ ow_object.object_status.value }} -->
@@ -18,5 +19,6 @@
             </l:geometrie>
         </l:Gebied>
     </ow-dc:owObject>
+  </sl:stand>
 {% endfor %}
 {% endblock %}

@@ -88,9 +88,9 @@ class OwStateBuilder:
             title=input_werkingsgebied.title,
             gebieden_refs=[
                 UnresolvedGebiedRef(
-                    target_code=location.source_code,
+                    target_code=l.source_code,
                 )
-                for location in input_werkingsgebied.locations
+                for l in input_werkingsgebied.locations
             ],
         )
         self._state.gebiedengroepen.add(gebieden_groep)
