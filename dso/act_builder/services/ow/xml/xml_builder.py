@@ -60,7 +60,7 @@ class XmlBuilder:
             purpose_id=self._state_manager.input_data.publication_settings.instelling_doel.frbr.get_work(),
         )
         manifest_file = OutputFile(
-            filename="ow-manifest.xml",
+            filename="manifest-ow.xml",
             content_type=ContentType.XML,
             content=StrContentData(manifest_content),
         )
