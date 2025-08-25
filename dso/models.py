@@ -162,8 +162,8 @@ class Bestand(BaseModel):
 
 
 class DSOVersion(BaseModel):
-    STOP: str = "1.3.0"
-    TPOD: str = "2.0.2"
+    STOP: str = "1.4.1"
+    TPOD: str = "3.1.0"
     LVBB: str = "1.2.0"
 
 
@@ -231,7 +231,6 @@ class PublicationSettings(BaseModel):
     soort_bestuursorgaan: BestuursorgaanSoort
     regeling_componentnaam: str
     provincie_ref: str = Provincie.Zuid_Holland.value
-    dso_versioning: DSOVersion = Field(default_factory=DSOVersion)
     besluit_frbr: BillFRBR
     regeling_frbr: ActFRBR
     opdracht: PublicatieOpdracht

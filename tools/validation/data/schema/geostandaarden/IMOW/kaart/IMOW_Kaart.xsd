@@ -11,7 +11,7 @@
               targetNamespace="http://www.geostandaarden.nl/imow/kaart"
               elementFormDefault="qualified"
               attributeFormDefault="unqualified"
-              version="2.0.0"> 
+              version="v3.1.0"> 
    <xs:annotation>
       <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/imow/kaartrecept</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/version">1.0</xs:appinfo>
@@ -50,8 +50,20 @@
                            type="da:NEN3610ID"
                            minOccurs="1"
                            maxOccurs="1"/>
-               <xs:element name="naam" type="xs:string" minOccurs="1" maxOccurs="1"/>
-               <xs:element name="nummer" type="xs:string" minOccurs="0" maxOccurs="1"/>
+	       <xs:element name="naam" minOccurs="1" maxOccurs="1">
+		  <xs:simpleType>
+		     <xs:restriction base="xs:string">
+		        <xs:pattern value="\S.*"/>
+		     </xs:restriction>
+		  </xs:simpleType>
+	       </xs:element>
+	       <xs:element name="nummer" minOccurs="0" maxOccurs="1">
+		  <xs:simpleType>
+		     <xs:restriction base="xs:string">
+		        <xs:pattern value="\S.*"/>
+		     </xs:restriction>
+		  </xs:simpleType>
+	       </xs:element>
                <xs:element name="uitsnede" minOccurs="1" maxOccurs="1">
                   <xs:complexType>
                      <xs:sequence>

@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:cons="https://standaarden.overheid.nl/stop/imop/consolidatie/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="https://standaarden.overheid.nl/stop/imop/consolidatie/"
+           version="1.4.1">
+   <xs:annotation>
+      <xs:documentation>"consolidatie-schema" van STOP. </xs:documentation>
+      <xs:documentation>Dit schema definieert de elementen voor de STOP-modules voor consolidaties</xs:documentation>
+      <xs:documentation>versie 1.4.1</xs:documentation>
+   </xs:annotation>
+   <!--
+  ================================================ 
+     Geldende regelgeving                               
+  ================================================ 
+  -->
+   <xs:element name="ConsolidatieIdentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:ConsolidatieIdentificatie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="cons:FRBRWork"/>
+            <xs:element ref="cons:soortWork"/>
+            <xs:element ref="cons:isConsolidatieVan"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:isTijdelijkDeelVan"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="cons:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="isConsolidatieVan">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:isConsolidatieVan"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="cons:WorkIdentificatie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="isTijdelijkDeelVan">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:isTijdelijkDeelVan"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="cons:WorkIdentificatie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="WorkIdentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:WorkIdentificatie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="cons:FRBRWork"/>
+            <xs:element ref="cons:soortWork"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="FRBRExpression" type="cons:dtSTOPidentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:FRBRExpression"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="FRBRWork" type="cons:dtSTOPidentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:FRBRWork"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="soortWork" type="cons:dtWaardeRef">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:soortWork"/>
+      </xs:annotation>
+   </xs:element>
+   <!--
+  ================================================ 
+     Toestanden
+  ================================================ 
+  -->
+   <xs:element name="Toestanden">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:Toestanden"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="cons:mgContext"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:materieelUitgewerktOp"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:IntrekkingRegeling"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="cons:Toestand"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="cons:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="IntrekkingRegeling">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:IntrekkingRegeling"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="cons:ingetrokkenPer"/>
+            <xs:element ref="cons:doel"/>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="cons:verwerkt"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Toestand">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:Toestand"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:FRBRExpression"/>
+            <xs:element ref="cons:doelen"/>
+            <xs:element ref="cons:juridischWerkendOp"/>
+            <xs:element ref="cons:geldigOp"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:instrumentVersie"/>
+            <xs:element ref="cons:verwerkingen"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="doelen">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:doelen"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="cons:doel"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="juridischWerkendOp">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:juridischWerkendOp"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" name="Periode">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:juridischWerkendOp:Periode"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element maxOccurs="1" minOccurs="1" ref="cons:vanaf"/>
+                     <xs:element maxOccurs="1" minOccurs="0" ref="cons:tot"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="geldigOp">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:geldigOp"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" name="Periode">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:geldigOp:Periode"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element maxOccurs="1" minOccurs="1" ref="cons:vanaf"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="verwerkingen">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:verwerkingen"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice>
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="1" ref="cons:verwerkt"/>
+               <xs:element maxOccurs="unbounded" minOccurs="0" ref="cons:nogTeVerwerken"/>
+               <xs:element maxOccurs="unbounded" minOccurs="0" ref="cons:nietVerwerkt"/>
+            </xs:sequence>
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="1" ref="cons:nogTeVerwerken"/>
+               <xs:element maxOccurs="unbounded" minOccurs="0" ref="cons:nietVerwerkt"/>
+            </xs:sequence>
+         </xs:choice>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="vanaf" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:vanaf"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="tot" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:tot"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="verwerkt" type="cons:dtSTOPidentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:verwerkt"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="nietVerwerkt" type="cons:dtSTOPidentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:nietVerwerkt"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="nogTeVerwerken" type="cons:dtSTOPidentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:nogTeVerwerken"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="instrumentVersie" type="cons:dtSTOPidentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:instrumentVersie"/>
+      </xs:annotation>
+   </xs:element>
+   <!--
+  ================================================ 
+     Proefversie
+  ================================================ 
+  -->
+   <xs:element name="Proefversies">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:Proefversies"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="cons:mgContext"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:materieelUitgewerktOp"/>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="cons:Proefversie"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="cons:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Proefversie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:Proefversie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="cons:doel"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:instrumentVersie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <!--
+  ================================================ 
+     Juridische verantwoording                             
+  ================================================ 
+  -->
+   <xs:element name="JuridischeVerantwoording">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:JuridischeVerantwoording"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="cons:mgContext"/>
+            <xs:choice>
+               <xs:sequence>
+                  <xs:element maxOccurs="1" minOccurs="1" ref="cons:VerantwoordingInstrument"/>
+                  <xs:element maxOccurs="unbounded"
+                              minOccurs="0"
+                              ref="cons:VerantwoordingElement"/>
+               </xs:sequence>
+               <xs:element maxOccurs="unbounded"
+                           minOccurs="1"
+                           ref="cons:VerantwoordingElement"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="cons:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="VerantwoordingInstrument">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:VerantwoordingInstrument"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:heeftVerantwoording"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="VerantwoordingElement">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:VerantwoordingElement"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:wId"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:heeftVerantwoording"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="heeftVerantwoording">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:heeftVerantwoording"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="cons:Verantwoording"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="wId" type="xs:token">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:wId"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="Verantwoording">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:Verantwoording"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:doel"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:soortWijziging"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:juridischWerkendVanaf"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:geldigVanaf"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:gepubliceerdIn"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="cons:heeftTijdelijkDeel"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="soortWijziging" type="cons:wlSoortWijziging">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:soortWijziging"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="juridischWerkendVanaf" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:juridischWerkendVanaf"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="juridischWerkendTot" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:juridischWerkendTot"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="geldigVanaf" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:geldigVanaf"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="heeftTijdelijkDeel" type="cons:dtSTOPidentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:heeftTijdelijkDeel"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="gepubliceerdIn">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:gepubliceerdIn"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded"
+                        minOccurs="1"
+                        ref="cons:JuridischeBronpublicatie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="JuridischeBronpublicatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:JuridischeBronpublicatie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:url"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:publicatieIdentifier"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:publiceert"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:publicatienaam"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:kenmerk"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:soortGepubliceerdWork"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:ondertekendOp"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:gepubliceerdOp"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:bladwijzers"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="ondertekendOp" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:ondertekendOp"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="gepubliceerdOp" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:gepubliceerdOp"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="publicatieIdentifier" type="xs:token">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:publicatieIdentifier"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="publiceert" type="cons:dtSTOPidentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:publiceert"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="publicatienaam" type="xs:token">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:publicatienaam"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="kenmerk" type="xs:token">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:kenmerk"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="soortGepubliceerdWork" type="cons:dtWaardeRef">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:soortGepubliceerdWork"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="bladwijzers">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:bladwijzers"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="cons:Bladwijzer"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Bladwijzer">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:Bladwijzer"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="3" minOccurs="1" ref="cons:relevantVoor"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:url"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="relevantVoor" type="cons:wlRelevantVoor">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:relevantVoor"/>
+      </xs:annotation>
+   </xs:element>
+   <!--
+  ================================================ 
+     GerechtelijkeProcedureStatus                               
+  ================================================ 
+  -->
+   <xs:element name="GerechtelijkeProcedureStatus">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:GerechtelijkeProcedureStatus"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="cons:mgContext"/>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="cons:BesluitStatus"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="cons:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="BesluitStatus">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:BesluitStatus"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:FRBRWork"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="cons:onherroepelijkVanaf"/>
+            <xs:element maxOccurs="1"
+                        minOccurs="1"
+                        ref="cons:voorlopigeVoorzieningGetroffen"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="cons:gepubliceerdIn"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="cons:wId"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="cons:meerInformatie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="onherroepelijkVanaf" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:onherroepelijkVanaf"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="voorlopigeVoorzieningGetroffen" type="xs:boolean">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:voorlopigeVoorzieningGetroffen"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="meerInformatie" type="xs:anyURI">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:meerInformatie"/>
+      </xs:annotation>
+   </xs:element>
+   <!--
+  ================================================ 
+     generiek                               
+  ================================================ 
+  -->
+   <!-- generieke elementen -->
+   <xs:element name="doel" type="cons:dtDoelidentificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:doel"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="materieelUitgewerktOp" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:materieelUitgewerktOp"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="ingetrokkenPer" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:ingetrokkenPer"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="bekendOp" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:bekendOp"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="ontvangenOp" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:ontvangenOp"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="url" type="xs:anyURI">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:cons:url"/>
+      </xs:annotation>
+   </xs:element>
+   <!-- mg -->
+   <xs:group name="mgContext">
+      <xs:sequence>
+         <xs:element maxOccurs="1" minOccurs="1" ref="cons:bekendOp"/>
+         <xs:element maxOccurs="1" minOccurs="0" ref="cons:ontvangenOp"/>
+      </xs:sequence>
+   </xs:group>
+   <!-- ag -->
+   <xs:attributeGroup name="agSchemaVersie">
+      <xs:attribute name="schemaversie" type="cons:dtSchemaVersie" use="optional"/>
+   </xs:attributeGroup>
+   <!-- datatypes -->
+   <xs:simpleType name="dtSchemaVersie">
+      <xs:restriction base="xs:token"/>
+   </xs:simpleType>
+   <xs:simpleType name="dtDoelidentificatie">
+      <xs:restriction base="cons:dtSTOPidentificatie"/>
+   </xs:simpleType>
+   <xs:simpleType name="dtSTOPidentificatie">
+      <xs:restriction base="xs:anyURI"/>
+   </xs:simpleType>
+   <xs:simpleType name="dtWaardeRef">
+      <xs:restriction base="xs:anyURI"/>
+   </xs:simpleType>
+   <xs:simpleType name="dtDateTimeUTC">
+      <xs:restriction base="xs:dateTime">
+         <xs:pattern value=".{19}Z"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <!-- waardelijsten -->
+   <xs:simpleType name="wlRelevantVoor">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="inhoud"/>
+         <xs:enumeration value="juridischeWerking"/>
+         <xs:enumeration value="geldigheid"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlSoortWijziging">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="instelling"/>
+         <xs:enumeration value="wijziging"/>
+         <xs:enumeration value="beeindiging"/>
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema>

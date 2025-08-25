@@ -1,36 +1,34 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
     
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/bestanden-ow/generiek/manifest-ow.xsd" uri="bestanden-ow/generiek/manifest-ow.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/bestanden-ow/generiek/manifest-ow.xsd" uri="bestanden-ow/generiek/manifest-ow.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/bestanden-ow/generiek/standlevering-generiek.xsd" uri="bestanden-ow/generiek/standlevering-generiek.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/bestanden-ow/generiek/standlevering-generiek.xsd" uri="bestanden-ow/generiek/standlevering-generiek.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/bestanden-ow/deelbestand-ow/IMOW_Deelbestand.xsd" uri="bestanden-ow/deelbestand-ow/IMOW_Deelbestand.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/bestanden-ow/deelbestand-ow/IMOW_Deelbestand.xsd" uri="bestanden-ow/deelbestand-ow/IMOW_Deelbestand.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/opobject/IMOW_OPobject.xsd" uri="IMOW/opobject/IMOW_OPobject.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/opobject/IMOW_OPobject.xsd" uri="IMOW/opobject/IMOW_OPobject.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/locatie/IMOW_Locatie.xsd" uri="IMOW/locatie/IMOW_Locatie.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/locatie/IMOW_Locatie.xsd" uri="IMOW/locatie/IMOW_Locatie.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/datatypenalgemeen/IMOW_DatatypenAlgemeen.xsd" uri="IMOW/datatypenalgemeen/IMOW_DatatypenAlgemeen.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/datatypenalgemeen/IMOW_DatatypenAlgemeen.xsd" uri="IMOW/datatypenalgemeen/IMOW_DatatypenAlgemeen.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/kaart/IMOW_Kaart.xsd" uri="IMOW/kaart/IMOW_Kaart.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/kaart/IMOW_Kaart.xsd" uri="IMOW/kaart/IMOW_Kaart.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/symbolisatie/IMOW_Symbolisatie.xsd" uri="IMOW/symbolisatie/IMOW_Symbolisatie.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/vrijetekst/IMOW_VrijeTekst.xsd" uri="IMOW/vrijetekst/IMOW_VrijeTekst.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/vrijetekst/IMOW_VrijeTekst.xsd" uri="IMOW/vrijetekst/IMOW_VrijeTekst.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/pons/IMOW_Pons.xsd" uri="IMOW/pons/IMOW_Pons.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/pons/IMOW_Pons.xsd" uri="IMOW/pons/IMOW_Pons.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/regelsoplocatie/IMOW_RegelsOpLocatie.xsd" uri="IMOW/regelsoplocatie/IMOW_RegelsOpLocatie.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/regelsoplocatie/IMOW_RegelsOpLocatie.xsd" uri="IMOW/regelsoplocatie/IMOW_RegelsOpLocatie.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/regels/IMOW_Regel.xsd" uri="IMOW/regels/IMOW_Regel.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/regels/IMOW_Regel.xsd" uri="IMOW/regels/IMOW_Regel.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/gebiedsaanwijzing/IMOW_Gebiedsaanwijzing.xsd" uri="IMOW/gebiedsaanwijzing/IMOW_Gebiedsaanwijzing.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/gebiedsaanwijzing/IMOW_Gebiedsaanwijzing.xsd" uri="IMOW/gebiedsaanwijzing/IMOW_Gebiedsaanwijzing.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/owobject/IMOW_OWobject.xsd" uri="IMOW/owobject/IMOW_OWobject.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/owobject/IMOW_OWobject.xsd" uri="IMOW/owobject/IMOW_OWobject.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/regelingsgebied/IMOW_RegelingsGebied.xsd" uri="IMOW/regelingsgebied/IMOW_RegelingsGebied.xsd" />
          
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/regelingsgebied/IMOW_RegelingsGebied.xsd" uri="IMOW/regelingsgebied/IMOW_RegelingsGebied.xsd" />
-         
-            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/xlink/1.0.0/xlinks.xsd" uri="xlink/1.0.0/xlinks.xsd" />
+            <uri name="https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/xlink/1.0.0/xlinks.xsd" uri="xlink/1.0.0/xlinks.xsd" />
         
 </catalog>

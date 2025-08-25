@@ -27,10 +27,10 @@ test-schematron:
 
 
 download-geostandaarden-xml:
-	wget -r -np -nH --cut-dirs=3 -R "index.html*" -P ./data/schema/geostandaarden https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/
-	wget -r -np -nH --cut-dirs=3 -R "index.html*" -P ./data/schema/geostandaarden https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/bestanden-ow/
-	wget -r -np -nH --cut-dirs=3 -R "index.html*" -P ./data/schema/geostandaarden https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/xlink/
+	wget -r -np -nH --cut-dirs=3 -R "index.html*" -P ./data/schema/geostandaarden https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/
+	wget -r -np -nH --cut-dirs=3 -R "index.html*" -P ./data/schema/geostandaarden https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/bestanden-ow/
+	wget -r -np -nH --cut-dirs=3 -R "index.html*" -P ./data/schema/geostandaarden https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/xlink/
 
 
 geostandaarden-generate-files:
-	@python app/cmds.py geostandaarden-generate-files https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0
+	@python app/cmds.py geostandaarden-generate-files https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0

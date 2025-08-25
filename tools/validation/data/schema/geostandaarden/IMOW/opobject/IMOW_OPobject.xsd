@@ -6,7 +6,7 @@
             targetNamespace="http://www.geostandaarden.nl/imow/opobject"
             elementFormDefault="qualified"
             attributeFormDefault="unqualified"
-            version="2.0.0">
+            version="v3.1.0">
    <xs:annotation>
       <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/imow/opobject</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/version">1.0</xs:appinfo>

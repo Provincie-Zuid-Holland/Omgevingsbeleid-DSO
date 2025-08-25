@@ -10,7 +10,7 @@
    targetNamespace="http://www.geostandaarden.nl/imow/gebiedsaanwijzing"
    elementFormDefault="qualified"
    attributeFormDefault="unqualified"
-           version="2.0.0">
+           version="v3.1.0">
    <xs:annotation>
       <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/imow/gebiedsaanwijzing</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/version">1.0</xs:appinfo>
@@ -78,6 +78,16 @@
                   <xs:annotation>
                      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De groep waartoe de Gebiedsaanwijzing behoort.</xs:documentation>
                   </xs:annotation>
+               </xs:element>
+               <xs:element name="eigenSymbolisatie" minOccurs="0" maxOccurs="1">
+                  <xs:annotation>
+                     <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Symboolcode uit de symbolenbibliotheek die in een viewer gebruikt kan worden om dit object een symbolosatie te geven die afwijkt van de standaard symbolisatie.</xs:documentation>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:pattern value="[vpl][acdksrvx][0-9][0-9][0-9]"/>
+                     </xs:restriction>
+                  </xs:simpleType>
                </xs:element>
                <xs:element name="locatieaanduiding" minOccurs="1" maxOccurs="1">
                   <xs:annotation>

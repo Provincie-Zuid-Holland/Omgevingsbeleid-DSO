@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:sv="https://standaarden.overheid.nl/stop/imop/schemata/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="https://standaarden.overheid.nl/stop/imop/schemata/"
+           version="1.4.1">
+   <xs:annotation>
+      <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/goto.html?to=stop&amp;id=xsd:br">"schemata-schema" van STOP.</xs:documentation>
+      <xs:documentation>Dit schema definieert de schemakoppeling- en schemaversie-elementen voor STOP. Prefix sv staat voor  "schemaversie"</xs:documentation>
+      <xs:documentation>Versie 1.4.1</xs:documentation>
+      <xs:documentation>Documentatie op https://koop.gitlab.io/STOP/standaard/1.4.1/go/goto.html?to=stop&amp;id=xsd:sv</xs:documentation>
+   </xs:annotation>
+   <xs:element name="Versieoverzicht">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:Versieoverzicht"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="sv:versie"/>
+            <xs:element maxOccurs="unbounded" ref="sv:Module"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="sv:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="versie" type="sv:dtSemverNr">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:versie"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="Module">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:Module"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="sv:localName"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="sv:namespace"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="sv:vervallenVanafVersie"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="sv:implementatie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="localName" type="xs:NCName">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:localName"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="namespace" type="sv:dtNamespace">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:namespace"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="vervallenVanafVersie" type="sv:dtSemverNr">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:vervallenVanafVersie"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="implementatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:implementatie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="sv:Moduleversie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Moduleversie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:Moduleversie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="sv:introductieversie"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="sv:schema"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="sv:schematron"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="sv:heeftTransformatie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="heeftTransformatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:heeftTransformatie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="sv:Transformatie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Transformatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:Transformatie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="sv:introductieversie"/>
+            <xs:element maxOccurs="1" minOccurs="1" ref="sv:locatie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="introductieversie" type="sv:dtSemverNr">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:introductieversie"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="schema" type="sv:dtLocatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:schema"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="schematron" type="sv:dtLocatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:schematron"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="locatie" type="sv:dtLocatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:sv:locatie"/>
+      </xs:annotation>
+   </xs:element>
+   <!-- ATTRIBUTE GROUPS -->
+   <xs:attributeGroup name="agSchemaVersie">
+      <xs:attribute name="schemaversie" type="sv:dtSemverNr" use="required"/>
+   </xs:attributeGroup>
+   <!-- DATATYPES -->
+   <xs:simpleType name="dtNamespace">
+      <xs:restriction base="xs:anyURI"/>
+   </xs:simpleType>
+   <xs:simpleType name="dtLocatie">
+      <xs:restriction base="xs:anyURI"/>
+   </xs:simpleType>
+   <xs:simpleType name="dtSemverNr">
+      <xs:restriction base="xs:token"/>
+   </xs:simpleType>
+</xs:schema>

@@ -11,10 +11,9 @@
 	xmlns:r="http://www.geostandaarden.nl/imow/regels" 
 	xmlns:rg="http://www.geostandaarden.nl/imow/regelingsgebied"
 	xmlns:rol="http://www.geostandaarden.nl/imow/regelsoplocatie"
-	xmlns:s="http://www.geostandaarden.nl/imow/symbolisatie"
 	xmlns:vt="http://www.geostandaarden.nl/imow/vrijetekst" 
 	targetNamespace="http://www.geostandaarden.nl/imow/bestanden/deelbestand" 
-	elementFormDefault="qualified" version="2.0.0">
+	elementFormDefault="qualified" version="v3.1.0">
 	
 	<xs:import namespace="http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek" schemaLocation="../generiek/standlevering-generiek.xsd"/>
 	<xs:import namespace="http://www.geostandaarden.nl/imow/locatie" schemaLocation="../../IMOW/locatie/IMOW_Locatie.xsd"/>
@@ -25,12 +24,12 @@
 	<xs:import namespace="http://www.geostandaarden.nl/imow/pons" schemaLocation="../../IMOW/pons/IMOW_Pons.xsd"/>
 	<xs:import namespace="http://www.geostandaarden.nl/imow/vrijetekst" schemaLocation="../../IMOW/vrijetekst/IMOW_VrijeTekst.xsd"/>
 	<xs:import namespace="http://www.geostandaarden.nl/imow/regelingsgebied" schemaLocation="../../IMOW/regelingsgebied/IMOW_RegelingsGebied.xsd"/>
-	<xs:import namespace="http://www.geostandaarden.nl/imow/symbolisatie" schemaLocation="../../IMOW/symbolisatie/IMOW_Symbolisatie.xsd"/>
 	<xs:element name="owBestand">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="sl:standBestand"/>
 			</xs:sequence>
+			<xs:attribute name="schemaversie" type="xs:token" use="optional"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="owObject" type="ow-dc:owObject" substitutionGroup="sl:modelObject"/>
@@ -61,7 +60,6 @@
 					<xs:element ref="vt:Tekstdeel"/>
 					<xs:element ref="vt:Hoofdlijn"/>
 					<xs:element ref="rg:Regelingsgebied"/>
-					<xs:element ref="s:SymbolisatieItem"/>
 				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>

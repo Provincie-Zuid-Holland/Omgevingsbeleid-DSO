@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:ogc="http://www.opengis.net/ogc"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.opengis.net/ogc"
+            elementFormDefault="qualified"
+            version="1.4.1">
+   <xsd:annotation>
+      <xsd:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/goto.html?to=stop&amp;id=xsd:ogc">
+         This XML Schema defines OGC query filter capabilities documents.
+         
+         *************************************************
+         Ingeperkte versie t.b.v. STOP versie 1.4.1
+         *************************************************
+
+         origineel: http://schemas.opengis.net/filter/1.1.0/filter.xsd
+         filter is an OGC Standard.
+         Copyright (c) 2002,2003,2004,2010 Open Geospatial Consortium, Inc. All Rights Reserved.
+         To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+
+         Updated: 2010-01-22
+      </xsd:documentation>
+   </xsd:annotation>
+   <xsd:element name="Filter" type="ogc:FilterType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:Filter"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="FilterType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:FilterType"/>
+      </xs:annotation>
+      <xsd:choice>
+         <xsd:element ref="ogc:comparisonOps"/>
+         <xsd:element ref="ogc:logicOps"/>
+      </xsd:choice>
+   </xsd:complexType>
+   <xsd:element name="comparisonOps" type="ogc:ComparisonOpsType" abstract="true">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:comparisonOps"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="PropertyIsEqualTo"
+                type="ogc:BinaryComparisonOpType"
+                substitutionGroup="ogc:comparisonOps">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:PropertyIsEqualTo"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="PropertyIsNotEqualTo"
+                type="ogc:BinaryComparisonOpType"
+                substitutionGroup="ogc:comparisonOps">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:PropertyIsNotEqualTo"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="PropertyIsLessThan"
+                type="ogc:BinaryComparisonOpType"
+                substitutionGroup="ogc:comparisonOps">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:PropertyIsLessThan"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="PropertyIsGreaterThan"
+                type="ogc:BinaryComparisonOpType"
+                substitutionGroup="ogc:comparisonOps">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:PropertyIsGreaterThan"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="PropertyIsLessThanOrEqualTo"
+                type="ogc:BinaryComparisonOpType"
+                substitutionGroup="ogc:comparisonOps">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:PropertyIsLessThanOrEqualTo"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="PropertyIsGreaterThanOrEqualTo"
+                type="ogc:BinaryComparisonOpType"
+                substitutionGroup="ogc:comparisonOps">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:PropertyIsGreaterThanOrEqualTo"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="PropertyIsBetween"
+                type="ogc:PropertyIsBetweenType"
+                substitutionGroup="ogc:comparisonOps">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:PropertyIsBetween"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="ComparisonOpsType" abstract="true">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:ComparisonOpsType"/>
+      </xs:annotation>
+   </xsd:complexType>
+   <xsd:element name="logicOps" type="ogc:LogicOpsType" abstract="true">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:logicOps"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="And"
+                type="ogc:BinaryLogicOpType"
+                substitutionGroup="ogc:logicOps">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:And"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="LogicOpsType" abstract="true">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:LogicOpsType"/>
+      </xs:annotation>
+   </xsd:complexType>
+   <xsd:complexType name="BinaryComparisonOpType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:BinaryComparisonOpType"/>
+      </xs:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="ogc:ComparisonOpsType">
+            <xsd:all>
+               <xsd:element name="PropertyName" type="xsd:string">
+                  <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:PropertyName:BinaryComparisonOpType"/>
+                  </xs:annotation>
+               </xsd:element>
+               <xsd:element name="Literal" type="xsd:string">
+                  <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:Literal:BinaryComparisonOpType"/>
+                  </xs:annotation>
+               </xsd:element>
+            </xsd:all>
+            <xsd:attribute name="matchCase"
+                           type="xsd:boolean"
+                           use="optional"
+                           default="true"/>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="PropertyIsBetweenType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:PropertyIsBetweenType"/>
+      </xs:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="ogc:ComparisonOpsType">
+            <xsd:sequence>
+               <xsd:element name="PropertyName" type="xsd:string">
+                  <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:PropertyName:PropertyIsBetweenType"/>
+                  </xs:annotation>
+               </xsd:element>
+               <xsd:element name="LowerBoundary" type="ogc:LowerBoundaryType">
+                  <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:LowerBoundary:PropertyIsBetweenType"/>
+                  </xs:annotation>
+               </xsd:element>
+               <xsd:element name="UpperBoundary" type="ogc:UpperBoundaryType">
+                  <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:UpperBoundary:PropertyIsBetweenType"/>
+                  </xs:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="LowerBoundaryType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:LowerBoundaryType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element name="Literal" type="xsd:double">
+            <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+               <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:Literal:LowerBoundaryType"/>
+            </xs:annotation>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UpperBoundaryType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:UpperBoundaryType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element name="Literal" type="xsd:double">
+            <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+               <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:Literal:UpperBoundaryType"/>
+            </xs:annotation>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="BinaryLogicOpType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:ogc:BinaryLogicOpType"/>
+      </xs:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="ogc:LogicOpsType">
+            <xsd:choice minOccurs="2" maxOccurs="unbounded">
+               <xsd:element ref="ogc:comparisonOps"/>
+               <!-- <xsd:element ref="ogc:logicOps"/> -->
+            </xsd:choice>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+</xsd:schema>

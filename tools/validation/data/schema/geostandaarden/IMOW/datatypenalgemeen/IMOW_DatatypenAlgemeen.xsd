@@ -5,7 +5,7 @@
            targetNamespace="http://www.geostandaarden.nl/imow/datatypenalgemeen"
            elementFormDefault="qualified"
            attributeFormDefault="unqualified"
-           version="2.0.0">
+           version="v3.1.0">
    <xs:annotation>
       <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/imow/datatypenalgemeen</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/version">1.0</xs:appinfo>
@@ -19,25 +19,6 @@
         This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org.
     </xs:documentation>
    </xs:annotation>
-   <xs:element name="WaardeEenheid" type="da:WaardeEenheid" abstract="false">
-      <xs:annotation>
-         <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een specifieke datatype voor het vastleggen van waarden met een eenheid, zoals 5 meter, 30 decibel en andere. </xs:documentation>
-      </xs:annotation>
-   </xs:element>
-   <xs:complexType name="WaardeEenheid" abstract="false">
-      <xs:sequence>
-         <xs:element name="waarde" type="xs:decimal" minOccurs="1" maxOccurs="1">
-            <xs:annotation>
-               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Een numerieke waarde. </xs:documentation>
-            </xs:annotation>
-         </xs:element>
-         <xs:element name="eenheid" type="da:Eenheid" minOccurs="1" maxOccurs="1">
-            <xs:annotation>
-               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De grootheid waarin een numerieke waarde wordt uitgedrukt.</xs:documentation>
-            </xs:annotation>
-         </xs:element>
-      </xs:sequence>
-   </xs:complexType>
    <xs:element name="NEN3610ID" type="da:NEN3610ID" abstract="false">
       <xs:annotation>
          <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Identificatiegegevens voor de universeel unieke identificatie van een object.</xs:documentation>

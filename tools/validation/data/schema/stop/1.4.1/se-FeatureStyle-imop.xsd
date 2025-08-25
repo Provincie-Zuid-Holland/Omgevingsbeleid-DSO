@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:ogc="http://www.opengis.net/ogc"
+            xmlns:se="http://www.opengis.net/se"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified"
+            targetNamespace="http://www.opengis.net/se"
+            version="1.4.1"><!-- This version of se/1.1.0 was previously versioned as '1.1.1' . -->
+   <xsd:import namespace="http://www.opengis.net/ogc"
+               schemaLocation="https://standaarden.overheid.nl/stop/1.4.1/se-filter-imop.xsd"/>
+   <!-- *********************************************************************** -->
+   <xsd:annotation>
+      <xsd:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/goto.html?to=stop&amp;id=xsd:se"> 
+      Symbology Encoding FEATURE STYLE version 1.1.0 (2010-02-01)
+      ***************************************************** 
+      Ingeperkte versie t.b.v. STOP versie
+      1.4.1 SE Symbolizer en SE Common geintegreerd in dit schema
+      ***************************************************** 
+      originele schema's:
+      http://schemas.opengis.net/se/1.1.0/FeatureStyle.xsd
+      http://schemas.opengis.net/se/1.1.0/Symbolizer.xsd
+      http://schemas.opengis.net/se/1.1.0/common.xsd 
+      
+      Symbology Encoding is an OGC Standard.
+      Copyright (c) 2005,2010 Open Geospatial Consortium. To obtain additional rights of use, visit
+      http://www.opengeospatial.org/legal/ . </xsd:documentation>
+   </xsd:annotation>
+   <xsd:element name="FeatureTypeStyle" type="se:FeatureTypeStyleType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:FeatureTypeStyle"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="FeatureTypeStyleType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:FeatureTypeStyleType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element minOccurs="0" ref="se:Name"/>
+         <xsd:element minOccurs="0" ref="se:Description"/>
+         <xsd:element minOccurs="0" ref="se:FeatureTypeName"/>
+         <xsd:element minOccurs="0" ref="se:SemanticTypeIdentifier"/>
+         <xsd:element minOccurs="0" maxOccurs="unbounded" ref="se:Rule"/>
+      </xsd:sequence>
+      <xsd:attribute name="version" type="se:VersionType"/>
+   </xsd:complexType>
+   <xsd:element name="SemanticTypeIdentifier" type="xsd:QName">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:SemanticTypeIdentifier"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="Rule" type="se:RuleType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Rule"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="RuleType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:RuleType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element ref="se:Name"/>
+         <xsd:element ref="se:Description"/>
+         <xsd:element minOccurs="0" ref="ogc:Filter"/>
+         <xsd:element maxOccurs="unbounded" ref="se:Symbolizer"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <!-- *********************************************************************** -->
+   <xsd:annotation>
+      <xsd:documentation> SE Symbolizer schema </xsd:documentation>
+   </xsd:annotation>
+   <!-- *********************************************************************** -->
+   <xsd:element abstract="true" name="Symbolizer" type="se:SymbolizerType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Symbolizer"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType abstract="true" name="SymbolizerType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:SymbolizerType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element ref="se:Name"/>
+      </xsd:sequence>
+      <xsd:attribute name="version" type="se:VersionType"/>
+   </xsd:complexType>
+   <!-- *********************************************************************** -->
+   <xsd:annotation>
+      <xsd:documentation> LINE Symbolizer </xsd:documentation>
+   </xsd:annotation>
+   <xsd:element name="LineSymbolizer"
+                substitutionGroup="se:Symbolizer"
+                type="se:LineSymbolizerType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:LineSymbolizer"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="LineSymbolizerType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:LineSymbolizerType"/>
+      </xs:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="se:SymbolizerType">
+            <xsd:sequence>
+               <xsd:element minOccurs="1" ref="se:Stroke"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:element name="Stroke" type="se:StrokeType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Stroke"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="StrokeType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:StrokeType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element maxOccurs="unbounded" ref="se:SvgParameter"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="SvgParameter">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:SvgParameter"/>
+      </xs:annotation>
+      <xsd:complexType mixed="true">
+         <xsd:attribute name="name" type="xsd:string" use="required"/>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="GraphicFill" type="se:GraphicFillType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:GraphicFill"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="GraphicFillType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:GraphicFillType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element ref="se:Graphic"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <!-- *********************************************************************** -->
+   <xsd:annotation>
+      <xsd:documentation> POLYGON Symbolizer </xsd:documentation>
+   </xsd:annotation>
+   <xsd:element name="PolygonSymbolizer"
+                substitutionGroup="se:Symbolizer"
+                type="se:PolygonSymbolizerType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:PolygonSymbolizer"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="PolygonSymbolizerType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:PolygonSymbolizerType"/>
+      </xs:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="se:SymbolizerType">
+            <xsd:sequence>
+               <xsd:element minOccurs="0" ref="se:Fill"/>
+               <xsd:element minOccurs="0" ref="se:Stroke"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:element name="Fill" type="se:FillType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Fill"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="FillType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:FillType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element minOccurs="0" ref="se:GraphicFill"/>
+         <xsd:element maxOccurs="unbounded" minOccurs="0" ref="se:SvgParameter"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <!-- *********************************************************************** -->
+   <xsd:annotation>
+      <xsd:documentation> POINT Symbolizer </xsd:documentation>
+   </xsd:annotation>
+   <xsd:element name="PointSymbolizer"
+                substitutionGroup="se:Symbolizer"
+                type="se:PointSymbolizerType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:PointSymbolizer"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="PointSymbolizerType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:PointSymbolizerType"/>
+      </xs:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="se:SymbolizerType">
+            <xsd:sequence>
+               <xsd:element ref="se:Graphic"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:element name="Graphic" type="se:GraphicType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Graphic"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="GraphicType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:GraphicType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:choice>
+            <xsd:element ref="se:ExternalGraphic"/>
+            <xsd:element ref="se:Mark"/>
+         </xsd:choice>
+         <xsd:element minOccurs="0" ref="se:Size"/>
+         <xsd:element minOccurs="0" ref="se:Rotation"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="Size" type="xsd:decimal">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Size"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="Rotation" type="xsd:decimal">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Rotation"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="ExternalGraphic" type="se:ExternalGraphicType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:ExternalGraphic"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="ExternalGraphicType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:ExternalGraphicType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element ref="se:InlineContent"/>
+         <xsd:element ref="se:Format"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="Format" type="xsd:string">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Format"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="Mark" type="se:MarkType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Mark"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="MarkType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:MarkType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element ref="se:WellKnownName"/>
+         <xsd:element minOccurs="0" ref="se:Fill"/>
+         <xsd:element minOccurs="0" ref="se:Stroke"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="WellKnownName" type="xsd:string">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:WellKnownName"/>
+      </xs:annotation>
+   </xsd:element>
+   <!-- *********************************************************************** -->
+   <xsd:annotation>
+      <xsd:documentation> SE COMMON schema </xsd:documentation>
+   </xsd:annotation>
+   <!-- *********************************************************************** -->
+   <xsd:simpleType name="VersionType">
+      <xsd:annotation>
+         <xsd:documentation> The "VersionType" merely restricts the version string that may be used
+        with XML documents based on this schema. </xsd:documentation>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="1.1.0"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <!-- *********************************************************************** -->
+   <xsd:element name="Name" type="xsd:string">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Name"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:element name="Description" type="se:DescriptionType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Description"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType name="DescriptionType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:DescriptionType"/>
+      </xs:annotation>
+      <xsd:sequence>
+         <xsd:element name="Title" type="xsd:string">
+            <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+               <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Title:DescriptionType"/>
+            </xs:annotation>
+         </xsd:element>
+         <xsd:element minOccurs="0" name="Abstract" type="xsd:string">
+            <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+               <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:Abstract:DescriptionType"/>
+            </xs:annotation>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:complexType>
+   <!-- *********************************************************************** -->
+   <xsd:element name="FeatureTypeName" type="xsd:QName">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:FeatureTypeName"/>
+      </xs:annotation>
+   </xsd:element>
+   <!-- *********************************************************************** -->
+   <xsd:element name="InlineContent" type="se:InlineContentType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:InlineContent"/>
+      </xs:annotation>
+   </xsd:element>
+   <xsd:complexType mixed="true" name="InlineContentType">
+      <xs:annotation xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:se:InlineContentType"/>
+      </xs:annotation>
+      <xsd:attribute name="encoding" use="required">
+         <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="base64"/>
+            </xsd:restriction>
+         </xsd:simpleType>
+      </xsd:attribute>
+   </xsd:complexType>
+</xsd:schema>

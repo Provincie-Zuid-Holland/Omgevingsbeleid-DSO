@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:basisgeo="http://www.geostandaarden.nl/basisgeometrie/1.0"
+           xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/"
+           xmlns:gio="https://standaarden.overheid.nl/stop/imop/gio/"
+           xmlns:gml="http://www.opengis.net/gml/3.2"
+           xmlns:gmlsf="http://www.opengis.net/gmlsf/2.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="https://standaarden.overheid.nl/stop/imop/geo/"
+           version="1.4.1">
+   <xs:annotation>
+      <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/goto.html?to=stop&amp;id=xsd:geo">"GEO-schema" van STOP. </xs:documentation>
+      <xs:documentation>
+			Dit schema definieert de "geo"-elementen voor de
+			STOP-modules
+		</xs:documentation>
+      <xs:documentation>versie 1.4.1</xs:documentation>
+   </xs:annotation>
+   <xs:import namespace="http://www.geostandaarden.nl/basisgeometrie/1.0"
+              schemaLocation="https://register.geostandaarden.nl/gmlapplicatieschema/basisgeometrie/1.0.0/basisgeometrie.xsd"/>
+   <xs:import namespace="http://www.opengis.net/gml/3.2"
+              schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+   <xs:import namespace="http://www.opengis.net/gmlsf/2.0"
+              schemaLocation="http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd"/>
+   <xs:import namespace="https://standaarden.overheid.nl/stop/imop/gio/"
+              schemaLocation="https://standaarden.overheid.nl/stop/1.4.1/imop-gio.xsd"/>
+   <xs:annotation>
+      <xs:appinfo source="http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd">
+         <gmlsf:ComplianceLevel>2</gmlsf:ComplianceLevel>
+      </xs:appinfo>
+   </xs:annotation>
+   <xs:element name="GeoInformatieObjectVaststelling"
+               type="geo:GeoInformatieObjectVaststellingType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:GeoInformatieObjectVaststelling"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="GeoInformatieObjectVaststellingType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:GeoInformatieObjectVaststellingType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element minOccurs="1" name="context">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:context:GeoInformatieObjectVaststellingType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="gio:GeografischeContext"/>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+               <xs:element minOccurs="1" name="vastgesteldeVersie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:vastgesteldeVersie:GeoInformatieObjectVaststellingType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:choice maxOccurs="1" minOccurs="1">
+                        <xs:element maxOccurs="1" minOccurs="1" ref="geo:GeoInformatieObjectVersie"/>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="geo:GeoInformatieObjectMutatie"/>
+                     </xs:choice>
+                  </xs:complexType>
+               </xs:element>
+               <xs:element maxOccurs="1"
+                           minOccurs="0"
+                           name="wasID"
+                           type="geo:dtSTOPidentificatie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:wasID:GeoInformatieObjectVaststellingType"/>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+            <xs:attribute name="schemaversie" type="xs:token" use="required"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="GeoInformatieObjectVersie"
+               type="geo:GeoInformatieObjectVersieType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:GeoInformatieObjectVersie"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="GeoInformatieObjectVersieType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:GeoInformatieObjectVersieType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element maxOccurs="1"
+                           minOccurs="1"
+                           name="FRBRWork"
+                           type="geo:dtSTOPidentificatie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:FRBRWork:GeoInformatieObjectVersieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1"
+                           minOccurs="1"
+                           name="FRBRExpression"
+                           type="geo:dtSTOPidentificatie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:FRBRExpression:GeoInformatieObjectVersieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1"
+                           minOccurs="0"
+                           name="eenheidlabel"
+                           type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:eenheidlabel:GeoInformatieObjectVersieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="0" name="eenheidID" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:eenheidID:GeoInformatieObjectVersieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="0" name="normlabel" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:normlabel:GeoInformatieObjectVersieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="0" name="normID" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:normID:GeoInformatieObjectVersieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element minOccurs="0" maxOccurs="1" name="groepen">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:groepen:GeoInformatieObjectVersieType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="unbounded"
+                                    minOccurs="0"
+                                    name="Groep"
+                                    type="geo:GroepType">
+                           <xs:annotation>
+                              <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:Groep:GeoInformatieObjectVersieType"/>
+                           </xs:annotation>
+                        </xs:element>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+               <xs:element minOccurs="1" name="locaties">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:locaties:GeoInformatieObjectVersieType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="1" ref="geo:Locatie"/>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+            </xs:sequence>
+            <xs:attribute name="schemaversie" type="xs:token" use="optional"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="GeoInformatieObjectMutatie"
+               type="geo:GeoInformatieObjectMutatieType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:GeoInformatieObjectMutatie"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="GeoInformatieObjectMutatieType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:GeoInformatieObjectMutatieType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element maxOccurs="1"
+                           minOccurs="1"
+                           name="FRBRWork"
+                           type="geo:dtSTOPidentificatie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:FRBRWork:GeoInformatieObjectMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1"
+                           minOccurs="1"
+                           name="FRBRExpression"
+                           type="geo:dtSTOPidentificatie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:FRBRExpression:GeoInformatieObjectMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1"
+                           minOccurs="0"
+                           name="eenheidlabel"
+                           type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:eenheidlabel:GeoInformatieObjectMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="0" name="eenheidID" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:eenheidID:GeoInformatieObjectMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="0" name="normlabel" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:normlabel:GeoInformatieObjectMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="0" name="normID" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:normID:GeoInformatieObjectMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element minOccurs="0" name="groepen">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:groepen:GeoInformatieObjectMutatieType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="unbounded"
+                                    minOccurs="0"
+                                    name="Groep"
+                                    type="geo:GroepMutatieType">
+                           <xs:annotation>
+                              <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:Groep:GeoInformatieObjectMutatieType"/>
+                           </xs:annotation>
+                        </xs:element>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+               <xs:element minOccurs="1" name="locatieMutaties">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:locatieMutaties:GeoInformatieObjectMutatieType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="1" ref="geo:LocatieMutatie"/>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+               <xs:element minOccurs="1" name="wijzigmarkeringen">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:wijzigmarkeringen:GeoInformatieObjectMutatieType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:choice maxOccurs="unbounded" minOccurs="1">
+                           <xs:element maxOccurs="1" minOccurs="1" ref="geo:Punt"/>
+                           <xs:element maxOccurs="1" minOccurs="1" ref="geo:Lijn"/>
+                           <xs:element maxOccurs="1" minOccurs="1" ref="geo:Vlak"/>
+                        </xs:choice>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="GroepType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:GroepType"/>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element maxOccurs="1" minOccurs="1" name="groepID" type="geo:dtGroepID">
+            <xs:annotation>
+               <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:groepID:GroepType"/>
+            </xs:annotation>
+         </xs:element>
+         <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string">
+            <xs:annotation>
+               <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:label:GroepType"/>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="GroepMutatieType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:GroepMutatieType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="geo:GroepType">
+            <xs:sequence>
+               <xs:element maxOccurs="1"
+                           minOccurs="0"
+                           name="wijzigactie"
+                           type="geo:wlWijzigactieGroepen">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:wijzigactie:GroepMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Locatie" type="geo:LocatieType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:Locatie"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="LocatieType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:LocatieType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="0" name="locatieId" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:locatieId:LocatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="0" name="naam" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:naam:LocatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element minOccurs="1" name="geometrie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:geometrie:LocatieType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="basisgeo:Geometrie"/>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="0" name="groepID" type="geo:dtGroepID">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:groepID:LocatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1"
+                           minOccurs="0"
+                           name="kwantitatieveNormwaarde"
+                           type="xs:double">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:kwantitatieveNormwaarde:LocatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1"
+                           minOccurs="0"
+                           name="kwalitatieveNormwaarde"
+                           type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:kwalitatieveNormwaarde:LocatieType"/>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="LocatieMutatie" type="geo:LocatieMutatieType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:LocatieMutatie"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="LocatieMutatieType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:LocatieMutatieType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="1" name="locatieId" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:locatieId:LocatieMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="0" name="naam" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:naam:LocatieMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element minOccurs="1" name="geometrie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:geometrie:LocatieMutatieType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="basisgeo:Geometrie"/>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="0" name="groepID" type="geo:dtGroepID">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:groepID:LocatieMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1"
+                           minOccurs="0"
+                           name="kwantitatieveNormwaarde"
+                           type="xs:double">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:kwantitatieveNormwaarde:LocatieMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1"
+                           minOccurs="0"
+                           name="kwalitatieveNormwaarde"
+                           type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:kwalitatieveNormwaarde:LocatieMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1"
+                           minOccurs="1"
+                           name="wijzigactie"
+                           type="geo:wlWijzigactieLocaties">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:wijzigactie:LocatieMutatieType"/>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Punt" type="geo:PuntType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:Punt"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="PuntType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:PuntType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="1" name="geometrie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:geometrie:PuntType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="basisgeo:Geometrie"/>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Lijn" type="geo:LijnType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:Lijn"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="LijnType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:LijnType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="1" name="geometrie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:geometrie:LijnType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="basisgeo:Geometrie"/>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Vlak" type="geo:VlakType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:Vlak"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="VlakType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:VlakType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="1" name="geometrie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:geometrie:VlakType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="basisgeo:Geometrie"/>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Gebiedsmarkering" type="geo:GebiedsmarkeringType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:Gebiedsmarkering"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="GebiedsmarkeringType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:GebiedsmarkeringType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="0" ref="geo:Ambtsgebied"/>
+               <xs:element maxOccurs="unbounded" minOccurs="0" ref="geo:Gebied"/>
+            </xs:sequence>
+            <xs:attribute name="schemaversie" type="xs:token" use="optional"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Effectgebied" type="geo:EffectgebiedType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:Effectgebied"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="EffectgebiedType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:EffectgebiedType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element maxOccurs="unbounded" minOccurs="1" ref="geo:Gebied"/>
+            </xs:sequence>
+            <xs:attribute name="schemaversie" type="xs:token" use="optional"/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Ambtsgebied" type="geo:AmbtsgebiedType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:Ambtsgebied"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="AmbtsgebiedType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:AmbtsgebiedType"/>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element maxOccurs="1"
+                     minOccurs="1"
+                     name="bevoegdGezag"
+                     type="geo:dtWaardeRef">
+            <xs:annotation>
+               <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:bevoegdGezag:AmbtsgebiedType"/>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Gebied" type="geo:GebiedType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:Gebied"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="GebiedType">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:GebiedType"/>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="gml:AbstractFeatureType">
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="0" name="label" type="xs:string">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:label:GebiedType"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element maxOccurs="1" minOccurs="1" name="geometrie">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:geo:geometrie:GebiedType"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:element maxOccurs="1" minOccurs="1" ref="basisgeo:Geometrie"/>
+                     </xs:sequence>
+                  </xs:complexType>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <!-- WAARDELIJSTEN -->
+   <xs:simpleType name="wlWijzigactieGroepen">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="verwijder"/>
+         <xs:enumeration value="voegtoe"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlWijzigactieLocaties">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="verwijder"/>
+         <xs:enumeration value="voegtoe"/>
+         <xs:enumeration value="reviseer"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <!-- EINDE WAARDELIJSTEN -->
+   <!-- DATATYPES -->
+   <xs:simpleType name="dtGroepID">
+      <xs:restriction base="xs:token">
+         <xs:pattern value="[A-Za-z0-9][A-Za-z0-9_-]*"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="dtWaardeRef">
+      <xs:restriction base="xs:anyURI"/>
+   </xs:simpleType>
+   <xs:simpleType name="dtSTOPidentificatie">
+      <xs:restriction base="xs:anyURI">
+         <xs:minLength value="1"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <!-- EINDE DATATYPES -->
+</xs:schema>

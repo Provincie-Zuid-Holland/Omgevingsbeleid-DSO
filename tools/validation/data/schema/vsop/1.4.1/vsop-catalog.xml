@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-aknjoin.sch" uri="imop-aknjoin.sch"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-begripsrelaties.sch" uri="imop-begripsrelaties.sch"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-consolidatie.sch" uri="imop-consolidatie.sch"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-geo.sch" uri="imop-geo.sch"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-metadata.sch" uri="imop-metadata.sch"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-pakbon.sch" uri="imop-pakbon.sch"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-procedure.sch" uri="imop-procedure.sch"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-se.sch" uri="imop-se.sch"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-tekst.sch" uri="imop-tekst.sch"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-tekstmutaties.sch" uri="imop-tekstmutaties.sch"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/geo-Locatie-wId_140_naar_100.xslt" uri="geo-Locatie-wId_140_naar_100.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/identiteit.xslt" uri="identiteit.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-aknjoin.sch.xslt" uri="imop-aknjoin.sch.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-begripsrelaties.sch.xslt" uri="imop-begripsrelaties.sch.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-consolidatie.sch.xslt" uri="imop-consolidatie.sch.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-geo.sch.xslt" uri="imop-geo.sch.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-metadata.sch.xslt" uri="imop-metadata.sch.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-pakbon.sch.xslt" uri="imop-pakbon.sch.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-procedure.sch.xslt" uri="imop-procedure.sch.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-se.sch.xslt" uri="imop-se.sch.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-tekst.sch.xslt" uri="imop-tekst.sch.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-tekstmutaties.sch.xslt" uri="imop-tekstmutaties.sch.xslt"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/procedureverloop_110_naar_140.xslt" uri="procedureverloop_110_naar_140.xslt"/>
+</catalog>

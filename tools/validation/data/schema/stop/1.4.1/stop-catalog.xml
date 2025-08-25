@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-bedrijfsregels.xsd" uri="imop-bedrijfsregels.xsd"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-consolidatie.xsd" uri="imop-consolidatie.xsd"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-data.xsd" uri="imop-data.xsd"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-geo.xsd" uri="imop-geo.xsd"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-gio.xsd" uri="imop-gio.xsd"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-resources.xsd" uri="imop-resources.xsd"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-schemata.xsd" uri="imop-schemata.xsd"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-tekst.xsd" uri="imop-tekst.xsd"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/imop-uitwisseling.xsd" uri="imop-uitwisseling.xsd"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/se-FeatureStyle-imop.xsd" uri="se-FeatureStyle-imop.xsd"/>
+  <uri name="https://standaarden.overheid.nl/stop/1.4.1/se-filter-imop.xsd" uri="se-filter-imop.xsd"/>
+</catalog>

@@ -7,82 +7,77 @@
     
                 <Module>
                     <namespace>http://www.geostandaarden.nl/bestanden-ow/manifest-ow</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/bestanden-ow/generiek/manifest-ow.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/bestanden-ow/generiek/manifest-ow.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/bestanden-ow/generiek/standlevering-generiek.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/bestanden-ow/generiek/standlevering-generiek.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/bestanden/deelbestand</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/bestanden-ow/deelbestand-ow/IMOW_Deelbestand.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/bestanden-ow/deelbestand-ow/IMOW_Deelbestand.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/opobject</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/opobject/IMOW_OPobject.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/opobject/IMOW_OPobject.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/locatie</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/locatie/IMOW_Locatie.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/locatie/IMOW_Locatie.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/datatypenalgemeen</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/datatypenalgemeen/IMOW_DatatypenAlgemeen.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/datatypenalgemeen/IMOW_DatatypenAlgemeen.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/kaart</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/kaart/IMOW_Kaart.xsd</schema>
-                </Module>
-             
-                <Module>
-                    <namespace>http://www.geostandaarden.nl/imow/symbolisatie</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/symbolisatie/IMOW_Symbolisatie.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/kaart/IMOW_Kaart.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/vrijetekst</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/vrijetekst/IMOW_VrijeTekst.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/vrijetekst/IMOW_VrijeTekst.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/pons</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/pons/IMOW_Pons.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/pons/IMOW_Pons.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/regelsoplocatie</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/regelsoplocatie/IMOW_RegelsOpLocatie.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/regelsoplocatie/IMOW_RegelsOpLocatie.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/regels</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/regels/IMOW_Regel.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/regels/IMOW_Regel.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/gebiedsaanwijzing</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/gebiedsaanwijzing/IMOW_Gebiedsaanwijzing.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/gebiedsaanwijzing/IMOW_Gebiedsaanwijzing.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/owobject</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/owobject/IMOW_OWobject.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/owobject/IMOW_OWobject.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.geostandaarden.nl/imow/regelingsgebied</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/IMOW/regelingsgebied/IMOW_RegelingsGebied.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/IMOW/regelingsgebied/IMOW_RegelingsGebied.xsd</schema>
                 </Module>
              
                 <Module>
                     <namespace>http://www.w3.org/1999/xlink</namespace>
-                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v2.0.0/xlink/1.0.0/xlinks.xsd</schema>
+                    <schema>https://register.geostandaarden.nl/xmlschema/tpod/v3.1.0/xlink/1.0.0/xlinks.xsd</schema>
                 </Module>
             
 </Versieoverzicht>

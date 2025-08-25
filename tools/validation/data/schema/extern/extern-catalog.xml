@@ -36,6 +36,8 @@
 
   <uri name="http://schemas.opengis.net/gml/3.1.1/smil/smil20.xsd" uri="opengis/gml/3.1.1/smil/smil20.xsd"/>
   <uri name="http://schemas.opengis.net/gml/3.1.1/smil/smil20-language.xsd" uri="opengis/gml/3.1.1/smil/smil20-language.xsd"/>
+  
+  <uri name="http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd" uri="opengis/gmlsf/2.0/gmlsfLevels.xsd"/>
 
   <uri name="http://schemas.opengis.net/iso/19139/20070417/gco/basicTypes.xsd" uri="opengis/gml/20070417/gco/basicTypes.xsd"/>
   <uri name="http://schemas.opengis.net/iso/19139/20070417/gco/gco.xsd" uri="opengis/gml/20070417/gco/gco.xsd"/>

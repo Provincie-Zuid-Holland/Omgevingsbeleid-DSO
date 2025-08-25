@@ -1,0 +1,2536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tekst="https://standaarden.overheid.nl/stop/imop/tekst/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="https://standaarden.overheid.nl/stop/imop/tekst/"
+           version="1.4.1">
+   <xs:annotation>
+      <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/goto.html?to=stop&amp;id=xsd:tekst">"Tekst-schema" van
+      STOP.</xs:documentation>
+      <xs:documentation>Dit schema definieert de "tekst"-elementen voor de
+      STOP-modules</xs:documentation>
+      <xs:documentation>versie 1.4.1</xs:documentation>
+      <xs:documentation>Documentatie: https://koop.gitlab.io/STOP/standaard/1.4.1/</xs:documentation>
+   </xs:annotation>
+   <!--  ELEMENTEN -->
+   <!-- ROOT REGELINGEN -->
+   <xs:element name="RegelingKlassiek">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:RegelingKlassiek"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="0" ref="tekst:RegelingOpschrift"/>
+            <xs:element minOccurs="0" ref="tekst:Aanhef"/>
+            <xs:element minOccurs="1" ref="tekst:Lichaam"/>
+            <xs:element minOccurs="0" ref="tekst:Sluiting"/>
+            <xs:group ref="tekst:mgBijlagenVoorRegeling"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+         <xs:attributeGroup ref="tekst:agComponentNieuweRegeling"/>
+         <xs:attributeGroup ref="tekst:agVorm"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="RegelingCompact">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:RegelingCompact"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:RegelingOpschrift"/>
+            <xs:element ref="tekst:Lichaam"/>
+            <xs:group ref="tekst:mgBijlagenVoorRegeling"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+         <xs:attributeGroup ref="tekst:agComponentNieuweRegeling"/>
+         <xs:attributeGroup ref="tekst:agVorm"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="RegelingTijdelijkdeel">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:RegelingTijdelijkdeel"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:RegelingOpschrift"/>
+            <xs:element name="Lichaam">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:RegelingTijdelijkdeel:Lichaam"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="tekst:Conditie"/>
+                     <xs:group ref="tekst:mgLichaamStructuurTijdelijkdeel"/>
+                  </xs:sequence>
+                  <xs:attributeGroup ref="tekst:agAKN"/>
+                  <xs:attributeGroup ref="tekst:agAlgemeen"/>
+               </xs:complexType>
+            </xs:element>
+            <xs:group ref="tekst:mgBijlagenVoorRegeling"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+         <xs:attributeGroup ref="tekst:agComponentNieuweRegeling"/>
+         <xs:attributeGroup ref="tekst:agVorm"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="RegelingVrijetekst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:RegelingVrijetekst"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:RegelingOpschrift"/>
+            <xs:element name="Lichaam">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:RegelingVrijetekst:Lichaam"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:choice maxOccurs="unbounded">
+                        <xs:group ref="tekst:mgDivisieStructuur"/>
+                     </xs:choice>
+                  </xs:sequence>
+                  <xs:attributeGroup ref="tekst:agAKN"/>
+                  <xs:attributeGroup ref="tekst:agAlgemeen"/>
+               </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="tekst:Bijlage"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+         <xs:attributeGroup ref="tekst:agComponentNieuweRegeling"/>
+         <xs:attributeGroup ref="tekst:agVorm"/>
+      </xs:complexType>
+   </xs:element>
+   <!-- EINDE ROOT REGELINGEN -->
+   <!-- ROOT BESLUITEN -->
+   <xs:element name="BesluitKlassiek">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:BesluitKlassiek"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="0" ref="tekst:RegelingOpschrift"/>
+            <xs:element ref="tekst:RegelingKlassiek"/>
+            <xs:element minOccurs="0" ref="tekst:Toelichting"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="BesluitCompact">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:BesluitCompact"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:RegelingOpschrift"/>
+            <xs:element minOccurs="0" ref="tekst:Aanhef"/>
+            <xs:element ref="tekst:Lichaam"/>
+            <xs:element minOccurs="0" ref="tekst:Sluiting"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="tekst:WijzigBijlage"/>
+            <xs:group ref="tekst:mgBijlagenVoorBesluit"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <!-- EINDE ROOT BESLUITEN -->
+   <!-- BEGIN ROOT ANDERS -->
+   <xs:element name="Kennisgeving">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Kennisgeving"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:RegelingOpschrift"/>
+            <xs:element name="Lichaam">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Kennisgeving:Lichaam"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element maxOccurs="unbounded" minOccurs="1" ref="tekst:Divisietekst"/>
+                  </xs:sequence>
+                  <xs:attributeGroup ref="tekst:agAKN"/>
+                  <xs:attributeGroup ref="tekst:agAlgemeen"/>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Mededeling">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Mededeling"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:RegelingOpschrift"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="Lichaam">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Mededeling:Lichaam"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:choice maxOccurs="unbounded" minOccurs="0">
+                        <xs:element ref="tekst:Divisie"/>
+                        <xs:element ref="tekst:Divisietekst"/>
+                     </xs:choice>
+                     <xs:element maxOccurs="unbounded" minOccurs="0" ref="tekst:Mededelingtekst"/>
+                  </xs:sequence>
+                  <xs:attributeGroup ref="tekst:agAKN"/>
+                  <xs:attributeGroup ref="tekst:agAlgemeen"/>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Rectificatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Rectificatie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:RegelingOpschrift"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="Lichaam">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Rectificatie:Lichaam"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element maxOccurs="unbounded" minOccurs="1" ref="tekst:Rectificatietekst"/>
+                  </xs:sequence>
+                  <xs:attributeGroup ref="tekst:agAKN"/>
+                  <xs:attributeGroup ref="tekst:agAlgemeen"/>
+               </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" ref="tekst:Sluiting"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Tekstrevisie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Tekstrevisie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="tekst:RegelingMutatie"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="OfficielePublicatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:OfficielePublicatie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="tekst:mgBladen"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <!-- EINDE ROOT -->
+   <!-- PUBLICATIES -->
+   <xs:element name="Staatscourant">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Staatscourant"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:group ref="tekst:mgBlad"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Staatsblad">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Staatsblad"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:group ref="tekst:mgBlad"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Gemeenteblad">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Gemeenteblad"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:group ref="tekst:mgBlad"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Provinciaalblad">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Provinciaalblad"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:group ref="tekst:mgBlad"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Waterschapsblad">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Waterschapsblad"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:group ref="tekst:mgBlad"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="BladGR">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:BladGR"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:group ref="tekst:mgBlad"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Bladaanduiding">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Bladaanduiding"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="2" ref="tekst:Titelregel"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Titelregel">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Titelregel"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <!-- EINDE PUBLICATIES -->
+   <!-- ELEMENTEN FORMEEL -->
+   <xs:element name="Bijlage">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Bijlage"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:Kop"/>
+            <xs:group ref="tekst:mgStatusElementen"/>
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="0" ref="tekst:InleidendeTekst"/>
+               <xs:choice maxOccurs="unbounded" minOccurs="0">
+                  <xs:element ref="tekst:Divisie"/>
+                  <xs:element ref="tekst:Divisietekst"/>
+               </xs:choice>
+            </xs:sequence>
+            <xs:element minOccurs="0" ref="tekst:Sluiting"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Toelichting">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Toelichting"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:Kop"/>
+            <xs:choice>
+               <xs:sequence>
+                  <xs:element maxOccurs="1" minOccurs="0" ref="tekst:InleidendeTekst"/>
+                  <xs:element maxOccurs="1" minOccurs="0" ref="tekst:AlgemeneToelichting"/>
+                  <xs:element maxOccurs="1" minOccurs="0" ref="tekst:ArtikelgewijzeToelichting"/>
+               </xs:sequence>
+               <xs:choice maxOccurs="unbounded" minOccurs="1">
+                  <xs:element ref="tekst:Divisie"/>
+                  <xs:element ref="tekst:Divisietekst"/>
+               </xs:choice>
+            </xs:choice>
+            <xs:element minOccurs="0" ref="tekst:Sluiting"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="tekst:Bijlage"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="AlgemeneToelichting">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:AlgemeneToelichting"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="0" ref="tekst:InleidendeTekst"/>
+               <xs:choice maxOccurs="unbounded" minOccurs="1">
+                  <xs:element ref="tekst:Divisie"/>
+                  <xs:element ref="tekst:Divisietekst"/>
+               </xs:choice>
+            </xs:sequence>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="ArtikelgewijzeToelichting">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:ArtikelgewijzeToelichting"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:choice>
+               <xs:sequence>
+                  <xs:element maxOccurs="1" minOccurs="0" ref="tekst:InleidendeTekst"/>
+                  <xs:choice maxOccurs="unbounded" minOccurs="1">
+                     <xs:element ref="tekst:Divisie"/>
+                     <xs:element ref="tekst:Divisietekst"/>
+                  </xs:choice>
+               </xs:sequence>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Conditie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Conditie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="tekst:Artikel"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Divisietekst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Divisietekst"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:Kop"/>
+            <xs:choice maxOccurs="2" minOccurs="0">
+               <xs:element maxOccurs="1" ref="tekst:Gereserveerd"/>
+               <xs:element maxOccurs="1" ref="tekst:Vervallen"/>
+               <xs:element maxOccurs="1" ref="tekst:NogNietInWerking"/>
+               <xs:element maxOccurs="1" ref="tekst:Inhoud"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Divisie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Divisie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:group ref="tekst:mgStatusElementen"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:InleidendeTekst"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+               <xs:element ref="tekst:Divisie"/>
+               <xs:element ref="tekst:Divisietekst"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="InleidendeTekst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:InleidendeTekst"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:Kop"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="1">
+               <xs:element ref="tekst:Al"/>
+               <xs:element ref="tekst:Lijst"/>
+               <xs:element ref="tekst:Figuur"/>
+               <xs:element ref="tekst:Tussenkop"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Inhoud">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Inhoud"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="1">
+            <xs:group ref="tekst:mgBlocksMinimaal"/>
+            <xs:group ref="tekst:mgBlocksVolledig"/>
+            <xs:element ref="tekst:Kadertekst"/>
+            <xs:element ref="tekst:Begrippenlijst"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Kadertekst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Kadertekst"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:Kop"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="1">
+               <xs:group ref="tekst:mgBlocksMinimaal"/>
+               <xs:group ref="tekst:mgBlocksVolledig"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Gereserveerd">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Gereserveerd"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Vervallen">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Vervallen"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="NogNietInWerking">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:NogNietInWerking"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="WijzigBijlage">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:WijzigBijlage"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="tekst:Kop"/>
+            <xs:choice>
+               <xs:element ref="tekst:RegelingMutatie"/>
+               <xs:group ref="tekst:mgRegelingModellen"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="RegelingMutatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:RegelingMutatie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice>
+            <xs:choice maxOccurs="unbounded">
+               <xs:element ref="tekst:VoegToe"/>
+               <xs:element ref="tekst:Vervang"/>
+               <xs:element ref="tekst:VervangKop"/>
+               <xs:element ref="tekst:Verwijder"/>
+            </xs:choice>
+            <xs:element ref="tekst:VervangRegeling"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agComponentMutatie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="VervangRegeling">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:VervangRegeling"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice>
+            <xs:group ref="tekst:mgRegelingModellen"/>
+         </xs:choice>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="VervangKop">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:VervangKop"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:sequence minOccurs="1">
+               <xs:element minOccurs="0" ref="tekst:Nummer"/>
+               <xs:element minOccurs="0" ref="tekst:Wat"/>
+            </xs:sequence>
+            <xs:element ref="tekst:Kop"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agVervangKop"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Verwijder">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Verwijder"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:sequence>
+               <xs:element minOccurs="0" ref="tekst:Nummer"/>
+               <xs:element minOccurs="0" ref="tekst:Wat"/>
+            </xs:sequence>
+            <xs:choice>
+               <xs:group ref="tekst:mgStructuurRegeling"/>
+               <xs:element ref="tekst:Motivering"/>
+               <xs:element ref="tekst:RegelingOpschrift"/>
+               <xs:element ref="tekst:WijzigArtikel"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agWat"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="VoegToe">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:VoegToe"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:sequence>
+               <xs:element minOccurs="0" ref="tekst:Nummer"/>
+               <xs:element minOccurs="0" ref="tekst:Wat"/>
+            </xs:sequence>
+            <xs:choice>
+               <xs:group ref="tekst:mgStructuurRegelingMulti"/>
+               <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element maxOccurs="unbounded" ref="tekst:Artikel"/>
+                  <xs:element maxOccurs="unbounded" ref="tekst:WijzigArtikel"/>
+               </xs:choice>
+               <xs:element ref="tekst:RegelingOpschrift"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agWijzigLocatie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Vervang">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Vervang"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:sequence>
+               <xs:element minOccurs="0" ref="tekst:Nummer"/>
+               <xs:element minOccurs="0" ref="tekst:Wat"/>
+            </xs:sequence>
+            <xs:choice>
+               <xs:group ref="tekst:mgStructuurRegeling"/>
+               <xs:element name="Lichaam">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Vervang:Lichaam"/>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:sequence>
+                        <xs:group minOccurs="0" ref="tekst:mgStructuurLichaamMulti"/>
+                        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tekst:Artikel"/>
+                        <xs:element minOccurs="0" ref="tekst:Conditie"/>
+                        <xs:element minOccurs="0" ref="tekst:Redactioneel"/>
+                     </xs:sequence>
+                     <xs:attributeGroup ref="tekst:agAKN"/>
+                     <xs:attributeGroup ref="tekst:agAlgemeen"/>
+                  </xs:complexType>
+               </xs:element>
+               <xs:element ref="tekst:RegelingOpschrift"/>
+               <xs:element ref="tekst:WijzigArtikel"/>
+               <xs:element ref="tekst:Conditie"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agVervang"/>
+         <xs:attributeGroup ref="tekst:agVerplaatsing"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Wat">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Wat"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesRegulier"/>
+            <xs:group ref="tekst:mgInlinesSubSup"/>
+            <xs:group ref="tekst:mgInlinesNoten"/>
+            <xs:element ref="tekst:ExtRef"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Rectificatietekst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Rectificatietekst"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:Kop"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+               <xs:element ref="tekst:Al"/>
+               <xs:element ref="tekst:Lijst"/>
+            </xs:choice>
+            <xs:choice maxOccurs="1" minOccurs="0">
+               <xs:element ref="tekst:RegelingMutatie"/>
+               <xs:element ref="tekst:BesluitMutatie"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Mededelingtekst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Mededelingtekst"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:Kop"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+               <xs:element ref="tekst:Al"/>
+               <xs:element ref="tekst:Lijst"/>
+            </xs:choice>
+            <xs:element maxOccurs="1" minOccurs="1" ref="tekst:RegelingMutatie"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="BesluitMutatie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:BesluitMutatie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice maxOccurs="unbounded">
+            <xs:element name="VoegToe">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:BesluitMutatie:VoegToe"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:sequence>
+                        <xs:element minOccurs="0" ref="tekst:Nummer"/>
+                        <xs:element minOccurs="0" ref="tekst:Wat"/>
+                     </xs:sequence>
+                     <xs:choice>
+                        <xs:group ref="tekst:mgStructuurRegelingMulti"/>
+                        <xs:element minOccurs="0" maxOccurs="unbounded" ref="tekst:Artikel"/>
+                        <xs:element ref="tekst:Motivering"/>
+                     </xs:choice>
+                  </xs:sequence>
+                  <xs:attributeGroup ref="tekst:agWijzigLocatie"/>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="Vervang">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:BesluitMutatie:Vervang"/>
+               </xs:annotation>
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:sequence>
+                        <xs:element minOccurs="0" ref="tekst:Nummer"/>
+                        <xs:element minOccurs="0" ref="tekst:Wat"/>
+                     </xs:sequence>
+                     <xs:choice>
+                        <xs:group ref="tekst:mgStructuurRegeling"/>
+                        <xs:element ref="tekst:Motivering"/>
+                        <xs:element ref="tekst:RegelingOpschrift"/>
+                        <xs:element ref="tekst:WijzigArtikel"/>
+                     </xs:choice>
+                  </xs:sequence>
+                  <xs:attributeGroup ref="tekst:agVervang"/>
+                  <xs:attributeGroup ref="tekst:agVerplaatsing"/>
+               </xs:complexType>
+            </xs:element>
+            <xs:element ref="tekst:Verwijder"/>
+            <xs:element ref="tekst:VervangKop"/>
+         </xs:choice>
+         <xs:attribute name="componentnaam" type="tekst:dtComponentnaam" use="required"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Kop">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Kop"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:choice minOccurs="1">
+               <xs:sequence>
+                  <xs:element ref="tekst:Label"/>
+                  <xs:element minOccurs="0" ref="tekst:Nummer"/>
+                  <xs:element minOccurs="0" ref="tekst:Opschrift"/>
+               </xs:sequence>
+               <xs:sequence>
+                  <xs:element ref="tekst:Nummer"/>
+                  <xs:element minOccurs="0" ref="tekst:Label"/>
+                  <xs:element minOccurs="0" ref="tekst:Opschrift"/>
+               </xs:sequence>
+               <xs:element minOccurs="1" ref="tekst:Opschrift"/>
+            </xs:choice>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:Subtitel"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Label">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Label"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element ref="tekst:i"/>
+            <xs:element ref="tekst:b"/>
+            <xs:group ref="tekst:mgInlinesWijzigingen"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Nummer">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Nummer"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element ref="tekst:i"/>
+            <xs:element ref="tekst:b"/>
+            <xs:group ref="tekst:mgInlinesWijzigingen"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Opschrift">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Opschrift"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesKop"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Subtitel">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Subtitel"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesKop"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="RegelingOpschrift">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:RegelingOpschrift"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="tekst:Al"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Aanhef">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Aanhef"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:choice maxOccurs="unbounded" minOccurs="1">
+               <xs:element ref="tekst:Al"/>
+               <xs:element ref="tekst:Lijst"/>
+            </xs:choice>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:Considerans"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:Afkondiging"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Considerans">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Considerans"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:choice maxOccurs="unbounded" minOccurs="1">
+               <xs:element ref="tekst:Al"/>
+               <xs:element ref="tekst:Lijst"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Afkondiging">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Afkondiging"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="1">
+            <xs:element ref="tekst:Al"/>
+            <xs:element ref="tekst:Lijst"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Groep">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Groep"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="1">
+            <xs:group ref="tekst:mgGroepStructuur"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Lijst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Lijst"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="0" ref="tekst:Lijstaanhef"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="1">
+               <xs:element ref="tekst:Li"/>
+            </xs:choice>
+            <xs:element minOccurs="0" ref="tekst:Lijstsluiting"/>
+         </xs:sequence>
+         <xs:attribute name="type" type="tekst:wlTypeLijst" use="required"/>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Lijstaanhef">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Lijstaanhef"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesZonderExtIoRef"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Li">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Li"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="0" ref="tekst:LiNummer"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="1">
+               <xs:element ref="tekst:Al"/>
+               <xs:element ref="tekst:Figuur"/>
+               <xs:element ref="tekst:Formule"/>
+               <xs:element ref="tekst:Lijst"/>
+               <xs:element ref="tekst:table"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="LiNummer">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:LiNummer"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesWijzigingen"/>
+            <xs:group ref="tekst:mgInlinesSubSup"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Lijstsluiting">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Lijstsluiting"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesZonderExtIoRef"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="VerwijderdeTekst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:VerwijderdeTekst"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesRegulier"/>
+            <xs:group ref="tekst:mgInlinesSubSup"/>
+            <xs:group ref="tekst:mgInlinesNoten"/>
+            <xs:group ref="tekst:mgInlinesLinks"/>
+         </xs:choice>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="NieuweTekst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:NieuweTekst"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesRegulier"/>
+            <xs:group ref="tekst:mgInlinesSubSup"/>
+            <xs:group ref="tekst:mgInlinesNoten"/>
+            <xs:group ref="tekst:mgInlinesLinks"/>
+         </xs:choice>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Citaat">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Citaat"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgBlocksMinimaal"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agCitaat"/>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Ondertekening">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Ondertekening"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="1">
+            <xs:element ref="tekst:Al"/>
+            <xs:element ref="tekst:Figuur"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Lichaam">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Lichaam"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="tekst:mgLichaamStructuur"/>
+            <xs:element minOccurs="0" ref="tekst:Redactioneel"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Boek">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Boek"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:group ref="tekst:mgStatusElementen"/>
+            <xs:choice maxOccurs="1" minOccurs="0">
+               <xs:element maxOccurs="unbounded" ref="tekst:Deel"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Hoofdstuk"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Paragraaf"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Afdeling"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Titel"/>
+               <xs:choice maxOccurs="unbounded" minOccurs="0">
+                  <xs:element ref="tekst:Artikel"/>
+                  <xs:element ref="tekst:Redactioneel"/>
+                  <xs:element ref="tekst:WijzigArtikel"/>
+               </xs:choice>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Deel">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Deel"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:group ref="tekst:mgStatusElementen"/>
+            <xs:choice maxOccurs="1" minOccurs="0">
+               <xs:element maxOccurs="unbounded" ref="tekst:Boek"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Hoofdstuk"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Paragraaf"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Afdeling"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Titel"/>
+               <xs:choice maxOccurs="unbounded" minOccurs="0">
+                  <xs:element ref="tekst:Artikel"/>
+                  <xs:element ref="tekst:Redactioneel"/>
+                  <xs:element ref="tekst:WijzigArtikel"/>
+               </xs:choice>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Hoofdstuk">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Hoofdstuk"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:group ref="tekst:mgStatusElementen"/>
+            <xs:choice maxOccurs="1" minOccurs="0">
+               <xs:element maxOccurs="unbounded" ref="tekst:Boek"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Deel"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Paragraaf"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Afdeling"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Titel"/>
+               <xs:choice maxOccurs="unbounded" minOccurs="0">
+                  <xs:element ref="tekst:Artikel"/>
+                  <xs:element ref="tekst:Redactioneel"/>
+                  <xs:element ref="tekst:WijzigArtikel"/>
+               </xs:choice>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Afdeling">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Afdeling"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:group ref="tekst:mgStatusElementen"/>
+            <xs:choice maxOccurs="1" minOccurs="0">
+               <xs:element maxOccurs="unbounded" ref="tekst:Boek"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Deel"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Hoofdstuk"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Paragraaf"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Titel"/>
+               <xs:choice maxOccurs="unbounded" minOccurs="1">
+                  <xs:element ref="tekst:Artikel"/>
+                  <xs:element ref="tekst:Redactioneel"/>
+                  <xs:element ref="tekst:WijzigArtikel"/>
+               </xs:choice>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Titel">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Titel"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:group ref="tekst:mgStatusElementen"/>
+            <xs:choice maxOccurs="1" minOccurs="0">
+               <xs:element maxOccurs="unbounded" ref="tekst:Boek"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Deel"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Hoofdstuk"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Paragraaf"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Afdeling"/>
+               <xs:choice maxOccurs="unbounded" minOccurs="0">
+                  <xs:element ref="tekst:Artikel"/>
+                  <xs:element ref="tekst:Redactioneel"/>
+                  <xs:element ref="tekst:WijzigArtikel"/>
+               </xs:choice>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Paragraaf">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Paragraaf"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:group ref="tekst:mgStatusElementen"/>
+            <xs:choice>
+               <xs:element maxOccurs="unbounded" minOccurs="0" ref="tekst:Subparagraaf"/>
+               <xs:choice maxOccurs="unbounded" minOccurs="0">
+                  <xs:element ref="tekst:Artikel"/>
+                  <xs:element ref="tekst:WijzigArtikel"/>
+                  <xs:element ref="tekst:Redactioneel"/>
+               </xs:choice>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Subparagraaf">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Subparagraaf"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:group ref="tekst:mgStatusElementen"/>
+            <xs:choice maxOccurs="1" minOccurs="0">
+               <xs:element maxOccurs="unbounded" ref="tekst:Subsubparagraaf"/>
+               <xs:choice maxOccurs="unbounded" minOccurs="1">
+                  <xs:element ref="tekst:Artikel"/>
+                  <xs:element ref="tekst:WijzigArtikel"/>
+                  <xs:element ref="tekst:Redactioneel"/>
+               </xs:choice>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Subsubparagraaf">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Subsubparagraaf"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:group ref="tekst:mgStatusElementen"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+               <xs:element ref="tekst:Artikel"/>
+               <xs:element ref="tekst:WijzigArtikel"/>
+               <xs:element ref="tekst:Redactioneel"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Artikel">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Artikel"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="tekst:Kop"/>
+            <xs:choice maxOccurs="2" minOccurs="0">
+               <xs:element maxOccurs="1" ref="tekst:Gereserveerd"/>
+               <xs:element maxOccurs="1" ref="tekst:Vervallen"/>
+               <xs:element maxOccurs="1" ref="tekst:NogNietInWerking"/>
+               <xs:element maxOccurs="1" ref="tekst:Inhoud"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Lid"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agCategorieKlassiek"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Lid">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Lid"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:LidNummer"/>
+            <xs:choice maxOccurs="2">
+               <xs:element maxOccurs="1" ref="tekst:Vervallen"/>
+               <xs:element maxOccurs="1" ref="tekst:NogNietInWerking"/>
+               <xs:element ref="tekst:Inhoud"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="LidNummer">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:LidNummer"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesWijzigingen"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="WijzigArtikel">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:WijzigArtikel"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:Kop"/>
+            <xs:element minOccurs="1" name="Wat" type="tekst:dtWat">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:WijzigArtikel:Wat"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:OpmerkingVersie"/>
+            <xs:choice minOccurs="0">
+               <xs:element maxOccurs="unbounded" ref="tekst:WijzigLid"/>
+               <xs:element maxOccurs="1" ref="tekst:WijzigInstructies"/>
+               <xs:element maxOccurs="1" ref="tekst:RegelingMutatie"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="WijzigLid">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:WijzigLid"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="1" ref="tekst:LidNummer"/>
+            <xs:choice>
+               <xs:element minOccurs="0" name="Wat" type="tekst:dtWat">
+                  <xs:annotation>
+                     <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:WijzigLid:Wat"/>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element ref="tekst:WijzigInstructies"/>
+               <xs:element ref="tekst:RegelingMutatie"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="WijzigInstructies">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:WijzigInstructies"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" name="Wat" type="tekst:dtWat">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:WijzigInstructies:Wat"/>
+               </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="tekst:Instructie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Instructie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Instructie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:Nummer"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="Wat">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Instructie:Wat"/>
+               </xs:annotation>
+               <xs:complexType mixed="true">
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
+                     <xs:group ref="tekst:mgInlinesRegulier"/>
+                     <xs:group ref="tekst:mgInlinesSubSup"/>
+                     <xs:group ref="tekst:mgInlinesNoten"/>
+                     <xs:element ref="tekst:ExtRef"/>
+                     <xs:element ref="tekst:IntRef"/>
+                  </xs:choice>
+               </xs:complexType>
+            </xs:element>
+            <xs:choice maxOccurs="1" minOccurs="0">
+               <xs:group ref="tekst:mgInstructieStructuur"/>
+            </xs:choice>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:complexType name="dtWat" mixed="true">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:dtWat"/>
+      </xs:annotation>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+         <xs:group ref="tekst:mgInlinesRegulier"/>
+         <xs:group ref="tekst:mgInlinesSubSup"/>
+         <xs:group ref="tekst:mgInlinesNoten"/>
+         <xs:element ref="tekst:IntRef"/>
+         <xs:element ref="tekst:ExtRef"/>
+      </xs:choice>
+      <xs:attributeGroup ref="tekst:agAlgemeen"/>
+   </xs:complexType>
+   <xs:element name="OpmerkingVersie" type="xs:string">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:OpmerkingVersie"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="Redactioneel">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Redactioneel"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="tekst:Al"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Sluiting">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Sluiting"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="1">
+            <xs:element ref="tekst:Groep"/>
+            <xs:element ref="tekst:Al"/>
+            <xs:element ref="tekst:Slotformulering"/>
+            <xs:element ref="tekst:Dagtekening"/>
+            <xs:element ref="tekst:Ondertekening"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Slotformulering">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Slotformulering"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="1">
+            <xs:element ref="tekst:Al"/>
+            <xs:element ref="tekst:Lijst"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Dagtekening">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Dagtekening"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" ref="tekst:Al"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Motivering">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Motivering"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:Kop"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="1">
+               <xs:element ref="tekst:Divisie"/>
+               <xs:element ref="tekst:Divisietekst"/>
+            </xs:choice>
+            <xs:element minOccurs="0" ref="tekst:Sluiting"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="tekst:Bijlage"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactieStructuur"/>
+         <xs:attributeGroup ref="tekst:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <!-- EINDE ELEMENTEN FORMEEL -->
+   <!-- TABLE CALS -->
+   <xs:element name="table">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:table"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" ref="tekst:title"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:tgroup"/>
+            <xs:element minOccurs="0" ref="tekst:Bron"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agTable"/>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Bron">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Bron"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesZonderExtIoRef"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="tgroup">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:tgroup"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="tekst:colspec"/>
+            <xs:element minOccurs="0" ref="tekst:thead"/>
+            <xs:element ref="tekst:tbody"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agTableGroup"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="thead">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:thead"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="tekst:row"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agTableHead"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="tbody">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:tbody"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="tekst:row"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agTableBody"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="title">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:title"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesKop"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="colspec">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:colspec"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:attributeGroup ref="tekst:agColspec"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="row">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:row"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="tekst:entry"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agTableRow"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="entry">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:entry"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgBlocksMinimaal"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agTableEntry"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+      </xs:complexType>
+   </xs:element>
+   <!-- EINDE TABLE CALS -->
+   <!-- TEKST CONTAINERS -->
+   <xs:element name="Al">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Al"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesCompleet"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Begrippenlijst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Begrippenlijst"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="tekst:Begrip"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Begrip">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Begrip"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="0" ref="tekst:LiNummer"/>
+            <xs:element ref="tekst:Term"/>
+            <xs:element ref="tekst:Definitie"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Term">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Term"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesRegulier"/>
+            <xs:group ref="tekst:mgInlinesSubSup"/>
+            <xs:group ref="tekst:mgInlinesNoten"/>
+            <xs:group ref="tekst:mgInlinesWijzigingen"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Definitie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Definitie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:choice maxOccurs="unbounded">
+            <xs:element ref="tekst:Al"/>
+            <xs:element ref="tekst:Lijst"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Figuur">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Figuur"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element minOccurs="0" name="Titel">
+               <xs:annotation>
+                  <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Figuur:Titel"/>
+               </xs:annotation>
+               <xs:complexType mixed="true">
+                  <xs:choice maxOccurs="unbounded" minOccurs="0">
+                     <xs:group ref="tekst:mgInlinesKop"/>
+                  </xs:choice>
+                  <xs:attributeGroup ref="tekst:agWijzigactie"/>
+                  <xs:attributeGroup ref="tekst:agAlgemeen"/>
+               </xs:complexType>
+            </xs:element>
+            <xs:element ref="tekst:Illustratie"/>
+            <xs:element minOccurs="0" ref="tekst:Bijschrift"/>
+            <xs:element minOccurs="0" ref="tekst:Bron"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Formule">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Formule"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:sequence>
+               <xs:element ref="tekst:Illustratie"/>
+               <xs:element minOccurs="0" ref="tekst:Bijschrift"/>
+               <xs:element minOccurs="0" ref="tekst:Bron"/>
+            </xs:sequence>
+         </xs:sequence>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="InlineTekstAfbeelding">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:InlineTekstAfbeelding"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:attributeGroup ref="tekst:agInlineTekstAfbeelding"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Illustratie">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Illustratie"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:attributeGroup ref="tekst:agIllustratie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Bijschrift">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Bijschrift"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesZonderExtIoRef"/>
+         </xs:choice>
+         <xs:attribute name="locatie" type="tekst:wlPositieBijschrift" use="required"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Tussenkop">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Tussenkop"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesKop"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <!-- EINDE TEKST CONTAINERS -->
+   <!-- INLINES -->
+   <xs:element name="i">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:i"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element ref="tekst:b"/>
+            <xs:element ref="tekst:u"/>
+            <xs:element ref="tekst:strong"/>
+            <xs:group ref="tekst:mgInlinesInNadruk"/>
+         </xs:choice>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="b">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:b"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element ref="tekst:i"/>
+            <xs:element ref="tekst:u"/>
+            <xs:element ref="tekst:strong"/>
+            <xs:group ref="tekst:mgInlinesInNadruk"/>
+         </xs:choice>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="u">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:u"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element ref="tekst:b"/>
+            <xs:element ref="tekst:i"/>
+            <xs:element ref="tekst:strong"/>
+            <xs:group ref="tekst:mgInlinesInNadruk"/>
+         </xs:choice>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="strong">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:strong"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element ref="tekst:b"/>
+            <xs:element ref="tekst:u"/>
+            <xs:element ref="tekst:i"/>
+            <xs:group ref="tekst:mgInlinesInNadruk"/>
+         </xs:choice>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="sup" type="xs:string">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:sup"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="sub" type="xs:string">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:sub"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="abbr">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:abbr"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:attribute name="title" type="xs:string"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="ExtRef">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:ExtRef"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesVoorLinks"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agExtrefRefSoort"/>
+         <xs:attributeGroup ref="tekst:agDoelReferentie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attribute name="scope" type="tekst:dtScope" use="optional"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Noot">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Noot"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="tekst:NootNummer"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="1">
+               <xs:element ref="tekst:Al"/>
+               <xs:element ref="tekst:Lijst"/>
+            </xs:choice>
+         </xs:sequence>
+         <xs:attribute name="type" type="tekst:wlTypeNoot" use="required"/>
+         <xs:attribute name="id" type="xs:NMTOKEN" use="required"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="NootNummer" type="tekst:dtNootNummerLengte">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:NootNummer"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="Nootref">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Nootref"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:attribute name="refid" type="xs:NMTOKEN" use="required"/>
+         <xs:attributeGroup ref="tekst:agWijzigactie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="IntRef">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:IntRef"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesVoorLinks"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agDoelReferentie"/>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attribute name="scope" type="tekst:dtScope" use="optional"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="ExtIoRef">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:ExtIoRef"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:simpleContent>
+            <xs:extension base="xs:string">
+               <xs:attributeGroup ref="tekst:agAKN"/>
+               <xs:attributeGroup ref="tekst:agDoelReferentie"/>
+               <xs:attributeGroup ref="tekst:agAlgemeen"/>
+            </xs:extension>
+         </xs:simpleContent>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="IntIoRef">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:IntIoRef"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:group ref="tekst:mgInlinesVoorLinks"/>
+         </xs:choice>
+         <xs:attributeGroup ref="tekst:agAlgemeen"/>
+         <xs:attributeGroup ref="tekst:agAKN"/>
+         <xs:attributeGroup ref="tekst:agDoelReferentie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="br">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:br"/>
+      </xs:annotation>
+      <xs:complexType/>
+   </xs:element>
+   <xs:element name="Contact">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Contact"/>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+         <xs:attributeGroup ref="tekst:agContactgegevens"/>
+      </xs:complexType>
+   </xs:element>
+   <!-- EINDE INLINES -->
+   <!-- EINDE ELEMENTEN -->
+   <!-- GROEPEN -->
+   <!-- GROEPEN VOOR ROOT CONSTRUCTIES -->
+   <xs:group name="mgRegelingModellen">
+      <xs:choice>
+         <xs:element ref="tekst:RegelingCompact"/>
+         <xs:element ref="tekst:RegelingTijdelijkdeel"/>
+         <xs:element ref="tekst:RegelingVrijetekst"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgBijlagenVoorRegeling">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" ref="tekst:Bijlage"/>
+         <xs:choice maxOccurs="1" minOccurs="0">
+            <xs:element ref="tekst:Toelichting"/>
+            <xs:element ref="tekst:ArtikelgewijzeToelichting"/>
+         </xs:choice>
+      </xs:sequence>
+   </xs:group>
+   <xs:group name="mgBijlagenVoorBesluit">
+      <xs:sequence>
+         <xs:element maxOccurs="unbounded" minOccurs="0" ref="tekst:Bijlage"/>
+         <xs:element minOccurs="0" ref="tekst:Toelichting"/>
+         <xs:element minOccurs="0" ref="tekst:Motivering"/>
+      </xs:sequence>
+   </xs:group>
+   <xs:group name="mgLichaamStructuurTijdelijkdeel">
+      <xs:sequence>
+         <xs:choice minOccurs="1">
+            <xs:element maxOccurs="unbounded" ref="tekst:Deel"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:Hoofdstuk"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:Paragraaf"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:Afdeling"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:Titel"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:Artikel"/>
+         </xs:choice>
+      </xs:sequence>
+   </xs:group>
+   <xs:group name="mgLichaamStructuur">
+      <xs:sequence>
+         <xs:choice minOccurs="1">
+            <xs:element maxOccurs="unbounded" ref="tekst:Boek"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:Deel"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:Hoofdstuk"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:Paragraaf"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:Afdeling"/>
+            <xs:element maxOccurs="unbounded" ref="tekst:Titel"/>
+            <xs:choice maxOccurs="unbounded">
+               <xs:element maxOccurs="unbounded" ref="tekst:WijzigArtikel"/>
+               <xs:element maxOccurs="unbounded" ref="tekst:Artikel"/>
+            </xs:choice>
+         </xs:choice>
+      </xs:sequence>
+   </xs:group>
+   <xs:group name="mgDivisieStructuur">
+      <xs:choice>
+         <xs:element ref="tekst:Divisie"/>
+         <xs:element ref="tekst:Divisietekst"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgInstructieStructuur">
+      <xs:choice>
+         <xs:element ref="tekst:Boek"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Deel"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Hoofdstuk"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Paragraaf"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Afdeling"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Titel"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Artikel"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:WijzigArtikel"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Divisie"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Divisietekst"/>
+         <xs:element ref="tekst:Inhoud"/>
+         <xs:element ref="tekst:Bijlage"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Lid"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgStatusElementen">
+      <xs:sequence>
+         <xs:choice maxOccurs="1" minOccurs="0">
+            <xs:element maxOccurs="1" ref="tekst:Gereserveerd"/>
+            <xs:element maxOccurs="1" ref="tekst:Vervallen"/>
+            <xs:element maxOccurs="1" ref="tekst:NogNietInWerking"/>
+         </xs:choice>
+      </xs:sequence>
+   </xs:group>
+   <xs:group name="mgBladen">
+      <xs:sequence>
+         <xs:choice maxOccurs="1">
+            <xs:element ref="tekst:Staatscourant"/>
+            <xs:element ref="tekst:Staatsblad"/>
+            <xs:element ref="tekst:Gemeenteblad"/>
+            <xs:element ref="tekst:Provinciaalblad"/>
+            <xs:element ref="tekst:Waterschapsblad"/>
+            <xs:element ref="tekst:BladGR"/>
+         </xs:choice>
+      </xs:sequence>
+   </xs:group>
+   <xs:group name="mgBlad">
+      <xs:sequence>
+         <xs:element ref="tekst:Bladaanduiding"/>
+         <xs:choice maxOccurs="1">
+            <xs:element ref="tekst:BesluitCompact"/>
+            <xs:element ref="tekst:BesluitKlassiek"/>
+            <xs:element ref="tekst:Kennisgeving"/>
+            <xs:element ref="tekst:Rectificatie"/>
+            <xs:element ref="tekst:Mededeling"/>
+         </xs:choice>
+      </xs:sequence>
+   </xs:group>
+   <!-- Inline basis groepen -->
+   <xs:group name="mgInlinesReferenties">
+      <xs:choice>
+         <xs:element ref="tekst:ExtRef"/>
+         <xs:element ref="tekst:IntRef"/>
+         <xs:element ref="tekst:IntIoRef"/>
+         <xs:element ref="tekst:Contact"/>
+         <xs:element ref="tekst:abbr"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgInlinesWijzigingen">
+      <xs:choice>
+         <xs:element ref="tekst:VerwijderdeTekst"/>
+         <xs:element ref="tekst:NieuweTekst"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgInlinesSubSup">
+      <xs:choice>
+         <xs:element ref="tekst:sub"/>
+         <xs:element ref="tekst:sup"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgInlinesRegulier">
+      <xs:choice>
+         <xs:element ref="tekst:i"/>
+         <xs:element ref="tekst:b"/>
+         <xs:element ref="tekst:u"/>
+         <xs:element ref="tekst:strong"/>
+         <xs:element ref="tekst:br"/>
+         <xs:element ref="tekst:InlineTekstAfbeelding"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgInlinesNoten">
+      <xs:choice>
+         <xs:element ref="tekst:Nootref"/>
+         <xs:element ref="tekst:Noot"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgInlinesLinks">
+      <xs:choice>
+         <xs:element ref="tekst:ExtRef"/>
+         <xs:element ref="tekst:IntRef"/>
+         <xs:element ref="tekst:IntIoRef"/>
+         <xs:element ref="tekst:ExtIoRef"/>
+         <xs:element ref="tekst:Contact"/>
+         <xs:element ref="tekst:abbr"/>
+      </xs:choice>
+   </xs:group>
+   <!-- inline combinatie groepen -->
+   <xs:group name="mgInlinesCompleet">
+      <xs:choice>
+         <xs:group ref="tekst:mgInlinesRegulier"/>
+         <xs:group ref="tekst:mgInlinesSubSup"/>
+         <xs:group ref="tekst:mgInlinesNoten"/>
+         <xs:group ref="tekst:mgInlinesWijzigingen"/>
+         <xs:group ref="tekst:mgInlinesLinks"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgInlinesZonderExtIoRef">
+      <xs:choice>
+         <xs:group ref="tekst:mgInlinesRegulier"/>
+         <xs:group ref="tekst:mgInlinesSubSup"/>
+         <xs:group ref="tekst:mgInlinesNoten"/>
+         <xs:group ref="tekst:mgInlinesWijzigingen"/>
+         <xs:group ref="tekst:mgInlinesReferenties"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgInlinesInNadruk">
+      <xs:choice>
+         <xs:group ref="tekst:mgInlinesSubSup"/>
+         <xs:group ref="tekst:mgInlinesNoten"/>
+         <xs:group ref="tekst:mgInlinesWijzigingen"/>
+         <xs:group ref="tekst:mgInlinesLinks"/>
+         <xs:element ref="tekst:br"/>
+         <xs:element ref="tekst:InlineTekstAfbeelding"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgInlinesKop">
+      <xs:choice>
+         <xs:group ref="tekst:mgInlinesSubSup"/>
+         <xs:group ref="tekst:mgInlinesNoten"/>
+         <xs:group ref="tekst:mgInlinesWijzigingen"/>
+         <xs:element ref="tekst:i"/>
+         <xs:element ref="tekst:b"/>
+         <xs:element ref="tekst:br"/>
+         <xs:element ref="tekst:InlineTekstAfbeelding"/>
+         <xs:element ref="tekst:IntRef"/>
+         <xs:element ref="tekst:ExtRef"/>
+         <!-- ontraden, zie STOP0097 -->
+         <xs:element ref="tekst:strong"/>
+         <xs:element ref="tekst:u"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgInlinesVoorLinks">
+      <xs:choice>
+         <xs:group ref="tekst:mgInlinesSubSup"/>
+         <xs:element ref="tekst:i"/>
+         <xs:element ref="tekst:b"/>
+         <xs:element ref="tekst:abbr"/>
+         <xs:element ref="tekst:InlineTekstAfbeelding"/>
+         <xs:group ref="tekst:mgInlinesWijzigingen"/>
+      </xs:choice>
+   </xs:group>
+   <!-- groepen van blokteksten -->
+   <xs:group name="mgGroepStructuur">
+      <xs:choice>
+         <xs:element ref="tekst:Al"/>
+         <xs:element ref="tekst:Lijst"/>
+         <xs:element ref="tekst:Figuur"/>
+         <xs:element ref="tekst:Formule"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgBlocksMinimaal">
+      <xs:choice>
+         <xs:element ref="tekst:Al"/>
+         <xs:element ref="tekst:Groep"/>
+         <xs:element ref="tekst:Lijst"/>
+         <xs:element ref="tekst:Figuur"/>
+         <xs:element ref="tekst:Tussenkop"/>
+         <xs:element ref="tekst:Formule"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgBlocksVolledig">
+      <xs:choice>
+         <xs:element ref="tekst:Citaat"/>
+         <xs:element ref="tekst:table"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgStructuurRegeling">
+      <xs:choice>
+         <xs:element ref="tekst:Aanhef"/>
+         <xs:element ref="tekst:Sluiting"/>
+         <xs:element ref="tekst:Bijlage"/>
+         <xs:element ref="tekst:Toelichting"/>
+         <xs:element ref="tekst:AlgemeneToelichting"/>
+         <xs:element ref="tekst:ArtikelgewijzeToelichting"/>
+         <xs:group ref="tekst:mgStructuurLichaam"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgStructuurLichaam">
+      <xs:choice>
+         <xs:element ref="tekst:Afdeling"/>
+         <xs:element ref="tekst:Artikel"/>
+         <xs:element ref="tekst:Boek"/>
+         <xs:element ref="tekst:Deel"/>
+         <xs:element ref="tekst:Hoofdstuk"/>
+         <xs:element ref="tekst:Paragraaf"/>
+         <xs:element ref="tekst:Subparagraaf"/>
+         <xs:element ref="tekst:Subsubparagraaf"/>
+         <xs:element ref="tekst:Titel"/>
+         <xs:element ref="tekst:Divisie"/>
+         <xs:element ref="tekst:Divisietekst"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgStructuurRegelingMulti">
+      <xs:choice>
+         <xs:element ref="tekst:Aanhef"/>
+         <xs:element ref="tekst:Sluiting"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Bijlage"/>
+         <xs:element ref="tekst:Toelichting"/>
+         <xs:element ref="tekst:AlgemeneToelichting"/>
+         <xs:element ref="tekst:ArtikelgewijzeToelichting"/>
+         <xs:group ref="tekst:mgStructuurLichaamMulti"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgStructuurLichaamMulti">
+      <xs:choice>
+         <xs:element maxOccurs="unbounded" ref="tekst:Afdeling"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Boek"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Deel"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Hoofdstuk"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Paragraaf"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Subparagraaf"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Subsubparagraaf"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Titel"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Divisie"/>
+         <xs:element maxOccurs="unbounded" ref="tekst:Divisietekst"/>
+      </xs:choice>
+   </xs:group>
+   <xs:group name="mgMededelingen">
+      <xs:sequence>
+         <xs:element ref="tekst:RegelingOpschrift"/>
+         <xs:element name="Lichaam">
+            <xs:annotation>
+               <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:tekst:Lichaam"/>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence maxOccurs="unbounded">
+                  <xs:element ref="tekst:Divisietekst"/>
+               </xs:sequence>
+               <xs:attributeGroup ref="tekst:agAKN"/>
+               <xs:attributeGroup ref="tekst:agAlgemeen"/>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:group>
+   <!-- EINDE GROEPEN -->
+   <!-- ATTRIBUTEN -->
+   <xs:attributeGroup name="agAlgemeen">
+      <xs:anyAttribute namespace="##other" processContents="lax"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agSchemaVersie">
+      <xs:attribute name="schemaversie" type="tekst:dtSchemaVersie" use="optional"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agAKN">
+      <xs:attribute name="wId" type="tekst:dtWID" use="required"/>
+      <xs:attribute name="eId" type="tekst:dtEID" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agComponentMutatie">
+      <xs:attribute name="componentnaam" type="tekst:dtComponentnaam" use="required"/>
+      <xs:attribute name="was" type="tekst:dtSTOPidentificatie" use="required"/>
+      <xs:attribute name="wordt" type="tekst:dtSTOPidentificatie" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agComponentNieuweRegeling">
+      <xs:attribute name="wordt" type="tekst:dtSTOPidentificatie" use="optional"/>
+      <xs:attribute name="componentnaam" type="tekst:dtComponentnaam" use="optional"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agVorm">
+      <xs:attribute name="vorm" type="tekst:wlVorm" use="optional"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agWijzigactie">
+      <xs:attribute name="wijzigactie" type="tekst:wlWijzigactieMutatie" use="optional"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agWijzigactieStructuur">
+      <xs:attribute name="wijzigactie"
+                    type="tekst:wlWijzigactieStructuur"
+                    use="optional"/>
+      <xs:attribute name="eId-wijzigactie" type="tekst:dtEID" use="optional"/>
+      <xs:attribute name="tekst-wijzigactie" type="xs:string" use="optional"/>
+      <xs:attribute name="vanParentWid" type="tekst:dtWID" use="optional"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agCategorieKlassiek">
+      <xs:attribute name="categorieKlassiek" type="tekst:dtWaardeRef" use="optional"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agExtrefRefSoort">
+      <xs:attribute name="soort" type="tekst:wlSoortExtrefNotatie" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agCitaat">
+      <xs:attribute name="bron"/>
+      <xs:attribute name="url"/>
+      <xs:attribute name="auteur"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agDoelReferentie">
+      <xs:attribute name="ref" type="xs:anyURI" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agIllustratie">
+      <xs:attribute name="naam" use="required"/>
+      <xs:attribute name="breedte" type="xs:positiveInteger" use="required"/>
+      <xs:attribute name="hoogte" type="xs:positiveInteger" use="required"/>
+      <xs:attribute name="schaal"/>
+      <xs:attribute name="uitlijning"
+                    type="tekst:wlUitlijningIllustratie"
+                    use="required"/>
+      <xs:attribute name="kleur" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="formaat" type="tekst:wlFormaatIllustratie" use="required"/>
+      <xs:attribute name="alt"/>
+      <xs:attribute name="dpi" type="xs:positiveInteger" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agInlineTekstAfbeelding">
+      <xs:attribute name="naam" use="required"/>
+      <xs:attribute name="breedte" type="xs:positiveInteger" use="required"/>
+      <xs:attribute name="hoogte" type="xs:positiveInteger" use="required"/>
+      <xs:attribute name="schaal"/>
+      <xs:attribute name="kleur" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="formaat" type="tekst:wlFormaatIllustratie" use="required"/>
+      <xs:attribute name="alt"/>
+      <xs:attribute name="dpi" type="xs:positiveInteger" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agWat">
+      <xs:attribute name="wat" type="tekst:dtWID" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agVervangKop">
+      <xs:attributeGroup ref="tekst:agWat"/>
+      <xs:attribute name="eId-wordt" type="tekst:dtEID" use="optional"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agVervang">
+      <xs:attributeGroup ref="tekst:agWat"/>
+      <xs:attribute name="revisie" type="tekst:wlRevisie" use="optional"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agWijzigLocatie">
+      <xs:attribute name="positie" type="tekst:wlPositieWijziging" use="required"/>
+      <xs:attribute name="context" type="tekst:dtWID" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agVerplaatsing">
+      <xs:attribute name="positie" type="tekst:wlPositieWijziging" use="optional"/>
+      <xs:attribute name="context" type="tekst:dtWID" use="optional"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agContactgegevens">
+      <xs:attribute name="adres" type="xs:string" use="required"/>
+      <xs:attribute name="soort" type="tekst:wlSoortContact" use="required"/>
+   </xs:attributeGroup>
+   <!-- ATTRIBUTEN CALS TABLE -->
+   <xs:attributeGroup name="agTable">
+      <xs:attribute name="frame" type="tekst:wlTableFrame"/>
+      <xs:attribute name="colsep" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="rowsep" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="pgwide" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="tabstyle" type="xs:NMTOKEN"/>
+      <xs:attribute name="orient" type="tekst:wlTableOrientatie"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agTableGroup">
+      <xs:attribute name="cols" type="xs:positiveInteger" use="required"/>
+      <xs:attribute name="colsep" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="rowsep" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="char"/>
+      <xs:attribute name="charoff" type="xs:positiveInteger"/>
+      <xs:attribute name="align" type="tekst:wlTableAlignHorizontal" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agTableHead">
+      <xs:attribute name="valign" type="tekst:wlTableAlignVertical" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agTableBody">
+      <xs:attribute name="valign" type="tekst:wlTableAlignVertical" use="required"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agColspec">
+      <xs:attribute name="colname" type="xs:NMTOKEN"/>
+      <xs:attribute name="colnum" type="xs:positiveInteger"/>
+      <xs:attribute name="colsep" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="rowsep" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="colwidth" type="tekst:dtColWidth"/>
+      <xs:attribute name="align" type="tekst:wlTableAlignHorizontal"/>
+      <xs:attribute name="char"/>
+      <xs:attribute name="charoff" type="xs:positiveInteger"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agTableRow">
+      <xs:attribute name="rowsep" type="xs:NMTOKEN"/>
+      <xs:attribute name="valign" type="tekst:wlTableAlignVertical"/>
+   </xs:attributeGroup>
+   <xs:attributeGroup name="agTableEntry">
+      <xs:attribute name="colname" type="xs:NMTOKEN"/>
+      <xs:attribute name="namest" type="xs:NMTOKEN"/>
+      <xs:attribute name="nameend" type="xs:NMTOKEN"/>
+      <xs:attribute name="morerows" type="xs:positiveInteger"/>
+      <xs:attribute name="colsep" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="rowsep" type="tekst:dtNulOfEen"/>
+      <xs:attribute name="align" type="tekst:wlTableAlignHorizontal"/>
+      <xs:attribute name="char" type="xs:string"/>
+      <xs:attribute name="charoff" type="xs:positiveInteger"/>
+      <xs:attribute name="valign" type="tekst:wlTableAlignVertical"/>
+      <xs:attribute name="rotate" type="tekst:dtNulOfEen"/>
+   </xs:attributeGroup>
+   <!-- EINDE ATTRIBUTEN CALS TABLE -->
+   <!-- EINDE ATTRIBUTEN -->
+   <!-- WAARDELIJSTEN -->
+   <xs:simpleType name="wlPositieWijziging">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="volgtOp"/>
+         <xs:enumeration value="komtVoor"/>
+         <xs:enumeration value="eersteKind"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlFormaatIllustratie">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="image/jpeg"/>
+         <xs:enumeration value="image/png"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlUitlijningIllustratie">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="start"/>
+         <xs:enumeration value="end"/>
+         <xs:enumeration value="center"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlTableFrame">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="top"/>
+         <xs:enumeration value="bottom"/>
+         <xs:enumeration value="topbot"/>
+         <xs:enumeration value="all"/>
+         <xs:enumeration value="sides"/>
+         <xs:enumeration value="none"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlTableAlignHorizontal">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="left"/>
+         <xs:enumeration value="right"/>
+         <xs:enumeration value="center"/>
+         <xs:enumeration value="justify"/>
+         <xs:enumeration value="char"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlTableAlignVertical">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="top"/>
+         <xs:enumeration value="middle"/>
+         <xs:enumeration value="bottom"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlVorm">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="regelingversie"/>
+         <xs:enumeration value="proefversie"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlWijzigactieMutatie">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="verwijder"/>
+         <xs:enumeration value="voegtoe"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlWijzigactieStructuur">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="verwijder"/>
+         <xs:enumeration value="voegtoe"/>
+         <xs:enumeration value="verplaatstNaar"/>
+         <xs:enumeration value="verplaatstVan"/>
+         <xs:enumeration value="verplaatstBinnen"/>
+         <xs:enumeration value="nieuweContainer"/>
+         <xs:enumeration value="verwijderContainer"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlSoortExtrefNotatie">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="URL"/>
+         <xs:enumeration value="AKN"/>
+         <xs:enumeration value="JOIN"/>
+         <xs:enumeration value="JCI"/>
+         <xs:enumeration value="document"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlTypeLijst">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="expliciet"/>
+         <xs:enumeration value="ongemarkeerd"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlTypeNoot">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="voet"/>
+         <xs:enumeration value="tabel"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlPositieBijschrift">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="boven"/>
+         <xs:enumeration value="onder"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlTableOrientatie">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="land"/>
+         <xs:enumeration value="port"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlSoortContact">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="e-mail"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="wlRevisie">
+      <xs:restriction base="xs:nonNegativeInteger">
+         <xs:enumeration value="0"/>
+         <xs:enumeration value="1"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <!-- EINDE WAARDELIJSTEN -->
+   <!-- DATATYPES -->
+   <xs:simpleType name="dtSchemaVersie">
+      <xs:restriction base="xs:token"/>
+   </xs:simpleType>
+   <xs:simpleType name="dtComponentnaam">
+      <xs:restriction base="xs:string">
+         <xs:pattern value="[0-9A-z_]+"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="dtScope">
+      <xs:restriction base="xs:token">
+         <xs:pattern value="[0-9A-z_\-\.]+"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="dtNulOfEen">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="0"/>
+         <xs:enumeration value="1"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="dtNootNummerLengte">
+      <xs:restriction base="xs:string">
+         <xs:minLength value="1"/>
+         <xs:maxLength value="20"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="dtColWidth">
+      <xs:restriction base="xs:string">
+         <xs:pattern value="\*"/>
+         <xs:pattern value="([0-9\.]+(\*|mm|cm|pi|pt|in))"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="dtWID">
+      <xs:restriction base="xs:NMTOKEN"/>
+   </xs:simpleType>
+   <xs:simpleType name="dtEID">
+      <xs:restriction base="xs:NMTOKEN"/>
+   </xs:simpleType>
+   <xs:simpleType name="dtSTOPidentificatie">
+      <xs:restriction base="xs:anyURI">
+         <xs:minLength value="1"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="dtWaardeRef">
+      <xs:restriction base="xs:anyURI"/>
+   </xs:simpleType>
+   <!-- EINDE DATATYPES -->
+</xs:schema>

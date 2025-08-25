@@ -4,7 +4,7 @@
   targetNamespace="http://www.geostandaarden.nl/bestanden-ow/manifest-ow"
   elementFormDefault="qualified"
   attributeFormDefault="unqualified"
-  version="1.0.4">
+  version="3.1.0">
   <xs:element name="Aanleveringen">
     <xs:annotation>
       <xs:documentation>Root element van CIM-OW.xml.</xs:documentation>
@@ -15,6 +15,7 @@
         <xs:element maxOccurs="1" minOccurs="0" ref="mow:IMOWversie"/>
         <xs:element maxOccurs="unbounded" minOccurs="1" ref="mow:Aanlevering"/>
       </xs:sequence>
+      <xs:attribute name="schemaversie" type="xs:token" use="optional"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="domein">
@@ -34,7 +35,8 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element maxOccurs="1" minOccurs="1" ref="mow:WorkIDRegeling"/>
-        <xs:element maxOccurs="1" minOccurs="1" ref="mow:DoelID"/>
+        <xs:element maxOccurs="1" minOccurs="0" ref="mow:DoelID"/>
+        <xs:element maxOccurs="1" minOccurs="0" ref="mow:ExpressionIDRegeling"/>
         <xs:element maxOccurs="unbounded" minOccurs="0" ref="mow:Bestand">
           <xs:annotation>
             <xs:documentation>Bestandsnaam van de module volgens CIM-OW opmaak. Het bestand moet ook in de manifest voorkomen.</xs:documentation>
@@ -56,6 +58,11 @@
   <xs:element name="WorkIDRegeling" type="xs:anyURI">
     <xs:annotation>
       <xs:documentation>Verwijzing naar WorkID van de Regeling.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="ExpressionIDRegeling" type="xs:anyURI">
+    <xs:annotation>
+      <xs:documentation>expressionID van de regeling waar deze aanlevering bij hoort.</xs:documentation>
     </xs:annotation>
   </xs:element>
   <xs:element name="Bestand">

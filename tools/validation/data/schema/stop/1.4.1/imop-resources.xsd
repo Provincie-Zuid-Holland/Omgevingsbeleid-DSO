@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:data="https://standaarden.overheid.nl/stop/imop/data/"
+           xmlns:tekst="https://standaarden.overheid.nl/stop/imop/tekst/"
+           xmlns:rsc="https://standaarden.overheid.nl/stop/imop/resources/"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="https://standaarden.overheid.nl/stop/imop/resources/"
+           version="1.4.1">
+   <xs:annotation>
+      <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/goto.html?to=stop&amp;id=xsd:rsc">"resources-schema" van STOP. </xs:documentation>
+      <xs:documentation>Dit schema definieert de elementen voor de STOP-modules voor resources</xs:documentation>
+      <xs:documentation>versie 1.4.1</xs:documentation>
+   </xs:annotation>
+   <xs:element name="Waardelijst">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:Waardelijst"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="rsc:WaardelijstInfo"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="rsc:Waarde"/>
+         </xs:sequence>
+         <xs:attributeGroup ref="rsc:agSchemaVersie"/>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="WaardelijstInfo">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:WaardelijstInfo"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="rsc:mgResource"/>
+            <xs:element minOccurs="1" maxOccurs="1" ref="rsc:uitbreidbaar"/>
+            <xs:element minOccurs="1" maxOccurs="1" ref="rsc:versie"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Waarde">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:Waarde"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:group ref="rsc:mgResource"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="rsc:geldigVanaf"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="rsc:geldigTot"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <!--
+  ================================================ 
+     Eigenschappen                             
+  ================================================ 
+  -->
+   <xs:element name="eindverantwoordelijke" type="rsc:dtResourceRef">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:eindverantwoordelijke"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="url" type="xs:anyURI">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:url"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="uitbreidbaar" type="xs:boolean">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:uitbreidbaar"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="versie" type="xs:token">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:versie"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="geldigVanaf" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:geldigVanaf"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="geldigTot" type="xs:date">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:geldigTot"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="id" type="rsc:dtResourceRef">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:id"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="label" type="xs:token">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:label"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="beschrijving" type="xs:token">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:beschrijving"/>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="vindplaatsen">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:vindplaatsen"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="rsc:heeftVindplaats" minOccurs="1" maxOccurs="unbounded"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="heeftVindplaats">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:heeftVindplaats"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="rsc:Vindplaats" maxOccurs="1" minOccurs="1"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Vindplaats">
+      <xs:annotation>
+         <xs:documentation source="https://koop.gitlab.io/STOP/standaard/1.4.1/go/go.html?id=xsd:rsc:Vindplaats"/>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:all>
+            <xs:element ref="rsc:url"/>
+            <xs:element minOccurs="0" ref="rsc:eindverantwoordelijke"/>
+         </xs:all>
+      </xs:complexType>
+   </xs:element>
+   <!--
+  ================================================ 
+     model groups en datatypes                         
+  ================================================ 
+  -->
+   <xs:group name="mgResource">
+      <xs:sequence>
+         <xs:element ref="rsc:id"/>
+         <xs:element ref="rsc:label"/>
+         <xs:element maxOccurs="1" minOccurs="0" ref="rsc:beschrijving"/>
+         <xs:element minOccurs="0" ref="rsc:vindplaatsen"/>
+         <xs:element minOccurs="0" ref="rsc:eindverantwoordelijke"/>
+      </xs:sequence>
+   </xs:group>
+   <xs:simpleType name="dtResourceRef">
+      <xs:restriction base="xs:token"/>
+   </xs:simpleType>
+   <xs:attributeGroup name="agSchemaVersie">
+      <xs:attribute name="schemaversie" type="rsc:dtSchemaVersie" use="optional"/>
+   </xs:attributeGroup>
+   <xs:simpleType name="dtSchemaVersie">
+      <xs:restriction base="xs:token"/>
+   </xs:simpleType>
+</xs:schema>

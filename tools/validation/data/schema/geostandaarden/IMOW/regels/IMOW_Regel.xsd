@@ -13,7 +13,7 @@
             targetNamespace="http://www.geostandaarden.nl/imow/regels"
             elementFormDefault="qualified"
             attributeFormDefault="unqualified"
-            version="2.0.0">
+            version="v3.1.0">
    <xs:annotation>
       <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/imow/regels</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/version">1.0</xs:appinfo>
@@ -182,13 +182,6 @@
                      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De unieke identificatie waaronder elk object van dit type bekend is.</xs:documentation>
                   </xs:annotation>
                </xs:element>
-               <xs:element name="gerelateerdeRegeltekst" minOccurs="0" maxOccurs="1">
-                  <xs:complexType>
-                     <xs:choice minOccurs="1" maxOccurs="unbounded">
-                        <xs:element ref="r:RegeltekstRef"/>
-                     </xs:choice>
-                  </xs:complexType>
-               </xs:element>
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
@@ -240,6 +233,16 @@
                            type="r:Activiteitregelkwalificatie"
                            minOccurs="1"
                            maxOccurs="1"/>
+               <xs:element name="eigenSymbolisatie" minOccurs="0" maxOccurs="1">
+                  <xs:annotation>
+                     <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Symboolcode uit de symbolenbibliotheek die in een viewer gebruikt kan worden om dit object een symbolosatie te geven die afwijkt van de standaard symbolisatie.</xs:documentation>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:pattern value="[vpl][acdksrvx][0-9][0-9][0-9]"/>
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
                <xs:element name="locatieaanduiding" minOccurs="1" maxOccurs="1">
                   <xs:annotation>
                      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Deze specifieke activiteit is toegekend aan deze specifieke locatie(s).</xs:documentation>

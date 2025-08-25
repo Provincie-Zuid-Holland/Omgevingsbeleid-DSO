@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:l="http://www.geostandaarden.nl/imow/locatie" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:imvert="http://www.imvertor.org/schema/system" xmlns:da="http://www.geostandaarden.nl/imow/datatypenalgemeen" xmlns:ow="http://www.geostandaarden.nl/imow/owobject" xmlns:xlink="http://www.w3.org/1999/xlink" targetNamespace="http://www.geostandaarden.nl/imow/locatie" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.0">
+<xs:schema xmlns:l="http://www.geostandaarden.nl/imow/locatie" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:imvert="http://www.imvertor.org/schema/system" xmlns:da="http://www.geostandaarden.nl/imow/datatypenalgemeen" xmlns:ow="http://www.geostandaarden.nl/imow/owobject" xmlns:xlink="http://www.w3.org/1999/xlink" targetNamespace="http://www.geostandaarden.nl/imow/locatie" elementFormDefault="qualified" attributeFormDefault="unqualified" version="v3.1.0">
    <xs:annotation>
       <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.geostandaarden.nl/imow/locatie</xs:appinfo>
       <xs:appinfo source="http://www.imvertor.org/schema-info/version">1.0</xs:appinfo>
@@ -23,11 +23,6 @@
       <xs:complexContent>
          <xs:extension base="l:Locatie">
             <xs:sequence>
-               <xs:element name="hoogte" type="da:WaardeEenheid" minOccurs="0" maxOccurs="1">
-                  <xs:annotation>
-                     <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De hoogte waarop de geometrie ligt, in meters.</xs:documentation>
-                  </xs:annotation>
-               </xs:element>
                <xs:element name="geometrie" minOccurs="1" maxOccurs="1">
                   <xs:annotation>
                      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een extern beschikbare geometrie, conform simplefeaturetype specification niveau 2: surface, polygon, multisurface. </xs:documentation>
@@ -109,11 +104,6 @@
                      </xs:choice>
                   </xs:complexType>
                </xs:element>
-               <xs:element name="hoogte" type="da:WaardeEenheid" minOccurs="0" maxOccurs="1">
-                  <xs:annotation>
-                     <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De hoogte waarop de geometrie ligt, in meters.</xs:documentation>
-                  </xs:annotation>
-               </xs:element>
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
@@ -173,11 +163,6 @@
       <xs:complexContent>
          <xs:extension base="l:Locatie">
             <xs:sequence>
-               <xs:element name="hoogte" type="da:WaardeEenheid" minOccurs="0" maxOccurs="1">
-                  <xs:annotation>
-                     <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">De hoogte waarop de geometrie ligt, in meters.</xs:documentation>
-                  </xs:annotation>
-               </xs:element>
                <xs:element name="geometrie" minOccurs="1" maxOccurs="1">
                   <xs:annotation>
                      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Verwijzing naar een extern beschikbare geometrie, conform simplefeaturetype specification niveau 2: Curve</xs:documentation>
