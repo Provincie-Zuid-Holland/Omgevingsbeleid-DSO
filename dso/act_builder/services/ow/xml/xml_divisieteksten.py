@@ -11,5 +11,4 @@ class XmlDivisieteksten(AbstractXmlFile):
             object_types=["Divisietekst"],
             ow_objects=xml_data.get_divisieteksten(),
             output_filename="ow-divisieteksten.xml",
-            procedure_status=self._procedure_status,
         )

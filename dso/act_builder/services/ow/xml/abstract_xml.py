@@ -48,6 +48,7 @@ class AbstractXmlFile(ABC):
             area_title=self._area_title,
             delivery_id=self._delivery_id,
             object_types=object_types,
+            procedure_status=self._procedure_status,
         )
         output_file = OutputFile(
             filename=output_filename,
