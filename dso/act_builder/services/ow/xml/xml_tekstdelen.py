@@ -11,4 +11,5 @@ class XmlTekstdelen(AbstractXmlFile):
             object_types=["Tekstdeel"],
             ow_objects=xml_data.get_tekstdelen(),
             output_filename="ow-tekstdelen.xml",
+            procedure_status=self._procedure_status,
         )

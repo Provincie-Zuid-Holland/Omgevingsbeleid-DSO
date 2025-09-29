@@ -11,4 +11,5 @@ class XmlGebieden(AbstractXmlFile):
             object_types=["Gebied"],
             ow_objects=xml_data.get_gebieden(),
             output_filename="ow-gebieden.xml",
+            procedure_status=self._procedure_status,
         )

@@ -11,4 +11,5 @@ class XmlRegelingsgebieden(AbstractXmlFile):
             object_types=["Regelingsgebied"],
             ow_objects=xml_data.get_regelingsgebieden(),
             output_filename="ow-regelingsgebieden.xml",
+            procedure_status=self._procedure_status,
         )

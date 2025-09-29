@@ -156,7 +156,7 @@ class OwObjectStatus(str, Enum):
 class BaseOwObject(BaseModel):
     identification: str
     object_status: OwObjectStatus = Field(OwObjectStatus.unchanged)
-    procedure_status: Optional[str] = Field(None)
+    procedure_status: Optional[str] = Field(None)  # @deprecated?
 
     def assert_same_class(self, other: "BaseOwObject"):
         if type(self) is not type(other):

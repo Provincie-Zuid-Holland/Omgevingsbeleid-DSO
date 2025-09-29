@@ -11,4 +11,5 @@ class XmlGebiedengroepen(AbstractXmlFile):
             object_types=["Gebiedengroep"],
             ow_objects=xml_data.get_gebiedengroepen(),
             output_filename="ow-gebiedengroepen.xml",
+            procedure_status=self._procedure_status,
         )

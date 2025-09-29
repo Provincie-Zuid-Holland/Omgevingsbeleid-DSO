@@ -7,10 +7,10 @@
         <rg:Regelingsgebied>
             <!-- {{ ow_object.object_status.value }} -->
             {% if ow_object.is_deleted() %}
-                <ow:status>{{ ow_object.get_deleted_status() }}</ow:status>
+            <ow:status>{{ ow_object.get_deleted_status() }}</ow:status>
             {% endif %}
-            {% if ow_object.procedure_status is not none %}
-                <ow:procedurestatus>{{ ow_object.procedure_status }}</ow:procedurestatus>
+            {% if procedure_status is not none %}
+            <ow:procedurestatus>{{ procedure_status }}</ow:procedurestatus>
             {% endif %}
             <rg:identificatie>{{ ow_object.identification }}</rg:identificatie>
             <rg:locatieaanduiding>

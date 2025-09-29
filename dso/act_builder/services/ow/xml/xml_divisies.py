@@ -11,4 +11,5 @@ class XmlDivisies(AbstractXmlFile):
             object_types=["Divisie"],
             ow_objects=xml_data.get_divisies(),
             output_filename="ow-divisies.xml",
+            procedure_status=self._procedure_status,
         )

@@ -11,4 +11,5 @@ class XmlGebiedsaanwijzing(AbstractXmlFile):
             object_types=["Gebiedsaanwijzing"],
             ow_objects=xml_data.get_gebiedsaanwijzingen(),
             output_filename="ow-gebiedsaanwijzingen.xml",
+            procedure_status=self._procedure_status,
         )

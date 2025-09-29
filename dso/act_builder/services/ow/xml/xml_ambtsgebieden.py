@@ -11,4 +11,5 @@ class XmlAmbtsgebieden(AbstractXmlFile):
             object_types=["Ambtsgebied"],
             ow_objects=xml_data.get_ambtsgebieden(),
             output_filename="ow-ambtsgebieden.xml",
+            procedure_status=self._procedure_status,
         )
