@@ -9,8 +9,8 @@
             {% if ow_object.is_deleted() %}
             <op:status>{{ ow_object.get_deleted_status() }}</op:status>
             {% endif %}
-            {% if ow_object.procedure_status is not none %}
-            <op:procedurestatus>{{ ow_object.procedure_status }}</op:procedurestatus>
+            {% if procedure_status is not none %}
+            <op:procedurestatus>{{ procedure_status }}</op:procedurestatus>
             {% endif %}
             <vt:identificatie>{{ ow_object.identification }}</vt:identificatie>
         </vt:Divisietekst>

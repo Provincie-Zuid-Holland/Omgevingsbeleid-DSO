@@ -9,6 +9,7 @@ from dso.act_builder.state_manager.models import OutputFile, StrContentData
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.models import ContentType
 from dso.services.utils.helpers import load_template
+from dso.services.utils.waardelijsten import ProcedureType
 
 
 @dataclass
@@ -19,6 +20,8 @@ class BuildFileResult:
 
 class AbstractXmlFile(ABC):
     def __init__(self, state_manager: StateManager):
+        procedure_type: ProcedureType = state_manager.input_data.besluit.soort_procedure
+        self._procedure_status: Optional[str] = "ontwerp" if procedure_type == ProcedureType.Ontwerpbesluit else None
         self._dataset: str = state_manager.input_data.ow_dataset
         self._area_title: str = state_manager.input_data.ow_gebied
         self._delivery_id: str = state_manager.input_data.publication_settings.opdracht.id_levering
@@ -45,6 +48,7 @@ class AbstractXmlFile(ABC):
             area_title=self._area_title,
             delivery_id=self._delivery_id,
             object_types=object_types,
+            procedure_status=self._procedure_status,
         )
         output_file = OutputFile(
             filename=output_filename,
