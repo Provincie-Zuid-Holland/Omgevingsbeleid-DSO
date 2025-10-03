@@ -19,10 +19,16 @@ class AppendixDestination(str, Enum):
     ACT = "ACT"
 
 
+class PdfTitleStrategy(str, Enum):
+    TITLE = "TITLE"
+    FRBR = "FRBR"
+    FILENAME = "FILENAME"
+
+
 class AppendicesService:
     _REF_BILL_PDF_PATTERN = r"\[REF_BILL_PDF:([^\]]+)\]"
 
-    def __init__(self, state_manager: StateManager):
+    def __init__(self, state_manager: StateManager, pdf_title_strategy: PdfTitleStrategy = PdfTitleStrategy.FRBR):
         publication_settings: PublicationSettings = state_manager.input_data.publication_settings
 
         self._besluit_pdf_repository: BesluitPdfRepository = state_manager.input_data.resources.besluit_pdf_repository
@@ -33,6 +39,7 @@ class AppendicesService:
             AppendixDestination.BILL: state_manager.bill_ewid_service,
             AppendixDestination.ACT: state_manager.act_ewid_service,
         }
+        self._pdf_title_strategy: PdfTitleStrategy = pdf_title_strategy
 
     def generate_xml(
         self,
@@ -90,8 +97,19 @@ class AppendicesService:
         for pdf_id in matches:
             pdf: BesluitPdf = self._besluit_pdf_repository.get(int(pdf_id))
             frbr: str = pdf.frbr.get_expression()
+            link_title: str = self._get_link_title(pdf)
             search = f"[REF_BILL_PDF:{pdf_id}]"
-            replacement = f"""<ExtRef soort="JOIN" ref="{frbr}">{frbr}</ExtRef>"""
+            replacement = f"""<ExtRef soort="JOIN" ref="{frbr}">{link_title}</ExtRef>"""
             content = content.replace(search, replacement)
 
         return content
+
+    def _get_link_title(self, pdf: BesluitPdf) -> str:
+        match self._pdf_title_strategy:
+            case PdfTitleStrategy.TITLE:
+                return pdf.title
+            case PdfTitleStrategy.FRBR:
+                return pdf.frbr.get_expression()
+            case PdfTitleStrategy.FILENAME:
+                return pdf.filename
+        raise RuntimeError("Not all cases for PdfTitleStrategy are implemented")
