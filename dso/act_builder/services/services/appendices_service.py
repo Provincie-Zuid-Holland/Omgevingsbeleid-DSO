@@ -111,5 +111,5 @@ class AppendicesService:
             case PdfTitleStrategy.FRBR:
                 return pdf.frbr.get_expression()
             case PdfTitleStrategy.FILENAME:
-                return pdf.filename
+                return pdf.get_filename()
         raise RuntimeError("Not all cases for PdfTitleStrategy are implemented")
