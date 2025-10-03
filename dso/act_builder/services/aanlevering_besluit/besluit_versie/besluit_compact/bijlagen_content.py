@@ -15,7 +15,7 @@ class BijlagenContent:
         self._state_manager: StateManager = state_manager
         self._appendices_service: AppendicesService = AppendicesService(
             state_manager,
-            pdf_title_strategy=PdfTitleStrategy.TITLE,
+            pdf_title_strategy=PdfTitleStrategy.FILENAME,
         )
 
     def create(self) -> str:
