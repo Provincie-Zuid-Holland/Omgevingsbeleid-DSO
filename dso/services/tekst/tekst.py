@@ -200,6 +200,9 @@ class RefGenerator(ElementGenerator):
         if hint_type == "object":
             return TekstObjectRef(tag)
 
+        if tag.get("href", "")[0:7] == "mailto:":
+            return Contact(tag)
+
         return ExtRef(tag)
 
 
@@ -310,6 +313,24 @@ class ExtRef(SimpleElement):
             tag_attrs_overwrite={
                 "ref": self.href,
                 "soort": self.soort,
+            },
+        )
+        return result
+
+
+class Contact(SimpleElement):
+    def __init__(self, tag: Optional[Tag] = None):
+        super().__init__()
+        self._adres: str = tag.get("href", "")[7:]
+
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+        result = SimpleElement.as_xml(
+            self,
+            soup=soup,
+            tag_name_overwrite="Contact",
+            tag_attrs_overwrite={
+                "adres": self._adres,
+                "soort": "e-mail",
             },
         )
         return result
