@@ -1,0 +1,2 @@
+import services.ow.gebiedsaanwijzing.types as ga_types
+from services.ow.gebiedsaanwijzing.gebiedsaanwijzing import GebiedsaanwijzingenFactory, Gebiedsaanwijzingen
