@@ -33,8 +33,6 @@ def _download_source() -> SourceResult:
         with z.open(SOURCE_FILE) as f:
             return SourceResult.model_validate_json(f.read())
 
-    raise RuntimeError("file not found in zip")
-
 
 def do_create_gebiedsaanwijzingen():
     output_contents: List[str] = []
