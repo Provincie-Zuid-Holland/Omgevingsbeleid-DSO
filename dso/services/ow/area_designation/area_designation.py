@@ -20,6 +20,7 @@ class AreaDesignations:
         return None
 
 
+# Service to use the Gebiedsaanwijzingen Waardelijsten
 class AreaDesignationsFactory:
     def __init__(self):
         self._data: Dict[DocumentType, AreaDesignations] = {
