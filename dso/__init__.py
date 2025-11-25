@@ -1,2 +1,2 @@
-import services.ow.gebiedsaanwijzing.types as ga_types
-from services.ow.gebiedsaanwijzing.gebiedsaanwijzing import GebiedsaanwijzingenFactory, Gebiedsaanwijzingen
+import services.ow.area_designation.types as ad
+from dso.services.ow.area_designation.area_designation import AreaDesignationsFactory, AreaDesignations

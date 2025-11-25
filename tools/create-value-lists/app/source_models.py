@@ -2,6 +2,10 @@ from typing import List
 from pydantic import BaseModel
 
 
+# These models represent the source json and are for
+# simplicity kept in their source language dutch
+
+
 class Waarde(BaseModel):
     label: str
     term: str
@@ -60,11 +64,11 @@ class SourceResult(BaseModel):
             if w.label == label:
                 return w
 
-        raise RuntimeError(f"Waardelijst '{label}' not found")
+        raise RuntimeError(f"Entry '{label}' not found")
 
-    def get_by_domein(self, domein: str) -> Waardelijst:
+    def get_by_domain(self, domain: str) -> Waardelijst:
         for w in self.waardelijsten.waardelijst:
-            if w.domeinen.domein.label == domein:
+            if w.domeinen.domein.label == domain:
                 return w
 
-        raise RuntimeError(f"Waardelijst with domein '{domein}' not found")
+        raise RuntimeError(f"Entry with domain '{domain}' not found")

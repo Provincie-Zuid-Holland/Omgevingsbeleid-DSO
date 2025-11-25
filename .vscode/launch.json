@@ -80,14 +80,14 @@
             }
         },
         {
-            "name": "Run cmds.py create-gebiedsaanwijzingen",
+            "name": "Run cmds.py create-area-designations",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/tools/create-waardelijsten/app/cmds.py",
-            "args": ["create-gebiedsaanwijzingen"],
+            "program": "${workspaceFolder}/tools/create-value-lists/app/cmds.py",
+            "args": ["create-area-designations"],
             "console": "integratedTerminal",
             "justMyCode": true,
-            "cwd": "${workspaceFolder}/tools/create-waardelijsten"
+            "cwd": "${workspaceFolder}/tools/create-value-lists"
         },
     ]
 }
