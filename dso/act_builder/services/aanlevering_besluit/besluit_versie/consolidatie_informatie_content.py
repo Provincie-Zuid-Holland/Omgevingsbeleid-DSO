@@ -6,7 +6,8 @@ from pydantic import BaseModel
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
 from dso.act_builder.state_manager.states.text_manipulator.models import (
     TekstBijlageDocument,
-    TextData, TekstBijlageGebied,
+    TextData,
+    TekstBijlageGebied,
 )
 from ....state_manager.input_data.resource.gebieden.types import Gebied
 from ....state_manager.state_manager import StateManager
@@ -35,13 +36,9 @@ class ConsolidatieInformatieContent:
         }
 
         beoogd_informatieobjecten = []
-        gebieden_new: List[Gebied] = (
-            self._state_manager.input_data.resources.gebied_repository.get_new()
-        )
+        gebieden_new: List[Gebied] = self._state_manager.input_data.resources.gebied_repository.get_new()
         for gebied in gebieden_new:
-            text_gebied: TekstBijlageGebied = text_data.get_gebied_by_code(
-                gebied.Code
-            )
+            text_gebied: TekstBijlageGebied = text_data.get_gebied_by_code(gebied.Code)
             beoogd_informatieobjecten.append(
                 {
                     "instrument_versie": gebied.Frbr.get_expression(),
@@ -106,9 +103,7 @@ class ConsolidatieInformatieContent:
 
         result: List[ConsolidationWithdrawal] = []
         component_name: str = self._state_manager.input_data.publication_settings.regeling_componentnaam
-        removed_gios: List[VerwijderdGebied] = (
-            self._state_manager.input_data.regeling_mutatie.te_verwijderden_gebieden
-        )
+        removed_gios: List[VerwijderdGebied] = self._state_manager.input_data.regeling_mutatie.te_verwijderden_gebieden
         for removed_gio in removed_gios:
             expression: str = removed_gio.frbr.get_expression()
             eid: str = ref_to_eid_map.get(expression, "")

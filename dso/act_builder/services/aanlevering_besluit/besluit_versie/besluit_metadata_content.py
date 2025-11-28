@@ -15,9 +15,7 @@ class BesluitMetadataContent:
     def create(self) -> str:
         informatieobject_refs: List[str] = []
 
-        gebieden_new: List[Gebied] = (
-            self._state_manager.input_data.resources.gebied_repository.get_new()
-        )
+        gebieden_new: List[Gebied] = self._state_manager.input_data.resources.gebied_repository.get_new()
         for gebied in gebieden_new:
             informatieobject_refs.append(gebied.frbr.get_expression())
 

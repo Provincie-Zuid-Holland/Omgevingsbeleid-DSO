@@ -14,9 +14,7 @@ class BijlageGebiedenContent:
         self._data_hint_cleaner: DataHintCleaner = DataHintCleaner()
 
     def create(self) -> str:
-        all_gebieden: List[Gebied] = (
-            self._state_manager.input_data.resources.gebied_repository.all()
-        )
+        all_gebieden: List[Gebied] = self._state_manager.input_data.resources.gebied_repository.all()
         if len(all_gebieden) == 0:
             return ""
 
