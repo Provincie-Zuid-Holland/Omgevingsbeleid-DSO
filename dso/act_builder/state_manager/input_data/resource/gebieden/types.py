@@ -1,8 +1,8 @@
 import re
 from uuid import UUID
-from typing import List, Optional, Self
+from typing import List
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_serializer, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
 from ......models import GioFRBR
 

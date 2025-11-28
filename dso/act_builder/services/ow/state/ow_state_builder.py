@@ -8,8 +8,8 @@ from dso.act_builder.services.ow.input.models import (
     OwInputGebiedsaanwijzing,
     OwInputPolicyObject,
     OwInputRegelingsgebied,
-    OwInputWerkingsgebied,
-    OwInputWerkingsgebiedLocatieRef,
+    OwInputGebiedengroep,
+    OwInputGebiedengroepLocatieRef,
 )
 from dso.act_builder.services.ow.state.models import (
     AbstractLocationRef,
@@ -62,35 +62,35 @@ class OwStateBuilder:
         )
         self._state.regelingsgebieden.add(regelingsgebied)
 
-    def add_werkingsgebieden(self, input_werkingsgebieden: List[OwInputWerkingsgebied]):
-        for input_werkingsgebied in input_werkingsgebieden:
-            self.add_werkingsgebied(input_werkingsgebied)
+    def add_gebiedengroepen(self, input_gebiedengroepen: List[OwInputGebiedengroep]):
+        for input_gebiedengroep in input_gebiedengroepen:
+            self.add_gebiedengroep(input_gebiedengroep)
 
-    def add_werkingsgebied(self, input_werkingsgebied: OwInputWerkingsgebied):
-        for input_location in input_werkingsgebied.locations:
+    def add_gebiedengroep(self, input_gebiedengroep: OwInputGebiedengroep):
+        for input_gebied in input_gebiedengroep.gebieden:
             gebied = OwGebied(
                 object_status=OwObjectStatus.new,
-                source_uuid=input_location.source_uuid,
-                source_code=input_location.source_code,
+                source_uuid=input_gebied.source_uuid,
+                source_code=input_gebied.source_code,
                 procedure_status=self._procedure_status,
                 identification=self._generate_identifier("gebied"),
-                title=input_location.title,
-                geometry_ref=input_location.geometry_id,
+                title=input_gebied.title,
+                geometry_ref=input_gebied.geometry_id,
             )
             self._state.gebieden.add(gebied)
 
         gebieden_groep = OwGebiedengroep(
             object_status=OwObjectStatus.new,
-            source_uuid=input_werkingsgebied.source_uuid,
-            source_code=input_werkingsgebied.source_code,
+            source_uuid=input_gebiedengroep.source_uuid,
+            source_code=input_gebiedengroep.source_code,
             procedure_status=self._procedure_status,
             identification=self._generate_identifier("gebiedengroep"),
-            title=input_werkingsgebied.title,
+            title=input_gebiedengroep.title,
             gebieden_refs=[
                 UnresolvedGebiedRef(
                     target_code=location.source_code,
                 )
-                for location in input_werkingsgebied.locations
+                for location in input_gebiedengroep.gebieden
             ],
         )
         self._state.gebiedengroepen.add(gebieden_groep)
@@ -180,7 +180,7 @@ class OwStateBuilder:
             match location_ref:
                 case OwInputAmbtsgebiedLocatieRef():
                     result.append(UnresolvedAmbtsgebiedRef())
-                case OwInputWerkingsgebiedLocatieRef() as locatie_ref:
+                case OwInputGebiedengroepLocatieRef() as locatie_ref:
                     result.append(UnresolvedGebiedengroepRef(target_code=locatie_ref.code))
                 case _:
                     raise RuntimeError("Invalid location_ref for policy object")

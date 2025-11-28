@@ -4,14 +4,11 @@ from dso.act_builder.services.ow.input.models import (
     OwInputAbstractLocatieRef,
     OwInputAmbtsgebiedLocatieRef,
     OwInputPolicyObject,
-    OwInputWerkingsgebiedLocatieRef,
+    OwInputGebiedengroepLocatieRef,
 )
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object import PolicyObject
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object_repository import (
     PolicyObjectRepository,
-)
-from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
-    WerkingsgebiedRepository,
 )
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.act_builder.state_manager.states.text_manipulator.models import TekstPolicyObject, TextData
@@ -19,9 +16,6 @@ from dso.act_builder.state_manager.states.text_manipulator.models import TekstPo
 
 class OwInputPolicyObjectFactory:
     def __init__(self, state_manager: StateManager):
-        self._werkingsgebieden_repository: WerkingsgebiedRepository = (
-            state_manager.input_data.resources.werkingsgebied_repository
-        )
         self._policy_object_repository: PolicyObjectRepository = (
             state_manager.input_data.resources.policy_object_repository
         )
@@ -52,11 +46,11 @@ class OwInputPolicyObjectFactory:
         return result
 
     def _get_location_refs(self, policy_object: PolicyObject) -> List[OwInputAbstractLocatieRef]:
-        if not policy_object.has_werkingsgebied():
+        if not policy_object.has_gebiedengroep():
             return []
 
-        werkingsgebied_code: Optional[str] = policy_object.get_werkingsgebied()
-        if werkingsgebied_code is None:
+        gebiedengroep_code: Optional[str] = policy_object.get_gebiedengroep_code()
+        if gebiedengroep_code is None:
             return [OwInputAmbtsgebiedLocatieRef()]
 
-        return [OwInputWerkingsgebiedLocatieRef(code=werkingsgebied_code)]
+        return [OwInputGebiedengroepLocatieRef(code=gebiedengroep_code)]
