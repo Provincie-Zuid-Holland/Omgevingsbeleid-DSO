@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 from .types import GebiedenGroep
 
 
-class GebiedenGroepRepository:
+class GebiedengroepRepository:
     def __init__(self):
         self._groepen: Dict[str, GebiedenGroep] = {}
 

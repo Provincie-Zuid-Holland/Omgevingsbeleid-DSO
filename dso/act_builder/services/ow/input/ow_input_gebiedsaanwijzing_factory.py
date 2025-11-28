@@ -3,7 +3,7 @@ from typing import List, Set
 from dso.act_builder.services.ow.input.models import (
     OwInputAbstractLocatieRef,
     OwInputGebiedsaanwijzing,
-    OwInputWerkingsgebiedLocatieRef,
+    OwInputGebiedengroepLocatieRef,
 )
 from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
@@ -49,4 +49,4 @@ class OwInputGebiedsaanwijzingFactory:
         return result
 
     def _get_location_refs(self, werkingsgebied: Werkingsgebied) -> List[OwInputAbstractLocatieRef]:
-        return [OwInputWerkingsgebiedLocatieRef(code=werkingsgebied.Code)]
+        return [OwInputGebiedengroepLocatieRef(code=werkingsgebied.Code)]

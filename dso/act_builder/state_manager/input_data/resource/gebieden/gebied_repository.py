@@ -44,7 +44,7 @@ class GebiedRepository:
         return gebied
 
     def get_new(self) -> List[Gebied]:
-        return [w for w in self._gebieden.values() if w.New]
+        return [g for g in self._gebieden.values() if g.New]
 
     def all(self) -> List[Gebied]:
         return list(self._gebieden.values())

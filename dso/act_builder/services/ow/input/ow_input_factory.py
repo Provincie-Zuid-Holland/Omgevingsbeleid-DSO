@@ -5,13 +5,13 @@ from dso.act_builder.services.ow.input.models import (
     OwInputGebiedsaanwijzing,
     OwInputPolicyObject,
     OwInputRegelingsgebied,
-    OwInputWerkingsgebied,
+    OwInputGebiedengroep,
 )
 from dso.act_builder.services.ow.input.ow_input_ambtsgebied_factory import OwInputAmbtsgebiedFactory
 from dso.act_builder.services.ow.input.ow_input_gebiedsaanwijzing_factory import OwInputGebiedsaanwijzingFactory
 from dso.act_builder.services.ow.input.ow_input_policy_object_factory import OwInputPolicyObjectFactory
 from dso.act_builder.services.ow.input.ow_input_regelingsgebied_factory import OwInputRegelingsgebiedFactory
-from dso.act_builder.services.ow.input.ow_input_werkingsgebieden_factory import OwInputWerkingsgebiedenFactory
+from dso.act_builder.services.ow.input.ow_input_gebiedengroepen_factory import OwInputGebiedengroepenFactory
 from dso.act_builder.state_manager.state_manager import StateManager
 
 
@@ -19,7 +19,7 @@ class OwInputFactory:
     def __init__(self, state_manager: StateManager):
         self._ambtsgebied_factory: OwInputAmbtsgebiedFactory = OwInputAmbtsgebiedFactory(state_manager)
         self._regelingsgebied_factory: OwInputRegelingsgebiedFactory = OwInputRegelingsgebiedFactory(state_manager)
-        self._werkingsgebieden_factory: OwInputWerkingsgebiedenFactory = OwInputWerkingsgebiedenFactory(state_manager)
+        self._gebiedengroepen_factory: OwInputGebiedengroepenFactory = OwInputGebiedengroepenFactory(state_manager)
         self._gebiedsaanwijzingen_factory: OwInputGebiedsaanwijzingFactory = OwInputGebiedsaanwijzingFactory(
             state_manager
         )
@@ -37,5 +37,5 @@ class OwInputFactory:
     def get_policy_objects(self) -> List[OwInputPolicyObject]:
         return self._policy_object_factory.get_policy_objects()
 
-    def get_werkingsgebieden(self) -> List[OwInputWerkingsgebied]:
-        return self._werkingsgebieden_factory.get_werkingsgebieden()
+    def get_gebiedengroepen(self) -> List[OwInputGebiedengroep]:
+        return self._gebiedengroepen_factory.get_gebiedengroepen()

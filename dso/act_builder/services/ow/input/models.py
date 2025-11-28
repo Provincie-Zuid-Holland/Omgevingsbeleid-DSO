@@ -12,14 +12,14 @@ class OwInputAmbtsgebiedLocatieRef(OwInputAbstractLocatieRef):
     pass
 
 
-class OwInputWerkingsgebiedLocatieRef(OwInputAbstractLocatieRef):
+class OwInputGebiedengroepLocatieRef(OwInputAbstractLocatieRef):
     code: str
 
     def get_code(self) -> Optional[str]:
         return self.code
 
 
-class OwInputLocatie(BaseModel):
+class OwInputGebied(BaseModel):
     source_uuid: str
     source_code: str
     title: str
@@ -38,11 +38,11 @@ class OwInputRegelingsgebied(BaseModel):
     source_uuid: str
 
 
-class OwInputWerkingsgebied(BaseModel):
+class OwInputGebiedengroep(BaseModel):
     source_uuid: str
     source_code: str
     title: str
-    locations: List[OwInputLocatie]
+    gebieden: List[OwInputGebied]
 
 
 class OwInputGebiedsaanwijzing(BaseModel):
