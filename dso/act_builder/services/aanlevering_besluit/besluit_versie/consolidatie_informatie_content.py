@@ -35,31 +35,29 @@ class ConsolidatieInformatieContent:
         }
 
         beoogd_informatieobjecten = []
-        gebieden: List[Gebied] = (
-            self._state_manager.input_data.resources.gebied_repository.all()
+        gebieden_new: List[Gebied] = (
+            self._state_manager.input_data.resources.gebied_repository.get_new()
         )
-        for gebied in gebieden:
-            if gebied.new:
-                text_gebied: TekstBijlageGebied = text_data.get_gebied_by_code(
-                    gebied.Code
-                )
-                beoogd_informatieobjecten.append(
-                    {
-                        "instrument_versie": gebied.Frbr.get_expression(),
-                        "eid": f"!{settings.regeling_componentnaam}#{text_gebied.eid}",
-                    }
-                )
+        for gebied in gebieden_new:
+            text_gebied: TekstBijlageGebied = text_data.get_gebied_by_code(
+                gebied.Code
+            )
+            beoogd_informatieobjecten.append(
+                {
+                    "instrument_versie": gebied.Frbr.get_expression(),
+                    "eid": f"!{settings.regeling_componentnaam}#{text_gebied.eid}",
+                }
+            )
 
-        doocuments: List[Document] = self._state_manager.input_data.resources.document_repository.all()
-        for document in doocuments:
-            if document.New:
-                text_document: TekstBijlageDocument = text_data.get_document_by_code(document.Code)
-                beoogd_informatieobjecten.append(
-                    {
-                        "instrument_versie": document.Frbr.get_expression(),
-                        "eid": f"!{settings.regeling_componentnaam}#{text_document.eid}",
-                    }
-                )
+        documents_new: List[Document] = self._state_manager.input_data.resources.document_repository.get_new()
+        for document in documents_new:
+            text_document: TekstBijlageDocument = text_data.get_document_by_code(document.Code)
+            beoogd_informatieobjecten.append(
+                {
+                    "instrument_versie": document.Frbr.get_expression(),
+                    "eid": f"!{settings.regeling_componentnaam}#{text_document.eid}",
+                }
+            )
 
         withdrawals: List[ConsolidationWithdrawal] = self._get_withdrawals()
 

@@ -44,7 +44,7 @@ class GebiedenGroepRepository:
         return groep
 
     def get_new(self) -> List[GebiedenGroep]:
-        return [w for w in self._groepen.values() if w.New]
+        return [g for g in self._groepen.values() if g.new]
 
     def all(self) -> List[GebiedenGroep]:
         return list(self._groepen.values())
