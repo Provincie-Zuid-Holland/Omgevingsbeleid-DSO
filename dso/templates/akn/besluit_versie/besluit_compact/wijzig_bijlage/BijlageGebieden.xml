@@ -7,12 +7,12 @@
     <Divisietekst data-hint-wid-code="bijlage-werkingsgebieden-divisietekst">
         <Inhoud>
             <Begrippenlijst data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referenties">
-                {% for werkingsgebied in werkingsgebieden %}
-                <Begrip data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ werkingsgebied.Code }}">
-                    <Term>{{ werkingsgebied.Title }}</Term>
+                {% for gebied in gebieden %}
+                <Begrip data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ gebied.code }}">
+                    <Term>{{ gebied.title }}</Term>
                     <Definitie>
                         <Al>
-                            <ExtIoRef data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ werkingsgebied.Code }}-ref" data-hint-werkingsgebied-code="{{ werkingsgebied.Code }}" ref="{{ werkingsgebied.Frbr.get_expression() }}">{{ werkingsgebied.Frbr.get_expression() }}</ExtIoRef>
+                            <ExtIoRef data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ gebied.code }}-ref" data-hint-werkingsgebied-code="{{ gebied.code }}" ref="{{ gebied.frbr.get_expression() }}">{{ gebied.frbr.get_expression() }}</ExtIoRef>
                         </Al>
                     </Definitie>
                 </Begrip>
