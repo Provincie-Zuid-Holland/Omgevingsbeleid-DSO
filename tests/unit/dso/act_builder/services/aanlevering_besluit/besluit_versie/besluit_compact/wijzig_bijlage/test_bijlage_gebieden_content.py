@@ -34,4 +34,4 @@ class TestBijlageGebiedenContent(XMLCompareTest):
 
         with open(self._get_xml_file_path(__file__), "r") as f:
             expected = f.read()
-            assert self._normalize_xml(actual) == self._normalize_xml(expected)
+            assert actual == expected
