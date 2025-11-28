@@ -1,0 +1,23 @@
+<Bijlage data-hint-wid-code="bijlage-gebieden">
+    <Kop>
+        <Label>Bijlage</Label>
+        <Nummer>1</Nummer>
+        <Opschrift>Overzicht informatieobjecten</Opschrift>
+    </Kop>
+    <Divisietekst data-hint-wid-code="bijlage-gebieden-divisietekst">
+        <Inhoud>
+            <Begrippenlijst data-hint-wid-code="bijlage-gebieden-divisietekst-referenties">
+                {% for gebied in gebieden %}
+                <Begrip data-hint-wid-code="bijlage-gebieden-divisietekst-referentie-{{ gebied.code }}">
+                    <Term>{{ gebied.title }}</Term>
+                    <Definitie>
+                        <Al>
+                            <ExtIoRef data-hint-wid-code="bijlage-gebieden-divisietekst-referentie-{{ gebied.code }}-ref" data-hint-gebied-code="{{ gebied.code }}" ref="{{ gebied.frbr.get_expression() }}">{{ gebied.frbr.get_expression() }}</ExtIoRef>
+                        </Al>
+                    </Definitie>
+                </Begrip>
+                {% endfor %}
+            </Begrippenlijst>
+        </Inhoud>
+    </Divisietekst>
+</Bijlage>

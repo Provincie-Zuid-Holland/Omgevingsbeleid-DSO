@@ -3,8 +3,8 @@ from typing import List
 from pydantic import BaseModel, Field
 
 
-class TekstBijlageWerkingsgebied(BaseModel):
-    werkingsgebied_code: str
+class TekstBijlageGebied(BaseModel):
+    gebied_code: str
     eid: str
     wid: str
     element: str
@@ -35,15 +35,15 @@ class TekstPolicyObject(BaseModel):
 
 
 class TextData(BaseModel):
-    bijlage_werkingsgebieden: List[TekstBijlageWerkingsgebied] = Field(default_factory=list)
+    bijlage_gebieden: List[TekstBijlageGebied] = Field(default_factory=list)
     bijlage_documenten: List[TekstBijlageDocument] = Field(default_factory=list)
     policy_objects: List[TekstPolicyObject] = Field(default_factory=list)
 
-    def get_werkingsgebied_by_code(self, code: str) -> TekstBijlageWerkingsgebied:
-        for werkingsgebied in self.bijlage_werkingsgebieden:
-            if werkingsgebied.werkingsgebied_code == code:
-                return werkingsgebied
-        raise RuntimeError(f"{code} not found in TextData.TekstBijlageWerkingsgebied")
+    def get_gebied_by_code(self, code: str) -> TekstBijlageGebied:
+        for gebied in self.bijlage_gebieden:
+            if gebied.gebied_code == code:
+                return gebied
+        raise RuntimeError(f"{code} not found in TextData.TekstBijlageGebied")
 
     def get_document_by_code(self, code: str) -> TekstBijlageDocument:
         for document in self.bijlage_documenten:

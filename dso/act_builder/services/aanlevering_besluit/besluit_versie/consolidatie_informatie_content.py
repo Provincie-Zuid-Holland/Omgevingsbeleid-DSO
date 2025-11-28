@@ -6,15 +6,13 @@ from pydantic import BaseModel
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
 from dso.act_builder.state_manager.states.text_manipulator.models import (
     TekstBijlageDocument,
-    TekstBijlageWerkingsgebied,
-    TextData,
+    TextData, TekstBijlageGebied,
 )
-
-from .....models import PublicationSettings, VerwijderdWerkingsgebied
-from .....services.utils.helpers import load_template
-from ....state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
+from ....state_manager.input_data.resource.gebieden.types import Gebied
 from ....state_manager.state_manager import StateManager
 from ....state_manager.states.artikel_eid_repository import ArtikelEidType
+from .....models import PublicationSettings, VerwijderdGebied
+from .....services.utils.helpers import load_template
 
 
 class ConsolidationWithdrawal(BaseModel):
@@ -37,18 +35,18 @@ class ConsolidatieInformatieContent:
         }
 
         beoogd_informatieobjecten = []
-        werkingsgebieden: List[Werkingsgebied] = (
-            self._state_manager.input_data.resources.werkingsgebied_repository.all()
+        gebieden: List[Gebied] = (
+            self._state_manager.input_data.resources.gebied_repository.all()
         )
-        for werkingsgebied in werkingsgebieden:
-            if werkingsgebied.New:
-                text_werkingsgebied: TekstBijlageWerkingsgebied = text_data.get_werkingsgebied_by_code(
-                    werkingsgebied.Code
+        for gebied in gebieden:
+            if gebied.new:
+                text_gebied: TekstBijlageGebied = text_data.get_gebied_by_code(
+                    gebied.Code
                 )
                 beoogd_informatieobjecten.append(
                     {
-                        "instrument_versie": werkingsgebied.Frbr.get_expression(),
-                        "eid": f"!{settings.regeling_componentnaam}#{text_werkingsgebied.eid}",
+                        "instrument_versie": gebied.Frbr.get_expression(),
+                        "eid": f"!{settings.regeling_componentnaam}#{text_gebied.eid}",
                     }
                 )
 
@@ -110,8 +108,8 @@ class ConsolidatieInformatieContent:
 
         result: List[ConsolidationWithdrawal] = []
         component_name: str = self._state_manager.input_data.publication_settings.regeling_componentnaam
-        removed_gios: List[VerwijderdWerkingsgebied] = (
-            self._state_manager.input_data.regeling_mutatie.te_verwijderden_werkingsgebieden
+        removed_gios: List[VerwijderdGebied] = (
+            self._state_manager.input_data.regeling_mutatie.te_verwijderden_gebieden
         )
         for removed_gio in removed_gios:
             expression: str = removed_gio.frbr.get_expression()
