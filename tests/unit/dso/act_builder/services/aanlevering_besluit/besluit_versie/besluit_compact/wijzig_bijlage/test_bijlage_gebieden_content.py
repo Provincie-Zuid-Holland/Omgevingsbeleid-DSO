@@ -10,9 +10,10 @@ from dso.announcement_builder.state_manager.models import InputData
 from dso.services.ewid.ewid_service import EWIDService
 from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.type_factories import GebiedFactory
 from tests.unit.dso.model_factories import GioFRBRFactory
+from tests.unit.xml_compare_test import XMLCompareTest
 
 
-class TestBijlageGebiedenContent:
+class TestBijlageGebiedenContent(XMLCompareTest):
     def test_create(self) -> None:
         state_manager = MagicMock(spec=StateManager)
         state_manager.input_data = MagicMock(spec=InputData)
@@ -30,37 +31,7 @@ class TestBijlageGebiedenContent:
 
         bijlage_gebieden_content = BijlageGebiedenContent(state_manager)
         actual = bijlage_gebieden_content.create()
-        expected = """<Bijlage eId="cmp_o_1" wId="pv28__cmp_o_1">
-    <Kop>
-        <Label>Bijlage</Label>
-        <Nummer>1</Nummer>
-        <Opschrift>Overzicht informatieobjecten</Opschrift>
-    </Kop>
-    <Divisietekst eId="cmp_o_1__content_o_1" wId="pv28__cmp_o_1__content_o_1">
-        <Inhoud>
-            <Begrippenlijst eId="cmp_o_1__content_o_1__list_o_1" wId="pv28__cmp_o_1__content_o_1__list_o_1">
-                
-                <Begrip eId="cmp_o_1__content_o_1__list_o_1__item_o_1" wId="pv28__cmp_o_1__content_o_1__list_o_1__item_o_1">
-                    <Term>gebied 1</Term>
-                    <Definitie>
-                        <Al>
-                            <ExtIoRef ref="/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25" eId="cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1" wId="pv28__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1">/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25</ExtIoRef>
-                        </Al>
-                    </Definitie>
-                </Begrip>
-                
-                <Begrip eId="cmp_o_1__content_o_1__list_o_1__item_o_2" wId="pv28__cmp_o_1__content_o_1__list_o_1__item_o_2">
-                    <Term>gebied 2</Term>
-                    <Definitie>
-                        <Al>
-                            <ExtIoRef ref="/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25" eId="cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1" wId="pv28__cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1">/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25</ExtIoRef>
-                        </Al>
-                    </Definitie>
-                </Begrip>
-                
-            </Begrippenlijst>
-        </Inhoud>
-    </Divisietekst>
-</Bijlage>"""
 
-        assert actual == expected
+        with open(self._get_xml_file_path(__file__), "r") as f:
+            expected = f.read()
+            assert self._normalize_xml(actual) == self._normalize_xml(expected)
