@@ -5,7 +5,7 @@ from dso.act_builder.state_manager.input_data.resource.document.document_reposit
 from .asset.asset_repository import AssetRepository
 from .besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
 from .gebieden.gebied_repository import GebiedRepository
-from .gebieden.gebiedengroep_repository import GebiedenGroepRepository
+from .gebieden.gebiedengroep_repository import GebiedengroepRepository
 from .policy_object.policy_object_repository import PolicyObjectRepository
 from .werkingsgebied.werkingsgebied_repository import WerkingsgebiedRepository
 
@@ -15,7 +15,7 @@ class Resources(BaseModel):
     asset_repository: AssetRepository
     werkingsgebied_repository: WerkingsgebiedRepository
     gebied_repository: GebiedRepository
-    gebiedengroep_repository: GebiedenGroepRepository
+    gebiedengroep_repository: GebiedengroepRepository
     besluit_pdf_repository: BesluitPdfRepository
     document_repository: DocumentRepository
     model_config = ConfigDict(arbitrary_types_allowed=True)

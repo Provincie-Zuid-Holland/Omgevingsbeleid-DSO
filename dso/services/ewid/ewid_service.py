@@ -46,11 +46,11 @@ class EWIDService:
             # "Bijlage": int_to_letter_sequence,
         }
 
-        # wId's used by indentifiers, for example beleidskeuze-4 by that object
+        # wId's used by identifiers, for example beleidskeuze-4 by that object
         # Although it should be possible to add custom identifiers
         self._state_used_wid_map: Dict[str, str] = {}
         # All used wids, for export purposes
-        # This will be send in the input data for the next version of this Act
+        # This will be sent in the input data for the next version of this Act
         self._state_used_wids: List[str] = []
 
     def add_ewids(self, xml_source: str, parent_eid="", parent_wid="", parent_tag_name="") -> str:
@@ -121,7 +121,7 @@ class EWIDService:
                 parent_wid = wid if tag_name in self._element_refs else ""
         elif parent_wid != "":
             potential_wid: str = self._generate_wid(tag_name, parent_wid, parent_tag_name)
-            # This is mosly the result of parents being forced to a wId (parents matched the previous if)
+            # This is mostly the result of parents being forced to a wId (parents matched the previous if)
             # Now we would like to continue on our parents (previous act version) path.
             # But we can only do so, if the wId was actually created in previous Act
             if self._known_wids.get(potential_wid, False):
