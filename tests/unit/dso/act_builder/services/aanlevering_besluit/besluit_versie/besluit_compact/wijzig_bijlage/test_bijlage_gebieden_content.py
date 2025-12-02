@@ -20,9 +20,10 @@ class TestBijlageGebiedenContent(XMLCompareTest):
         state_manager.input_data.resources = MagicMock(spec=Resources)
 
         gebied_repository_mock: GebiedRepository | MagicMock = MagicMock(spec=GebiedRepository)
-        gio_gebied = GioFRBRFactory().create()
-        gebied1 = GebiedFactory(id=1, title="gebied 1", code="gebied-1", frbr=gio_gebied).create()
-        gebied2 = GebiedFactory(id=2, title="gebied 2", code="gebied-2", frbr=gio_gebied).create()
+        frbr_gebied_1 = GioFRBRFactory(Expression_Version=1).create()
+        frbr_gebied_2 = GioFRBRFactory(Expression_Version=2).create()
+        gebied1 = GebiedFactory(id=1, frbr=frbr_gebied_1).create()
+        gebied2 = GebiedFactory(id=2, frbr=frbr_gebied_2).create()
         gebied_repository_mock.all.return_value = [gebied1, gebied2]
         state_manager.input_data.resources.gebied_repository = gebied_repository_mock
 

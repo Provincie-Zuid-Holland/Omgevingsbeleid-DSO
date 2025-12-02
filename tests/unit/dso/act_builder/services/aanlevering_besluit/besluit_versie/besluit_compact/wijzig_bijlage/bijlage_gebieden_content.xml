@@ -8,18 +8,18 @@
         <Inhoud>
             <Begrippenlijst eId="cmp_o_1__content_o_1__list_o_1" wId="pv28__cmp_o_1__content_o_1__list_o_1">
                 <Begrip eId="cmp_o_1__content_o_1__list_o_1__item_o_1" wId="pv28__cmp_o_1__content_o_1__list_o_1__item_o_1">
-                    <Term>gebied 1</Term>
+                    <Term>Gebied 1</Term>
                     <Definitie>
                         <Al>
-                            <ExtIoRef ref="/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25" eId="cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1" wId="pv28__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1">/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25</ExtIoRef>
+                            <ExtIoRef ref="/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;1" eId="cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1" wId="pv28__cmp_o_1__content_o_1__list_o_1__item_o_1__ref_o_1">/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;1</ExtIoRef>
                         </Al>
                     </Definitie>
                 </Begrip>
                 <Begrip eId="cmp_o_1__content_o_1__list_o_1__item_o_2" wId="pv28__cmp_o_1__content_o_1__list_o_1__item_o_2">
-                    <Term>gebied 2</Term>
+                    <Term>Gebied 2</Term>
                     <Definitie>
                         <Al>
-                            <ExtIoRef ref="/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25" eId="cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1" wId="pv28__cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1">/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25</ExtIoRef>
+                            <ExtIoRef ref="/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;2" eId="cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1" wId="pv28__cmp_o_1__content_o_1__list_o_1__item_o_2__ref_o_1">/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;2</ExtIoRef>
                         </Al>
                     </Definitie>
                 </Begrip>

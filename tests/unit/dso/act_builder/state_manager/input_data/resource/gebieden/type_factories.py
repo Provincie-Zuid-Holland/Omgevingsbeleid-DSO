@@ -5,8 +5,6 @@ from tests.factory import Factory, TypeEnum
 
 class GebiedFactory(Factory):
     id: int
-    title: str
-    code: str
     frbr: GioFRBR
     new: bool = True
     geboorteregeling: str = ""
@@ -18,8 +16,8 @@ class GebiedFactory(Factory):
     def create(self) -> Gebied:
         uuid = self.get_uuid_from_id(TypeEnum.GEBIED, self.id)
         return Gebied(
-            title=self.title,
-            code=self.code,
+            title=f"Gebied {self.id}",
+            code=f"gebied-{self.id}",
             frbr=self.frbr,
             uuid=uuid,
             identifier=f"wg-{self.id}-{uuid}",

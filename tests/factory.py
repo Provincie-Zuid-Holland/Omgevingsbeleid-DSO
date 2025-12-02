@@ -7,6 +7,8 @@ from pydantic import BaseModel
 
 class TypeEnum(Enum):
     GEBIED = 1
+    DOCUMENT = 2
+    BESLUIT_PDF = 3
 
 
 class Factory(ABC, BaseModel):
