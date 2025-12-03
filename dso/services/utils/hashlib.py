@@ -28,3 +28,6 @@ def compute_sha512_of_output_file(output_file: OutputFile):
 
         case DocumentContentData():
             return hashlib.sha512(output_file.content.document.Binary).hexdigest()
+
+        case _:
+            raise RuntimeError(f"Unknown ContentData type for {output_file.filename}")
