@@ -32,8 +32,8 @@ class TestBesluitMetadataContent(XMLCompareTest):
         gebied_repository_mock: GebiedRepository | MagicMock = MagicMock(spec=GebiedRepository)
         frbr_gebied_1 = GioFRBRFactory(Expression_Version=1).create()
         frbr_gebied_2 = GioFRBRFactory(Expression_Version=2).create()
-        gebied1 = GebiedFactory(id=1, title="gebied 1", code="gebied-1", frbr=frbr_gebied_1).create()
-        gebied2 = GebiedFactory(id=2, title="gebied 2", code="gebied-2", frbr=frbr_gebied_2).create()
+        gebied1 = GebiedFactory(id=1, frbr=frbr_gebied_1).create()
+        gebied2 = GebiedFactory(id=2, frbr=frbr_gebied_2).create()
         gebied_repository_mock.get_new.return_value = [gebied1, gebied2]
         state_manager.input_data.resources.gebied_repository = gebied_repository_mock
 

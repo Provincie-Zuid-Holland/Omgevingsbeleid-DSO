@@ -10,7 +10,6 @@ class GebiedFactory(Factory):
     geboorteregeling: str = ""
     achtergrond_verwijzing: str = ""
     achtergrond_actualiteit: str = ""
-    gml_id: str = ""
     gml: str = ""
 
     def create(self) -> Gebied:
@@ -25,6 +24,6 @@ class GebiedFactory(Factory):
             geboorteregeling=self.geboorteregeling,
             achtergrond_verwijzing=self.achtergrond_verwijzing,
             achtergrond_actualiteit=self.achtergrond_actualiteit,
-            gml_id=self.gml_id,
+            gml_id=f"gml-{self.id}",
             gml=self.gml,
         )
