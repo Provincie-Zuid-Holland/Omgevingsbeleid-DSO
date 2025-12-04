@@ -7,10 +7,9 @@ class GebiedFactory(Factory):
     id: int
     frbr: GioFRBR
     new: bool = True
-    geboorteregeling: str = ""
-    achtergrond_verwijzing: str = ""
-    achtergrond_actualiteit: str = ""
-    gml: str = ""
+    geboorteregeling: str = "akn/nl/act/pv28/2024/omgevingsvisie-1"
+    achtergrond_verwijzing: str = "TOP10NL"
+    achtergrond_actualiteit: str = "2024-05-03"
 
     def create(self) -> Gebied:
         uuid = self.get_uuid_from_id(TypeEnum.GEBIED, self.id)
@@ -25,5 +24,5 @@ class GebiedFactory(Factory):
             achtergrond_verwijzing=self.achtergrond_verwijzing,
             achtergrond_actualiteit=self.achtergrond_actualiteit,
             gml_id=f"gml-{self.id}",
-            gml=self.gml,
+            gml=f'<gml:Point id="{self.id}" />',
         )

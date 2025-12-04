@@ -21,6 +21,17 @@ class ConsolidationWithdrawal(BaseModel):
     eid: str
 
 
+class Tijdstempel(BaseModel):
+    doel: str
+    datum: str
+    eid: str
+
+
+class BeoogdObject(BaseModel):
+    instrument_versie: str
+    eid: str
+
+
 class ConsolidatieInformatieContent:
     def __init__(self, state_manager: StateManager):
         self._state_manager: StateManager = state_manager
@@ -30,43 +41,40 @@ class ConsolidatieInformatieContent:
         instelling_doel: str = settings.instelling_doel.frbr.get_work()
         text_data: TextData = self._state_manager.text_data
 
-        beoogde_regeling = {
-            "instrument_versie": settings.regeling_frbr.get_expression(),
-            "eid": self._state_manager.artikel_eid.find_one_by_type(ArtikelEidType.WIJZIG).eid,
-        }
+        beoogde_regeling = BeoogdObject(
+            instrument_versie=settings.regeling_frbr.get_expression(),
+            eid=self._state_manager.artikel_eid.find_one_by_type(ArtikelEidType.WIJZIG).eid,
+        )
 
-        beoogd_informatieobjecten = []
+        beoogd_informatieobjecten: List[BeoogdObject] = []
         gebieden_new: List[Gebied] = self._state_manager.input_data.resources.gebied_repository.get_new()
         for gebied in gebieden_new:
-            text_gebied: TekstBijlageGebied = text_data.get_gebied_by_code(gebied.Code)
-            beoogd_informatieobjecten.append(
-                {
-                    "instrument_versie": gebied.Frbr.get_expression(),
-                    "eid": f"!{settings.regeling_componentnaam}#{text_gebied.eid}",
-                }
+            text_gebied: TekstBijlageGebied = text_data.get_gebied_by_code(gebied.code)
+            beoogd_informatieobject = BeoogdObject(
+                instrument_versie=gebied.frbr.get_expression(),
+                eid=f"!{settings.regeling_componentnaam}#{text_gebied.eid}",
             )
+            beoogd_informatieobjecten.append(beoogd_informatieobject)
 
         documents_new: List[Document] = self._state_manager.input_data.resources.document_repository.get_new()
         for document in documents_new:
             text_document: TekstBijlageDocument = text_data.get_document_by_code(document.Code)
-            beoogd_informatieobjecten.append(
-                {
-                    "instrument_versie": document.Frbr.get_expression(),
-                    "eid": f"!{settings.regeling_componentnaam}#{text_document.eid}",
-                }
+            beoogd_informatieobject = BeoogdObject(
+                instrument_versie=document.Frbr.get_expression(),
+                eid=f"!{settings.regeling_componentnaam}#{text_document.eid}",
             )
+            beoogd_informatieobjecten.append(beoogd_informatieobject)
 
         withdrawals: List[ConsolidationWithdrawal] = self._get_withdrawals()
 
-        tijdstempels = []
+        tijdstempels: List[Tijdstempel] = []
         if settings.instelling_doel.datum_juridisch_werkend_vanaf is not None:
-            tijdstempels.append(
-                {
-                    "doel": instelling_doel,
-                    "datum": settings.instelling_doel.datum_juridisch_werkend_vanaf,
-                    "eid": self._state_manager.artikel_eid.find_one_by_type(ArtikelEidType.BESLUIT_INWERKINGSTIJD).eid,
-                }
+            tijdstempel = Tijdstempel(
+                doel=instelling_doel,
+                datum=settings.instelling_doel.datum_juridisch_werkend_vanaf,
+                eid=self._state_manager.artikel_eid.find_one_by_type(ArtikelEidType.BESLUIT_INWERKINGSTIJD).eid,
             )
+            tijdstempels.append(tijdstempel)
 
         content = load_template(
             "akn/besluit_versie/ConsolidatieInformatie.xml",

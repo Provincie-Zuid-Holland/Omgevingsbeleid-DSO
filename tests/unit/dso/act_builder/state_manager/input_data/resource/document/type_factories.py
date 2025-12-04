@@ -11,13 +11,13 @@ class DocumentFactory(Factory):
     geboorteregeling: str = "/akn/nl/act/pv28/2024/omgevingsvisie-1"
 
     def create(self) -> Document:
-        title = f"Document-{id}"
+        title = f"Document-{self.id}"
         return Document(
             UUID=self.get_uuid_from_id(TypeEnum.DOCUMENT, self.id),
-            Code=f"document-{id}",
+            Code=f"document-{self.id}",
             Frbr=self.frbr,
             New=self.new,
-            Filename=f"document-{id}.{ContentType.PDF.lower()}",
+            Filename=f"document-{self.id}.{ContentType.PDF.lower()}",
             Title=title,
             Geboorteregeling=self.geboorteregeling,
             Content_Type=self.content_type,
