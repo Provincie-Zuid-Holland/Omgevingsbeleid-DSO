@@ -3,32 +3,33 @@ from unittest.mock import MagicMock
 from dso.act_builder.services.aanlevering_besluit.besluit_versie.besluit_metadata_content import BesluitMetadataContent
 from dso.act_builder.state_manager.input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
 from dso.act_builder.state_manager.input_data.resource.besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
-from dso.act_builder.state_manager.input_data.resource.document.document import Document
-from dso.act_builder.state_manager.input_data.resource.document.document_repository import DocumentRepository
 from dso.services.utils.waardelijsten import Provincie, BestuursorgaanSoort
 from tests.unit.dso.act_builder.state_manager.input_data.besluit_factories import BesluitFactory
 from tests.unit.dso.act_builder.state_manager.input_data.regeling_factories import RegelingFactory
 from tests.unit.dso.act_builder.state_manager.input_data.resource.besluit_pdf.besluit_pdf_factory import (
     BesluitPdfFactory,
 )
-from tests.unit.dso.act_builder.state_manager.input_data.resource.document.type_factories import DocumentFactory
+from tests.unit.dso.act_builder.state_manager.input_data.resource.document.document_repository import (
+    document_repository_mock_with_two_documents,
+)
 from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gebied_repository import (
     gebied_repository_mock_with_two_new_gebieden,
 )
 from tests.unit.dso.act_builder.state_manager.state_manager_test_case import state_manager_mock
-from tests.unit.dso.model_factories import GioFRBRFactory, PubdataFRBRFactory
+from tests.unit.dso.model_factories import PubdataFRBRFactory
 from tests.unit.xml_compare_test import XMLCompareTest
 
 
 class TestBesluitMetadataContent(XMLCompareTest):
-    def test_create(self, state_manager_mock, gebied_repository_mock_with_two_new_gebieden) -> None:
+    def test_create(
+        self,
+        state_manager_mock,
+        gebied_repository_mock_with_two_new_gebieden,
+        document_repository_mock_with_two_documents,
+    ) -> None:
         state_manager_mock.input_data.resources.gebied_repository = gebied_repository_mock_with_two_new_gebieden
 
-        document_repository_mock: DocumentRepository | MagicMock = MagicMock(spec=DocumentRepository)
-        frbr_document_1 = GioFRBRFactory(Expression_Version=3).create()
-        document_1: Document = DocumentFactory(id=1, frbr=frbr_document_1).create()
-        document_repository_mock.all.return_value = [document_1]
-        state_manager_mock.input_data.resources.document_repository = document_repository_mock
+        state_manager_mock.input_data.resources.document_repository = document_repository_mock_with_two_documents
 
         besluit_pdf_repository_mock: BesluitPdfRepository | MagicMock = MagicMock(spec=BesluitPdfRepository)
         frbr_besluit_pdf_1 = PubdataFRBRFactory(Expression_Version=1).create()

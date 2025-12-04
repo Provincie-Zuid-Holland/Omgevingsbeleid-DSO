@@ -19,6 +19,7 @@ from tests.unit.dso.model_factories import (
     ActFRBRFactory,
     GioFRBRFactory,
     VerwijderdGebiedFactory,
+    FRBRType,
 )
 from tests.unit.xml_compare_test import XMLCompareTest
 
@@ -45,9 +46,9 @@ class TestConsolidatieInformatieContent(XMLCompareTest):
         state_manager_mock.input_data.resources.gebied_repository = gebied_repository_mock_with_two_new_gebieden
         state_manager_mock.input_data.resources.document_repository = document_repository_mock_with_two_new_documents
 
-        gio_frbr: GioFRBR = GioFRBRFactory(Expression_Version=3).create()
-        gebied_to_be_deleted = VerwijderdGebiedFactory(id=1, frbr=gio_frbr).create()
-        was_regeling_frbr = ActFRBRFactory(Expression_Version=4).create()
+        gio_frbr: GioFRBR = GioFRBRFactory(frbr_type=FRBRType.GEBIED, Expression_Version=3).create()
+        gebied_to_be_deleted = VerwijderdGebiedFactory(id=3, frbr=gio_frbr).create()
+        was_regeling_frbr = ActFRBRFactory(Expression_Version=1).create()
         regeling_mutatie = RegelingMutatie(
             was_regeling_frbr=was_regeling_frbr,
             te_verwijderden_gebieden=[gebied_to_be_deleted],
@@ -57,9 +58,9 @@ class TestConsolidatieInformatieContent(XMLCompareTest):
         state_manager_mock.input_data.regeling_mutatie = regeling_mutatie
         state_manager_mock.regeling_vrijetekst_aangeleverd = """<RegelingVrijetekst xmlns="https://standaarden.overheid.nl/stop/imop/tekst/">
     <ExtIoRef eId="cmp_I__content_o_1__list_o_1__item_o_2__ref_o_1"
-        wId="gm0297_1__cmp_I__content_o_1__list_o_2__ref_o_1"
-        ref="/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;3">
-            /join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;3
+        wId="gm0001_1__cmp_I__content_o_1__list_o_2__ref_o_1"
+        ref="/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;103">
+            /join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;103
     </ExtIoRef>
 </RegelingVrijetekst>"""
 

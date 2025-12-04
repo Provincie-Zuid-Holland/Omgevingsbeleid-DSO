@@ -6,7 +6,7 @@ import pytest
 from dso.act_builder.state_manager.input_data.resource.gebieden.gebied_repository import GebiedRepository
 from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebied
 from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.type_factories import GebiedFactory
-from tests.unit.dso.model_factories import GioFRBRFactory
+from tests.unit.dso.model_factories import GioFRBRFactory, FRBRType
 
 
 @pytest.fixture
@@ -26,7 +26,7 @@ def gebied_repository_mock_with_two_gebieden() -> GebiedRepository | Mock:
 def _get_gebieden(count: int = 2) -> List[Gebied | Mock]:
     gebieden: List[Gebied | Mock] = []
     for i in range(1, count + 1):
-        frbr = GioFRBRFactory(Expression_Version=i).create()
+        frbr = GioFRBRFactory(frbr_type=FRBRType.GEBIED, Expression_Version=i).create()
         gebied = GebiedFactory(id=i, frbr=frbr).create()
         gebieden.append(gebied)
     return gebieden

@@ -4,35 +4,35 @@
             <doelen>
                 <doel>/join/id/proces/pv28/2025/omgevingsvisie-1</doel>
             </doelen>
-            <instrumentVersie>/akn/nl/act/pv28/2025/omgevingsvisie-1/nld@2025-11-25;1</instrumentVersie>
+            <instrumentVersie>/akn/nl/act/pv28/2025/omgevingsvisie-1/nld@2025-11-25;301</instrumentVersie>
             <eId>eid-artikel-1</eId>
         </BeoogdeRegeling>
         <BeoogdInformatieobject>
             <doelen>
                 <doel>/join/id/proces/pv28/2025/omgevingsvisie-1</doel>
             </doelen>
-            <instrumentVersie>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;1</instrumentVersie>
+            <instrumentVersie>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;101</instrumentVersie>
             <eId>!pv28_omgevingsvisie_1#eid-tekst-bijlage-gebied-1</eId>
         </BeoogdInformatieobject>
         <BeoogdInformatieobject>
             <doelen>
                 <doel>/join/id/proces/pv28/2025/omgevingsvisie-1</doel>
             </doelen>
-            <instrumentVersie>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;2</instrumentVersie>
+            <instrumentVersie>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;102</instrumentVersie>
             <eId>!pv28_omgevingsvisie_1#eid-tekst-bijlage-gebied-2</eId>
         </BeoogdInformatieobject>
         <BeoogdInformatieobject>
             <doelen>
                 <doel>/join/id/proces/pv28/2025/omgevingsvisie-1</doel>
             </doelen>
-            <instrumentVersie>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;1</instrumentVersie>
+            <instrumentVersie>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;201</instrumentVersie>
             <eId>!pv28_omgevingsvisie_1#eid-tekst-bijlage-document-1</eId>
         </BeoogdInformatieobject>
         <BeoogdInformatieobject>
             <doelen>
                 <doel>/join/id/proces/pv28/2025/omgevingsvisie-1</doel>
             </doelen>
-            <instrumentVersie>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;2</instrumentVersie>
+            <instrumentVersie>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;202</instrumentVersie>
             <eId>!pv28_omgevingsvisie_1#eid-tekst-bijlage-document-2</eId>
         </BeoogdInformatieobject>
     </BeoogdeRegelgeving>

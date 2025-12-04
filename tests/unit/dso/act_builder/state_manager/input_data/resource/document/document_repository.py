@@ -6,7 +6,7 @@ import pytest
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
 from dso.act_builder.state_manager.input_data.resource.document.document_repository import DocumentRepository
 from tests.unit.dso.act_builder.state_manager.input_data.resource.document.type_factories import DocumentFactory
-from tests.unit.dso.model_factories import GioFRBRFactory
+from tests.unit.dso.model_factories import GioFRBRFactory, FRBRType
 
 
 @pytest.fixture
@@ -26,7 +26,7 @@ def document_repository_mock_with_two_documents() -> DocumentRepository | Mock:
 def _get_documents(count: int = 2) -> List[Document | Mock]:
     documents: List[Document | Mock] = []
     for i in range(1, count + 1):
-        frbr = GioFRBRFactory(Expression_Version=i).create()
+        frbr = GioFRBRFactory(frbr_type=FRBRType.DOCUMENT, Expression_Version=i).create()
         document = DocumentFactory(id=i, frbr=frbr).create()
         documents.append(document)
     return documents

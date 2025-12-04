@@ -1,9 +1,15 @@
+from enum import IntEnum
 from typing import Optional
-
-from pydantic import BaseModel
 
 from dso.models import GioFRBR, PubdataFRBR, InstellingDoel, DoelFRBR, ActFRBR, VerwijderdGebied
 from tests.factory import Factory, TypeEnum
+
+
+class FRBRType(IntEnum):
+    GEBIED = 100
+    DOCUMENT = 200
+    ACT = 300
+    PUB_DATA = 400
 
 
 class GioFRBRFactory(Factory):
@@ -13,6 +19,7 @@ class GioFRBRFactory(Factory):
     Work_Date: str = "2025"
     Expression_Date: str = "2025-11-25"
     Expression_Version: int
+    frbr_type: FRBRType
 
     def create(self) -> GioFRBR:
         return GioFRBR(
@@ -21,7 +28,7 @@ class GioFRBRFactory(Factory):
             Expression_Language=self.Expression_Language,
             Work_Date=self.Work_Date,
             Expression_Date=self.Expression_Date,
-            Expression_Version=self.Expression_Version,
+            Expression_Version=self.frbr_type + self.Expression_Version,
         )
 
 
@@ -40,7 +47,7 @@ class PubdataFRBRFactory(Factory):
             Expression_Language=self.Expression_Language,
             Work_Date=self.Work_Date,
             Expression_Date=self.Expression_Date,
-            Expression_Version=self.Expression_Version,
+            Expression_Version=FRBRType.PUB_DATA + self.Expression_Version,
         )
 
 
@@ -74,7 +81,7 @@ class ActFRBRFactory(Factory):
             Expression_Language=self.Expression_Language,
             Work_Date=self.Work_Date,
             Expression_Date=self.Expression_Date,
-            Expression_Version=self.Expression_Version,
+            Expression_Version=FRBRType.ACT + self.Expression_Version,
         )
 
 
