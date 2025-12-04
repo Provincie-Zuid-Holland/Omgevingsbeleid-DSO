@@ -42,6 +42,6 @@ class GebiedenGroep(BaseModel):
     code: str
     new: bool
     title: str
-    area_codes: List[str] = Field(default_factory=list)
+    gebied_codes: List[str] = Field(default_factory=list)
 
     model_config = ConfigDict(populate_by_name=True)
