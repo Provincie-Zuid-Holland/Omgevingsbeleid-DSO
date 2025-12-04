@@ -42,10 +42,6 @@ class GebiedenGroep(BaseModel):
     code: str
     new: bool
     title: str
-    area_uuids: List[UUID] = Field(default_factory=list)
-
-    @field_serializer("uuid")
-    def serialize_uuid(cls, v: UUID) -> str:
-        return str(v)
+    area_codes: List[str] = Field(default_factory=list)
 
     model_config = ConfigDict(populate_by_name=True)

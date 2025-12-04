@@ -53,7 +53,7 @@ class GebiedRepository:
         return not self._gebieden
 
     def get_for_group(self, group: GebiedenGroep) -> List[Gebied]:
-        result: List[Gebied] = [gebied for gebied in self._gebieden.values() if gebied.uuid in group.area_uuids]
+        result: List[Gebied] = [gebied for gebied in self._gebieden.values() if gebied.code in group.area_codes]
         return result
 
     def to_dict(self):
