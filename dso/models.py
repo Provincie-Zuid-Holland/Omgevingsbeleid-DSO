@@ -268,7 +268,7 @@ class PublicationSettings(BaseModel):
 
 
 class VerwijderdGebied(BaseModel):
-    UUID: str
+    uuid: str
     code: str
     object_id: int
     frbr: GioFRBR

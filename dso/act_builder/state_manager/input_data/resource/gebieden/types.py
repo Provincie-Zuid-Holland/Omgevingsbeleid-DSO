@@ -2,7 +2,7 @@ import re
 from uuid import UUID
 from typing import List
 
-from pydantic import BaseModel, ConfigDict, Field, field_serializer
+from pydantic import BaseModel, ConfigDict, Field
 
 from ......models import GioFRBR
 
