@@ -5,21 +5,17 @@ from tests.factory import Factory, TypeEnum
 
 class GebiedFactory(Factory):
     id: int
-    title: str
-    code: str
     frbr: GioFRBR
     new: bool = True
-    geboorteregeling: str = ""
-    achtergrond_verwijzing: str = ""
-    achtergrond_actualiteit: str = ""
-    gml_id: str = ""
-    gml: str = ""
+    geboorteregeling: str = "akn/nl/act/pv28/2024/omgevingsvisie-1"
+    achtergrond_verwijzing: str = "TOP10NL"
+    achtergrond_actualiteit: str = "2024-05-03"
 
     def create(self) -> Gebied:
         uuid = self.get_uuid_from_id(TypeEnum.GEBIED, self.id)
         return Gebied(
-            title=self.title,
-            code=self.code,
+            title=f"Gebied {self.id}",
+            code=f"gebied-{self.id}",
             frbr=self.frbr,
             uuid=uuid,
             identifier=f"wg-{self.id}-{uuid}",
@@ -27,6 +23,6 @@ class GebiedFactory(Factory):
             geboorteregeling=self.geboorteregeling,
             achtergrond_verwijzing=self.achtergrond_verwijzing,
             achtergrond_actualiteit=self.achtergrond_actualiteit,
-            gml_id=self.gml_id,
-            gml=self.gml,
+            gml_id=f"gml-{self.id}",
+            gml=f'<gml:Point id="{self.id}" />',
         )

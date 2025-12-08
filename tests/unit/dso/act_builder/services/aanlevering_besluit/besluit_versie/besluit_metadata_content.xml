@@ -1,0 +1,20 @@
+<BesluitMetadata xmlns="https://standaarden.overheid.nl/stop/imop/data/">
+    <eindverantwoordelijke>/tooi/id/provincie/pv28</eindverantwoordelijke>
+    <maker>/tooi/id/provincie/pv28</maker>
+    <soortBestuursorgaan>/tooi/def/thes/kern/c_411b4e4a</soortBestuursorgaan>
+    <officieleTitel>Omgevingsvisie van Zuid-Holland</officieleTitel>
+    <onderwerpen>
+        <onderwerp>/tooi/def/concept/c_9af4b880</onderwerp>
+    </onderwerpen>
+    <rechtsgebieden>
+        <rechtsgebied>/tooi/def/concept/c_638d8062</rechtsgebied>
+    </rechtsgebieden>
+    <soortProcedure>/join/id/stop/proceduretype_definitief</soortProcedure>
+    <informatieobjectRefs>
+            <informatieobjectRef>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;101</informatieobjectRef>
+            <informatieobjectRef>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;102</informatieobjectRef>
+            <informatieobjectRef>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;201</informatieobjectRef>
+            <informatieobjectRef>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;202</informatieobjectRef>
+            <informatieobjectRef>/join/id/pubdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;401</informatieobjectRef>
+    </informatieobjectRefs>
+</BesluitMetadata>
