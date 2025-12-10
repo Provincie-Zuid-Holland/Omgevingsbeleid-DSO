@@ -7,19 +7,10 @@ from bs4 import BeautifulSoup, CData, Comment, Declaration, Doctype, NavigableSt
 from .lijst import LijstType, LijstTypeOrdered, LijstTypeUnordered, NumberingStrategy, numbering_factory
 
 object_code_regex = r"\[OBJECT-CODE:(.*?)\]"
-gebied_code_regex = r"\[GEBIED-CODE:(.*?)\]"
 
 
 def extract_object_code(text: str) -> Optional[str]:
     matched = re.search(object_code_regex, text)
-    if not matched:
-        return None
-    result = matched.group(1)
-    return result
-
-
-def extract_gebied_code(text: str) -> Optional[str]:
-    matched = re.search(gebied_code_regex, text)
     if not matched:
         return None
     result = matched.group(1)
@@ -389,10 +380,10 @@ class DocumentRef(SimpleElement):
 class GebiedsaanwijzingRef(SimpleElement):
     """
     Example input:
-    <a data-hint-type="gebiedsaanwijzing" data-hint-uuid="gebiedsaanwijzing-uuid-repository">Malieveld</a>
+    <a data-hint-type="gebiedsaanwijzing" data-hint-gebiedsaanwijzing-uuid="gebiedsaanwijzing-uuid-repository" href="">Malieveld</a>
 
     Example output:
-    <ExtIoRef ref="" data-hint-type="gebiedsaanwijzing" data-hint-uuid="gebiedsaanwijzing-uuid-repository">Malieveld</ExtIoRef>
+    <ExtIoRef data-hint-type="gebiedsaanwijzing" data-hint-gebiedsaanwijzing-uuid="gebiedsaanwijzing-uuid-repository" ref="">Malieveld</ExtIoRef>
 
     The `ref` will be set later with help of the `gebiedsaanwijzing-uuid-repository`
     """
@@ -408,7 +399,7 @@ class GebiedsaanwijzingRef(SimpleElement):
             tag_attrs_overwrite={
                 "ref": "",
                 "data-hint-type": "gebiedsaanwijzing",
-                "data-hint-uuid": self._uuid,
+                "data-hint-gebiedsaanwijzing-uuid": self._uuid,
             },
         )
         return result

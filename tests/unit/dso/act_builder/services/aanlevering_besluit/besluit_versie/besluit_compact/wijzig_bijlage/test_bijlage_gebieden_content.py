@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
 
-from dso.act_builder.services.aanlevering_besluit.besluit_versie.besluit_compact.wijzig_bijlage.bijlage_gebieden_content import (
-    BijlageGebiedenContent,
+from dso.act_builder.services.aanlevering_besluit.besluit_versie.besluit_compact.wijzig_bijlage.bijlage_geogios_content import (
+    BijlageGeoGioContent,
 )
 from dso.act_builder.state_manager import StateManager
 from dso.act_builder.state_manager.input_data.resource.gebieden.gebied_repository import GebiedRepository
@@ -29,7 +29,7 @@ class TestBijlageGebiedenContent(XMLCompareTest):
         act_ewid_service = EWIDService(wid_prefix="pv28")
         state_manager.act_ewid_service = act_ewid_service
 
-        bijlage_gebieden_content = BijlageGebiedenContent(state_manager)
+        bijlage_gebieden_content = BijlageGeoGioContent(state_manager)
         actual = bijlage_gebieden_content.create()
 
         with open(self._get_xml_file_path(__file__), "r") as f:

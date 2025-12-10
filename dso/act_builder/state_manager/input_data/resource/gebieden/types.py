@@ -42,6 +42,9 @@ class GeoGio(BaseModel):
     def key(self) -> str:
         return ",".join(sorted(self.source_codes))
 
+    def wid_key(self) -> str:
+        return "-".join(sorted(self.source_codes))
+
     def get_name(self) -> str:
         s: str = self.title.lower()
         s = re.sub(r"[^a-z0-9 ]+", "", s)

@@ -11,7 +11,7 @@ from ......models import PublicationSettings, RenvooiRegelingMutatie, VervangReg
 from ......services.utils.helpers import load_template
 from .....state_manager.state_manager import StateManager
 from .renvooi.renvooi_service import RenvooiService
-from .wijzig_bijlage.bijlage_gebieden_content import BijlageGebiedenContent
+from .wijzig_bijlage.bijlage_geogios_content import BijlageGeoGioContent
 from .wijzig_bijlage.lichaam_content import LichaamContent
 
 
@@ -21,9 +21,9 @@ class WijzigBijlageContent:
 
     def create(self) -> str:
         # This bijlage needs to go first, because it changes the state_manager
-        bijlage_gebieden: str = BijlageGebiedenContent(self._state_manager).create()
+        bijlage_geogios: str = BijlageGeoGioContent(self._state_manager).create()
         bijlage_documenten: str = BijlageDocumentenContent(self._state_manager).create()
-        bijlagen = [b for b in [bijlage_gebieden, bijlage_documenten] if b != ""]
+        bijlagen = [b for b in [bijlage_geogios, bijlage_documenten] if b != ""]
 
         lichaam: str = LichaamContent(self._state_manager).create()
         settings: PublicationSettings = self._state_manager.input_data.publication_settings

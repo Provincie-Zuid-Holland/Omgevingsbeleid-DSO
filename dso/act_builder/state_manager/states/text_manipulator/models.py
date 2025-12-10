@@ -1,10 +1,11 @@
 from typing import List
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
 
-class TekstBijlageGebied(BaseModel):
-    gebied_code: str
+class TekstBijlageGeoGio(BaseModel):
+    geogio_key: str
     eid: str
     wid: str
     element: str
@@ -18,12 +19,10 @@ class TekstBijlageDocument(BaseModel):
 
 
 class TekstPolicyObjectGebiedsaanwijzing(BaseModel):
-    werkingsgebied_code: str
+    uuid: UUID
     eid: str
     wid: str
     element: str
-    aanwijzing_type: str
-    aanwijzing_groep: str
 
 
 class TekstPolicyObject(BaseModel):
@@ -35,15 +34,15 @@ class TekstPolicyObject(BaseModel):
 
 
 class TextData(BaseModel):
-    bijlage_gebieden: List[TekstBijlageGebied] = Field(default_factory=list)
+    bijlage_geogios: List[TekstBijlageGeoGio] = Field(default_factory=list)
     bijlage_documenten: List[TekstBijlageDocument] = Field(default_factory=list)
     policy_objects: List[TekstPolicyObject] = Field(default_factory=list)
 
-    def get_gebied_by_code(self, code: str) -> TekstBijlageGebied:
-        for gebied in self.bijlage_gebieden:
-            if gebied.gebied_code == code:
-                return gebied
-        raise RuntimeError(f"{code} not found in TextData.TekstBijlageGebied")
+    def get_geogio_by_key(self, geogio_key: str) -> TekstBijlageGeoGio:
+        for gio in self.bijlage_geogios:
+            if gio.geogio_key == geogio_key:
+                return gio
+        raise RuntimeError(f"{geogio_key} not found in TextData.TekstBijlageGeoGio")
 
     def get_document_by_code(self, code: str) -> TekstBijlageDocument:
         for document in self.bijlage_documenten:

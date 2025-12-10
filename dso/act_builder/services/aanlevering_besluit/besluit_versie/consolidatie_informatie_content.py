@@ -7,12 +7,12 @@ from dso.act_builder.state_manager.input_data.resource.document.document import 
 from dso.act_builder.state_manager.states.text_manipulator.models import (
     TekstBijlageDocument,
     TextData,
-    TekstBijlageGebied,
+    TekstBijlageGeoGio,
 )
-from ....state_manager.input_data.resource.gebieden.types import Gebied
+from ....state_manager.input_data.resource.gebieden.types import GeoGio
 from ....state_manager.state_manager import StateManager
 from ....state_manager.states.artikel_eid_repository import ArtikelEidType
-from .....models import PublicationSettings, VerwijderdGebied, VerwijderdeGio
+from .....models import PublicationSettings, VerwijderdeGio
 from .....services.utils.helpers import load_template
 
 
@@ -36,13 +36,13 @@ class ConsolidatieInformatieContent:
         }
 
         beoogd_informatieobjecten = []
-        gebieden_new: List[Gebied] = self._state_manager.input_data.resources.gebied_repository.get_new()
-        for gebied in gebieden_new:
-            text_gebied: TekstBijlageGebied = text_data.get_gebied_by_code(gebied.Code)
+        geogios_new: List[GeoGio] = self._state_manager.input_data.resources.geogio_repository.get_new()
+        for gio in geogios_new:
+            text_gio: TekstBijlageGeoGio = text_data.get_geogio_by_key(gio.key())
             beoogd_informatieobjecten.append(
                 {
-                    "instrument_versie": gebied.Frbr.get_expression(),
-                    "eid": f"!{settings.regeling_componentnaam}#{text_gebied.eid}",
+                    "instrument_versie": gio.frbr.get_expression(),
+                    "eid": f"!{settings.regeling_componentnaam}#{text_gio.eid}",
                 }
             )
 

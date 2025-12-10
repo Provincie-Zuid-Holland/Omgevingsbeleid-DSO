@@ -1,5 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 
+from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzing_repository import GebiedsaanwijzingRepository
+
 
 from .asset.asset_repository import AssetRepository
 from .besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
@@ -16,6 +18,7 @@ class Resources(BaseModel):
     geogio_repository: GeoGioRepository
     gebied_repository: GebiedRepository
     gebiedengroep_repository: GebiedengroepRepository
+    gebiedsaanwijzingen_repository: GebiedsaanwijzingRepository
     besluit_pdf_repository: BesluitPdfRepository
     document_repository: DocumentRepository
     model_config = ConfigDict(arbitrary_types_allowed=True)
