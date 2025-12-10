@@ -43,14 +43,8 @@ class GebiedengroepRepository:
             raise RuntimeError(f"Can not find groep {code}")
         return groep
 
-    def get_new(self) -> List[GebiedenGroep]:
-        return [g for g in self._groepen.values() if g.new]
-
     def all(self) -> List[GebiedenGroep]:
         return list(self._groepen.values())
-
-    def is_empty(self) -> bool:
-        return not self._groepen
 
     def to_dict(self):
         return {str(k): json.loads(v.model_dump_json()) for k, v in self._groepen.items()}

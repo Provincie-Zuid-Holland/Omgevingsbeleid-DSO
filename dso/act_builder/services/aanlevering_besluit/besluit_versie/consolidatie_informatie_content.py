@@ -7,12 +7,12 @@ from dso.act_builder.state_manager.input_data.resource.document.document import 
 from dso.act_builder.state_manager.states.text_manipulator.models import (
     TekstBijlageDocument,
     TextData,
-    TekstBijlageGebied,
+    TekstBijlageGeoGio,
 )
-from ....state_manager.input_data.resource.gebieden.types import Gebied
+from ....state_manager.input_data.resource.gebieden.types import GeoGio
 from ....state_manager.state_manager import StateManager
 from ....state_manager.states.artikel_eid_repository import ArtikelEidType
-from .....models import PublicationSettings, VerwijderdGebied
+from .....models import PublicationSettings, VerwijderdeGio
 from .....services.utils.helpers import load_template
 
 
@@ -47,12 +47,12 @@ class ConsolidatieInformatieContent:
         )
 
         beoogd_informatieobjecten: List[BeoogdObject] = []
-        gebieden_new: List[Gebied] = self._state_manager.input_data.resources.gebied_repository.get_new()
-        for gebied in gebieden_new:
-            text_gebied: TekstBijlageGebied = text_data.get_gebied_by_code(gebied.code)
+        geogios_new: List[GeoGio] = self._state_manager.input_data.resources.geogio_repository.get_new()
+        for gio in geogios_new:
+            text_gio: TekstBijlageGeoGio = text_data.get_geogio_by_key(gio.key())
             beoogd_informatieobject = BeoogdObject(
-                instrument_versie=gebied.frbr.get_expression(),
-                eid=f"!{settings.regeling_componentnaam}#{text_gebied.eid}",
+                instrument_versie=gio.frbr.get_expression(),
+                eid=f"!{settings.regeling_componentnaam}#{text_gio.eid}",
             )
             beoogd_informatieobjecten.append(beoogd_informatieobject)
 
@@ -111,7 +111,7 @@ class ConsolidatieInformatieContent:
 
         result: List[ConsolidationWithdrawal] = []
         component_name: str = self._state_manager.input_data.publication_settings.regeling_componentnaam
-        removed_gios: List[VerwijderdGebied] = self._state_manager.input_data.regeling_mutatie.te_verwijderden_gebieden
+        removed_gios: List[VerwijderdeGio] = self._state_manager.input_data.regeling_mutatie.te_verwijderden_gios
         for removed_gio in removed_gios:
             expression: str = removed_gio.frbr.get_expression()
             eid: str = ref_to_eid_map.get(expression, "")

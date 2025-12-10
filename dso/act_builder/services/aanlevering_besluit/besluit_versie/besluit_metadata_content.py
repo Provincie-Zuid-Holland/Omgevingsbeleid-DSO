@@ -1,7 +1,7 @@
 from typing import List
 
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
-from ....state_manager.input_data.resource.gebieden.types import Gebied
+from ....state_manager.input_data.resource.gebieden.types import GeoGio
 
 from .....services.utils.helpers import load_template
 from ....state_manager.input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
@@ -15,9 +15,9 @@ class BesluitMetadataContent:
     def create(self) -> str:
         informatieobject_refs: List[str] = []
 
-        gebieden_new: List[Gebied] = self._state_manager.input_data.resources.gebied_repository.get_new()
-        for gebied in gebieden_new:
-            informatieobject_refs.append(gebied.frbr.get_expression())
+        geogios_new: List[GeoGio] = self._state_manager.input_data.resources.geogio_repository.get_new()
+        for gio in geogios_new:
+            informatieobject_refs.append(gio.frbr.get_expression())
 
         documents: List[Document] = self._state_manager.input_data.resources.document_repository.all()
         for document in documents:

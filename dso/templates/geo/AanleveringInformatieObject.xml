@@ -6,17 +6,17 @@
 	<InformatieObjectVersie>
 		<ExpressionIdentificatie xmlns="https://standaarden.overheid.nl/stop/imop/data/"
 			schemaversie="1.3.0">
-			<FRBRWork>{{ gebied_frbr.get_work() }}</FRBRWork>
-			<FRBRExpression>{{ gebied_frbr.get_expression() }}</FRBRExpression>
+			<FRBRWork>{{ gio.frbr.get_work() }}</FRBRWork>
+			<FRBRExpression>{{ gio.frbr.get_expression() }}</FRBRExpression>
 			<soortWork>/join/id/stop/work_010</soortWork>
 		</ExpressionIdentificatie>
 		<InformatieObjectVersieMetadata xmlns="https://standaarden.overheid.nl/stop/imop/data/"
 			schemaversie="1.3.0">
-			<heeftGeboorteregeling>{{ geboorteregeling }}</heeftGeboorteregeling>
+			<heeftGeboorteregeling>{{ gio.geboorteregeling }}</heeftGeboorteregeling>
 			<heeftBestanden>
 				<heeftBestand>
 					<Bestand>
-						<bestandsnaam>{{ bestandsnaam }}</bestandsnaam>
+						<bestandsnaam>{{ gio.get_gml_filename() }}</bestandsnaam>
 						<hash>{{ gml_hash }}</hash>
 					</Bestand>
 				</heeftBestand>
@@ -26,8 +26,8 @@
 			schemaversie="1.3.0">
 			<eindverantwoordelijke>{{ provincie_ref }}</eindverantwoordelijke>
 			<maker>{{ provincie_ref }}</maker>
-			<naamInformatieObject>{{ naamInformatie_object }}</naamInformatieObject>
-			<officieleTitel>{{ gebied_frbr.get_work() }}</officieleTitel>
+			<naamInformatieObject>{{ gio.title }}</naamInformatieObject>
+			<officieleTitel>{{ gio.frbr.get_work() }}</officieleTitel>
 			<publicatieinstructie>TeConsolideren</publicatieinstructie>
 			<formaatInformatieobject>/join/id/stop/informatieobject/gio_002</formaatInformatieobject>
 		</InformatieObjectMetadata>

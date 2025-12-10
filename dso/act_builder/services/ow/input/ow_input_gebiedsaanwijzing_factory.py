@@ -1,52 +1,53 @@
-from typing import List, Set
+from typing import List
 
 from dso.act_builder.services.ow.input.models import (
-    OwInputAbstractLocatieRef,
     OwInputGebiedsaanwijzing,
-    OwInputGebiedengroepLocatieRef,
+    OwInputGeoGio,
+    OwInputLocatie,
 )
-from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
-from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
-    WerkingsgebiedRepository,
+from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzing_repository import (
+    GebiedsaanwijzingRepository,
 )
+from dso.act_builder.state_manager.input_data.resource.gebieden.geogio_repository import GeoGioRepository
+from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, GeoGio
 from dso.act_builder.state_manager.state_manager import StateManager
-from dso.act_builder.state_manager.states.text_manipulator.models import TekstPolicyObject, TextData
 
 
 class OwInputGebiedsaanwijzingFactory:
     def __init__(self, state_manager: StateManager):
-        self._werkingsgebieden_repository: WerkingsgebiedRepository = (
-            state_manager.input_data.resources.werkingsgebied_repository
+        self._aanwijzing_repository: GebiedsaanwijzingRepository = (
+            state_manager.input_data.resources.gebiedsaanwijzingen_repository
         )
-        self._text_data: TextData = state_manager.text_data
+        self._gio_repository: GeoGioRepository = state_manager.input_data.resources.geogio_repository
 
     def get_gebiedsaanwijzingen(self) -> List[OwInputGebiedsaanwijzing]:
-        result: Set[OwInputGebiedsaanwijzing] = set()
+        aanwijzingen: List[Gebiedsaanwijzing] = self._aanwijzing_repository.all()
+        result: List[OwInputGebiedsaanwijzing] = []
 
-        for tekst_policy_object in self._text_data.policy_objects:
-            object_aanwijzingen = self._build_for_policy_object(tekst_policy_object)
-            result.update(object_aanwijzingen)
+        # We dont need to worry about duplicates as the OwState machine takes care of that
+        for aanwijzing in aanwijzingen:
+            gio: GeoGio = self._gio_repository.get_by_key(aanwijzing.geo_gio_key)
 
-        return list(result)
-
-    def _build_for_policy_object(self, tekst_policy_object: TekstPolicyObject) -> Set[OwInputGebiedsaanwijzing]:
-        result: Set[OwInputGebiedsaanwijzing] = set()
-
-        for tekst_gebiedsaanwijzingen in tekst_policy_object.gebiedsaanwijzingen:
-            werkingsgebied: Werkingsgebied = self._werkingsgebieden_repository.get_by_code(
-                tekst_gebiedsaanwijzingen.werkingsgebied_code
+            input_locaties: List[OwInputLocatie] = [
+                OwInputLocatie(
+                    source_code=locatie.code,
+                    title=locatie.title,
+                    geometry_id=locatie.basisgeo_id,
+                )
+                for locatie in gio.locaties
+            ]
+            input_gio: OwInputGeoGio = OwInputGeoGio(
+                source_code=gio.key(),
+                title=gio.title,
+                locaties=input_locaties,
             )
-
-            ow_input_gebiedsaanwijzingen = OwInputGebiedsaanwijzing(
-                source_werkingsgebied_code=tekst_gebiedsaanwijzingen.werkingsgebied_code,
-                title=werkingsgebied.Title,
-                indication_type=tekst_gebiedsaanwijzingen.aanwijzing_type,
-                indication_group=tekst_gebiedsaanwijzingen.aanwijzing_groep,
-                location_refs=self._get_location_refs(werkingsgebied),
+            input_aanwijzing = OwInputGebiedsaanwijzing(
+                source_code=aanwijzing.key(),
+                title=aanwijzing.title,
+                aanwijzing_type=aanwijzing.aanwijzing_type,
+                aanwijzing_groep=aanwijzing.aanwijzing_groep,
+                geogio=input_gio,
             )
-            result.add(ow_input_gebiedsaanwijzingen)
+            result.append(input_aanwijzing)
 
         return result
-
-    def _get_location_refs(self, werkingsgebied: Werkingsgebied) -> List[OwInputAbstractLocatieRef]:
-        return [OwInputGebiedengroepLocatieRef(code=werkingsgebied.Code)]

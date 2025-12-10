@@ -169,7 +169,7 @@ class OwStateBuilder:
             identification=self._generate_identifier("gebiedsaanwijzing"),
             title=input_gebiedsaanwijzing.title,
             indication_type=input_gebiedsaanwijzing.indication_type,
-            indication_group=input_gebiedsaanwijzing.indication_group,
+            indication_group=input_gebiedsaanwijzing.aanwijzing_groep,
             location_refs=location_refs,
         )
         self._state.gebiedsaanwijzingen.add(gebiedsaanwijzing)
