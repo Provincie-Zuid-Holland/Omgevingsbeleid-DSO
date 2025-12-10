@@ -1,6 +1,6 @@
 from typing import List
 
-from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebied
+from dso.act_builder.state_manager.input_data.resource.gebieden.types import GeoGio
 
 from ....models import ContentType
 from ....services.utils.helpers import load_template
@@ -11,23 +11,23 @@ from ...state_manager.state_manager import StateManager
 
 class GeoInformatieObjectVaststellingBuilder(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
-        gebieden: List[Gebied] = state_manager.input_data.resources.gebied_repository.get_new()
+        gios: List[GeoGio] = state_manager.input_data.resources.geogio_repository.get_new()
 
-        for gebied in gebieden:
-            output_file: OutputFile = self._generate_glm(gebied)
+        for gio in gios:
+            output_file: OutputFile = self._generate_glm(gio)
             state_manager.add_output_file(output_file)
 
         return state_manager
 
-    def _generate_glm(self, gebied: Gebied):
+    def _generate_glm(self, gio: GeoGio):
         content = load_template(
             "geo/GeoInformatieObjectVaststelling.xml",
             pretty_print=True,
-            gebied=gebied,
+            gio=gio,
         )
 
         output_file = OutputFile(
-            filename=gebied.get_gml_filename(),
+            filename=gio.get_gml_filename(),
             content_type=ContentType.GML,
             content=StrContentData(content),
         )

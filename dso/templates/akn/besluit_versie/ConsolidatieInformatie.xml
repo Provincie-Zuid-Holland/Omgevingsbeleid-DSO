@@ -27,7 +27,7 @@
                     <instrument>{{ withdrawal.instrument }}</instrument>
                     <eId>{{ withdrawal.eid }}</eId>
                 </Intrekking>
-            {% endfor %} 
+            {% endfor %}
         </Intrekkingen>
     {% endif %}
     {% if tijdstempels | length %}
