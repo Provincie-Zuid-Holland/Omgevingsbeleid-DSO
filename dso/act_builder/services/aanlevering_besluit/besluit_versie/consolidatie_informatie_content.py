@@ -12,7 +12,7 @@ from dso.act_builder.state_manager.states.text_manipulator.models import (
 from ....state_manager.input_data.resource.gebieden.types import Gebied
 from ....state_manager.state_manager import StateManager
 from ....state_manager.states.artikel_eid_repository import ArtikelEidType
-from .....models import PublicationSettings, VerwijderdGebied
+from .....models import PublicationSettings, VerwijderdGebied, VerwijderdeGio
 from .....services.utils.helpers import load_template
 
 
@@ -103,7 +103,7 @@ class ConsolidatieInformatieContent:
 
         result: List[ConsolidationWithdrawal] = []
         component_name: str = self._state_manager.input_data.publication_settings.regeling_componentnaam
-        removed_gios: List[VerwijderdGebied] = self._state_manager.input_data.regeling_mutatie.te_verwijderden_gebieden
+        removed_gios: List[VerwijderdeGio] = self._state_manager.input_data.regeling_mutatie.te_verwijderden_gios
         for removed_gio in removed_gios:
             expression: str = removed_gio.frbr.get_expression()
             eid: str = ref_to_eid_map.get(expression, "")

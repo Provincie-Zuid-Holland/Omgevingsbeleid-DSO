@@ -267,13 +267,8 @@ class PublicationSettings(BaseModel):
         return cls(**json_data)
 
 
-class VerwijderdGebied(BaseModel):
-    uuid: str
-    code: str
-    object_id: int
+class VerwijderdeGio(BaseModel):
     frbr: GioFRBR
-    geboorteregeling: str
-    titel: str
 
 
 class RegelingMutatie(BaseModel, metaclass=ABCMeta):
@@ -287,7 +282,7 @@ class RegelingMutatie(BaseModel, metaclass=ABCMeta):
     # The main reason here is that we can not generate new wIds for old versions
     bekend_wids: List[str]
 
-    te_verwijderden_gebieden: List[VerwijderdGebied]
+    te_verwijderden_gios: List[VerwijderdeGio]
 
     @classmethod
     def from_dict(cls, data: dict) -> "RegelingMutatie":
