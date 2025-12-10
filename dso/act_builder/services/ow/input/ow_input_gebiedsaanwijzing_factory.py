@@ -6,9 +6,6 @@ from dso.act_builder.services.ow.input.models import (
     OwInputGebiedengroepLocatieRef,
 )
 from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
-from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
-    WerkingsgebiedRepository,
-)
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.act_builder.state_manager.states.text_manipulator.models import TekstPolicyObject, TextData
 

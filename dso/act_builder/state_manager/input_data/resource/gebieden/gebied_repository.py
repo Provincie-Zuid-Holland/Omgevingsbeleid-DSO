@@ -1,8 +1,8 @@
 import json
 import uuid
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Set
 
-from .types import Gebied, GebiedenGroep
+from .types import Gebied
 
 
 class GebiedRepository:
@@ -43,17 +43,14 @@ class GebiedRepository:
             raise RuntimeError(f"Can not find gebied {code}")
         return gebied
 
-    def get_new(self) -> List[Gebied]:
-        return [w for w in self._gebieden.values() if w.new]
-
     def all(self) -> List[Gebied]:
         return list(self._gebieden.values())
 
     def is_empty(self) -> bool:
         return not self._gebieden
 
-    def get_for_group(self, group: GebiedenGroep) -> List[Gebied]:
-        result: List[Gebied] = [gebied for gebied in self._gebieden.values() if gebied.code in group.gebied_codes]
+    def get_by_codes(self, gebied_codes: Set[str]) -> List[Gebied]:
+        result: List[Gebied] = [gebied for gebied in self._gebieden.values() if gebied.code in gebied_codes]
         return result
 
     def to_dict(self):

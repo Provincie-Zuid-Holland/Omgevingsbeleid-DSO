@@ -17,7 +17,7 @@ class OwInputGebiedengroepenFactory:
         result: List[OwInputGebiedengroep] = []
 
         for groep in gebiedengroepen:
-            gebieden: List[Gebied] = self._gebied_repository.get_for_group(groep)
+            gebieden: List[Gebied] = self._gebied_repository.get_by_codes(groep)
             input_gebieden: List[OwInputGebied] = [
                 OwInputGebied(
                     source_uuid=str(gebied.uuid),

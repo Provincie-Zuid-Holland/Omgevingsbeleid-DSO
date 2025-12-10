@@ -7,13 +7,11 @@ from .besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
 from .gebieden.gebied_repository import GebiedRepository
 from .gebieden.gebiedengroep_repository import GebiedengroepRepository
 from .policy_object.policy_object_repository import PolicyObjectRepository
-from .werkingsgebied.werkingsgebied_repository import WerkingsgebiedRepository
 
 
 class Resources(BaseModel):
     policy_object_repository: PolicyObjectRepository
     asset_repository: AssetRepository
-    werkingsgebied_repository: WerkingsgebiedRepository
     gebied_repository: GebiedRepository
     gebiedengroep_repository: GebiedengroepRepository
     besluit_pdf_repository: BesluitPdfRepository

@@ -46,7 +46,8 @@ class OwInputGebiedengroep(BaseModel):
 
 
 class OwInputGebiedsaanwijzing(BaseModel):
-    source_werkingsgebied_code: str
+    source_type: str
+    source_code: str
     title: str
     indication_type: str
     indication_group: str
@@ -55,10 +56,10 @@ class OwInputGebiedsaanwijzing(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def get_unique_key(self) -> str:
-        return f"{self.source_werkingsgebied_code}-{self.indication_type}-{self.indication_group}"
+        return f"{self.source_type}-{self.source_code}-{self.indication_type}-{self.indication_group}"
 
     def __hash__(self):
-        return hash((self.source_werkingsgebied_code, self.indication_type, self.indication_group))
+        return hash((self.source_type, self.source_code, self.indication_type, self.indication_group))
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
