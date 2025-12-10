@@ -1,7 +1,9 @@
 from uuid import UUID
 from lxml import etree
 
-from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzing_repository import GebiedsaanwijzingRepository
+from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzing_repository import (
+    GebiedsaanwijzingRepository,
+)
 from dso.act_builder.state_manager.input_data.resource.gebieden.geogio_repository import GeoGioRepository
 from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, GeoGio
 from dso.act_builder.state_manager.state_manager import StateManager
@@ -11,7 +13,9 @@ from dso.act_builder.state_manager.states.text_manipulator.models import TekstBi
 
 class GebiedsaanwijzingIntrefEnricher(AbstractEnricher):
     def __init__(self, state_manager: StateManager):
-        self._aanwijzing_repository: GebiedsaanwijzingRepository = state_manager.input_data.resources.gebiedsaanwijzingen_repository
+        self._aanwijzing_repository: GebiedsaanwijzingRepository = (
+            state_manager.input_data.resources.gebiedsaanwijzingen_repository
+        )
         self._geogio_repository: GeoGioRepository = state_manager.input_data.resources.geogio_repository
         self._text_data: TextData = state_manager.text_data
 

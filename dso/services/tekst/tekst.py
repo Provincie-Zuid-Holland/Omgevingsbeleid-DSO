@@ -387,6 +387,7 @@ class GebiedsaanwijzingRef(SimpleElement):
 
     The `ref` will be set later with help of the `gebiedsaanwijzing-uuid-repository`
     """
+
     def __init__(self, tag: Tag):
         super().__init__()
         self._uuid: str = tag.get("data-hint-gebiedsaanwijzing-uuid")

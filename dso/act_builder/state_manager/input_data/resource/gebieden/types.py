@@ -7,12 +7,13 @@ from pydantic import BaseModel, ConfigDict
 from ......models import GioFRBR
 
 
-
 class GeoGioLocatie(BaseModel):
     """
     This represents a Locatie in GeoInformatieObjectVaststelling.vastgesteldeVersie.GeoInformatieObjectVersie.locaties
     From the API's perspective this is the `Area` attached to a `Gebied`
     """
+
+    code: str  # The gebied-x code this locatie represents
     title: str
     basisgeo_id: str
     gml: str
@@ -28,6 +29,7 @@ class GeoGio(BaseModel):
 
     And a GeoGio can be build by an Gebiedsaanwijzing where it might have multiple locaties
     """
+
     # These are the gebied-x codes which are in this gio
     source_codes: Set[str]
     locaties: List[GeoGioLocatie]
@@ -40,10 +42,10 @@ class GeoGio(BaseModel):
     achtergrond_actualiteit: str
 
     def key(self) -> str:
-        return ",".join(sorted(self.source_codes))
+        return "_".join(sorted(self.source_codes))
 
     def wid_key(self) -> str:
-        return "-".join(sorted(self.source_codes))
+        return "_".join(sorted(self.source_codes))
 
     def get_name(self) -> str:
         s: str = self.title.lower()
@@ -58,20 +60,6 @@ class GeoGio(BaseModel):
         return f"GIO_locaties_{self.get_name()}.xml"
 
 
-class Gebied(BaseModel):
-    """
-    Gebied comes from the API Object_Type=gebied
-    Which always has a GeoGio which has one Locatie.
-    That Locatie is the API's Area the Object_Type=gebied points to
-
-    This class will be used for ow.gebied
-    """
-    uuid: UUID
-    code: str
-    title: str
-    geo_gio_key: str
-
-
 class GebiedenGroep(BaseModel):
     """
     GebiedenGroep comes from the API Object_Type=gebiedengroep
@@ -81,10 +69,11 @@ class GebiedenGroep(BaseModel):
     Some ow.Tekstdelen will use this ow.gebiedengroep
     This will represent the API.Object.Maatregel.Gebiedengroep configuration
     """
+
     uuid: UUID
     code: str
     title: str
-    gebied_codes: Set[str]
+    geo_gio_key: str
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -92,10 +81,10 @@ class GebiedenGroep(BaseModel):
 class Gebiedsaanwijzing(BaseModel):
     uuid: UUID
     aanwijzing_type: str
-    aanwijzing_group: str
+    aanwijzing_groep: str
     title: str
     source_gebied_codes: Set[str]
     geo_gio_key: str
 
     def key(self) -> str:
-        return ",".join(sorted(self.source_gebied_codes))
+        return "_".join(sorted(self.source_gebied_codes))

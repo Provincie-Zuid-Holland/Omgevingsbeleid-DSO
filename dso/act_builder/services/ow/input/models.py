@@ -12,19 +12,18 @@ class OwInputAmbtsgebiedLocatieRef(OwInputAbstractLocatieRef):
     pass
 
 
-class OwInputGebiedLocatieRef(OwInputAbstractLocatieRef):
-    code: str
-
-    def get_code(self) -> Optional[str]:
-        return self.code
-
-
 class OwInputGebiedengroepLocatieRef(OwInputAbstractLocatieRef):
     code: str
 
     def get_code(self) -> Optional[str]:
         return self.code
 
+
+class OwInputGebiedsaanwijzingRef(OwInputAbstractLocatieRef):
+    code: str
+
+    def get_code(self) -> Optional[str]:
+        return self.code
 
 
 class OwInputAmbtsgebied(BaseModel):
@@ -64,17 +63,17 @@ class OwInputGebiedengroep(BaseModel):
 class OwInputGebiedsaanwijzing(BaseModel):
     source_code: str
     title: str
-    indication_type: str
-    indication_group: str
-    location_refs: List[OwInputAbstractLocatieRef]
+    aanwijzing_type: str
+    aanwijzing_groep: str
+    geogio: OwInputGeoGio
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def get_unique_key(self) -> str:
-        return f"{self.source_type}-{self.source_code}-{self.indication_type}-{self.indication_group}"
+        return f"{self.source_code}-{self.aanwijzing_type}-{self.aanwijzing_groep}"
 
     def __hash__(self):
-        return hash((self.source_type, self.source_code, self.indication_type, self.indication_group))
+        return hash((self.source_code, self.aanwijzing_type, self.aanwijzing_groep))
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
@@ -88,5 +87,6 @@ class OwInputPolicyObject(BaseModel):
     wid: str
     element: str
     location_refs: List[OwInputAbstractLocatieRef]
+    gebiedsaanwijzing_refs: List[OwInputAbstractLocatieRef]
 
     model_config = ConfigDict(arbitrary_types_allowed=True)

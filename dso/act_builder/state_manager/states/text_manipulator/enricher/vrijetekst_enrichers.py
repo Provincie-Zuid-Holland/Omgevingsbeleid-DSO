@@ -5,7 +5,9 @@ from dso.act_builder.state_manager.states.text_manipulator.enricher.abstract_enr
 from dso.act_builder.state_manager.states.text_manipulator.enricher.document_intref_enricher import (
     DocumentIntrefEnricher,
 )
-from dso.act_builder.state_manager.states.text_manipulator.enricher.gebiedsaanwijzing_intref_enricher import GebiedsaanwijzingIntrefEnricher
+from dso.act_builder.state_manager.states.text_manipulator.enricher.gebiedsaanwijzing_intref_enricher import (
+    GebiedsaanwijzingIntrefEnricher,
+)
 from dso.act_builder.state_manager.states.text_manipulator.enricher.illustration_enricher import IllustrationEnricher
 from dso.act_builder.state_manager.states.text_manipulator.enricher.object_intref_enricher import ObjectIntrefEnricher
 
