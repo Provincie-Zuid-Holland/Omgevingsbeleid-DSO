@@ -6,12 +6,14 @@ from dso.act_builder.services.ow.input.models import (
     OwInputAmbtsgebied,
     OwInputAmbtsgebiedLocatieRef,
     OwInputGebiedsaanwijzing,
+    OwInputGebiedsaanwijzingRef,
     OwInputPolicyObject,
     OwInputRegelingsgebied,
     OwInputGebiedengroep,
     OwInputGebiedengroepLocatieRef,
 )
 from dso.act_builder.services.ow.state.models import (
+    AbstractGebiedsaanwijzingRef,
     AbstractLocationRef,
     AbstractWidRef,
     OwAmbtsgebied,
@@ -28,6 +30,7 @@ from dso.act_builder.services.ow.state.models import (
     UnresolvedDivisietekstRef,
     UnresolvedGebiedengroepRef,
     UnresolvedGebiedRef,
+    UnresolvedGebiedsaanwijzingRef,
 )
 from dso.act_builder.services.ow.state.ow_state import OwState
 from dso.services.utils.waardelijsten import ProcedureType
@@ -67,21 +70,19 @@ class OwStateBuilder:
             self.add_gebiedengroep(input_gebiedengroep)
 
     def add_gebiedengroep(self, input_gebiedengroep: OwInputGebiedengroep):
-        for input_gebied in input_gebiedengroep.gebieden:
+        for input_locatie in input_gebiedengroep.geogio.locaties:
             gebied = OwGebied(
                 object_status=OwObjectStatus.new,
-                source_uuid=input_gebied.source_uuid,
-                source_code=input_gebied.source_code,
+                source_code=input_locatie.source_code,
                 procedure_status=self._procedure_status,
                 identification=self._generate_identifier("gebied"),
-                title=input_gebied.title,
-                geometry_ref=input_gebied.geometry_id,
+                title=input_locatie.title,
+                geometry_ref=input_locatie.geometry_id,
             )
             self._state.gebieden.add(gebied)
 
         gebieden_groep = OwGebiedengroep(
             object_status=OwObjectStatus.new,
-            source_uuid=input_gebiedengroep.source_uuid,
             source_code=input_gebiedengroep.source_code,
             procedure_status=self._procedure_status,
             identification=self._generate_identifier("gebiedengroep"),
@@ -90,7 +91,7 @@ class OwStateBuilder:
                 UnresolvedGebiedRef(
                     target_code=location.source_code,
                 )
-                for location in input_gebiedengroep.gebieden
+                for location in input_gebiedengroep.geogio.locaties
             ],
         )
         self._state.gebiedengroepen.add(gebieden_groep)
@@ -105,6 +106,9 @@ class OwStateBuilder:
 
         text_ref: AbstractWidRef = self._handle_policy_object_element(input_policy_object)
         location_refs: List[AbstractLocationRef] = self._handle_locations(input_policy_object.location_refs)
+        aanwijzing_refs: List[AbstractGebiedsaanwijzingRef] = self._handle_aanwijzing_refs(
+            input_policy_object.gebiedsaanwijzing_refs
+        )
         tekstdeel = OwTekstdeel(
             object_status=OwObjectStatus.new,
             source_uuid=input_policy_object.source_uuid,
@@ -114,6 +118,7 @@ class OwStateBuilder:
             idealization="http://standaarden.omgevingswet.overheid.nl/idealisatie/id/concept/Indicatief",
             text_ref=text_ref,
             location_refs=location_refs,
+            gebiedsaanwijzing_refs=aanwijzing_refs,
         )
         self._state.tekstdelen.add(tekstdeel)
 
@@ -161,18 +166,31 @@ class OwStateBuilder:
             self.add_gebiedsaanwijzing(input_gebiedsaanwijzing)
 
     def add_gebiedsaanwijzing(self, input_gebiedsaanwijzing: OwInputGebiedsaanwijzing):
-        location_refs: List[AbstractLocationRef] = self._handle_locations(input_gebiedsaanwijzing.location_refs)
+        location_refs = [
+            UnresolvedGebiedRef(
+                target_code=location.source_code,
+            )
+            for location in input_gebiedsaanwijzing.geogio.locaties
+        ]
         gebiedsaanwijzing = OwGebiedsaanwijzing(
             object_status=OwObjectStatus.new,
             source_code=input_gebiedsaanwijzing.get_unique_key(),
             procedure_status=self._procedure_status,
             identification=self._generate_identifier("gebiedsaanwijzing"),
             title=input_gebiedsaanwijzing.title,
-            indication_type=input_gebiedsaanwijzing.indication_type,
+            indication_type=input_gebiedsaanwijzing.aanwijzing_type,
             indication_group=input_gebiedsaanwijzing.aanwijzing_groep,
             location_refs=location_refs,
         )
         self._state.gebiedsaanwijzingen.add(gebiedsaanwijzing)
+
+    def _handle_aanwijzing_refs(
+        self, input_refs: List[OwInputGebiedsaanwijzingRef]
+    ) -> List[AbstractGebiedsaanwijzingRef]:
+        result: List[AbstractGebiedsaanwijzingRef] = [
+            UnresolvedGebiedsaanwijzingRef(target_key=input_ref.code) for input_ref in input_refs
+        ]
+        return result
 
     def _handle_locations(self, location_refs: List[OwInputAbstractLocatieRef]) -> List[AbstractLocationRef]:
         result: List[AbstractLocationRef] = []

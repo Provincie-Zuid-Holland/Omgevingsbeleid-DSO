@@ -26,12 +26,12 @@ class TestTextGebiedenExtractor(StateManagerTestCase):
                 gebied_code="gebied-1",
                 eid="div_o_1__div_o_1__div_o_1__content_o_1",
                 wid="pv28_4__div_o_1__div_o_1__div_o_1__content_o_1",
-                element="Divisietekst"
+                element="Divisietekst",
             ),
             TekstBijlageGebied(
                 gebied_code="gebied-2",
                 eid="div_o_1__div_o_1__div_o_1__content_o_2",
                 wid="pv28_4__div_o_1__div_o_1__div_o_1__content_o_2",
-                element="Divisietekst"
+                element="Divisietekst",
             ),
         ]
