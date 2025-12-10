@@ -309,7 +309,6 @@ class OwRegelingsgebied(BaseOwObject):
 
 
 class OwGebied(BaseOwObject):
-    source_uuid: str
     source_code: str
     title: str
     geometry_ref: str
@@ -332,7 +331,6 @@ class OwGebied(BaseOwObject):
         return (self.title, self.geometry_ref) == (other.title, other.geometry_ref)
 
     def merge_from(self, other: "OwGebied") -> bool:
-        self.source_uuid = other.source_uuid
         self.source_code = other.source_code
         if self.is_data_equal(other):
             self.flag_unchanged()

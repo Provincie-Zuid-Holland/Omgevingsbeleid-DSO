@@ -43,7 +43,7 @@ class OwInputPolicyObjectFactory:
         policy_object_data: dict = policy_object.get_data()
 
         location_refs: List[OwInputAbstractLocatieRef] = self._get_location_refs(policy_object)
-        aanwijzing_refs: List[OwInputAbstractLocatieRef] = self._get_gebiedsaanwijzing_refs(tekst_policy_object)
+        aanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = self._get_gebiedsaanwijzing_refs(tekst_policy_object)
 
         result = OwInputPolicyObject(
             source_uuid=str(policy_object_data["UUID"]),
