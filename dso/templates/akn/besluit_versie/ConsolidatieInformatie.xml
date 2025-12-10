@@ -7,7 +7,7 @@
             <instrumentVersie>{{ beoogde_regeling.instrument_versie }}</instrumentVersie>
             <eId>{{ beoogde_regeling.eid }}</eId>
         </BeoogdeRegeling>
-        {% for beoogd_informatieobject in beoogd_informatieobjecten %}
+        {%- for beoogd_informatieobject in beoogd_informatieobjecten %}
         <BeoogdInformatieobject>
             <doelen>
                 <doel>{{ instelling_doel }}</doel>
@@ -15,31 +15,31 @@
             <instrumentVersie>{{ beoogd_informatieobject.instrument_versie }}</instrumentVersie>
             <eId>{{ beoogd_informatieobject.eid }}</eId>
         </BeoogdInformatieobject>
-        {% endfor %}
+        {%- endfor %}
     </BeoogdeRegelgeving>
-    {% if withdrawals | length %}
+    {%- if withdrawals | length %}
         <Intrekkingen>
-            {% for withdrawal in withdrawals %}
-                <Intrekking>
-                    <doelen>
-                        <doel>{{ instelling_doel }}</doel>
-                    </doelen>
-                    <instrument>{{ withdrawal.instrument }}</instrument>
-                    <eId>{{ withdrawal.eid }}</eId>
-                </Intrekking>
-            {% endfor %}
+            {%- for withdrawal in withdrawals %}
+            <Intrekking>
+                <doelen>
+                    <doel>{{ instelling_doel }}</doel>
+                </doelen>
+                <instrument>{{ withdrawal.instrument }}</instrument>
+                <eId>{{ withdrawal.eid }}</eId>
+            </Intrekking>
+            {%- endfor %}
         </Intrekkingen>
-    {% endif %}
-    {% if tijdstempels | length %}
+    {%- endif %}
+    {%- if tijdstempels | length %}
     <Tijdstempels>
-        {% for tijdstempel in tijdstempels %}
+        {%- for tijdstempel in tijdstempels %}
         <Tijdstempel>
             <doel>{{ tijdstempel.doel }}</doel>
             <soortTijdstempel>juridischWerkendVanaf</soortTijdstempel>
             <datum>{{ tijdstempel.datum }}</datum>
             <eId>{{ tijdstempel.eid }}</eId>
         </Tijdstempel>
-        {% endfor %}
+        {%- endfor %}
     </Tijdstempels>
-    {% endif %}
+    {%- endif %}
 </ConsolidatieInformatie>

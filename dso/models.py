@@ -274,7 +274,7 @@ class VerwijderdeGio(BaseModel):
 class RegelingMutatie(BaseModel, metaclass=ABCMeta):
     was_regeling_frbr: ActFRBR
 
-    # wId's used by indentifiers, for example beleidskeuze-4 by that object
+    # wId's used by identifiers, for example beleidskeuze-4 by that object
     # Although it should be possible to add custom identifiers
     bekend_wid_map: Dict[str, str]
 
