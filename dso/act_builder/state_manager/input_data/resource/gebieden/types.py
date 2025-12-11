@@ -25,18 +25,19 @@ class GeoGio(BaseModel):
     And all that comes with it, like consolidating and listing it in the Appendix of the Act.
 
     A GeoGio can be build by the API's Object_Type=gebied where this GeoGio will just have
-    one locatie which is the Area in Gebied.Area_UUID
+    one `locatie` which is the Area in Gebied.Area_UUID
 
-    And a GeoGio can be build by an Gebiedsaanwijzing where it might have multiple locaties
+    And a GeoGio can be build by an Gebiedsaanwijzing where it might have multiple `locatie`
     """
 
     # These are the gebied-x codes which are in this gio
-    source_codes: Set[str]
-    locaties: List[GeoGioLocatie]
+    # source_codes and the key() func are used to determine uniquenes and "lineage"
+    source_codes: Set[str]  # [gebied-1, gebied-2]
+    locaties: List[GeoGioLocatie]  # 1 locatie per source-code
 
-    new: bool
     title: str
     frbr: GioFRBR
+    new: bool
     geboorteregeling: str
     achtergrond_verwijzing: str
     achtergrond_actualiteit: str
@@ -63,7 +64,7 @@ class GeoGio(BaseModel):
 class GebiedenGroep(BaseModel):
     """
     GebiedenGroep comes from the API Object_Type=gebiedengroep
-    Which always point to one or more Gebied just like it does in the API
+    Which always point to a Gio which just like it does in the API
 
     This class will be used for ow.gebiedengroep where it will point to ow.gebied
     Some ow.Tekstdelen will use this ow.gebiedengroep
@@ -71,9 +72,9 @@ class GebiedenGroep(BaseModel):
     """
 
     uuid: UUID
-    code: str
+    code: str  # Code used by the API like `gebiedengroep-1`
     title: str
-    geo_gio_key: str
+    geo_gio_keys: List[str]
 
     model_config = ConfigDict(populate_by_name=True)
 

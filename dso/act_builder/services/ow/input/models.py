@@ -57,7 +57,7 @@ class OwInputGebiedengroep(BaseModel):
     # This will make a ow_gebiedengroep and allows the ow_tekstdeel to point to this
     source_code: str
     title: str
-    geogio: OwInputGeoGio
+    geogios: List[OwInputGeoGio]
 
 
 class OwInputGebiedsaanwijzing(BaseModel):

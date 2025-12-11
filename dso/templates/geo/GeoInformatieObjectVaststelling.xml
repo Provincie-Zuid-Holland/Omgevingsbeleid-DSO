@@ -18,7 +18,7 @@
             <geo:FRBRWork>{{ gio.frbr.get_work() }}</geo:FRBRWork>
             <geo:FRBRExpression>{{ gio.frbr.get_expression() }}</geo:FRBRExpression>
             <geo:locaties>
-                {% for locatie in gebied.locaties %}
+                {% for locatie in gio.locaties %}
                 <geo:Locatie>
                     <geo:naam>{{ locatie.title }}</geo:naam>
                     <geo:geometrie>

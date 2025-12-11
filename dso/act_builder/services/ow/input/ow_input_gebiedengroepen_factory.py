@@ -18,25 +18,29 @@ class OwInputGebiedengroepenFactory:
 
         # We dont need to worry about duplicates as the OwState machine takes care of that
         for groep in gebiedengroepen:
-            gio: GeoGio = self._gio_repository.get_by_key(groep.geo_gio_key)
+            input_gios: List[OwInputGeoGio] = []
 
-            input_locaties: List[OwInputLocatie] = [
-                OwInputLocatie(
-                    source_code=locatie.code,
-                    title=locatie.title,
-                    geometry_id=locatie.basisgeo_id,
+            for gio_key in groep.geo_gio_keys:
+                gio: GeoGio = self._gio_repository.get_by_key(gio_key)
+                input_locaties: List[OwInputLocatie] = [
+                    OwInputLocatie(
+                        source_code=locatie.code,
+                        title=locatie.title,
+                        geometry_id=locatie.basisgeo_id,
+                    )
+                    for locatie in gio.locaties
+                ]
+                input_gio: OwInputGeoGio = OwInputGeoGio(
+                    source_code=gio.key(),
+                    title=gio.title,
+                    locaties=input_locaties,
                 )
-                for locatie in gio.locaties
-            ]
-            input_gio: OwInputGeoGio = OwInputGeoGio(
-                source_code=gio.key(),
-                title=gio.title,
-                locaties=input_locaties,
-            )
+                input_gios.append(input_gio)
+
             input_gebiedengroep = OwInputGebiedengroep(
                 source_code=groep.code,
                 title=groep.title,
-                geogio=input_gio,
+                geogios=input_gios,
             )
             result.append(input_gebiedengroep)
 

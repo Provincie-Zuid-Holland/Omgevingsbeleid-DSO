@@ -70,16 +70,23 @@ class OwStateBuilder:
             self.add_gebiedengroep(input_gebiedengroep)
 
     def add_gebiedengroep(self, input_gebiedengroep: OwInputGebiedengroep):
-        for input_locatie in input_gebiedengroep.geogio.locaties:
-            gebied = OwGebied(
-                object_status=OwObjectStatus.new,
-                source_code=input_locatie.source_code,
-                procedure_status=self._procedure_status,
-                identification=self._generate_identifier("gebied"),
-                title=input_locatie.title,
-                geometry_ref=input_locatie.geometry_id,
-            )
-            self._state.gebieden.add(gebied)
+        gebieden_refs: List[UnresolvedGebiedRef] = []
+        for input_gio in input_gebiedengroep.geogios:
+            for input_locatie in input_gio.locaties:
+                gebied = OwGebied(
+                    object_status=OwObjectStatus.new,
+                    source_code=input_locatie.source_code,
+                    procedure_status=self._procedure_status,
+                    identification=self._generate_identifier("gebied"),
+                    title=input_locatie.title,
+                    geometry_ref=input_locatie.geometry_id,
+                )
+                gebieden_refs.append(
+                    UnresolvedGebiedRef(
+                        target_code=input_locatie.source_code,
+                    )
+                )
+                self._state.gebieden.add(gebied)
 
         gebieden_groep = OwGebiedengroep(
             object_status=OwObjectStatus.new,
@@ -87,12 +94,7 @@ class OwStateBuilder:
             procedure_status=self._procedure_status,
             identification=self._generate_identifier("gebiedengroep"),
             title=input_gebiedengroep.title,
-            gebieden_refs=[
-                UnresolvedGebiedRef(
-                    target_code=location.source_code,
-                )
-                for location in input_gebiedengroep.geogio.locaties
-            ],
+            gebieden_refs=gebieden_refs,
         )
         self._state.gebiedengroepen.add(gebieden_groep)
 
