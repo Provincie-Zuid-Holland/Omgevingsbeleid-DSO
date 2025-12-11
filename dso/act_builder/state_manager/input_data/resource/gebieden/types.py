@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict
 from ......models import GioFRBR
 
 
-class GeoGioLocatie(BaseModel):
+class GioLocatie(BaseModel):
     """
     This represents a Locatie in GeoInformatieObjectVaststelling.vastgesteldeVersie.GeoInformatieObjectVersie.locaties
     From the API's perspective this is the `Area` attached to a `Gebied`
@@ -19,21 +19,21 @@ class GeoGioLocatie(BaseModel):
     gml: str
 
 
-class GeoGio(BaseModel):
+class Gio(BaseModel):
     """
     This represents a AanleveringInformatieObject and GeoInformatieObjectVaststelling
     And all that comes with it, like consolidating and listing it in the Appendix of the Act.
 
-    A GeoGio can be build by the API's Object_Type=gebied where this GeoGio will just have
+    A Gio can be build by the API's Object_Type=gebied where this Gio will just have
     one `locatie` which is the Area in Gebied.Area_UUID
 
-    And a GeoGio can be build by an Gebiedsaanwijzing where it might have multiple `locatie`
+    And a Gio can be build by an Gebiedsaanwijzing where it might have multiple `locatie`
     """
 
     # These are the gebied-x codes which are in this gio
     # source_codes and the key() func are used to determine uniquenes and "lineage"
     source_codes: Set[str]  # [gebied-1, gebied-2]
-    locaties: List[GeoGioLocatie]  # 1 locatie per source-code
+    locaties: List[GioLocatie]  # 1 locatie per source-code
 
     title: str
     frbr: GioFRBR

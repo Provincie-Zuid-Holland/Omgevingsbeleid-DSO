@@ -1,32 +1,32 @@
 import json
 from typing import List, Optional
 
-from .types import GeoGio
+from .types import Gio
 
 
-class GeoGioRepository:
+class GioRepository:
     def __init__(self):
-        self._gios: List[GeoGio] = []
+        self._gios: List[Gio] = []
 
     def add(self, gio: dict) -> None:
-        self._gios.append(GeoGio.model_validate(gio))
+        self._gios.append(Gio.model_validate(gio))
 
-    def get_by_key_optional(self, key: str) -> Optional[GeoGio]:
+    def get_by_key_optional(self, key: str) -> Optional[Gio]:
         for g in self._gios:
             if g.key() == key:
                 return g
         return None
 
-    def get_by_key(self, key: str) -> GeoGio:
-        gio: Optional[GeoGio] = self.get_by_key_optional(key)
+    def get_by_key(self, key: str) -> Gio:
+        gio: Optional[Gio] = self.get_by_key_optional(key)
         if gio is None:
-            raise RuntimeError(f"Can not find GeoGio {key}")
+            raise RuntimeError(f"Can not find Gio {key}")
         return gio
 
-    def get_new(self) -> List[GeoGio]:
+    def get_new(self) -> List[Gio]:
         return [w for w in self._gios if w.new]
 
-    def all(self) -> List[GeoGio]:
+    def all(self) -> List[Gio]:
         return list(self._gios)
 
     def is_empty(self) -> bool:

@@ -71,7 +71,7 @@ class OwStateBuilder:
 
     def add_gebiedengroep(self, input_gebiedengroep: OwInputGebiedengroep):
         gebieden_refs: List[UnresolvedGebiedRef] = []
-        for input_gio in input_gebiedengroep.geogios:
+        for input_gio in input_gebiedengroep.gios:
             for input_locatie in input_gio.locaties:
                 gebied = OwGebied(
                     object_status=OwObjectStatus.new,
@@ -172,7 +172,7 @@ class OwStateBuilder:
             UnresolvedGebiedRef(
                 target_code=location.source_code,
             )
-            for location in input_gebiedsaanwijzing.geogio.locaties
+            for location in input_gebiedsaanwijzing.gio.locaties
         ]
         gebiedsaanwijzing = OwGebiedsaanwijzing(
             object_status=OwObjectStatus.new,

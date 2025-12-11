@@ -2,14 +2,14 @@ from typing import List
 
 from dso.act_builder.services.ow.input.models import (
     OwInputGebiedsaanwijzing,
-    OwInputGeoGio,
+    OwInputGio,
     OwInputLocatie,
 )
 from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzing_repository import (
     GebiedsaanwijzingRepository,
 )
-from dso.act_builder.state_manager.input_data.resource.gebieden.geogio_repository import GeoGioRepository
-from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, GeoGio
+from dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import GioRepository
+from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, Gio
 from dso.act_builder.state_manager.state_manager import StateManager
 
 
@@ -18,7 +18,7 @@ class OwInputGebiedsaanwijzingFactory:
         self._aanwijzing_repository: GebiedsaanwijzingRepository = (
             state_manager.input_data.resources.gebiedsaanwijzingen_repository
         )
-        self._gio_repository: GeoGioRepository = state_manager.input_data.resources.geogio_repository
+        self._gio_repository: GioRepository = state_manager.input_data.resources.gio_repository
 
     def get_gebiedsaanwijzingen(self) -> List[OwInputGebiedsaanwijzing]:
         aanwijzingen: List[Gebiedsaanwijzing] = self._aanwijzing_repository.all()
@@ -26,7 +26,7 @@ class OwInputGebiedsaanwijzingFactory:
 
         # We dont need to worry about duplicates as the OwState machine takes care of that
         for aanwijzing in aanwijzingen:
-            gio: GeoGio = self._gio_repository.get_by_key(aanwijzing.geo_gio_key)
+            gio: Gio = self._gio_repository.get_by_key(aanwijzing.geo_gio_key)
 
             input_locaties: List[OwInputLocatie] = [
                 OwInputLocatie(
@@ -36,7 +36,7 @@ class OwInputGebiedsaanwijzingFactory:
                 )
                 for locatie in gio.locaties
             ]
-            input_gio: OwInputGeoGio = OwInputGeoGio(
+            input_gio: OwInputGio = OwInputGio(
                 source_code=gio.key(),
                 title=gio.title,
                 locaties=input_locaties,
@@ -46,7 +46,7 @@ class OwInputGebiedsaanwijzingFactory:
                 title=aanwijzing.title,
                 aanwijzing_type=aanwijzing.aanwijzing_type,
                 aanwijzing_groep=aanwijzing.aanwijzing_groep,
-                geogio=input_gio,
+                gio=input_gio,
             )
             result.append(input_aanwijzing)
 

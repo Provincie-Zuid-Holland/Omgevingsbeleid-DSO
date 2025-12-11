@@ -4,11 +4,11 @@ from lxml import etree
 from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzing_repository import (
     GebiedsaanwijzingRepository,
 )
-from dso.act_builder.state_manager.input_data.resource.gebieden.geogio_repository import GeoGioRepository
-from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, GeoGio
+from dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import GioRepository
+from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, Gio
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.act_builder.state_manager.states.text_manipulator.enricher.abstract_enricher import AbstractEnricher
-from dso.act_builder.state_manager.states.text_manipulator.models import TekstBijlageGeoGio, TextData
+from dso.act_builder.state_manager.states.text_manipulator.models import TekstBijlageGio, TextData
 
 
 class GebiedsaanwijzingIntrefEnricher(AbstractEnricher):
@@ -16,7 +16,7 @@ class GebiedsaanwijzingIntrefEnricher(AbstractEnricher):
         self._aanwijzing_repository: GebiedsaanwijzingRepository = (
             state_manager.input_data.resources.gebiedsaanwijzingen_repository
         )
-        self._geogio_repository: GeoGioRepository = state_manager.input_data.resources.geogio_repository
+        self._gio_repository: GioRepository = state_manager.input_data.resources.gio_repository
         self._text_data: TextData = state_manager.text_data
 
     def enrich_xml(self, xml_content: str) -> str:
@@ -26,8 +26,8 @@ class GebiedsaanwijzingIntrefEnricher(AbstractEnricher):
         for intref in root.xpath("//IntIoRef[@data-hint-gebiedsaanwijzing-uuid]"):
             aanwijzing_uuid: UUID = UUID(intref.get("data-hint-gebiedsaanwijzing-uuid"))
             aanwijzing: Gebiedsaanwijzing = self._aanwijzing_repository.get(aanwijzing_uuid)
-            gio: GeoGio = self._geogio_repository.get_by_key(aanwijzing.geo_gio_key)
-            text_gio: TekstBijlageGeoGio = self._text_data.get_geogio_by_key(gio.key())
+            gio: Gio = self._gio_repository.get_by_key(aanwijzing.geo_gio_key)
+            text_gio: TekstBijlageGio = self._text_data.get_gio_by_key(gio.key())
 
             intref.set("ref", text_gio.wid)
 

@@ -7,9 +7,9 @@ from dso.act_builder.state_manager.input_data.resource.document.document import 
 from dso.act_builder.state_manager.states.text_manipulator.models import (
     TekstBijlageDocument,
     TextData,
-    TekstBijlageGeoGio,
+    TekstBijlageGio,
 )
-from ....state_manager.input_data.resource.gebieden.types import GeoGio
+from ....state_manager.input_data.resource.gebieden.types import Gio
 from ....state_manager.state_manager import StateManager
 from ....state_manager.states.artikel_eid_repository import ArtikelEidType
 from .....models import PublicationSettings, VerwijderdeGio
@@ -47,9 +47,9 @@ class ConsolidatieInformatieContent:
         )
 
         beoogd_informatieobjecten: List[BeoogdObject] = []
-        geogios_new: List[GeoGio] = self._state_manager.input_data.resources.geogio_repository.get_new()
-        for gio in geogios_new:
-            text_gio: TekstBijlageGeoGio = text_data.get_geogio_by_key(gio.key())
+        gios_new: List[Gio] = self._state_manager.input_data.resources.gio_repository.get_new()
+        for gio in gios_new:
+            text_gio: TekstBijlageGio = text_data.get_gio_by_key(gio.key())
             beoogd_informatieobject = BeoogdObject(
                 instrument_versie=gio.frbr.get_expression(),
                 eid=f"!{settings.regeling_componentnaam}#{text_gio.eid}",

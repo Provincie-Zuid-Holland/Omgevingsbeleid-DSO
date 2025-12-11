@@ -45,7 +45,7 @@ class OwInputLocatie(BaseModel):
     geometry_id: str
 
 
-class OwInputGeoGio(BaseModel):
+class OwInputGio(BaseModel):
     # This will make a Gebied for each locatie
     source_code: str
     title: str
@@ -57,7 +57,7 @@ class OwInputGebiedengroep(BaseModel):
     # This will make a ow_gebiedengroep and allows the ow_tekstdeel to point to this
     source_code: str
     title: str
-    geogios: List[OwInputGeoGio]
+    gios: List[OwInputGio]
 
 
 class OwInputGebiedsaanwijzing(BaseModel):
@@ -65,7 +65,7 @@ class OwInputGebiedsaanwijzing(BaseModel):
     title: str
     aanwijzing_type: str
     aanwijzing_groep: str
-    geogio: OwInputGeoGio
+    gio: OwInputGio
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
