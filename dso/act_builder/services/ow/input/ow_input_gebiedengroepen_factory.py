@@ -20,7 +20,7 @@ class OwInputGebiedengroepenFactory:
         for groep in gebiedengroepen:
             input_gios: List[OwInputGio] = []
 
-            for gio_key in groep.geo_gio_keys:
+            for gio_key in groep.gio_keys:
                 gio: Gio = self._gio_repository.get_by_key(gio_key)
                 input_locaties: List[OwInputLocatie] = [
                     OwInputLocatie(

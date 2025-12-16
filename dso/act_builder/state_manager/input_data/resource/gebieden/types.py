@@ -74,7 +74,7 @@ class GebiedenGroep(BaseModel):
     uuid: UUID
     code: str  # Code used by the API like `gebiedengroep-1`
     title: str
-    geo_gio_keys: List[str]
+    gio_keys: List[str]
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -85,7 +85,7 @@ class Gebiedsaanwijzing(BaseModel):
     aanwijzing_groep: str
     title: str
     source_gebied_codes: Set[str]
-    geo_gio_key: str
+    gio_key: str
 
     def key(self) -> str:
         return "_".join(sorted(self.source_gebied_codes))

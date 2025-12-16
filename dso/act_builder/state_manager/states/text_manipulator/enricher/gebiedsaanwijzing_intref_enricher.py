@@ -26,7 +26,7 @@ class GebiedsaanwijzingIntrefEnricher(AbstractEnricher):
         for intref in root.xpath("//IntIoRef[@data-hint-gebiedsaanwijzing-uuid]"):
             aanwijzing_uuid: UUID = UUID(intref.get("data-hint-gebiedsaanwijzing-uuid"))
             aanwijzing: Gebiedsaanwijzing = self._aanwijzing_repository.get(aanwijzing_uuid)
-            gio: Gio = self._gio_repository.get_by_key(aanwijzing.geo_gio_key)
+            gio: Gio = self._gio_repository.get_by_key(aanwijzing.gio_key)
             text_gio: TekstBijlageGio = self._text_data.get_gio_by_key(gio.key())
 
             intref.set("ref", text_gio.wid)

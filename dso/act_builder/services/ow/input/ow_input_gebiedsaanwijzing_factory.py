@@ -26,7 +26,7 @@ class OwInputGebiedsaanwijzingFactory:
 
         # We dont need to worry about duplicates as the OwState machine takes care of that
         for aanwijzing in aanwijzingen:
-            gio: Gio = self._gio_repository.get_by_key(aanwijzing.geo_gio_key)
+            gio: Gio = self._gio_repository.get_by_key(aanwijzing.gio_key)
 
             input_locaties: List[OwInputLocatie] = [
                 OwInputLocatie(
