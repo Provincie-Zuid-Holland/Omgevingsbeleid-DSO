@@ -125,10 +125,12 @@ class OwStateBuilder:
         self._state.tekstdelen.add(tekstdeel)
 
     def _is_policy_object_empty(self, input_policy_object: OwInputPolicyObject) -> bool:
-        if len(input_policy_object.location_refs) > 0:
-            return False
-
-        return True
+        return not any(
+            [
+                len(input_policy_object.location_refs) > 0,
+                len(input_policy_object.gebiedsaanwijzing_refs) > 0,
+            ]
+        )
 
     def _handle_policy_object_element(self, policy_object: OwInputPolicyObject) -> AbstractWidRef:
         match policy_object.element:
