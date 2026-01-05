@@ -88,4 +88,11 @@ class Gebiedsaanwijzing(BaseModel):
     gio_key: str
 
     def key(self) -> str:
-        return "_".join(sorted(self.source_gebied_codes))
+        code_parts: str = "_".join(sorted(self.source_gebied_codes))
+        return "-".join(
+            [
+                code_parts,
+                self.aanwijzing_type,
+                self.aanwijzing_groep,
+            ]
+        )
