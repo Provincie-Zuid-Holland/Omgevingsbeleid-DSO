@@ -48,10 +48,10 @@ class ArtikelenContent:
         for tekst_artikel in besluit.tekst_artikelen:
             inhoud = self._html_to_xml_inhoud(tekst_artikel.inhoud)
             inhoud = self._replace_ref_appendices(inhoud)
-            artikel_dict: ArtikelContent = self._create_article(tekst_artikel.nummer, inhoud)
+            artikel_content: ArtikelContent = self._create_article(tekst_artikel.nummer, inhoud)
 
-            tekst_artikelen.append(artikel_dict)
-            self._state_manager.artikel_eid.add(artikel_dict["eId"], ArtikelEidType.TEKST)
+            tekst_artikelen.append(artikel_content)
+            self._state_manager.artikel_eid.add(artikel_content.eId, ArtikelEidType.TEKST)
 
         content = load_template(
             "akn/besluit_versie/besluit_compact/Artikelen.xml",
