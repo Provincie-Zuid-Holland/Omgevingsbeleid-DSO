@@ -74,7 +74,7 @@ class GebiedenGroep(BaseModel):
     uuid: UUID
     code: str  # Code used by the API like `gebiedengroep-1`
     title: str
-    gio_keys: List[str]
+    gio_keys: Set[str]
 
     model_config = ConfigDict(populate_by_name=True)
 
