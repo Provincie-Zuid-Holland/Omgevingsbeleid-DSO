@@ -12,8 +12,8 @@ from tests.unit.dso.act_builder.state_manager.input_data.resource.besluit_pdf.be
 from tests.unit.dso.act_builder.state_manager.input_data.resource.document.document_repository import (
     document_repository_mock_with_two_documents,
 )
-from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gebied_repository import (
-    gebied_repository_mock_with_two_new_gebieden,
+from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import (
+    gio_repository_mock_with_two_new_gebieden,
 )
 from tests.unit.dso.act_builder.state_manager.state_manager_test_case import state_manager_mock
 from tests.unit.dso.model_factories import PubdataFRBRFactory
@@ -24,10 +24,10 @@ class TestBesluitMetadataContent(XMLCompareTest):
     def test_create(
         self,
         state_manager_mock,
-        gebied_repository_mock_with_two_new_gebieden,
+        gio_repository_mock_with_two_new_gebieden,
         document_repository_mock_with_two_documents,
     ) -> None:
-        state_manager_mock.input_data.resources.gebied_repository = gebied_repository_mock_with_two_new_gebieden
+        state_manager_mock.input_data.resources.gio_repository = gio_repository_mock_with_two_new_gebieden
 
         state_manager_mock.input_data.resources.document_repository = document_repository_mock_with_two_documents
 

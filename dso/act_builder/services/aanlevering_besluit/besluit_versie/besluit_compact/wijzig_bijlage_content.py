@@ -86,7 +86,7 @@ class WijzigBijlageContent:
             case VervangRegelingMutatie():
                 # When doing a VervangRegeling mutation we need to create the RegelingVrijetekst
                 # without the was/wordt/componentnaam attributes
-                # As those needs to be in the wrapped RegelingMutatie tag
+                # As those need to be in the wrapped RegelingMutatie tag
                 regeling_vrijetekst: str = load_template(
                     "akn/besluit_versie/besluit_compact/RegelingVrijetekst.xml",
                     componentnaam=None,

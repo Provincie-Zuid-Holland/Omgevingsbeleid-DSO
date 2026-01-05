@@ -24,14 +24,14 @@ class Gio(BaseModel):
     This represents a AanleveringInformatieObject and GeoInformatieObjectVaststelling
     And all that comes with it, like consolidating and listing it in the Appendix of the Act.
 
-    A Gio can be build by the API's Object_Type=gebied where this Gio will just have
+    A Gio can be built by the API's Object_Type=gebied where this Gio will just have
     one `locatie` which is the Area in Gebied.Area_UUID
 
-    And a Gio can be build by an Gebiedsaanwijzing where it might have multiple `locatie`
+    And a Gio can be built by a Gebiedsaanwijzing where it might have multiple `locatie`
     """
 
     # These are the gebied-x codes which are in this gio
-    # source_codes and the key() func are used to determine uniquenes and "lineage"
+    # source_codes and the key() func are used to determine uniqueness and "lineage"
     source_codes: Set[str]  # [gebied-1, gebied-2]
     locaties: List[GioLocatie]  # 1 locatie per source-code
 

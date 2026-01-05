@@ -4,16 +4,16 @@ from dso.act_builder.services.geo.geo_informatie_object_vaststelling_builder imp
     GeoInformatieObjectVaststellingBuilder,
 )
 from dso.announcement_builder.state_manager.models import OutputFile
-from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gebied_repository import (
-    gebied_repository_mock_with_two_new_gebieden,
+from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import (
+    gio_repository_mock_with_two_new_gebieden,
 )
 from tests.unit.dso.act_builder.state_manager.state_manager_test_case import StateManagerTestCase, state_manager_mock
 from tests.unit.xml_compare_test import XMLCompareTest
 
 
 class TestGeoInformatieObjectVaststellingBuilder(StateManagerTestCase, XMLCompareTest):
-    def test_apply(self, state_manager_mock, gebied_repository_mock_with_two_new_gebieden):
-        state_manager_mock.input_data.resources.gebied_repository = gebied_repository_mock_with_two_new_gebieden
+    def test_apply(self, state_manager_mock, gio_repository_mock_with_two_new_gebieden):
+        state_manager_mock.input_data.resources.gio_repository = gio_repository_mock_with_two_new_gebieden
 
         builder = GeoInformatieObjectVaststellingBuilder()
         builder.apply(state_manager_mock)

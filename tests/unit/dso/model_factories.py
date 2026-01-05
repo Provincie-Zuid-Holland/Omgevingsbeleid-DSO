@@ -1,8 +1,8 @@
 from enum import IntEnum
 from typing import Optional
 
-from dso.models import GioFRBR, PubdataFRBR, InstellingDoel, DoelFRBR, ActFRBR, VerwijderdGebied
-from tests.factory import Factory, TypeEnum
+from dso.models import GioFRBR, PubdataFRBR, InstellingDoel, DoelFRBR, ActFRBR
+from tests.factory import Factory
 
 
 class FRBRType(IntEnum):
@@ -92,20 +92,4 @@ class InstellingDoelFactory(Factory):
         return InstellingDoel(
             frbr=DoelFRBRFactory().create(),
             datum_juridisch_werkend_vanaf=self.datum_juridisch_werkend_vanaf,
-        )
-
-
-class VerwijderdGebiedFactory(Factory):
-    id: int
-    frbr: GioFRBR
-    geboorteregeling: str = "akn/nl/act/pv28/2024/omgevingsvisie-1"
-
-    def create(self) -> VerwijderdGebied:
-        return VerwijderdGebied(
-            UUID=str(self.get_uuid_from_id(TypeEnum.GEBIED, self.id)),
-            code=f"gebied-{self.id}",
-            object_id=self.id,
-            frbr=self.frbr,
-            geboorteregeling=self.geboorteregeling,
-            titel=f"Verwijderd gebied {self.id}",
         )

@@ -1,7 +1,8 @@
 import re
-from typing import Optional
+from typing import Optional, List
 
 from bs4 import BeautifulSoup
+from pydantic import BaseModel
 
 from ......models import PublicationSettings
 from ......services.tekst.tekst import Inhoud
@@ -9,6 +10,13 @@ from ......services.utils.helpers import load_template
 from .....state_manager.input_data.besluit import Besluit
 from .....state_manager.state_manager import StateManager
 from .....state_manager.states.artikel_eid_repository import ArtikelEidType
+
+
+class ArtikelContent(BaseModel):
+    eId: str
+    wId: str
+    nummer: str
+    inhoud: str
 
 
 class ArtikelenContent:
@@ -24,23 +32,23 @@ class ArtikelenContent:
             besluit.wijzig_artikel.nummer,
             besluit.wijzig_artikel.inhoud,
         )
-        self._state_manager.artikel_eid.add(wijzig_artikel["eId"], ArtikelEidType.WIJZIG)
+        self._state_manager.artikel_eid.add(wijzig_artikel.eId, ArtikelEidType.WIJZIG)
 
         # Tijds Artikel
-        tijd_artikel: Optional[dict] = None
+        tijd_artikel: Optional[ArtikelContent] = None
         if besluit.tijd_artikel is not None:
             tijd_artikel = self._create_article(
                 besluit.tijd_artikel.nummer,
                 besluit.tijd_artikel.inhoud,
             )
-            self._state_manager.artikel_eid.add(tijd_artikel["eId"], ArtikelEidType.BESLUIT_INWERKINGSTIJD)
+            self._state_manager.artikel_eid.add(tijd_artikel.eId, ArtikelEidType.BESLUIT_INWERKINGSTIJD)
 
         # Tekst Artikelen
-        tekst_artikelen = []
+        tekst_artikelen: List[ArtikelContent] = []
         for tekst_artikel in besluit.tekst_artikelen:
             inhoud = self._html_to_xml_inhoud(tekst_artikel.inhoud)
             inhoud = self._replace_ref_appendices(inhoud)
-            artikel_dict: dict = self._create_article(tekst_artikel.nummer, inhoud)
+            artikel_dict: ArtikelContent = self._create_article(tekst_artikel.nummer, inhoud)
 
             tekst_artikelen.append(artikel_dict)
             self._state_manager.artikel_eid.add(artikel_dict["eId"], ArtikelEidType.TEKST)
@@ -53,20 +61,20 @@ class ArtikelenContent:
         )
         return content
 
-    def _create_article(self, nummer, inhoud):
+    def _create_article(self, nummer: str, inhoud: str) -> ArtikelContent:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
         wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__"
         eId_prefix: str = "art_"
 
         eId = f"{eId_prefix}{nummer}"
         wId = f"{wId_prefix}{eId}"
-        artikel = {
-            "eId": eId,
-            "wId": wId,
-            "nummer": nummer,
-            "inhoud": inhoud,
-        }
-        return artikel
+        artikel_content = ArtikelContent(
+            eId=eId,
+            wId=wId,
+            nummer=nummer,
+            inhoud=inhoud,
+        )
+        return artikel_content
 
     def _html_to_xml_inhoud(self, html: str) -> str:
         input_soup = BeautifulSoup(html, "html.parser")

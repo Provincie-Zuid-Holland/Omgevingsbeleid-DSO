@@ -1,20 +1,23 @@
+from typing import List
+
 from dso.act_builder.state_manager.states.text_manipulator.models import (
     TextData,
-    TekstBijlageGebied,
+    TekstBijlageGio,
     TekstBijlageDocument,
     TekstPolicyObject,
 )
 from tests.factory import Factory
 
 
-class TekstBijlageGebiedFactory(Factory):
-    id: int
+class TekstBijlageGioFactory(Factory):
+    ids: List[int]
 
-    def create(self) -> TekstBijlageGebied:
-        return TekstBijlageGebied(
-            gebied_code=f"gebied-{self.id}",
-            eid=f"eid-tekst-bijlage-gebied-{self.id}",
-            wid=f"wid-tekst-bijlage-gebied-{self.id}",
+    def create(self) -> TekstBijlageGio:
+        key = "_".join([f"gebied-{id}" for id in self.ids])
+        return TekstBijlageGio(
+            gio_key=key,
+            eid=f"eid-tekst-bijlage-gebied-{key}",
+            wid=f"wid-tekst-bijlage-gebied-{key}",
             element="a",
         )
 
@@ -45,20 +48,20 @@ class TekstPolicyObjectFactory(Factory):
 
 class TextDataFactory(Factory):
     def create(self) -> TextData:
-        bijlage_gebieden = [
-            TekstBijlageGebiedFactory(id=1).create(),
-            TekstBijlageGebiedFactory(id=2).create(),
+        bijlage_gebieden: List[TekstBijlageGio] = [
+            TekstBijlageGioFactory(ids=[3, 4]).create(),
+            TekstBijlageGioFactory(ids=[6, 7]).create(),
         ]
-        bijlage_documenten = [
+        bijlage_documenten: List[TekstBijlageDocument] = [
             TekstTekstBijlageDocumentFactory(id=1).create(),
             TekstTekstBijlageDocumentFactory(id=2).create(),
         ]
-        policy_objects = [
+        policy_objects: List[TekstPolicyObject] = [
             TekstPolicyObjectFactory(id=1).create(),
             TekstPolicyObjectFactory(id=2).create(),
         ]
         return TextData(
-            bijlage_gebieden=bijlage_gebieden,
+            bijlage_gios=bijlage_gebieden,
             bijlage_documenten=bijlage_documenten,
             policy_objects=policy_objects,
         )

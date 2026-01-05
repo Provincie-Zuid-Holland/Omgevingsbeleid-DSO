@@ -5,16 +5,16 @@ from dso.act_builder.state_manager import StrContentData
 from dso.announcement_builder.state_manager.models import OutputFile
 from dso.models import ContentType
 from dso.services.utils.waardelijsten import Provincie
-from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gebied_repository import (
-    gebied_repository_mock_with_two_new_gebieden,
+from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import (
+    gio_repository_mock_with_two_new_gebieden,
 )
 from tests.unit.dso.act_builder.state_manager.state_manager_test_case import StateManagerTestCase, state_manager_mock
 from tests.unit.xml_compare_test import XMLCompareTest
 
 
 class TestGioAanleveringInformatieObjectBuilder(StateManagerTestCase, XMLCompareTest):
-    def test_apply(self, state_manager_mock, gebied_repository_mock_with_two_new_gebieden):
-        state_manager_mock.input_data.resources.gebied_repository = gebied_repository_mock_with_two_new_gebieden
+    def test_apply(self, state_manager_mock, gio_repository_mock_with_two_new_gebieden):
+        state_manager_mock.input_data.resources.gio_repository = gio_repository_mock_with_two_new_gebieden
 
         state_manager_mock.input_data.publication_settings.provincie_ref = Provincie.Zuid_Holland.value
 
