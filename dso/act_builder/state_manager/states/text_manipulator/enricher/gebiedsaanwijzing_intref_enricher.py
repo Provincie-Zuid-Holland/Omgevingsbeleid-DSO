@@ -1,4 +1,3 @@
-from uuid import UUID
 from lxml import etree
 
 from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzing_repository import (
@@ -24,7 +23,7 @@ class GebiedsaanwijzingIntrefEnricher(AbstractEnricher):
         root = etree.fromstring(xml_content.encode("utf-8"), parser)
 
         for intref in root.xpath("//IntIoRef[@data-hint-gebiedsaanwijzing-uuid]"):
-            aanwijzing_uuid: UUID = UUID(intref.get("data-hint-gebiedsaanwijzing-uuid"))
+            aanwijzing_uuid: str = intref.get("data-hint-gebiedsaanwijzing-uuid")
             aanwijzing: Gebiedsaanwijzing = self._aanwijzing_repository.get(aanwijzing_uuid)
             gio: Gio = self._gio_repository.get_by_key(aanwijzing.gio_key)
             text_gio: TekstBijlageGio = self._text_data.get_gio_by_key(gio.key())

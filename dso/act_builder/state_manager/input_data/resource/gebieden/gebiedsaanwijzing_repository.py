@@ -1,5 +1,4 @@
 import json
-import uuid
 from typing import Dict, List, Optional
 
 from .types import Gebiedsaanwijzing
@@ -10,16 +9,16 @@ class GebiedsaanwijzingRepository:
         self._data: Dict[str, Gebiedsaanwijzing] = {}
 
     def add(self, aanwijzing: Gebiedsaanwijzing) -> None:
-        self._data[aanwijzing.uuid] = aanwijzing
+        self._data[str(aanwijzing.uuid)] = aanwijzing
 
-    def get_optional(self, idx: uuid.UUID) -> Optional[Gebiedsaanwijzing]:
-        aanwijzing: Optional[Gebiedsaanwijzing] = self._data.get(str(idx))
+    def get_optional(self, uuid: str) -> Optional[Gebiedsaanwijzing]:
+        aanwijzing: Optional[Gebiedsaanwijzing] = self._data.get(uuid)
         return aanwijzing
 
-    def get(self, idx: uuid.UUID) -> Gebiedsaanwijzing:
-        aanwijzing: Optional[Gebiedsaanwijzing] = self.get_optional(idx)
+    def get(self, uuid: str) -> Gebiedsaanwijzing:
+        aanwijzing: Optional[Gebiedsaanwijzing] = self.get_optional(uuid)
         if aanwijzing is None:
-            raise RuntimeError(f"Can not find gebiedsaanwijzing {idx}")
+            raise RuntimeError(f"Can not find gebiedsaanwijzing {uuid}")
         return aanwijzing
 
     def all(self) -> List[Gebiedsaanwijzing]:
