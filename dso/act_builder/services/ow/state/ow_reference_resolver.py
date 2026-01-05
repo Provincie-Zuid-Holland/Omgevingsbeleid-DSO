@@ -126,7 +126,9 @@ class OwReferenceResolver:
                 )
         raise RuntimeError("No divisietekst found to reference to")
 
-    def _resolve_gebiedsaanwijzing_ref(self, state: OwState, input_ref: UnresolvedGebiedsaanwijzingRef) -> GebiedRef:
+    def _resolve_gebiedsaanwijzing_ref(
+        self, state: OwState, input_ref: UnresolvedGebiedsaanwijzingRef
+    ) -> GebiedsaanwijzingRef:
         for gebiedsaanwijzing in state.gebiedsaanwijzingen:
             if gebiedsaanwijzing.is_deleted():
                 continue

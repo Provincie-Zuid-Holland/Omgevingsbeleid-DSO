@@ -61,7 +61,7 @@ class OwInputGebiedengroep(BaseModel):
 
 
 class OwInputGebiedsaanwijzing(BaseModel):
-    source_code: str
+    source_code: str  # Is composed of the gebied codes AND the type and groep
     title: str
     aanwijzing_type: str
     aanwijzing_groep: str
@@ -69,16 +69,13 @@ class OwInputGebiedsaanwijzing(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    def get_unique_key(self) -> str:
-        return f"{self.source_code}-{self.aanwijzing_type}-{self.aanwijzing_groep}"
-
     def __hash__(self):
         return hash((self.source_code, self.aanwijzing_type, self.aanwijzing_groep))
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        return self.get_unique_key() == other.get_unique_key()
+        return self.source_code == other.source_code
 
 
 class OwInputPolicyObject(BaseModel):

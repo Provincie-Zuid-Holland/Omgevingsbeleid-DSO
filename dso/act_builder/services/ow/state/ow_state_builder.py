@@ -178,7 +178,7 @@ class OwStateBuilder:
         ]
         gebiedsaanwijzing = OwGebiedsaanwijzing(
             object_status=OwObjectStatus.new,
-            source_code=input_gebiedsaanwijzing.get_unique_key(),
+            source_code=input_gebiedsaanwijzing.source_code,
             procedure_status=self._procedure_status,
             identification=self._generate_identifier("gebiedsaanwijzing"),
             title=input_gebiedsaanwijzing.title,
