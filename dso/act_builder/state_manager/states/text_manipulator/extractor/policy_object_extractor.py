@@ -1,5 +1,4 @@
 from typing import List
-from uuid import UUID
 
 from lxml import etree
 
@@ -43,7 +42,7 @@ class TextPolicyObjectExtractor:
         for element in elements:
             result.append(
                 TekstPolicyObjectGebiedsaanwijzing(
-                    uuid=UUID(element.get("data-hint-gebiedsaanwijzing-uuid")),
+                    uuid=element.get("data-hint-gebiedsaanwijzing-uuid"),
                     eid=element.get("eId"),
                     wid=element.get("wId"),
                     element=element.tag,

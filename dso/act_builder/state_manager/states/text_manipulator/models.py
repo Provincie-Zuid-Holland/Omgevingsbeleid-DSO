@@ -1,5 +1,4 @@
 from typing import List
-from uuid import UUID
 
 from pydantic import BaseModel, Field
 
@@ -19,7 +18,7 @@ class TekstBijlageDocument(BaseModel):
 
 
 class TekstPolicyObjectGebiedsaanwijzing(BaseModel):
-    uuid: UUID
+    uuid: str
     eid: str
     wid: str
     element: str
