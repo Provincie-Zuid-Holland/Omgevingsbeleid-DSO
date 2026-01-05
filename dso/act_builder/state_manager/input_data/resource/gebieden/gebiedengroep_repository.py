@@ -9,17 +9,8 @@ class GebiedengroepRepository:
     def __init__(self):
         self._groepen: Dict[str, GebiedenGroep] = {}
 
-    def add(self, groep: dict) -> None:
-        groep_id = groep["UUID"]
-        self._groepen[groep_id] = GebiedenGroep.model_validate(groep)
-
-    def add_list(self, groepen: List[dict]) -> None:
-        for groep in groepen:
-            self.add(groep)
-
-    def add_from_dict(self, groepen: Dict[str, dict]) -> None:
-        for _, groep in groepen.items():
-            self.add(groep)
+    def add(self, groep: GebiedenGroep) -> None:
+        self._groepen[groep.uuid] = groep
 
     def get_optional(self, idx: uuid.UUID) -> Optional[GebiedenGroep]:
         groep: Optional[GebiedenGroep] = self._groepen.get(str(idx))

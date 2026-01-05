@@ -9,13 +9,8 @@ class GebiedsaanwijzingRepository:
     def __init__(self):
         self._data: Dict[str, Gebiedsaanwijzing] = {}
 
-    def add(self, aanwijzing: dict) -> None:
-        aanwijzing_id = aanwijzing["uuid"]
-        self._data[aanwijzing_id] = Gebiedsaanwijzing.model_validate(aanwijzing)
-
-    def add_list(self, aanwijzingen: List[dict]) -> None:
-        for aanwijzing in aanwijzingen:
-            self.add(aanwijzing)
+    def add(self, aanwijzing: Gebiedsaanwijzing) -> None:
+        self._data[aanwijzing.uuid] = aanwijzing
 
     def get_optional(self, idx: uuid.UUID) -> Optional[Gebiedsaanwijzing]:
         aanwijzing: Optional[Gebiedsaanwijzing] = self._data.get(str(idx))

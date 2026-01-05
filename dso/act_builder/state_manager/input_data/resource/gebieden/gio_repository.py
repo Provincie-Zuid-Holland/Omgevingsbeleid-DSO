@@ -8,8 +8,8 @@ class GioRepository:
     def __init__(self):
         self._gios: List[Gio] = []
 
-    def add(self, gio: dict) -> None:
-        self._gios.append(Gio.model_validate(gio))
+    def add(self, gio: Gio) -> None:
+        self._gios.append(gio)
 
     def get_by_key_optional(self, key: str) -> Optional[Gio]:
         for g in self._gios:
