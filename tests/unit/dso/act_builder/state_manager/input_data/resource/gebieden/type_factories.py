@@ -38,6 +38,6 @@ class GioLocatieFactory(Factory):
         return GioLocatie(
             code=f"gebied-{self.id}",
             title=f"Gebied {self.id}",
-            basisgeo_id=f"gml-{self.id}",  # TODO fix
+            basisgeo_id=f"geo-{self.id}",
             gml=f'<gml:Point id="{self.id}" />',
         )
