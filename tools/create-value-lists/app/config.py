@@ -1,10 +1,10 @@
 from typing import Set
 
 # See: "Waardelijsten IMOW  [service als zip-bestand]" on this page: https://www.geonovum.nl/omgevingswet/STOPTPOD
-DOWNLOAD_URL: str = "https://geonovum.github.io/TPOD/Waardelijsten/waardelijsten_IMOW_v4.3.0.zip"
-SOURCE_FILE: str = "waardelijsten_IMOW_v4.3.0.json"
+DOWNLOAD_URL: str = "https://github.com/Geonovum/TPOD-waardelijsten/raw/main/2025-12-15/waardelijsten_IMOW_5.0.0.zip"
+SOURCE_FILE: str = "waardelijsten IMOW 5.0.0.json"
 
-TARGET_FILE: str = "./dso/services/ow/area_designation/gen/__init__.py"
+TARGET_FILE: str = "./dso/services/ow/gebiedsaanwijzingen/gen/__init__.py"
 
 VAR_NAME_GA_OMGEVINGSVISIE_DATA = "GA_OMGEVINGSVISIE_DATA"
 VAR_NAME_GA_PROGRAMMA_DATA = "GA_PROGRAMMA_DATA"
