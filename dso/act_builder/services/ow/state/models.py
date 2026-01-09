@@ -6,6 +6,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class AbstractRef(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
     @abstractmethod
     def get_key(self) -> str:
         pass
