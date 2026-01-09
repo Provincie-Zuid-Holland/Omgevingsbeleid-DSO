@@ -3034,16 +3034,6 @@ ga_water_en_watersysteemgroep_groep = Gebiedsaanwijzing(
             deprecated=False,
         ),
         GebiedsaanwijzingWaarde(
-            label="boringsvije zone",
-            term="BoringsvijeZone",
-            uri="http://standaarden.omgevingswet.overheid.nl/waterenwatersysteem/id/concept/BoringsvijeZone",
-            definitie="Deze waarde niet gebruiken i.v.m. een schrijffout. Gebruik de waarde Boringsvrije zone.",
-            toelichting="Waarde vervalt op 15-12-2025.",
-            bron="",
-            domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/WaterEnWatersysteem",
-            deprecated=True,
-        ),
-        GebiedsaanwijzingWaarde(
             label="boringsvrije zone",
             term="BoringsvrijeZone",
             uri="http://standaarden.omgevingswet.overheid.nl/waterenwatersysteem/id/concept/BoringsvrijeZone",
