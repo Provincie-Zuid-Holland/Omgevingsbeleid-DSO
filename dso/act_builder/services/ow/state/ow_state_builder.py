@@ -107,9 +107,9 @@ class OwStateBuilder:
             return
 
         text_ref: AbstractWidRef = self._handle_policy_object_element(input_policy_object)
-        location_refs: List[AbstractLocationRef] = self._handle_locations(input_policy_object.location_refs)
-        aanwijzing_refs: List[AbstractGebiedsaanwijzingRef] = self._handle_aanwijzing_refs(
-            input_policy_object.gebiedsaanwijzing_refs
+        location_refs: Set[AbstractLocationRef] = set(self._handle_locations(input_policy_object.location_refs))
+        aanwijzing_refs: Set[AbstractGebiedsaanwijzingRef] = set(
+            self._handle_aanwijzing_refs(input_policy_object.gebiedsaanwijzing_refs)
         )
         tekstdeel = OwTekstdeel(
             object_status=OwObjectStatus.new,

@@ -40,10 +40,10 @@ class OwReferenceResolver:
             if tekstdeel.is_deleted():
                 continue
             tekstdeel.text_ref = self._resolve_generic_reference(state, tekstdeel.text_ref)
-            for index, ref in enumerate(tekstdeel.location_refs):
-                tekstdeel.location_refs[index] = self._resolve_generic_reference(state, ref)
-            for index, ref in enumerate(tekstdeel.gebiedsaanwijzing_refs):
-                tekstdeel.gebiedsaanwijzing_refs[index] = self._resolve_generic_reference(state, ref)
+            tekstdeel.location_refs = {self._resolve_generic_reference(state, ref) for ref in tekstdeel.location_refs}
+            tekstdeel.gebiedsaanwijzing_refs = {
+                self._resolve_generic_reference(state, ref) for ref in tekstdeel.gebiedsaanwijzing_refs
+            }
 
         return state
 

@@ -1,4 +1,4 @@
-from typing import List, Optional, Set
+from typing import List, Optional
 
 from dso.act_builder.services.ow.input.models import (
     OwInputAbstractLocatieRef,
@@ -42,8 +42,8 @@ class OwInputPolicyObjectFactory:
         policy_object: PolicyObject = self._policy_object_repository.get_by_code(tekst_policy_object.object_code)
         policy_object_data: dict = policy_object.get_data()
 
-        location_refs: Set[OwInputAbstractLocatieRef] = set(self._get_location_refs(policy_object))
-        aanwijzing_refs: Set[OwInputGebiedsaanwijzingRef] = self._get_gebiedsaanwijzing_refs(tekst_policy_object)
+        location_refs: List[OwInputAbstractLocatieRef] = self._get_location_refs(policy_object)
+        aanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = self._get_gebiedsaanwijzing_refs(tekst_policy_object)
 
         result = OwInputPolicyObject(
             source_uuid=str(policy_object_data["UUID"]),
@@ -65,12 +65,12 @@ class OwInputPolicyObjectFactory:
 
         return [OwInputGebiedengroepLocatieRef(code=gebiedengroep_code)]
 
-    def _get_gebiedsaanwijzing_refs(self, tekst_policy_object: TekstPolicyObject) -> Set[OwInputAbstractLocatieRef]:
-        result: Set[OwInputGebiedsaanwijzingRef] = set()
+    def _get_gebiedsaanwijzing_refs(self, tekst_policy_object: TekstPolicyObject) -> List[OwInputAbstractLocatieRef]:
+        result: List[OwInputGebiedsaanwijzingRef] = []
 
         for tekst_gebiedsaanwijzing in tekst_policy_object.gebiedsaanwijzingen:
             aanwijzing: Gebiedsaanwijzing = self._aanwijzing_repository.get(tekst_gebiedsaanwijzing.uuid)
             aanwijzing_code: str = aanwijzing.key()
-            result.add(OwInputGebiedsaanwijzingRef(code=aanwijzing_code))
+            result.append(OwInputGebiedsaanwijzingRef(code=aanwijzing_code))
 
         return result

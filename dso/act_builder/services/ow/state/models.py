@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from enum import Enum
-from typing import Annotated, List, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Set, Union
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -494,8 +494,8 @@ class OwTekstdeel(BaseOwObject):
     source_code: str
     idealization: str
     text_ref: WidRefUnion
-    location_refs: List[LocationRefUnion]
-    gebiedsaanwijzing_refs: List[GebiedsaanwijzingRefUnion]
+    location_refs: Set[LocationRefUnion]
+    gebiedsaanwijzing_refs: Set[GebiedsaanwijzingRefUnion]
 
     def get_key(self) -> str:
         return self.source_code
