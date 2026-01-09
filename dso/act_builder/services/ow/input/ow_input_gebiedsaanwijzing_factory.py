@@ -39,7 +39,9 @@ class OwInputGebiedsaanwijzingFactory:
                 raise RuntimeError(f"Invalid gebiedsaanwijzing type `{aanwijzing.aanwijzing_type}`")
             area_value: Optional[ad.GebiedsaanwijzingWaarde] = area_type.get_value_by_label(aanwijzing.aanwijzing_groep)
             if area_value is None:
-                raise RuntimeError(f"Invalid gebiedsaanwijzing group `{aanwijzing.aanwijzing_groep}`")
+                raise RuntimeError(
+                    f"Invalid gebiedsaanwijzing group `{aanwijzing.aanwijzing_groep}` for type `{aanwijzing.aanwijzing_type}`"
+                )
 
             input_locaties: List[OwInputLocatie] = [
                 OwInputLocatie(
