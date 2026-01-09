@@ -4,7 +4,7 @@ from typing import Set
 DOWNLOAD_URL: str = "https://geonovum.github.io/TPOD/Waardelijsten/waardelijsten_IMOW_v4.3.0.zip"
 SOURCE_FILE: str = "waardelijsten_IMOW_v4.3.0.json"
 
-TARGET_FILE: str = "./dso/services/ow/area_designation/gen/__init__.py"
+TARGET_FILE: str = "./dso/services/ow/gebiedsaanwijzingen/gen/__init__.py"
 
 VAR_NAME_GA_OMGEVINGSVISIE_DATA = "GA_OMGEVINGSVISIE_DATA"
 VAR_NAME_GA_PROGRAMMA_DATA = "GA_PROGRAMMA_DATA"
