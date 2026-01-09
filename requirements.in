@@ -14,3 +14,4 @@ beautifulsoup4
 roman
 requests
 requests-toolbelt
+python-slugify
