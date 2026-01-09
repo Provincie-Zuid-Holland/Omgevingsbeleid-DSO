@@ -12,7 +12,7 @@ from dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository i
 from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, Gio
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.models import DocumentType
-from dso.services.ow.gebiedsaanwijzingen.area_designation import Gebiedsaanwijzingen, GebiedsaanwijzingenFactory
+from dso.services.ow.gebiedsaanwijzingen.gebiedsaanwijzing import Gebiedsaanwijzingen, GebiedsaanwijzingenFactory
 import dso.services.ow.gebiedsaanwijzingen.types as ad
 
 
