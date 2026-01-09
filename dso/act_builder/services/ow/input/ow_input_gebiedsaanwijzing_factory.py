@@ -12,15 +12,15 @@ from dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository i
 from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, Gio
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.models import DocumentType
-from dso.services.ow.area_designation.area_designation import AreaDesignations, AreaDesignationsFactory
-from dso.services.ow.area_designation.types import AreaDesignation, AreaDesignationValue
+from dso.services.ow.gebiedsaanwijzingen.area_designation import Gebiedsaanwijzingen, GebiedsaanwijzingenFactory
+import dso.services.ow.gebiedsaanwijzingen.types as ad
 
 
 class OwInputGebiedsaanwijzingFactory:
     def __init__(self, state_manager: StateManager):
         document_type: DocumentType = state_manager.input_data.publication_settings.document_type
 
-        self._area_types: AreaDesignations = AreaDesignationsFactory().get_for_document(document_type)
+        self._area_types: Gebiedsaanwijzingen = GebiedsaanwijzingenFactory().get_for_document(document_type)
         self._aanwijzing_repository: GebiedsaanwijzingRepository = (
             state_manager.input_data.resources.gebiedsaanwijzingen_repository
         )
@@ -34,10 +34,10 @@ class OwInputGebiedsaanwijzingFactory:
         for aanwijzing in aanwijzingen:
             gio: Gio = self._gio_repository.get_by_key(aanwijzing.gio_key)
 
-            area_type: Optional[AreaDesignation] = self._area_types.get_by_type_label(aanwijzing.aanwijzing_type)
+            area_type: Optional[ad.Gebiedsaanwijzing] = self._area_types.get_by_type_label(aanwijzing.aanwijzing_type)
             if area_type is None:
                 raise RuntimeError(f"Invalid gebiedsaanwijzing type `{aanwijzing.aanwijzing_type}`")
-            area_value: Optional[AreaDesignationValue] = area_type.get_value_by_label(aanwijzing.aanwijzing_groep)
+            area_value: Optional[ad.GebiedsaanwijzingWaarde] = area_type.get_value_by_label(aanwijzing.aanwijzing_groep)
             if area_value is None:
                 raise RuntimeError(f"Invalid gebiedsaanwijzing group `{aanwijzing.aanwijzing_groep}`")
 
@@ -57,7 +57,7 @@ class OwInputGebiedsaanwijzingFactory:
             input_aanwijzing = OwInputGebiedsaanwijzing(
                 source_code=aanwijzing.key(),
                 title=aanwijzing.title,
-                aanwijzing_type=area_type.designation_type.uri,
+                aanwijzing_type=area_type.aanwijzing_type.uri,
                 aanwijzing_groep=area_value.uri,
                 gio=input_gio,
             )

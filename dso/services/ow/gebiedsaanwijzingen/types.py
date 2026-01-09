@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -39,3 +39,9 @@ class Gebiedsaanwijzing(BaseModel):
     def get_value_labels(self) -> List[str]:
         result: List[str] = [w.label for w in self.waardes]
         return result
+
+    def get_value_by_label(self, label: str) -> Optional[GebiedsaanwijzingWaarde]:
+        for value in self.waardes:
+            if value.label == label:
+                return value
+        return None
