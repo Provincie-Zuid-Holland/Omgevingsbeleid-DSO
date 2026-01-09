@@ -1,2 +1,2 @@
-import dso.services.ow.area_designation.types as ad
-from dso.services.ow.area_designation.area_designation import AreaDesignationsFactory, AreaDesignations
+import dso.services.ow.gebiedsaanwijzingen.types as ad
+from dso.services.ow.gebiedsaanwijzingen.area_designation import GebiedsaanwijzingenFactory, Gebiedsaanwijzingen

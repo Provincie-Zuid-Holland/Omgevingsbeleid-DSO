@@ -1,6 +1,6 @@
 import click
 
-from service import do_create_area_designations
+from service import do_create_gebiedsaanwijzingen
 
 
 @click.group()
@@ -10,11 +10,11 @@ def cli():
 
 
 @click.command()
-def create_area_designations():
-    do_create_area_designations()
+def create_gebiedsaanwijzingen():
+    do_create_gebiedsaanwijzingen()
 
 
-cli.add_command(create_area_designations)
+cli.add_command(create_gebiedsaanwijzingen)
 
 
 if __name__ == "__main__":

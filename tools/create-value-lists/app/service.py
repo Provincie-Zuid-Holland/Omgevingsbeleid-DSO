@@ -20,7 +20,7 @@ OUTPUT_FILE_HEADING = """
 # GENERATED FILE - DO NOT EDIT
 
 from typing import List
-from dso.services.ow.area_designation.types import AreaDesignation, AreaDesignationGroup, AreaDesignationType, AreaDesignationValue
+from dso.services.ow.gebiedsaanwijzingen.types import GebiedsaanwijzingWaarde, GebiedsaanwijzingType, GebiedsaanwijzingGroep, Gebiedsaanwijzing
 """
 
 
@@ -34,7 +34,7 @@ def _download_source() -> SourceResult:
             return SourceResult.model_validate_json(f.read())
 
 
-def do_create_area_designations():
+def do_create_gebiedsaanwijzingen():
     output_contents: List[str] = []
     output_contents.append(OUTPUT_FILE_HEADING)
 
@@ -62,35 +62,35 @@ def do_create_area_designations():
         values_output: List[str] = []
         for value in designation_group.waarden.waarde:
             values_output.append(f"""
-                AreaDesignationValue(
+                GebiedsaanwijzingWaarde(
                     label="{value.label}",
                     term="{value.term}",
                     uri="{value.uri}",
-                    definition="{value.definitie}",
-                    explanation="{value.toelichting}",
-                    source="{value.bron}",
-                    domain="{value.domein}",
+                    definitie="{value.definitie}",
+                    toelichting="{value.toelichting}",
+                    bron="{value.bron}",
+                    domein="{value.domein}",
                     deprecated={str(value.is_deprecated())},
                 )""")
 
         variable_name: str = f"ga_{designation_group.get_key()}_groep"
         output_contents.append(f"""
-{variable_name} = AreaDesignation(
-    designation_type=AreaDesignationType(
+{variable_name} = Gebiedsaanwijzing(
+    designation_type=GebiedsaanwijzingType(
         label="{designation_type.label}",
         term="{designation_type.term}",
         uri="{designation_type.uri}",
-        definition="{designation_type.definitie}",
-        source="{designation_type.bron}",
-        domain="{designation_type.domein}",
+        definitie="{designation_type.definitie}",
+        bron="{designation_type.bron}",
+        domein="{designation_type.domein}",
         deprecated={str(designation_type.is_deprecated())},
     ),
-    designation_group=AreaDesignationGroup(
+    designation_group=GebiedsaanwijzingGroep(
         label="{designation_group.label}",
-        title="{designation_group.titel}",
+        titel="{designation_group.titel}",
         uri="{designation_group.uri}",
-        description="{designation_group.omschrijving}",
-        explanation="{designation_group.toelichting}",
+        omschrijving="{designation_group.omschrijving}",
+        toelichting="{designation_group.toelichting}",
     ),
     values=[
         {",\n\t\t\t".join(values_output)}
@@ -104,13 +104,13 @@ def do_create_area_designations():
             programma_data_var_names.append(variable_name)
 
     output_contents.append(f"""
-{VAR_NAME_GA_OMGEVINGSVISIE_DATA}: List[AreaDesignation] = [
+{VAR_NAME_GA_OMGEVINGSVISIE_DATA}: List[Gebiedsaanwijzing] = [
     {",\n\t".join(omgevingsvisie_data_var_names)}
 ]
     """)
 
     output_contents.append(f"""
-{VAR_NAME_GA_PROGRAMMA_DATA}: List[AreaDesignation] = [
+{VAR_NAME_GA_PROGRAMMA_DATA}: List[Gebiedsaanwijzing] = [
     {",\n\t".join(programma_data_var_names)}
 ]
     """)
