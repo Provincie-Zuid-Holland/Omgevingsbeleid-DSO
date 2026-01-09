@@ -1,52 +1,68 @@
-from typing import List, Set
+from typing import List, Optional
 
 from dso.act_builder.services.ow.input.models import (
-    OwInputAbstractLocatieRef,
     OwInputGebiedsaanwijzing,
-    OwInputWerkingsgebiedLocatieRef,
+    OwInputGio,
+    OwInputLocatie,
 )
-from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
-from dso.act_builder.state_manager.input_data.resource.werkingsgebied.werkingsgebied_repository import (
-    WerkingsgebiedRepository,
+from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzing_repository import (
+    GebiedsaanwijzingRepository,
 )
+from dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import GioRepository
+from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, Gio
 from dso.act_builder.state_manager.state_manager import StateManager
-from dso.act_builder.state_manager.states.text_manipulator.models import TekstPolicyObject, TextData
+from dso.models import DocumentType
+from dso.services.ow.gebiedsaanwijzingen.gebiedsaanwijzing import Gebiedsaanwijzingen, GebiedsaanwijzingenFactory
+import dso.services.ow.gebiedsaanwijzingen.types as ad
 
 
 class OwInputGebiedsaanwijzingFactory:
     def __init__(self, state_manager: StateManager):
-        self._werkingsgebieden_repository: WerkingsgebiedRepository = (
-            state_manager.input_data.resources.werkingsgebied_repository
+        document_type: DocumentType = state_manager.input_data.publication_settings.document_type
+
+        self._area_types: Gebiedsaanwijzingen = GebiedsaanwijzingenFactory().get_for_document(document_type)
+        self._aanwijzing_repository: GebiedsaanwijzingRepository = (
+            state_manager.input_data.resources.gebiedsaanwijzingen_repository
         )
-        self._text_data: TextData = state_manager.text_data
+        self._gio_repository: GioRepository = state_manager.input_data.resources.gio_repository
 
     def get_gebiedsaanwijzingen(self) -> List[OwInputGebiedsaanwijzing]:
-        result: Set[OwInputGebiedsaanwijzing] = set()
+        aanwijzingen: List[Gebiedsaanwijzing] = self._aanwijzing_repository.all()
+        result: List[OwInputGebiedsaanwijzing] = []
 
-        for tekst_policy_object in self._text_data.policy_objects:
-            object_aanwijzingen = self._build_for_policy_object(tekst_policy_object)
-            result.update(object_aanwijzingen)
+        # We dont need to worry about duplicates as the OwState machine takes care of that
+        for aanwijzing in aanwijzingen:
+            gio: Gio = self._gio_repository.get_by_key(aanwijzing.gio_key)
 
-        return list(result)
+            area_type: Optional[ad.Gebiedsaanwijzing] = self._area_types.get_by_type_label(aanwijzing.aanwijzing_type)
+            if area_type is None:
+                raise RuntimeError(f"Invalid gebiedsaanwijzing type `{aanwijzing.aanwijzing_type}`")
+            area_value: Optional[ad.GebiedsaanwijzingWaarde] = area_type.get_value_by_label(aanwijzing.aanwijzing_groep)
+            if area_value is None:
+                raise RuntimeError(
+                    f"Invalid gebiedsaanwijzing group `{aanwijzing.aanwijzing_groep}` for type `{aanwijzing.aanwijzing_type}`"
+                )
 
-    def _build_for_policy_object(self, tekst_policy_object: TekstPolicyObject) -> Set[OwInputGebiedsaanwijzing]:
-        result: Set[OwInputGebiedsaanwijzing] = set()
-
-        for tekst_gebiedsaanwijzingen in tekst_policy_object.gebiedsaanwijzingen:
-            werkingsgebied: Werkingsgebied = self._werkingsgebieden_repository.get_by_code(
-                tekst_gebiedsaanwijzingen.werkingsgebied_code
+            input_locaties: List[OwInputLocatie] = [
+                OwInputLocatie(
+                    source_code=locatie.code,
+                    title=locatie.title,
+                    geometry_id=locatie.basisgeo_id,
+                )
+                for locatie in gio.locaties
+            ]
+            input_gio: OwInputGio = OwInputGio(
+                source_code=gio.key(),
+                title=gio.title,
+                locaties=input_locaties,
             )
-
-            ow_input_gebiedsaanwijzingen = OwInputGebiedsaanwijzing(
-                source_werkingsgebied_code=tekst_gebiedsaanwijzingen.werkingsgebied_code,
-                title=werkingsgebied.Title,
-                indication_type=tekst_gebiedsaanwijzingen.aanwijzing_type,
-                indication_group=tekst_gebiedsaanwijzingen.aanwijzing_groep,
-                location_refs=self._get_location_refs(werkingsgebied),
+            input_aanwijzing = OwInputGebiedsaanwijzing(
+                source_code=aanwijzing.key(),
+                title=aanwijzing.title,
+                aanwijzing_type=area_type.aanwijzing_type.uri,
+                aanwijzing_groep=area_value.uri,
+                gio=input_gio,
             )
-            result.add(ow_input_gebiedsaanwijzingen)
+            result.append(input_aanwijzing)
 
         return result
-
-    def _get_location_refs(self, werkingsgebied: Werkingsgebied) -> List[OwInputAbstractLocatieRef]:
-        return [OwInputWerkingsgebiedLocatieRef(code=werkingsgebied.Code)]

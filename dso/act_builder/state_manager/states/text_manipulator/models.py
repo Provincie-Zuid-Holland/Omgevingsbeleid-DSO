@@ -3,8 +3,8 @@ from typing import List
 from pydantic import BaseModel, Field
 
 
-class TekstBijlageWerkingsgebied(BaseModel):
-    werkingsgebied_code: str
+class TekstBijlageGio(BaseModel):
+    gio_key: str
     eid: str
     wid: str
     element: str
@@ -18,12 +18,10 @@ class TekstBijlageDocument(BaseModel):
 
 
 class TekstPolicyObjectGebiedsaanwijzing(BaseModel):
-    werkingsgebied_code: str
+    uuid: str
     eid: str
     wid: str
     element: str
-    aanwijzing_type: str
-    aanwijzing_groep: str
 
 
 class TekstPolicyObject(BaseModel):
@@ -35,15 +33,15 @@ class TekstPolicyObject(BaseModel):
 
 
 class TextData(BaseModel):
-    bijlage_werkingsgebieden: List[TekstBijlageWerkingsgebied] = Field(default_factory=list)
+    bijlage_gios: List[TekstBijlageGio] = Field(default_factory=list)
     bijlage_documenten: List[TekstBijlageDocument] = Field(default_factory=list)
     policy_objects: List[TekstPolicyObject] = Field(default_factory=list)
 
-    def get_werkingsgebied_by_code(self, code: str) -> TekstBijlageWerkingsgebied:
-        for werkingsgebied in self.bijlage_werkingsgebieden:
-            if werkingsgebied.werkingsgebied_code == code:
-                return werkingsgebied
-        raise RuntimeError(f"{code} not found in TextData.TekstBijlageWerkingsgebied")
+    def get_gio_by_key(self, gio_key: str) -> TekstBijlageGio:
+        for gio in self.bijlage_gios:
+            if gio.gio_key == gio_key:
+                return gio
+        raise RuntimeError(f"{gio_key} not found in TextData.TekstBijlageGio")
 
     def get_document_by_code(self, code: str) -> TekstBijlageDocument:
         for document in self.bijlage_documenten:

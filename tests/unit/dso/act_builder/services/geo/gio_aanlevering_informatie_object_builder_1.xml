@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<AanleveringInformatieObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:geo="https://standaarden.overheid.nl/stop/imop/geo/" xmlns="https://standaarden.overheid.nl/lvbb/stop/aanlevering/" schemaversie="1.2.0" xsi:schemaLocation="https://standaarden.overheid.nl/lvbb/stop/aanlevering https://standaarden.overheid.nl/lvbb/1.2.0/lvbb-stop-aanlevering.xsd">
+	<InformatieObjectVersie>
+		<ExpressionIdentificatie xmlns="https://standaarden.overheid.nl/stop/imop/data/" schemaversie="1.3.0">
+			<FRBRWork>/join/id/regdata/pv28/2025/omgevingsvisie-1</FRBRWork>
+			<FRBRExpression>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;104</FRBRExpression>
+			<soortWork>/join/id/stop/work_010</soortWork>
+		</ExpressionIdentificatie>
+		<InformatieObjectVersieMetadata xmlns="https://standaarden.overheid.nl/stop/imop/data/" schemaversie="1.3.0">
+			<heeftGeboorteregeling>akn/nl/act/pv28/2024/omgevingsvisie-1</heeftGeboorteregeling>
+			<heeftBestanden>
+				<heeftBestand>
+					<Bestand>
+						<bestandsnaam>locaties_gio-4.gml</bestandsnaam>
+						<hash>58a7e626920e0e63a7894a4a24fa413d8eac98a801fd44cc7dd31b34a49f2e596c5192253d38097395c06233dfdaa70f632ebd4d2db0a2b07d5fa16e8d39082a</hash>
+					</Bestand>
+				</heeftBestand>
+			</heeftBestanden>
+		</InformatieObjectVersieMetadata>
+		<InformatieObjectMetadata xmlns="https://standaarden.overheid.nl/stop/imop/data/" schemaversie="1.3.0">
+			<eindverantwoordelijke>/tooi/id/provincie/pv28</eindverantwoordelijke>
+			<maker>/tooi/id/provincie/pv28</maker>
+			<naamInformatieObject>GIO 4</naamInformatieObject>
+			<officieleTitel>/join/id/regdata/pv28/2025/omgevingsvisie-1</officieleTitel>
+			<publicatieinstructie>TeConsolideren</publicatieinstructie>
+			<formaatInformatieobject>/join/id/stop/informatieobject/gio_002</formaatInformatieobject>
+		</InformatieObjectMetadata>
+	</InformatieObjectVersie>
+</AanleveringInformatieObject>

@@ -3,30 +3,30 @@
     <maker>{{ provincie_ref }}</maker>
     <soortBestuursorgaan>{{ soort_bestuursorgaan.value }}</soortBestuursorgaan>
     <officieleTitel>{{ besluit.officiele_titel }}</officieleTitel>
-    {% if besluit.citeertitel is not none and besluit.citeertitel %}
+    {%- if besluit.citeertitel is not none and besluit.citeertitel %}
     <heeftCiteertitelInformatie>
         <CiteertitelInformatie>
             <citeertitel>{{ besluit.citeertitel }}</citeertitel>
             <isOfficieel>{{ regeling_is_officieel }}</isOfficieel>
         </CiteertitelInformatie>
     </heeftCiteertitelInformatie>
-    {% endif %}
+    {%- endif %}
     <onderwerpen>
-        {% for onderwerp in besluit.onderwerpen %}
+        {%- for onderwerp in besluit.onderwerpen %}
         <onderwerp>{{ onderwerp.value }}</onderwerp>
-        {% endfor %}
+        {%- endfor %}
     </onderwerpen>
     <rechtsgebieden>
-        {% for rechtsgebied in besluit.rechtsgebieden %}
+        {%- for rechtsgebied in besluit.rechtsgebieden %}
         <rechtsgebied>{{ rechtsgebied.value }}</rechtsgebied>
-        {% endfor %}
+        {%- endfor %}
     </rechtsgebieden>
     <soortProcedure>{{ besluit.soort_procedure.value }}</soortProcedure>
-    {% if informatieobject_refs | length > 0 %}
+    {%- if informatieobject_refs | length > 0 %}
     <informatieobjectRefs>
-        {% for ref in informatieobject_refs %}
+        {%- for ref in informatieobject_refs %}
             <informatieobjectRef>{{ ref }}</informatieobjectRef>
-        {% endfor %}
+        {%- endfor %}
     </informatieobjectRefs>
-    {% endif %} 
+    {%- endif %}
 </BesluitMetadata>

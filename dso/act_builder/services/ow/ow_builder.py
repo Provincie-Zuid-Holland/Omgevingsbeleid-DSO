@@ -19,7 +19,7 @@ class OwBuilder(BuilderService):
         state_builder.add_regelingsgebied(input_factory.get_regelingsgebied())
         state_builder.add_gebiedsaanwijzingen(input_factory.get_gebiedsaanwijzingen())
         state_builder.add_policy_objects(input_factory.get_policy_objects())
-        state_builder.add_werkingsgebieden(input_factory.get_werkingsgebieden())
+        state_builder.add_gebiedengroepen(input_factory.get_gebiedengroepen())
 
         state_merger: OwStateMerger = OwStateMerger()
         merge_result: MergeResult = state_merger.apply_into(

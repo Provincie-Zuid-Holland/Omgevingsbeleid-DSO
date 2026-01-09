@@ -92,7 +92,7 @@ def do_create_gebiedsaanwijzingen():
         omschrijving="{designation_group.omschrijving}",
         toelichting="{designation_group.toelichting}",
     ),
-    values=[
+    waardes=[
         {",\n\t\t\t".join(values_output)}
     ]
 )

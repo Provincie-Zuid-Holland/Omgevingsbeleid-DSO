@@ -3,7 +3,6 @@ from .asset.asset_resource_loader import AssetResourceLoader
 from .besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
 from .policy_object.policy_object_resource_loader import PolicyObjectResourceLoader
 from .resources import Resources
-from .werkingsgebied.werkingsgebied_resource_loader import WerkingsgebiedResourceLoader
 
 
 class ResourceLoader:
@@ -20,14 +19,6 @@ class ResourceLoader:
         )
         policy_object_repository = policy_object_loader.load()
 
-        werkingsgebied_path = self._resources_config.get("werkingsgebied_repository", None)
-        werkingsgebied_loader = WerkingsgebiedResourceLoader(
-            base_dir=self._base_dir,
-            publication_settings=self._publication_settings,
-            json_file_path=werkingsgebied_path,
-        )
-        werkingsgebied_repository = werkingsgebied_loader.load()
-
         asset_path = self._resources_config.get("asset_repository", None)
         asset_loader = AssetResourceLoader(
             base_dir=self._base_dir,
@@ -38,7 +29,6 @@ class ResourceLoader:
         resources = Resources(
             policy_object_repository=policy_object_repository,
             asset_repository=asset_repository,
-            werkingsgebied_repository=werkingsgebied_repository,
             besluit_pdf_repository=BesluitPdfRepository(),
         )
         return resources

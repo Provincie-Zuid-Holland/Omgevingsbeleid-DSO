@@ -1,10 +1,10 @@
 from typing import List
 
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
+from ....state_manager.input_data.resource.gebieden.types import Gio
 
 from .....services.utils.helpers import load_template
 from ....state_manager.input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
-from ....state_manager.input_data.resource.werkingsgebied.werkingsgebied import Werkingsgebied
 from ....state_manager.state_manager import StateManager
 
 
@@ -15,12 +15,9 @@ class BesluitMetadataContent:
     def create(self) -> str:
         informatieobject_refs: List[str] = []
 
-        werkingsgebieden: List[Werkingsgebied] = (
-            self._state_manager.input_data.resources.werkingsgebied_repository.all()
-        )
-        for werkingsgebied in werkingsgebieden:
-            if werkingsgebied.New:
-                informatieobject_refs.append(werkingsgebied.Frbr.get_expression())
+        gios_new: List[Gio] = self._state_manager.input_data.resources.gio_repository.get_new()
+        for gio in gios_new:
+            informatieobject_refs.append(gio.frbr.get_expression())
 
         documents: List[Document] = self._state_manager.input_data.resources.document_repository.all()
         for document in documents:

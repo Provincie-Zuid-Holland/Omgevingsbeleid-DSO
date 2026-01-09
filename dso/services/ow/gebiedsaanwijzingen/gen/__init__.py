@@ -26,7 +26,7 @@ ga_beperkingengebiedgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Beperkingengebied, dat zorgt voor filteren en weergave van de symbolisatie van Beperkingengebied op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="installatie in waterstaatswerk",
             term="InstallatieInWaterstaatswerk",
@@ -138,7 +138,7 @@ ga_bodemgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Bodem, dat zorgt voor filteren en weergave van de symbolisatie van Bodem op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="bodembeheergebied",
             term="Bodembeheergebied",
@@ -270,7 +270,7 @@ ga_bouwgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Bouw, dat zorgt voor filteren en weergave van de symbolisatie van Bouw op de kaart.",
         toelichting="Alleen te gebruiken in het omgevingsplan, in voorbeschermingsregels voor het omgevingsplan en in omgevingsplanregels uit een projectbesluit.",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="bouwvlak",
             term="Bouwvlak",
@@ -322,7 +322,7 @@ ga_defensiegroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Defensie, dat zorgt voor filteren en weergave van de symbolisatie van Defensie op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="maatregelengebied",
             term="Maatregelengebied",
@@ -394,7 +394,7 @@ ga_energievoorzieninggroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Energievoorziening, dat zorgt voor filteren en weergave van de symbolisatie van Energievoorziening op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="bodemenergiegebied",
             term="Bodemenergiegebied",
@@ -526,7 +526,7 @@ ga_erfgoedgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Erfgoed, dat zorgt voor filteren en weergave van de symbolisatie van Erfgoed op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="aardkundig waardevol gebied",
             term="AardkundigWaardevolGebied",
@@ -648,7 +648,7 @@ ga_externe_veiligheidgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Externe veiligheid, dat zorgt voor filteren en weergave van de symbolisatie van Externe veiligheid op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="aandachtsgebied externe veiligheid",
             term="AandachtsgebiedExterneVeiligheid",
@@ -740,7 +740,7 @@ ga_functiegroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Functie, dat zorgt voor filteren en weergave van de symbolisatie van Functie op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="aandachtsgebied",
             term="Aandachtsgebied",
@@ -1962,7 +1962,7 @@ ga_geluidgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Geluid, dat zorgt voor filteren en weergave van de symbolisatie van Geluid op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="aandachtsgebied geluid",
             term="AandachtsgebiedGeluid",
@@ -2024,7 +2024,7 @@ ga_geurgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Geur, dat zorgt voor filteren en weergave van de symbolisatie van Geur op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="bebouwingscontour",
             term="Bebouwingscontour",
@@ -2076,7 +2076,7 @@ ga_landschapgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Landschap, dat zorgt voor filteren en weergave van de symbolisatie van Landschap op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="bijzonder provinciaal landschap",
             term="BijzonderProvinciaalLandschap",
@@ -2148,7 +2148,7 @@ ga_leidinggroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Leiding, dat zorgt voor filteren en weergave van de symbolisatie van Leiding op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="buisleiding",
             term="Buisleiding",
@@ -2210,7 +2210,7 @@ ga_luchtgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Lucht, dat zorgt voor filteren en weergave van de symbolisatie van Lucht op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="aandachtsgebied luchtkwaliteit",
             term="AandachtsgebiedLuchtkwaliteit",
@@ -2272,7 +2272,7 @@ ga_mijnbouwgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Mijnbouw, dat zorgt voor filteren en weergave van de symbolisatie van Mijnbouw op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="aardwarmtewinning",
             term="Aardwarmtewinning",
@@ -2374,7 +2374,7 @@ ga_natuurgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Natuur, dat zorgt voor filteren en weergave van de symbolisatie van Natuur op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="bebouwingscontour houtkap",
             term="BebouwingscontourHoutkap",
@@ -2536,7 +2536,7 @@ ga_recreatiegroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Recreatie, dat zorgt voor filteren en weergave van de symbolisatie van Recreatie op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="dagrecreatie",
             term="Dagrecreatie",
@@ -2598,7 +2598,7 @@ ga_ruimtelijk_gebruikgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Ruimtelijkgebruik, dat zorgt voor filteren en weergave van de symbolisatie van Ruimtelijkgebruik op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="afvalstoffen",
             term="Afvalstoffen",
@@ -2900,7 +2900,7 @@ ga_verkeergroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype Verkeer, dat zorgt voor filteren en weergave van de symbolisatie van Verkeer op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="fietsroute",
             term="Fietsroute",
@@ -3012,7 +3012,7 @@ ga_water_en_watersysteemgroep_groep = Gebiedsaanwijzing(
         omschrijving="Waardelijst voor attribuut groep bij het Gebiedsaanwijzingtype WaterEnWatersysteem, dat zorgt voor filteren en weergave van de symbolisatie van WaterEnWatersysteem op de kaart.",
         toelichting="",
     ),
-    values=[
+    waardes=[
         GebiedsaanwijzingWaarde(
             label="bergingsgebied",
             term="Bergingsgebied",
