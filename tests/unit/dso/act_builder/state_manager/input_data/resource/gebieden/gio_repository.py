@@ -29,8 +29,8 @@ def _get_gios(count: int = 2) -> List[Gio | Mock]:
     for i in range(1, count + 1):
         base = (i - 1) * 3
         gebied_id = base + 1
-        gebied = GioFactory(id=1 + base, gebied_ids={gebied_id + 2, gebied_id + 3}).create()
-        gios.append(gebied)
+        gio = GioFactory(id=1 + base, gebied_ids={gebied_id + 2, gebied_id + 3}).create()
+        gios.append(gio)
     return gios
 
 

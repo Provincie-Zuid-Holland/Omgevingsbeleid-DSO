@@ -14,8 +14,8 @@
                 <geo:Locatie>
                     <geo:naam>Gebied 6</geo:naam>
                     <geo:geometrie>
-                        <basisgeo:Geometrie gml:id="id-gml-6">
-                            <basisgeo:id>gml-6</basisgeo:id>
+                        <basisgeo:Geometrie gml:id="id-geo-6">
+                            <basisgeo:id>geo-6</basisgeo:id>
                             <basisgeo:geometrie>
                                 <gml:Point id="6"/>
                             </basisgeo:geometrie>
@@ -25,8 +25,8 @@
                 <geo:Locatie>
                     <geo:naam>Gebied 7</geo:naam>
                     <geo:geometrie>
-                        <basisgeo:Geometrie gml:id="id-gml-7">
-                            <basisgeo:id>gml-7</basisgeo:id>
+                        <basisgeo:Geometrie gml:id="id-geo-7">
+                            <basisgeo:id>geo-7</basisgeo:id>
                             <basisgeo:geometrie>
                                 <gml:Point id="7"/>
                             </basisgeo:geometrie>
