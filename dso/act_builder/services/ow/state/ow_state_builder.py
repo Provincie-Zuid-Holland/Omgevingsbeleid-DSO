@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Set
 from uuid import uuid4
 
 from dso.act_builder.services.ow.input.models import (
@@ -189,14 +189,14 @@ class OwStateBuilder:
         self._state.gebiedsaanwijzingen.add(gebiedsaanwijzing)
 
     def _handle_aanwijzing_refs(
-        self, input_refs: List[OwInputGebiedsaanwijzingRef]
+        self, input_refs: Set[OwInputGebiedsaanwijzingRef]
     ) -> List[AbstractGebiedsaanwijzingRef]:
         result: List[AbstractGebiedsaanwijzingRef] = [
             UnresolvedGebiedsaanwijzingRef(target_key=input_ref.code) for input_ref in input_refs
         ]
         return result
 
-    def _handle_locations(self, location_refs: List[OwInputAbstractLocatieRef]) -> List[AbstractLocationRef]:
+    def _handle_locations(self, location_refs: Set[OwInputAbstractLocatieRef]) -> List[AbstractLocationRef]:
         result: List[AbstractLocationRef] = []
         for location_ref in location_refs:
             match location_ref:

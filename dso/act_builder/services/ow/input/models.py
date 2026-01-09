@@ -1,6 +1,6 @@
-from typing import List, Optional
+from typing import List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 
 class OwInputAbstractLocatieRef(BaseModel):
@@ -83,7 +83,7 @@ class OwInputPolicyObject(BaseModel):
     source_code: str
     wid: str
     element: str
-    location_refs: List[OwInputAbstractLocatieRef]
-    gebiedsaanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = Field(default_factory=list)
+    location_refs: Set[OwInputAbstractLocatieRef]
+    gebiedsaanwijzing_refs: Set[OwInputGebiedsaanwijzingRef]
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
