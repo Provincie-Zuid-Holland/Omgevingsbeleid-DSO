@@ -10,7 +10,7 @@ from dso.services.ow.gebiedsaanwijzingen.types import (
 
 
 ga_beperkingengebiedgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="beperkingengebied",
         term="Beperkingengebied",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Beperkingengebied",
@@ -19,7 +19,7 @@ ga_beperkingengebiedgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="beperkingengebiedgroep",
         titel="Beperkingengebiedgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Beperkingengebiedgroep",
@@ -122,7 +122,7 @@ ga_beperkingengebiedgroep_groep = Gebiedsaanwijzing(
 
 
 ga_bodemgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="bodem",
         term="Bodem",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Bodem",
@@ -131,7 +131,7 @@ ga_bodemgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="bodemgroep",
         titel="Bodemgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Bodemgroep",
@@ -254,7 +254,7 @@ ga_bodemgroep_groep = Gebiedsaanwijzing(
 
 
 ga_bouwgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="bouw",
         term="Bouw",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Bouw",
@@ -263,7 +263,7 @@ ga_bouwgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="bouwgroep",
         titel="Bouwgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Bouwgroep",
@@ -306,7 +306,7 @@ ga_bouwgroep_groep = Gebiedsaanwijzing(
 
 
 ga_defensiegroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="defensie",
         term="Defensie",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Defensie",
@@ -315,7 +315,7 @@ ga_defensiegroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="defensiegroep",
         titel="Defensiegroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Defensiegroep",
@@ -378,7 +378,7 @@ ga_defensiegroep_groep = Gebiedsaanwijzing(
 
 
 ga_energievoorzieninggroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="energievoorziening",
         term="Energievoorziening",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Energievoorziening",
@@ -387,7 +387,7 @@ ga_energievoorzieninggroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="energievoorzieninggroep",
         titel="Energievoorzieninggroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Energievoorzieninggroep",
@@ -510,7 +510,7 @@ ga_energievoorzieninggroep_groep = Gebiedsaanwijzing(
 
 
 ga_erfgoedgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="erfgoed",
         term="Erfgoed",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Erfgoed",
@@ -519,7 +519,7 @@ ga_erfgoedgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="erfgoedgroep",
         titel="Erfgoedgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Erfgoedgroep",
@@ -632,7 +632,7 @@ ga_erfgoedgroep_groep = Gebiedsaanwijzing(
 
 
 ga_externe_veiligheidgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="externe veiligheid",
         term="ExterneVeiligheid",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/ExterneVeiligheid",
@@ -641,7 +641,7 @@ ga_externe_veiligheidgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="externe veiligheidgroep",
         titel="ExterneVeiligheidgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/ExterneVeiligheidgroep",
@@ -724,7 +724,7 @@ ga_externe_veiligheidgroep_groep = Gebiedsaanwijzing(
 
 
 ga_functiegroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="functie",
         term="Functie",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Functie",
@@ -733,7 +733,7 @@ ga_functiegroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="functiegroep",
         titel="Functiegroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Functiegroep",
@@ -1946,7 +1946,7 @@ ga_functiegroep_groep = Gebiedsaanwijzing(
 
 
 ga_geluidgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="geluid",
         term="Geluid",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Geluid",
@@ -1955,7 +1955,7 @@ ga_geluidgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="geluidgroep",
         titel="Geluidgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Geluidgroep",
@@ -2008,7 +2008,7 @@ ga_geluidgroep_groep = Gebiedsaanwijzing(
 
 
 ga_geurgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="geur",
         term="Geur",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Geur",
@@ -2017,7 +2017,7 @@ ga_geurgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="geurgroep",
         titel="Geurgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Geurgroep",
@@ -2060,7 +2060,7 @@ ga_geurgroep_groep = Gebiedsaanwijzing(
 
 
 ga_landschapgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="landschap",
         term="Landschap",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Landschap",
@@ -2069,7 +2069,7 @@ ga_landschapgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="landschapgroep",
         titel="Landschapgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Landschapgroep",
@@ -2132,7 +2132,7 @@ ga_landschapgroep_groep = Gebiedsaanwijzing(
 
 
 ga_leidinggroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="leiding",
         term="Leiding",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Leiding",
@@ -2141,7 +2141,7 @@ ga_leidinggroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="leidinggroep",
         titel="Leidinggroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Leidinggroep",
@@ -2194,7 +2194,7 @@ ga_leidinggroep_groep = Gebiedsaanwijzing(
 
 
 ga_luchtgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="lucht",
         term="Lucht",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Lucht",
@@ -2203,7 +2203,7 @@ ga_luchtgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="luchtgroep",
         titel="Luchtgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Luchtgroep",
@@ -2256,7 +2256,7 @@ ga_luchtgroep_groep = Gebiedsaanwijzing(
 
 
 ga_mijnbouwgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="mijnbouw",
         term="Mijnbouw",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Mijnbouw",
@@ -2265,7 +2265,7 @@ ga_mijnbouwgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="mijnbouwgroep",
         titel="Mijnbouwgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Mijnbouwgroep",
@@ -2358,7 +2358,7 @@ ga_mijnbouwgroep_groep = Gebiedsaanwijzing(
 
 
 ga_natuurgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="natuur",
         term="Natuur",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Natuur",
@@ -2367,7 +2367,7 @@ ga_natuurgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="natuurgroep",
         titel="Natuurgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Natuurgroep",
@@ -2520,7 +2520,7 @@ ga_natuurgroep_groep = Gebiedsaanwijzing(
 
 
 ga_recreatiegroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="recreatie",
         term="Recreatie",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Recreatie",
@@ -2529,7 +2529,7 @@ ga_recreatiegroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="recreatiegroep",
         titel="Recreatiegroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Recreatiegroep",
@@ -2582,7 +2582,7 @@ ga_recreatiegroep_groep = Gebiedsaanwijzing(
 
 
 ga_ruimtelijk_gebruikgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="ruimtelijk gebruik",
         term="RuimtelijkGebruik",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/RuimtelijkGebruik",
@@ -2591,7 +2591,7 @@ ga_ruimtelijk_gebruikgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="ruimtelijk gebruikgroep",
         titel="RuimtelijkGebruikgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/RuimtelijkGebruikgroep",
@@ -2884,7 +2884,7 @@ ga_ruimtelijk_gebruikgroep_groep = Gebiedsaanwijzing(
 
 
 ga_verkeergroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="verkeer",
         term="Verkeer",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/Verkeer",
@@ -2893,7 +2893,7 @@ ga_verkeergroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="verkeergroep",
         titel="Verkeergroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/Verkeergroep",
@@ -2996,7 +2996,7 @@ ga_verkeergroep_groep = Gebiedsaanwijzing(
 
 
 ga_water_en_watersysteemgroep_groep = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="water en watersysteem",
         term="WaterEnWatersysteem",
         uri="http://standaarden.omgevingswet.overheid.nl/typegebiedsaanwijzing/id/concept/WaterEnWatersysteem",
@@ -3005,7 +3005,7 @@ ga_water_en_watersysteemgroep_groep = Gebiedsaanwijzing(
         domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/TypeGebiedsaanwijzing",
         deprecated=False,
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="water en watersysteemgroep",
         titel="WaterEnWatersysteemgroep",
         uri="http://standaarden.omgevingswet.overheid.nl/imow/id/waardelijst/WaterEnWatersysteemgroep",

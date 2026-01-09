@@ -76,7 +76,7 @@ def do_create_gebiedsaanwijzingen():
         variable_name: str = f"ga_{designation_group.get_key()}_groep"
         output_contents.append(f"""
 {variable_name} = Gebiedsaanwijzing(
-    designation_type=GebiedsaanwijzingType(
+    aanwijzing_type=GebiedsaanwijzingType(
         label="{designation_type.label}",
         term="{designation_type.term}",
         uri="{designation_type.uri}",
@@ -85,7 +85,7 @@ def do_create_gebiedsaanwijzingen():
         domein="{designation_type.domein}",
         deprecated={str(designation_type.is_deprecated())},
     ),
-    designation_group=GebiedsaanwijzingGroep(
+    aanwijzing_groep=GebiedsaanwijzingGroep(
         label="{designation_group.label}",
         titel="{designation_group.titel}",
         uri="{designation_group.uri}",
