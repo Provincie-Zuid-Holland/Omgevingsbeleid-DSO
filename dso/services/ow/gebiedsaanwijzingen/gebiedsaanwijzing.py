@@ -19,6 +19,9 @@ class Gebiedsaanwijzingen:
 
         return None
 
+    def get_list(self) -> List[Gebiedsaanwijzing]:
+        return self._data
+
 
 # Service to use the Gebiedsaanwijzingen Waardelijsten
 class GebiedsaanwijzingenFactory:
