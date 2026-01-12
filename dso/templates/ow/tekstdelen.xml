@@ -24,6 +24,13 @@
                 {% endfor %}
             </vt:locatieaanduiding>
             {% endif %}
+            {% if ow_object.gebiedsaanwijzing_refs | length > 0 %}
+            <vt:gebiedsaanwijzing>
+                {% for gebiedsaanwijzing_ref in ow_object.gebiedsaanwijzing_refs %}
+                <ga:GebiedsaanwijzingRef xlink:href="{{ gebiedsaanwijzing_ref.get_href() }}"/>
+                {% endfor %}
+            </vt:gebiedsaanwijzing>
+            {% endif %}
         </vt:Tekstdeel>
     </ow-dc:owObject>
   </sl:stand>

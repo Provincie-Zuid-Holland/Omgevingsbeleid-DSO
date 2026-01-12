@@ -1,5 +1,5 @@
-from typing import List
-from pydantic import BaseModel, Field
+from typing import List, Optional
+from pydantic import BaseModel
 
 
 class GebiedsaanwijzingWaarde(BaseModel):
@@ -34,8 +34,14 @@ class GebiedsaanwijzingGroep(BaseModel):
 class Gebiedsaanwijzing(BaseModel):
     aanwijzing_type: GebiedsaanwijzingType
     aanwijzing_groep: GebiedsaanwijzingGroep
-    waardes: List[GebiedsaanwijzingWaarde] = Field(default_factory=list)
+    waardes: List[GebiedsaanwijzingWaarde]
 
     def get_value_labels(self) -> List[str]:
         result: List[str] = [w.label for w in self.waardes]
         return result
+
+    def get_value_by_label(self, label: str) -> Optional[GebiedsaanwijzingWaarde]:
+        for value in self.waardes:
+            if value.label == label:
+                return value
+        return None

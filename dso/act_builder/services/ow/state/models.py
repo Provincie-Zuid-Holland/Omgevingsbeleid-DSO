@@ -1,11 +1,13 @@
 from abc import abstractmethod
 from enum import Enum
-from typing import Annotated, List, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Set, Union
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
 class AbstractRef(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
     @abstractmethod
     def get_key(self) -> str:
         pass
@@ -78,6 +80,36 @@ LocationRefUnion = Annotated[
         UnresolvedGebiedRef,
         GebiedengroepRef,
         UnresolvedGebiedengroepRef,
+    ],
+    Field(discriminator="ref_type"),
+]
+
+
+# Gebiedsaanwijzing Ref
+class AbstractGebiedsaanwijzingRef(AbstractRef):
+    ref_type: str = Field(..., description="Type discriminator")
+
+
+class UnresolvedGebiedsaanwijzingRef(AbstractGebiedsaanwijzingRef):
+    ref_type: Literal["unresolved_gebiedsaanwijzing"] = "unresolved_gebiedsaanwijzing"
+    target_key: str
+
+    def get_key(self) -> str:
+        return self.target_key
+
+
+class GebiedsaanwijzingRef(UnresolvedGebiedsaanwijzingRef):
+    ref_type: Literal["gebiedsaanwijzing"] = "gebiedsaanwijzing"
+    ref: str
+
+    def get_href(self) -> str:
+        return self.ref
+
+
+GebiedsaanwijzingRefUnion = Annotated[
+    Union[
+        UnresolvedGebiedsaanwijzingRef,
+        GebiedsaanwijzingRef,
     ],
     Field(discriminator="ref_type"),
 ]
@@ -279,7 +311,6 @@ class OwRegelingsgebied(BaseOwObject):
 
 
 class OwGebied(BaseOwObject):
-    source_uuid: str
     source_code: str
     title: str
     geometry_ref: str
@@ -302,7 +333,6 @@ class OwGebied(BaseOwObject):
         return (self.title, self.geometry_ref) == (other.title, other.geometry_ref)
 
     def merge_from(self, other: "OwGebied") -> bool:
-        self.source_uuid = other.source_uuid
         self.source_code = other.source_code
         if self.is_data_equal(other):
             self.flag_unchanged()
@@ -314,7 +344,6 @@ class OwGebied(BaseOwObject):
 
 
 class OwGebiedengroep(BaseOwObject):
-    source_uuid: str
     source_code: str
     title: str
     gebieden_refs: List[LocationRefUnion] = Field(default_factory=list)
@@ -343,7 +372,6 @@ class OwGebiedengroep(BaseOwObject):
         # fmt: on
 
     def merge_from(self, other: "OwGebiedengroep") -> bool:
-        self.source_uuid = other.source_uuid
         self.source_code = other.source_code
         if self.is_data_equal(other):
             self.flag_unchanged()
@@ -468,7 +496,8 @@ class OwTekstdeel(BaseOwObject):
     source_code: str
     idealization: str
     text_ref: WidRefUnion
-    location_refs: List[LocationRefUnion] = Field(default_factory=list)
+    location_refs: Set[LocationRefUnion]
+    gebiedsaanwijzing_refs: Set[GebiedsaanwijzingRefUnion]
 
     def get_key(self) -> str:
         return self.source_code
@@ -487,9 +516,9 @@ class OwTekstdeel(BaseOwObject):
         self.assert_same_class(other)
         # fmt: off
         return (
-            (self.idealization, self.text_ref.get_key(), [r.get_key() for r in self.location_refs])
+            (self.idealization, self.text_ref.get_key(), [r.get_key() for r in self.location_refs], [r.get_key() for r in self.gebiedsaanwijzing_refs])
             ==
-            (other.idealization, other.text_ref.get_key(), [r.get_key() for r in other.location_refs])
+            (other.idealization, other.text_ref.get_key(), [r.get_key() for r in other.location_refs], [r.get_key() for r in other.gebiedsaanwijzing_refs])
         )
         # fmt: on
 
@@ -503,4 +532,5 @@ class OwTekstdeel(BaseOwObject):
         self.idealization = other.idealization
         self.text_ref = other.text_ref
         self.location_refs = other.location_refs
+        self.gebiedsaanwijzing_refs = other.gebiedsaanwijzing_refs
         self.flag_changed()

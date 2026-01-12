@@ -38,3 +38,6 @@ class DocumentRepository:
     def get_by_codes(self, codes: List[str]) -> List[Document]:
         result: List[Document] = [d for _, d in self._documents.items() if d.Code in codes]
         return result
+
+    def get_new(self) -> List[Document]:
+        return [d for d in self._documents.values() if d.New]

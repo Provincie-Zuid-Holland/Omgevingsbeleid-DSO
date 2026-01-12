@@ -10,6 +10,8 @@ from dso.act_builder.services.ow.state.models import (
     UnresolvedDivisietekstRef,
     UnresolvedGebiedengroepRef,
     UnresolvedGebiedRef,
+    UnresolvedGebiedsaanwijzingRef,
+    GebiedsaanwijzingRef,
 )
 from dso.act_builder.services.ow.state.ow_state import OwState
 
@@ -38,8 +40,10 @@ class OwReferenceResolver:
             if tekstdeel.is_deleted():
                 continue
             tekstdeel.text_ref = self._resolve_generic_reference(state, tekstdeel.text_ref)
-            for index, ref in enumerate(tekstdeel.location_refs):
-                tekstdeel.location_refs[index] = self._resolve_generic_reference(state, ref)
+            tekstdeel.location_refs = {self._resolve_generic_reference(state, ref) for ref in tekstdeel.location_refs}
+            tekstdeel.gebiedsaanwijzing_refs = {
+                self._resolve_generic_reference(state, ref) for ref in tekstdeel.gebiedsaanwijzing_refs
+            }
 
         return state
 
@@ -65,6 +69,10 @@ class OwReferenceResolver:
                 return self._resolve_divisietekst_ref(state, input_ref)
             case UnresolvedDivisietekstRef() as input_ref:
                 return self._resolve_divisietekst_ref(state, input_ref)
+            case GebiedsaanwijzingRef() as input_ref:
+                return self._resolve_gebiedsaanwijzing_ref(state, input_ref)
+            case UnresolvedGebiedsaanwijzingRef() as input_ref:
+                return self._resolve_gebiedsaanwijzing_ref(state, input_ref)
         raise RuntimeError("Unable to resolve generic reference")
 
     def _resolve_ambtsgebied_ref(self, state: OwState) -> AmbtsgebiedRef:
@@ -117,3 +125,16 @@ class OwReferenceResolver:
                     ref=divisietekst.identification,
                 )
         raise RuntimeError("No divisietekst found to reference to")
+
+    def _resolve_gebiedsaanwijzing_ref(
+        self, state: OwState, input_ref: UnresolvedGebiedsaanwijzingRef
+    ) -> GebiedsaanwijzingRef:
+        for gebiedsaanwijzing in state.gebiedsaanwijzingen:
+            if gebiedsaanwijzing.is_deleted():
+                continue
+            if gebiedsaanwijzing.get_key() == input_ref.get_key():
+                return GebiedsaanwijzingRef(
+                    target_key=input_ref.target_key,
+                    ref=gebiedsaanwijzing.identification,
+                )
+        raise RuntimeError("No gebiedsaanwijzing found to reference to")

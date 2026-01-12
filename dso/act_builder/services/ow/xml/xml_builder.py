@@ -8,6 +8,7 @@ from dso.act_builder.services.ow.xml.xml_divisies import XmlDivisies
 from dso.act_builder.services.ow.xml.xml_divisieteksten import XmlDivisieteksten
 from dso.act_builder.services.ow.xml.xml_gebieden import XmlGebieden
 from dso.act_builder.services.ow.xml.xml_gebiedengroepen import XmlGebiedengroepen
+from dso.act_builder.services.ow.xml.xml_gebiedsaanwijzingen import XmlGebiedsaanwijzingen
 from dso.act_builder.services.ow.xml.xml_regelingsgebieden import XmlRegelingsgebieden
 from dso.act_builder.services.ow.xml.xml_tekstdelen import XmlTekstdelen
 from dso.act_builder.state_manager.models import OutputFile, StrContentData
@@ -29,6 +30,7 @@ class XmlBuilder:
             XmlRegelingsgebieden(state_manager),
             XmlGebieden(state_manager),
             XmlGebiedengroepen(state_manager),
+            XmlGebiedsaanwijzingen(state_manager),
             XmlDivisies(state_manager),
             XmlDivisieteksten(state_manager),
             XmlTekstdelen(state_manager),

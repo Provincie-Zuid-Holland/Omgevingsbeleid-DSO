@@ -38,16 +38,14 @@ class TextPolicyObjectExtractor:
     def _extract_gebiedsaanwijzingen(self, root) -> List[TekstPolicyObjectGebiedsaanwijzing]:
         result: List[TekstPolicyObjectGebiedsaanwijzing] = []
 
-        elements = root.xpath("//*[@data-hint-type='gebiedsaanwijzing']")
+        elements = root.xpath(".//*[@data-hint-type='gebiedsaanwijzing']")
         for element in elements:
             result.append(
                 TekstPolicyObjectGebiedsaanwijzing(
-                    werkingsgebied_code=element.get("data-hint-locatie"),
+                    uuid=element.get("data-hint-gebiedsaanwijzing-uuid"),
                     eid=element.get("eId"),
                     wid=element.get("wId"),
                     element=element.tag,
-                    aanwijzing_type=element.get("data-hint-gebiedsaanwijzingtype"),
-                    aanwijzing_groep=element.get("data-hint-gebiedengroep"),
                 )
             )
         return result

@@ -7,16 +7,16 @@
     <Divisietekst data-hint-wid-code="bijlage-werkingsgebieden-divisietekst">
         <Inhoud>
             <Begrippenlijst data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referenties">
-                {% for werkingsgebied in werkingsgebieden %}
-                <Begrip data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ werkingsgebied.Code }}">
-                    <Term>{{ werkingsgebied.Title }}</Term>
+                {%- for gio in gios %}
+                <Begrip data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ gio.wid_key() }}">
+                    <Term>{{ gio.title }}</Term>
                     <Definitie>
                         <Al>
-                            <ExtIoRef data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ werkingsgebied.Code }}-ref" data-hint-werkingsgebied-code="{{ werkingsgebied.Code }}" ref="{{ werkingsgebied.Frbr.get_expression() }}">{{ werkingsgebied.Frbr.get_expression() }}</ExtIoRef>
+                            <ExtIoRef data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ gio.wid_key() }}-ref" data-hint-gio-key="{{ gio.key() }}" ref="{{ gio.frbr.get_expression() }}">{{ gio.frbr.get_expression() }}</ExtIoRef>
                         </Al>
                     </Definitie>
                 </Begrip>
-                {% endfor %}
+            {%- endfor %}
             </Begrippenlijst>
         </Inhoud>
     </Divisietekst>

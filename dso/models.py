@@ -267,19 +267,14 @@ class PublicationSettings(BaseModel):
         return cls(**json_data)
 
 
-class VerwijderdWerkingsgebied(BaseModel):
-    UUID: str
-    code: str
-    object_id: int
+class VerwijderdeGio(BaseModel):
     frbr: GioFRBR
-    geboorteregeling: str
-    titel: str
 
 
 class RegelingMutatie(BaseModel, metaclass=ABCMeta):
     was_regeling_frbr: ActFRBR
 
-    # wId's used by indentifiers, for example beleidskeuze-4 by that object
+    # wId's used by identifiers, for example beleidskeuze-4 by that object
     # Although it should be possible to add custom identifiers
     bekend_wid_map: Dict[str, str]
 
@@ -287,7 +282,7 @@ class RegelingMutatie(BaseModel, metaclass=ABCMeta):
     # The main reason here is that we can not generate new wIds for old versions
     bekend_wids: List[str]
 
-    te_verwijderden_werkingsgebieden: List[VerwijderdWerkingsgebied]
+    te_verwijderden_gios: List[VerwijderdeGio]
 
     @classmethod
     def from_dict(cls, data: dict) -> "RegelingMutatie":
