@@ -3,6 +3,8 @@ from urllib.parse import urljoin
 import requests
 from lxml import etree
 from requests_toolbelt.multipart.encoder import MultipartEncoder
+import base64
+import json
 
 from .......exceptions import RenvooiInternalServerError, RenvooiUnauthorizedError, RenvooiUnknownError, RenvooiXmlError
 from .......models import ActFRBR, RenvooiRegelingMutatie
@@ -53,7 +55,11 @@ class RenvooiService:
             case 403:
                 raise RenvooiUnauthorizedError(response.text)
             case 422:
-                raise RenvooiXmlError(response.text)
+                raise RenvooiXmlError(json.dumps({
+                    "response-text": response.text,
+                    "was": base64.b64encode(was_doc.encode("utf-8")).decode("utf-8"),
+                    "wordt": base64.b64encode(wordt_doc.encode("utf-8")).decode("utf-8"),
+                }))
             case 500:
                 raise RenvooiInternalServerError(response.text)
             case _ as code:
