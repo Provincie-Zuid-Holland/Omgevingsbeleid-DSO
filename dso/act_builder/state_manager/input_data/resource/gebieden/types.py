@@ -30,6 +30,8 @@ class Gio(BaseModel):
     And a Gio can be built by a Gebiedsaanwijzing where it might have multiple `locatie`
     """
 
+    key: str
+
     # These are the gebied-x codes which are in this gio
     # source_codes and the key() func are used to determine uniqueness and "lineage"
     source_codes: Set[str]  # [gebied-1, gebied-2]
@@ -42,11 +44,8 @@ class Gio(BaseModel):
     achtergrond_verwijzing: str
     achtergrond_actualiteit: str
 
-    def key(self) -> str:
-        return "_".join(sorted(self.source_codes))
-
     def wid_key(self) -> str:
-        return "_".join(sorted(self.source_codes))
+        return f"gio-{self.key}"
 
     def get_name(self) -> str:
         s: str = self.title.lower()
@@ -72,27 +71,18 @@ class GebiedenGroep(BaseModel):
     """
 
     uuid: UUID
-    code: str  # Code used by the API like `gebiedengroep-1`
+    code: str
     title: str
-    gio_keys: Set[str]
+    gio_key: str
 
     model_config = ConfigDict(populate_by_name=True)
 
 
 class Gebiedsaanwijzing(BaseModel):
     uuid: UUID
+    code: str
     aanwijzing_type: str
     aanwijzing_groep: str
     title: str
-    source_gebied_codes: Set[str]
+    gebied_codes: Set[str]
     gio_key: str
-
-    def key(self) -> str:
-        code_parts: str = "_".join(sorted(self.source_gebied_codes))
-        return "-".join(
-            [
-                code_parts,
-                self.aanwijzing_type,
-                self.aanwijzing_groep,
-            ]
-        )

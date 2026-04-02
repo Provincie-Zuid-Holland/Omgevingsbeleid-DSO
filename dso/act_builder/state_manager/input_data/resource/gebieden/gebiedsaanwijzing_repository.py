@@ -21,6 +21,18 @@ class GebiedsaanwijzingRepository:
             raise RuntimeError(f"Can not find gebiedsaanwijzing {uuid}")
         return aanwijzing
 
+    def get_by_code_optional(self, code: str) -> Optional[Gebiedsaanwijzing]:
+        for aanwijzing in self._data.values():
+            if aanwijzing.code == code:
+                return aanwijzing
+        return None
+
+    def get_by_code(self, code: str) -> Gebiedsaanwijzing:
+        aanwijzing: Optional[Gebiedsaanwijzing] = self.get_by_code_optional(code)
+        if aanwijzing is None:
+            raise RuntimeError(f"Can not find gebiedsaanwijzing {code}")
+        return aanwijzing
+
     def all(self) -> List[Gebiedsaanwijzing]:
         return list(self._data.values())
 

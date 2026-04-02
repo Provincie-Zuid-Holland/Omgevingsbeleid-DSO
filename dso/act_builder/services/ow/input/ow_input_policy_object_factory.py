@@ -70,7 +70,7 @@ class OwInputPolicyObjectFactory:
 
         for tekst_gebiedsaanwijzing in tekst_policy_object.gebiedsaanwijzingen:
             aanwijzing: Gebiedsaanwijzing = self._aanwijzing_repository.get(tekst_gebiedsaanwijzing.uuid)
-            aanwijzing_code: str = aanwijzing.key()
+            aanwijzing_code: str = aanwijzing.code
             result.append(OwInputGebiedsaanwijzingRef(code=aanwijzing_code))
 
         return result
