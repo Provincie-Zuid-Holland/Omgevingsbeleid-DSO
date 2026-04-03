@@ -13,7 +13,7 @@ class GioRepository:
 
     def get_by_key_optional(self, key: str) -> Optional[Gio]:
         for g in self._gios:
-            if g.key() == key:
+            if g.key == key:
                 return g
         return None
 

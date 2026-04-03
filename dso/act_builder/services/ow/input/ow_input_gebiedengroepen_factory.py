@@ -28,7 +28,7 @@ class OwInputGebiedengroepenFactory:
                 for locatie in gio.locaties
             ]
             input_gio: OwInputGio = OwInputGio(
-                source_code=gio.key(),
+                source_code=gio.key,
                 title=gio.title,
                 locaties=input_locaties,
             )
