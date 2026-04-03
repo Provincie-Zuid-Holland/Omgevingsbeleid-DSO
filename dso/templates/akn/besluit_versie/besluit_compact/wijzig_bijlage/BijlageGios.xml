@@ -1,18 +1,18 @@
-<Bijlage data-hint-wid-code="bijlage-werkingsgebieden">
+<Bijlage data-hint-wid-code="bijlage-gios">
     <Kop>
         <Label>Bijlage</Label>
         <Nummer>1</Nummer>
         <Opschrift>Overzicht informatieobjecten</Opschrift>
     </Kop>
-    <Divisietekst data-hint-wid-code="bijlage-werkingsgebieden-divisietekst">
+    <Divisietekst data-hint-wid-code="bijlage-gios-divisietekst">
         <Inhoud>
-            <Begrippenlijst data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referenties">
+            <Begrippenlijst data-hint-wid-code="bijlage-gios-divisietekst-referenties">
                 {%- for gio in gios %}
-                <Begrip data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ gio.wid_key() }}">
+                <Begrip data-hint-wid-code="bijlage-gios-divisietekst-referentie-{{ gio.wid_key() }}">
                     <Term>{{ gio.title }}</Term>
                     <Definitie>
                         <Al>
-                            <ExtIoRef data-hint-wid-code="bijlage-werkingsgebieden-divisietekst-referentie-{{ gio.wid_key() }}-ref" data-hint-gio-key="{{ gio.key() }}" ref="{{ gio.frbr.get_expression() }}">{{ gio.frbr.get_expression() }}</ExtIoRef>
+                            <ExtIoRef data-hint-wid-code="bijlage-gios-divisietekst-referentie-{{ gio.wid_key() }}-ref" data-hint-gio-key="{{ gio.key }}" ref="{{ gio.frbr.get_expression() }}">{{ gio.frbr.get_expression() }}</ExtIoRef>
                         </Al>
                     </Definitie>
                 </Begrip>
