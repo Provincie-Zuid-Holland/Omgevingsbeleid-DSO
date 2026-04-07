@@ -7,10 +7,6 @@ from dso.act_builder.services.ow.input.models import (
     OwInputPolicyObject,
     OwInputGebiedengroepLocatieRef,
 )
-from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzing_repository import (
-    GebiedsaanwijzingRepository,
-)
-from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object import PolicyObject
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object_repository import (
     PolicyObjectRepository,
@@ -23,9 +19,6 @@ class OwInputPolicyObjectFactory:
     def __init__(self, state_manager: StateManager):
         self._policy_object_repository: PolicyObjectRepository = (
             state_manager.input_data.resources.policy_object_repository
-        )
-        self._aanwijzing_repository: GebiedsaanwijzingRepository = (
-            state_manager.input_data.resources.gebiedsaanwijzingen_repository
         )
         self._text_data: TextData = state_manager.text_data
 
@@ -69,8 +62,6 @@ class OwInputPolicyObjectFactory:
         result: List[OwInputGebiedsaanwijzingRef] = []
 
         for tekst_gebiedsaanwijzing in tekst_policy_object.gebiedsaanwijzingen:
-            aanwijzing: Gebiedsaanwijzing = self._aanwijzing_repository.get(tekst_gebiedsaanwijzing.uuid)
-            aanwijzing_code: str = aanwijzing.code
-            result.append(OwInputGebiedsaanwijzingRef(code=aanwijzing_code))
+            result.append(OwInputGebiedsaanwijzingRef(code=tekst_gebiedsaanwijzing.code))
 
         return result
