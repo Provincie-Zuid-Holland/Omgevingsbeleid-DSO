@@ -390,7 +390,7 @@ class GebiedsaanwijzingRef(SimpleElement):
 
     def __init__(self, tag: Tag):
         super().__init__()
-        self._code: str = tag.get("data-hint-gebiedsaanwijzing-code")
+        self._code: str = tag.get("data-code")
 
     def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
         result = SimpleElement.as_xml(
