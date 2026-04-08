@@ -380,17 +380,17 @@ class DocumentRef(SimpleElement):
 class GebiedsaanwijzingRef(SimpleElement):
     """
     Example input:
-    <a data-hint-type="gebiedsaanwijzing" data-hint-gebiedsaanwijzing-uuid="gebiedsaanwijzing-uuid-repository" href="">Malieveld</a>
+    <a data-hint-type="gebiedsaanwijzing" data-code="gebiedsaanwijzing-1" href="#">het Malieveld</a>
 
     Example output:
-    <ExtIoRef data-hint-type="gebiedsaanwijzing" data-hint-gebiedsaanwijzing-uuid="gebiedsaanwijzing-uuid-repository" ref="">Malieveld</ExtIoRef>
+    <ExtIoRef data-hint-type="gebiedsaanwijzing" data-hint-gebiedsaanwijzing-code="gebiedsaanwijzing-1" ref="">Malieveld</ExtIoRef>
 
     The `ref` will be set later with help of the `gebiedsaanwijzing-uuid-repository`
     """
 
     def __init__(self, tag: Tag):
         super().__init__()
-        self._uuid: str = tag.get("data-hint-gebiedsaanwijzing-uuid")
+        self._code: str = tag.get("data-code")
 
     def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
         result = SimpleElement.as_xml(
@@ -400,7 +400,7 @@ class GebiedsaanwijzingRef(SimpleElement):
             tag_attrs_overwrite={
                 "ref": "",
                 "data-hint-type": "gebiedsaanwijzing",
-                "data-hint-gebiedsaanwijzing-uuid": self._uuid,
+                "data-hint-gebiedsaanwijzing-code": self._code,
             },
         )
         return result

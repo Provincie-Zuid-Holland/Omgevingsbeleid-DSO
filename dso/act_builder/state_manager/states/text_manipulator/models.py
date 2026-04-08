@@ -18,7 +18,7 @@ class TekstBijlageDocument(BaseModel):
 
 
 class TekstPolicyObjectGebiedsaanwijzing(BaseModel):
-    uuid: str
+    code: str
     eid: str
     wid: str
     element: str

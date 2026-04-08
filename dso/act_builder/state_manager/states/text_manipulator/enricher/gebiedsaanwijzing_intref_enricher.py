@@ -22,11 +22,11 @@ class GebiedsaanwijzingIntrefEnricher(AbstractEnricher):
         parser = etree.XMLParser(remove_blank_text=False, encoding="utf-8")
         root = etree.fromstring(xml_content.encode("utf-8"), parser)
 
-        for intref in root.xpath("//IntIoRef[@data-hint-gebiedsaanwijzing-uuid]"):
-            aanwijzing_uuid: str = intref.get("data-hint-gebiedsaanwijzing-uuid")
-            aanwijzing: Gebiedsaanwijzing = self._aanwijzing_repository.get(aanwijzing_uuid)
+        for intref in root.xpath("//IntIoRef[@data-hint-gebiedsaanwijzing-code]"):
+            aanwijzing_code: str = intref.get("data-hint-gebiedsaanwijzing-code")
+            aanwijzing: Gebiedsaanwijzing = self._aanwijzing_repository.get_by_code(aanwijzing_code)
             gio: Gio = self._gio_repository.get_by_key(aanwijzing.gio_key)
-            text_gio: TekstBijlageGio = self._text_data.get_gio_by_key(gio.key())
+            text_gio: TekstBijlageGio = self._text_data.get_gio_by_key(gio.key)
 
             intref.set("ref", text_gio.wid)
 

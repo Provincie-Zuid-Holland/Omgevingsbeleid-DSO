@@ -52,12 +52,12 @@ class OwInputGebiedsaanwijzingFactory:
                 for locatie in gio.locaties
             ]
             input_gio: OwInputGio = OwInputGio(
-                source_code=gio.key(),
+                source_code=gio.key,
                 title=gio.title,
                 locaties=input_locaties,
             )
             input_aanwijzing = OwInputGebiedsaanwijzing(
-                source_code=aanwijzing.key(),
+                source_code=aanwijzing.code,
                 title=aanwijzing.title,
                 aanwijzing_type=area_type.aanwijzing_type.uri,
                 aanwijzing_groep=area_value.uri,

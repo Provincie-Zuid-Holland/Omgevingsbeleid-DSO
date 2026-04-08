@@ -42,7 +42,7 @@ class TextPolicyObjectExtractor:
         for element in elements:
             result.append(
                 TekstPolicyObjectGebiedsaanwijzing(
-                    uuid=element.get("data-hint-gebiedsaanwijzing-uuid"),
+                    code=element.get("data-hint-gebiedsaanwijzing-code"),
                     eid=element.get("eId"),
                     wid=element.get("wId"),
                     element=element.tag,

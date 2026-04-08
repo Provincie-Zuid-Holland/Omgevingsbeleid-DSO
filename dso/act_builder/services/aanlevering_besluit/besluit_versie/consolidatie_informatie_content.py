@@ -49,7 +49,7 @@ class ConsolidatieInformatieContent:
         beoogd_informatieobjecten: List[BeoogdObject] = []
         gios_new: List[Gio] = self._state_manager.input_data.resources.gio_repository.get_new()
         for gio in gios_new:
-            text_gio: TekstBijlageGio = text_data.get_gio_by_key(gio.key())
+            text_gio: TekstBijlageGio = text_data.get_gio_by_key(gio.key)
             beoogd_informatieobject = BeoogdObject(
                 instrument_versie=gio.frbr.get_expression(),
                 eid=f"!{settings.regeling_componentnaam}#{text_gio.eid}",
