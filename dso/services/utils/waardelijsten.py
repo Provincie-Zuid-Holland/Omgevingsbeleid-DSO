@@ -28,7 +28,7 @@ class ProcedureStappenOntwerp(str, Enum):
     Einde_inzagetermijn = "/join/id/stop/procedure/stap_005"
     Begin_inzagetermijn = "/join/id/stop/procedure/stap_014"
 
-
+# combi van ProcedureStappenDefinitief en ProcedureStappenOntwerp
 class ProcedureStappen(str, Enum):
     Vaststelling = "/join/id/stop/procedure/stap_002"
     Ondertekening = "/join/id/stop/procedure/stap_003"
@@ -106,7 +106,7 @@ class WorkType(str, Enum):
     Kennisgeving = "/join/id/stop/work_023"
     Versieinformatie = "/join/id/stop/work_024"
 
-
+# https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/raw/1.2.0/waardelijsten/formaatinformatieobject.xml?ref_type=tags
 class InformatieObjectType(str, Enum):
     Geoinformatieobject = "/join/id/stop/informatieobject/gio_002"
     PDF_document = "/join/id/stop/informatieobject/doc_001"
@@ -318,7 +318,7 @@ class OnderwerpType(str, Enum):
     zorginstellingen = "/tooi/def/concept/c_7a0f87d5"
     klimaatverandering = "/tooi/def/concept/c_79010191"
 
-
+# https://gitlab.com/koop/lvbb/bronhouderkoppelvlak/-/raw/1.2.0/waardelijsten/bestuursorgaan.xml?ref_type=tags
 class BestuursorgaanSoort(str, Enum):
     Burgemeester = "/tooi/def/thes/kern/c_2c4e7407"
     College_van_burgemeester_en_wethouders = "/tooi/def/thes/kern/c_28ecfd6d"
