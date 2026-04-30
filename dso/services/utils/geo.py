@@ -4,7 +4,7 @@ import re
 from xml.etree import ElementTree
 
 from .data import Publicatieinstructies
-from .waardelijsten import InformatieObjectType, Provincie, WorkType
+from ..koop.waardelijsten.gen import Worktypes, Provincies, TyperingVanInformatieobjectenNaarDataformaat
 
 
 def extract_name(filename):
@@ -35,17 +35,17 @@ def parse_gml_metadata(gml_paths):
         single_gml_dict = {
             "FRBRWork": FRBRWork,
             "FRBRExpression": FRBRExpression,
-            "soortWork": WorkType.Informatieobject.value,
+            "soortWork": Worktypes.Informatieobject.value,
             "heeftGeboorteregeling": "/akn/nl/act/pv28/2023/2_41",  # TODO
             "geo_bestandsnaam": filename,
             "bestandsnaam": gio_filename,
             "hash": file_hash,
-            "eindverantwoordelijke": Provincie.Zuid_Holland.value,
-            "maker": Provincie.Zuid_Holland.value,
+            "eindverantwoordelijke": Provincies.ProvincieZuidHolland.value,
+            "maker": Provincies.ProvincieZuidHolland.value,
             "naamInformatieObject": name,
             "officieleTitel": FRBRWork,
             "publicatieinstructie": Publicatieinstructies.TeConsolideren,
-            "formaatInformatieobject": InformatieObjectType.Geoinformatieobject.value,
+            "formaatInformatieobject": TyperingVanInformatieobjectenNaarDataformaat.Geoinformatieobject.value,
         }
         dict_list.append(single_gml_dict)
 

@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Field, field_validator
 
-from ....services.utils.waardelijsten import OnderwerpType, ProcedureType, RechtsgebiedType
+from ....services.koop.waardelijsten.gen import Besluitvormingsprocedures, BwbRechtgebied, TopLijst
 
 
 class Artikel(BaseModel):
@@ -47,9 +47,9 @@ class Besluit(BaseModel):
 
     sluiting: str
     ondertekening: str
-    rechtsgebieden: List[RechtsgebiedType]
-    onderwerpen: List[OnderwerpType]
-    soort_procedure: ProcedureType
+    rechtsgebieden: List[BwbRechtgebied]
+    onderwerpen: List[TopLijst]
+    soort_procedure: Besluitvormingsprocedures
     bijlagen: List[Bijlage] = Field(default_factory=list)
     motivering: Optional[Motivering] = Field(None)
 
@@ -57,24 +57,24 @@ class Besluit(BaseModel):
     def _format_rechtsgebieden(cls, value):
         result = []
         for entry in value:
-            if entry in RechtsgebiedType.__members__.values():
+            if entry in BwbRechtgebied.__members__.values():
                 result.append(entry)
             else:
-                result.append(RechtsgebiedType[entry])
+                result.append(BwbRechtgebied[entry])
         return result
 
     @field_validator("onderwerpen", mode="before")
     def _format_onderwerpen(cls, value):
         result = []
         for entry in value:
-            if entry in OnderwerpType.__members__.values():
+            if entry in TopLijst.__members__.values():
                 result.append(entry)
             else:
-                result.append(OnderwerpType[entry])
+                result.append(TopLijst[entry])
         return result
 
     @field_validator("soort_procedure", mode="before")
     def _format_soort_procedure(cls, value):
-        if value in ProcedureType.__members__.values():
+        if value in Besluitvormingsprocedures.__members__.values():
             return value
-        return ProcedureType[value]
+        return Besluitvormingsprocedures[value]

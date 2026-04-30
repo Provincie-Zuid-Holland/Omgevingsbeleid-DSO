@@ -5,7 +5,8 @@ from typing import Dict, List, Optional, Type
 
 from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
 
-from .services.utils.waardelijsten import BestuursorgaanSoort, ProcedureStappen, Provincie
+from dso.services.koop.waardelijsten.gen import Bestuursorganen, Provincies
+from dso.services.koop.waardelijsten.procedure_stappen import ProcedureStappen
 
 
 class FRBR(BaseModel, metaclass=ABCMeta):
@@ -228,9 +229,9 @@ class PublicationSettings(BaseModel):
     document_type: DocumentType
     datum_bekendmaking: str
     provincie_id: str
-    soort_bestuursorgaan: BestuursorgaanSoort
+    soort_bestuursorgaan: Bestuursorganen
     regeling_componentnaam: str
-    provincie_ref: str = Provincie.Zuid_Holland.value
+    provincie_ref: str = Provincies.ProvincieZuidHolland.value
     dso_versioning: DSOVersion = Field(default_factory=DSOVersion)
     besluit_frbr: BillFRBR
     regeling_frbr: ActFRBR
@@ -249,10 +250,10 @@ class PublicationSettings(BaseModel):
 
     @field_validator("soort_bestuursorgaan", mode="before")
     def _format_soort_bestuursorgaan(cls, value):
-        if value in BestuursorgaanSoort.__members__.values():
+        if value in Bestuursorganen.__members__.values():
             return value
         try:
-            return BestuursorgaanSoort[value].value
+            return Bestuursorganen[value].value
         except KeyError:
             raise ValueError(f"{value} is geen valide Bestuursorgaan uit de waardelijst")
 

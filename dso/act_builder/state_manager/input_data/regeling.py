@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel, field_validator
 
-from ....services.utils.waardelijsten import OnderwerpType, RechtsgebiedType
+from ....services.koop.waardelijsten.gen import BwbRechtgebied, TopLijst
 
 
 class Regeling(BaseModel):
@@ -10,27 +10,27 @@ class Regeling(BaseModel):
     officiele_titel: str
     citeertitel: str
     is_officieel: str
-    rechtsgebieden: List[RechtsgebiedType]
-    onderwerpen: List[OnderwerpType]
+    rechtsgebieden: List[BwbRechtgebied]
+    onderwerpen: List[TopLijst]
 
     @field_validator("rechtsgebieden", mode="before")
     def _format_rechtsgebieden(cls, value):
         result = []
         for entry in value:
-            if entry in RechtsgebiedType.__members__.values():
+            if entry in BwbRechtgebied.__members__.values():
                 result.append(entry)
             else:
-                result.append(RechtsgebiedType[entry])
+                result.append(BwbRechtgebied[entry])
         return result
 
     @field_validator("onderwerpen", mode="before")
     def _format_onderwerpen(cls, value):
         result = []
         for entry in value:
-            if entry in OnderwerpType.__members__.values():
+            if entry in TopLijst.__members__.values():
                 result.append(entry)
             else:
-                result.append(OnderwerpType[entry])
+                result.append(TopLijst[entry])
         return result
 
     @field_validator("is_officieel", mode="before")

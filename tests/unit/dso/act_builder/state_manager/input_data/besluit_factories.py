@@ -1,5 +1,5 @@
 from dso.act_builder.state_manager.input_data.besluit import Besluit, Artikel
-from dso.services.utils.waardelijsten import RechtsgebiedType, OnderwerpType, ProcedureType
+from dso.services.koop.waardelijsten.gen import Besluitvormingsprocedures, BwbRechtgebied, TopLijst
 from tests.factory import Factory
 
 
@@ -23,12 +23,12 @@ class BesluitFactory(Factory):
             sluiting="<p>Aldus vastgesteld in de vergadering van 3 juli 2024.</p>",
             ondertekening="<p>Gedeputeerde Staten</p>",
             rechtsgebieden=[
-                RechtsgebiedType.Omgevingsrecht,
+                BwbRechtgebied.Omgevingsrecht,
             ],
             onderwerpen=[
-                OnderwerpType.ruimtelijke_ordening,
+                TopLijst.RuimtelijkeOrdening,
             ],
-            soort_procedure=ProcedureType.Definitief_besluit,
+            soort_procedure=Besluitvormingsprocedures.DefinitiefBesluit,
             bijlagen=[],
             motivering=None,
         )

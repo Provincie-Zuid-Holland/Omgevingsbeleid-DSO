@@ -1,7 +1,7 @@
-from ....models import DocumentType
-from ....services.utils.helpers import load_template
-from ....services.utils.waardelijsten import RegelingType
 from ...state_manager.state_manager import StateManager
+from ....models import DocumentType
+from ....services.koop.waardelijsten.gen import TyperingVanRegelingen
+from ....services.utils.helpers import load_template
 
 
 class RegelingVersieInformatieContent:
@@ -21,7 +21,7 @@ class RegelingVersieInformatieContent:
 
     def _get_soort_regeling(self) -> str:
         document_type: DocumentType = self._state_manager.input_data.publication_settings.document_type.value
-        return RegelingType[document_type].value
+        return TyperingVanRegelingen[document_type].value
 
     def _get_regeling_metadata(self) -> str:
         # Regeling metadata is only needed for initial version

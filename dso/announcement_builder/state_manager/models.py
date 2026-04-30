@@ -5,7 +5,7 @@ from typing import List
 from pydantic import BaseModel, field_validator
 
 from ...models import BillFRBR, ContentType, DocFRBR, ProcedureVerloop, PublicatieOpdracht
-from ...services.utils.waardelijsten import OnderwerpType
+from ...services.koop.waardelijsten.gen import TopLijst
 
 
 class ContentData(ABC):
@@ -27,17 +27,17 @@ class OutputFile:
 
 class Kennisgeving(BaseModel):
     officiele_titel: str
-    onderwerpen: List[OnderwerpType]
+    onderwerpen: List[TopLijst]
     mededeling_over_frbr: BillFRBR
 
     @field_validator("onderwerpen", mode="before")
     def _format_onderwerpen(cls, value):
         result = []
         for entry in value:
-            if entry in OnderwerpType.__members__.values():
+            if entry in TopLijst.__members__.values():
                 result.append(entry)
             else:
-                result.append(OnderwerpType[entry])
+                result.append(TopLijst[entry])
         return result
 
 
