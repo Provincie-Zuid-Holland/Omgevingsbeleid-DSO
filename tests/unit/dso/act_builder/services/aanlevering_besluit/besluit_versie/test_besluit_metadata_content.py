@@ -43,8 +43,8 @@ class TestBesluitMetadataContent(XMLCompareTest):
         regeling_factory = RegelingFactory()
         state_manager_mock.input_data.regeling = regeling_factory.create()
 
-        state_manager_mock.input_data.publication_settings.provincie_ref = Provincies.ProvincieZuidHolland.value
-        state_manager_mock.input_data.publication_settings.soort_bestuursorgaan = Bestuursorganen.ProvincialeStaten
+        state_manager_mock.input_data.publication_settings.provincie_ref = Provincies.provincie_zuid_holland.value
+        state_manager_mock.input_data.publication_settings.soort_bestuursorgaan = Bestuursorganen.provinciale_staten
 
         besluit_metadata_content = BesluitMetadataContent(state_manager_mock)
         actual = besluit_metadata_content.create()

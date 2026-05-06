@@ -76,7 +76,8 @@ def _download_source() -> List[Enum]:
                 for element in root.findall(".//rsc:Waarde", XML_NAMESPACES):
                     id_value = _get_text_value_for_element(element, "rsc:id")
                     label_value = _get_text_value_for_element(element, "rsc:label")
-                    label_sanitized = _remove_accents(_to_camel_case(label_value))
+                    label_value_snake_case = _to_snake_case(label_value)
+                    label_sanitized = _remove_accents(label_value_snake_case)
                     enum_dict[label_sanitized] = id_value
 
                 if len(enum_dict.keys()) <= 0:
@@ -102,11 +103,18 @@ def _format_with_ruff(code: str) -> str:
 
     return formatted
 
-
-def _to_camel_case(input: str) -> str:
-    parts = re.split(r"[_\-\s()'.,]+", input)
+def _get_parts(value: str) -> List[str]:
+    parts = re.split(r"[_\-\s()'.,]+", value)
     parts = [p for p in parts if p]  # remove empty chunks
+    return parts
+
+def _to_camel_case(value: str) -> str:
+    parts = _get_parts(value)
     return "".join(word.capitalize() for word in parts)
+
+def _to_snake_case(value: str) -> str:
+    parts = _get_parts(value)
+    return "_".join(word.lower() for word in parts)
 
 
 def do_create_waardelijsten():

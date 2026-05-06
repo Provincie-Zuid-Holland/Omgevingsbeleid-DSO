@@ -23,12 +23,12 @@ class BesluitFactory(Factory):
             sluiting="<p>Aldus vastgesteld in de vergadering van 3 juli 2024.</p>",
             ondertekening="<p>Gedeputeerde Staten</p>",
             rechtsgebieden=[
-                BwbRechtgebied.Omgevingsrecht,
+                BwbRechtgebied.omgevingsrecht,
             ],
             onderwerpen=[
-                TopLijst.RuimtelijkeOrdening,
+                TopLijst.ruimtelijke_ordening,
             ],
-            soort_procedure=Besluitvormingsprocedures.DefinitiefBesluit,
+            soort_procedure=Besluitvormingsprocedures.definitief_besluit,
             bijlagen=[],
             motivering=None,
         )

@@ -11,7 +11,7 @@ class RegelingFactory(Factory):
             citeertitel="Omgevingsvisie van Zuid-Holland",
             is_officieel="true",
             rechtsgebieden=[
-                BwbRechtgebied.Omgevingsrecht,
+                BwbRechtgebied.omgevingsrecht,
             ],
-            onderwerpen=[TopLijst.RuimtelijkeOrdening],
+            onderwerpen=[TopLijst.ruimtelijke_ordening],
         )

@@ -16,7 +16,7 @@ class TestGioAanleveringInformatieObjectBuilder(StateManagerTestCase, XMLCompare
     def test_apply(self, state_manager_mock, gio_repository_mock_with_two_new_gebieden):
         state_manager_mock.input_data.resources.gio_repository = gio_repository_mock_with_two_new_gebieden
 
-        state_manager_mock.input_data.publication_settings.provincie_ref = Provincies.ProvincieZuidHolland.value
+        state_manager_mock.input_data.publication_settings.provincie_ref = Provincies.provincie_zuid_holland.value
 
         output_file_1 = self._get_output_file_mock_with_content(filename="file1.xml", content="contents file 1")
         output_file_2 = self._get_output_file_mock_with_content(filename="file2.xml", content="contents file 2")

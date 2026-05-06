@@ -231,7 +231,7 @@ class PublicationSettings(BaseModel):
     provincie_id: str
     soort_bestuursorgaan: Bestuursorganen
     regeling_componentnaam: str
-    provincie_ref: str = Provincies.ProvincieZuidHolland.value
+    provincie_ref: str = Provincies.provincie_zuid_holland.value
     dso_versioning: DSOVersion = Field(default_factory=DSOVersion)
     besluit_frbr: BillFRBR
     regeling_frbr: ActFRBR
