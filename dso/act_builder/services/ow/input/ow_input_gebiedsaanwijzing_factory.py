@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+import dso.services.ow.gebiedsaanwijzingen.types as ad
 from dso.act_builder.services.ow.input.models import (
     OwInputGebiedsaanwijzing,
     OwInputGio,
@@ -11,14 +12,13 @@ from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzin
 from dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import GioRepository
 from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, Gio
 from dso.act_builder.state_manager.state_manager import StateManager
-from dso.models import DocumentType
 from dso.services.ow.gebiedsaanwijzingen.gebiedsaanwijzing import Gebiedsaanwijzingen, GebiedsaanwijzingenFactory
-import dso.services.ow.gebiedsaanwijzingen.types as ad
+from .....services.koop.waardelijsten.gen import TyperingVanRegelingen
 
 
 class OwInputGebiedsaanwijzingFactory:
     def __init__(self, state_manager: StateManager):
-        document_type: DocumentType = state_manager.input_data.publication_settings.document_type
+        document_type: TyperingVanRegelingen = state_manager.input_data.publication_settings.document_type
 
         self._area_types: Gebiedsaanwijzingen = GebiedsaanwijzingenFactory().get_for_document(document_type)
         self._aanwijzing_repository: GebiedsaanwijzingRepository = (

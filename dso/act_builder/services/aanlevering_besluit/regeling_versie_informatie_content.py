@@ -1,6 +1,4 @@
 from ...state_manager.state_manager import StateManager
-from ....models import DocumentType
-from ....services.koop.waardelijsten.gen import TyperingVanRegelingen
 from ....services.utils.helpers import load_template
 
 
@@ -20,8 +18,7 @@ class RegelingVersieInformatieContent:
         return content
 
     def _get_soort_regeling(self) -> str:
-        document_type: DocumentType = self._state_manager.input_data.publication_settings.document_type.value
-        return TyperingVanRegelingen[document_type].value
+        return self._state_manager.input_data.publication_settings.document_type.value
 
     def _get_regeling_metadata(self) -> str:
         soort_regeling = self._get_soort_regeling()
