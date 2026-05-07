@@ -14,6 +14,6 @@ class ExpressionIdentificatieContent:
             "akn/besluit_versie/ExpressionIdentificatie.xml",
             work=besluit_frbr.get_work(),
             expression=besluit_frbr.get_expression(),
-            soort_work=Worktypes.Besluit.value,
+            soort_work=Worktypes.besluit.value,
         )
         return content

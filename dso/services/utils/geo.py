@@ -35,7 +35,7 @@ def parse_gml_metadata(gml_paths):
         single_gml_dict = {
             "FRBRWork": FRBRWork,
             "FRBRExpression": FRBRExpression,
-            "soortWork": Worktypes.Informatieobject.value,
+            "soortWork": Worktypes.informatieobject.value,
             "heeftGeboorteregeling": "/akn/nl/act/pv28/2023/2_41",  # TODO
             "geo_bestandsnaam": filename,
             "bestandsnaam": gio_filename,
