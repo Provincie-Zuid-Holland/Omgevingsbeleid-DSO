@@ -102,7 +102,7 @@ class OwReferenceResolver:
                     target_code=input_ref.target_code,
                     ref=groep.identification,
                 )
-        raise RuntimeError("No gebied found to reference to")
+        raise RuntimeError("No gebiedengroep found to reference to")
 
     def _resolve_divisie_ref(self, state: OwState, input_ref: UnresolvedDivisieRef) -> DivisieRef:
         for divisie in state.divisies:
