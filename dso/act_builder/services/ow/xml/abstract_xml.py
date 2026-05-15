@@ -8,7 +8,7 @@ from dso.act_builder.services.ow.xml.ow_xml_data import OwXmlData
 from dso.act_builder.state_manager.models import OutputFile, StrContentData
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.models import ContentType
-from dso.services.koop.waardelijsten.gen import Besluitvormingsprocedures
+from dso.services.koop.waardelijsten.gen import ProcedureType
 from dso.services.utils.helpers import load_template
 
 
@@ -20,9 +20,9 @@ class BuildFileResult:
 
 class AbstractXmlFile(ABC):
     def __init__(self, state_manager: StateManager):
-        procedure_type: Besluitvormingsprocedures = state_manager.input_data.besluit.soort_procedure
+        procedure_type: ProcedureType = state_manager.input_data.besluit.soort_procedure
         self._procedure_status: Optional[str] = (
-            "ontwerp" if procedure_type == Besluitvormingsprocedures.ontwerpbesluit else None
+            "ontwerp" if procedure_type == ProcedureType.ontwerpbesluit else None
         )
         self._dataset: str = state_manager.input_data.ow_dataset
         self._area_title: str = state_manager.input_data.ow_gebied

@@ -3,7 +3,7 @@
 from enum import Enum
 
 
-class Bestuursorganen(str, Enum):
+class BestuursorgaanType(str, Enum):
     burgemeester = "/tooi/def/thes/kern/c_2c4e7407"
     college_van_burgemeester_en_wethouders = "/tooi/def/thes/kern/c_28ecfd6d"
     gemeenteraad = "/tooi/def/thes/kern/c_2a7d8663"
@@ -18,12 +18,12 @@ class Bestuursorganen(str, Enum):
     dijkgraaf = "/tooi/def/thes/kern/c_f70a6113"
 
 
-class TyperingVanInformatieobjectenNaarDataformaat(str, Enum):
+class InformatieObjectType(str, Enum):
     geoinformatieobject = "/join/id/stop/informatieobject/gio_002"
     pdf_document = "/join/id/stop/informatieobject/doc_001"
 
 
-class TopLijst(str, Enum):
+class OnderwerpType(str, Enum):
     zorg_en_gezondheid = "/tooi/def/concept/c_d0463fb7"
     wonen = "/tooi/def/concept/c_124eaf3a"
     werk = "/tooi/def/concept/c_9d1917e9"
@@ -124,7 +124,7 @@ class TopLijst(str, Enum):
     klimaatverandering = "/tooi/def/concept/c_79010191"
 
 
-class StappenUitDeBesluitvormingsprocedureVoorEenDefinitiefBesluit(str, Enum):
+class ProcedureStappenDefinitief(str, Enum):
     vaststelling = "/join/id/stop/procedure/stap_002"
     ondertekening = "/join/id/stop/procedure/stap_003"
     publicatie = "/join/id/stop/procedure/stap_004"
@@ -136,7 +136,7 @@ class StappenUitDeBesluitvormingsprocedureVoorEenDefinitiefBesluit(str, Enum):
     einde_beroepsprocedures = "/join/id/stop/procedure/stap_021"
 
 
-class StappenUitDeBesluitvormingsprocedureVoorEenOntwerpbesluit(str, Enum):
+class ProcedureStappenOntwerp(str, Enum):
     vaststelling = "/join/id/stop/procedure/stap_002"
     ondertekening = "/join/id/stop/procedure/stap_003"
     publicatie = "/join/id/stop/procedure/stap_004"
@@ -144,12 +144,12 @@ class StappenUitDeBesluitvormingsprocedureVoorEenOntwerpbesluit(str, Enum):
     begin_inzagetermijn = "/join/id/stop/procedure/stap_014"
 
 
-class Provincies(str, Enum):
+class Provincie(str, Enum):
     provincie_drenthe = "/tooi/id/provincie/pv22"
     provincie_flevoland = "/tooi/id/provincie/pv24"
     provincie_fryslan = "/tooi/id/provincie/pv21"
     provincie_gelderland = "/tooi/id/provincie/pv25"
-    provincie_groningen = "/tooi/id/provincie/pv20"
+    provincie_groningen = "/tooi/id/provincie/pv20" 
     provincie_limburg = "/tooi/id/provincie/pv31"
     provincie_noord_brabant = "/tooi/id/provincie/pv30"
     provincie_noord_holland = "/tooi/id/provincie/pv27"
@@ -159,7 +159,7 @@ class Provincies(str, Enum):
     provincie_zuid_holland = "/tooi/id/provincie/pv28"
 
 
-class BwbRechtgebied(str, Enum):
+class RechtsgebiedType(str, Enum):
     agrarisch_recht = "/tooi/def/concept/c_8054d6b3"
     arbeidsrecht_en_sociaal_zekerheidsrecht = "/tooi/def/concept/c_7cca4bd5"
     arbitrage = "/tooi/def/concept/c_825c930b"
@@ -265,17 +265,17 @@ class BwbRechtgebied(str, Enum):
     internationaal_onroerend_goedrecht = "/tooi/def/concept/c_5fa8cb44"
 
 
-class Besluitvormingsprocedures(str, Enum):
+class ProcedureType(str, Enum):
     ontwerpbesluit = "/join/id/stop/proceduretype_ontwerp"
     definitief_besluit = "/join/id/stop/proceduretype_definitief"
 
 
-class TyperingVanPublicaties(str, Enum):
+class PublicatieType(str, Enum):
     bekendmaking = "/join/id/stop/soortpublicatie_001"
     kennisgeving = "/join/id/stop/soortpublicatie_002"
 
 
-class TyperingVanRegelingen(str, Enum):
+class RegelingType(str, Enum):
     amvb = "/join/id/stop/regelingtype_001"
     ministeriele_regeling = "/join/id/stop/regelingtype_002"
     omgevingsplan = "/join/id/stop/regelingtype_003"
@@ -294,7 +294,7 @@ class TyperingVanRegelingen(str, Enum):
     voorbeschermingsregels_omgevingsverordening = "/join/id/stop/regelingtype_016"
 
 
-class Worktypes(str, Enum):
+class WorkType(str, Enum):
     besluit = "/join/id/stop/work_003"
     geconsolideerd_informatieobject = "/join/id/stop/work_005"
     geconsolideerde_regeling = "/join/id/stop/work_006"
@@ -306,3 +306,17 @@ class Worktypes(str, Enum):
     consolidatie_van_een_tijdelijk_regelingdeel = "/join/id/stop/work_022"
     kennisgeving = "/join/id/stop/work_023"
     versieinformatie = "/join/id/stop/work_024"
+
+
+class ProcedureStappen(str, Enum):
+    vaststelling = "/join/id/stop/procedure/stap_002"
+    ondertekening = "/join/id/stop/procedure/stap_003"
+    publicatie = "/join/id/stop/procedure/stap_004"
+    einde_bezwaartermijn = "/join/id/stop/procedure/stap_015"
+    einde_beroepstermijn = "/join/id/stop/procedure/stap_016"
+    start_beroepsprocedure = "/join/id/stop/procedure/stap_018"
+    schorsing = "/join/id/stop/procedure/stap_019"
+    opheffing_schorsing = "/join/id/stop/procedure/stap_020"
+    einde_beroepsprocedures = "/join/id/stop/procedure/stap_021"
+    einde_inzagetermijn = "/join/id/stop/procedure/stap_005"
+    begin_inzagetermijn = "/join/id/stop/procedure/stap_014"

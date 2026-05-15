@@ -1,6 +1,6 @@
 from ....state_manager.state_manager import StateManager
 from .....models import BillFRBR
-from .....services.koop.waardelijsten.gen import Worktypes
+from .....services.koop.waardelijsten.gen import WorkType
 from .....services.utils.helpers import load_template
 
 
@@ -14,6 +14,6 @@ class ExpressionIdentificatieContent:
             "akn/besluit_versie/ExpressionIdentificatie.xml",
             work=besluit_frbr.get_work(),
             expression=besluit_frbr.get_expression(),
-            soort_work=Worktypes.besluit.value,
+            soort_work=WorkType.besluit.value,
         )
         return content

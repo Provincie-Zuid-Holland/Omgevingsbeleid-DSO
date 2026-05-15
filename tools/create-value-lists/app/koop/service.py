@@ -11,7 +11,7 @@ from typing import List, Optional, Dict
 
 import requests
 
-from config import (
+from koop.config import (
     DOWNLOAD_URL,
     SOURCE_FOLDER,
     VERSION,
@@ -19,6 +19,7 @@ from config import (
     TARGET_FILE,
     IGNORE_FILES,
     XML_NAMESPACES,
+    NAME_MAPPING, MERGE_TYPES,
 )
 
 OUTPUT_FILE_HEADING = """
@@ -54,8 +55,10 @@ def _download_source() -> List[Enum]:
     download_file = DOWNLOAD_FILE.replace("[version]", VERSION)
     zip_folder = download_file.removesuffix(".zip")
 
+    print(f"Downloading {download_file}...")
     resp = requests.get(f"{download_url}/{download_file}")
     resp.raise_for_status()
+
     zip_bytes = io.BytesIO(resp.content)
 
     enums: List[Enum] = []
@@ -84,9 +87,22 @@ def _download_source() -> List[Enum]:
                     continue
 
                 class_name: str = _get_text_value_for_element(root, ".//rsc:label")
-                class_name_camel_case: str = _to_camel_case(class_name)
-                enum_type: Enum = Enum(class_name_camel_case, enum_dict)
+                class_name_mapped = NAME_MAPPING.get(class_name)
+                if class_name_mapped is None:
+                    raise RuntimeWarning(f"Can't find mapped class name for '{class_name}'")
+                enum_type: Enum = Enum(class_name_mapped, enum_dict)
                 enums.append(enum_type)
+
+        for merge_type in MERGE_TYPES:
+            merged_enum_dict: Dict[str, str] = {}
+            for enum in enums:
+                if enum.__name__ not in merge_type.koop_types:
+                    continue
+                for enum_member in enum.__members__:
+                    merged_enum_dict[enum_member] = enum[enum_member].value
+
+            merged_enum_type: Enum = Enum(merge_type.name, merged_enum_dict)
+            enums.append(merged_enum_type)
     return enums
 
 
@@ -103,14 +119,12 @@ def _format_with_ruff(code: str) -> str:
 
     return formatted
 
+
 def _get_parts(value: str) -> List[str]:
     parts = re.split(r"[_\-\s()'.,]+", value)
     parts = [p for p in parts if p]  # remove empty chunks
     return parts
 
-def _to_camel_case(value: str) -> str:
-    parts = _get_parts(value)
-    return "".join(word.capitalize() for word in parts)
 
 def _to_snake_case(value: str) -> str:
     parts = _get_parts(value)

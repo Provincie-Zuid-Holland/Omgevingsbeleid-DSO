@@ -5,9 +5,9 @@ from typing import Dict, List, Optional, Type
 
 from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
 
-from dso.services.koop.waardelijsten.gen import Bestuursorganen, Provincies
-from dso.services.koop.waardelijsten.procedure_stappen import ProcedureStappen
-from .services.koop.waardelijsten.gen import TyperingVanRegelingen
+from dso.services.koop.waardelijsten.gen import BestuursorgaanType, Provincie
+from dso.services.koop.waardelijsten.gen import ProcedureStappen
+from .services.koop.waardelijsten.gen import RegelingType
 
 
 class FRBR(BaseModel, metaclass=ABCMeta):
@@ -222,12 +222,12 @@ class Intrekking(BaseModel):
 
 
 class PublicationSettings(BaseModel):
-    document_type: TyperingVanRegelingen
+    document_type: RegelingType
     datum_bekendmaking: str
     provincie_id: str
-    soort_bestuursorgaan: Bestuursorganen
+    soort_bestuursorgaan: BestuursorgaanType
     regeling_componentnaam: str
-    provincie_ref: str = Provincies.provincie_zuid_holland.value
+    provincie_ref: str = Provincie.provincie_zuid_holland.value
     dso_versioning: DSOVersion = Field(default_factory=DSOVersion)
     besluit_frbr: BillFRBR
     regeling_frbr: ActFRBR
@@ -237,21 +237,21 @@ class PublicationSettings(BaseModel):
 
     @field_validator("document_type", mode="before")
     def _format_document_type(cls, value):
-        if value in TyperingVanRegelingen.__members__.values():
+        if value in RegelingType.__members__.values():
             return value
         try:
-            return TyperingVanRegelingen[value]
+            return RegelingType[value]
         except KeyError:
-            raise ValueError(f"{value} is not a valid TyperingVanRegelingen")
+            raise ValueError(f"{value} is not a valid RegelingType")
 
     @field_validator("soort_bestuursorgaan", mode="before")
     def _format_soort_bestuursorgaan(cls, value):
-        if value in Bestuursorganen.__members__.values():
+        if value in BestuursorgaanType.__members__.values():
             return value
         try:
-            return Bestuursorganen[value].value
+            return BestuursorgaanType[value].value
         except KeyError:
-            raise ValueError(f"{value} is geen valide Bestuursorgaan uit de waardelijst")
+            raise ValueError(f"{value} is geen valide BestuursorgaanType uit de waardelijst")
 
     @model_validator(mode="before")
     def _generate_opdracht(cls, data):

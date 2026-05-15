@@ -33,14 +33,14 @@ from dso.act_builder.services.ow.state.models import (
     UnresolvedGebiedsaanwijzingRef,
 )
 from dso.act_builder.services.ow.state.ow_state import OwState
-from dso.services.koop.waardelijsten.gen import Besluitvormingsprocedures
+from dso.services.koop.waardelijsten.gen import ProcedureType
 
 
 class OwStateBuilder:
-    def __init__(self, province_id: str, procedure_type: Besluitvormingsprocedures):
+    def __init__(self, province_id: str, procedure_type: ProcedureType):
         self._province_id: str = province_id
         self._procedure_status: Optional[str] = (
-            "ontwerp" if procedure_type == Besluitvormingsprocedures.ontwerpbesluit else None
+            "ontwerp" if procedure_type == ProcedureType.ontwerpbesluit else None
         )
         self._state: OwState = OwState()
 

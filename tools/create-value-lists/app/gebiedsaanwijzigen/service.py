@@ -4,7 +4,7 @@ from typing import List
 import zipfile
 import requests
 
-from config import (
+from gebiedsaanwijzigen.config import (
     DOWNLOAD_URL,
     OMGEVINGSVISIE_GA_MATRIX,
     PROGRAMMA_GA_MATRIX,
@@ -13,7 +13,7 @@ from config import (
     VAR_NAME_GA_OMGEVINGSVISIE_DATA,
     VAR_NAME_GA_PROGRAMMA_DATA,
 )
-from source_models import SourceResult, Waardelijst
+from gebiedsaanwijzigen.source_models import SourceResult, Waardelijst
 
 
 OUTPUT_FILE_HEADING = """
@@ -125,7 +125,7 @@ def do_create_gebiedsaanwijzingen():
         )
 
     final_output_contents: str = "\n\n".join(output_contents)
-    target_path = Path("../../") / TARGET_FILE
+    target_path = Path("../../../") / TARGET_FILE
     resolved_path = target_path.resolve()
 
     with open(resolved_path, "w", encoding="utf-8") as f:

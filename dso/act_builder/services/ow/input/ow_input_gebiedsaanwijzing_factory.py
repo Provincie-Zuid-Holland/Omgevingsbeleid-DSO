@@ -13,12 +13,12 @@ from dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository i
 from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, Gio
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.services.ow.gebiedsaanwijzingen.gebiedsaanwijzing import Gebiedsaanwijzingen, GebiedsaanwijzingenFactory
-from .....services.koop.waardelijsten.gen import TyperingVanRegelingen
+from .....services.koop.waardelijsten.gen import RegelingType
 
 
 class OwInputGebiedsaanwijzingFactory:
     def __init__(self, state_manager: StateManager):
-        document_type: TyperingVanRegelingen = state_manager.input_data.publication_settings.document_type
+        document_type: RegelingType = state_manager.input_data.publication_settings.document_type
 
         self._area_types: Gebiedsaanwijzingen = GebiedsaanwijzingenFactory().get_for_document(document_type)
         self._aanwijzing_repository: GebiedsaanwijzingRepository = (

@@ -4,7 +4,7 @@ from dso.act_builder.services.geo.gio_aanlevering_informatie_object_builder impo
 from dso.act_builder.state_manager import StrContentData
 from dso.announcement_builder.state_manager.models import OutputFile
 from dso.models import ContentType
-from dso.services.koop.waardelijsten.gen import Provincies
+from dso.services.koop.waardelijsten.gen import Provincie
 from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import (
     gio_repository_mock_with_two_new_gebieden,
 )
@@ -16,7 +16,7 @@ class TestGioAanleveringInformatieObjectBuilder(StateManagerTestCase, XMLCompare
     def test_apply(self, state_manager_mock, gio_repository_mock_with_two_new_gebieden):
         state_manager_mock.input_data.resources.gio_repository = gio_repository_mock_with_two_new_gebieden
 
-        state_manager_mock.input_data.publication_settings.provincie_ref = Provincies.provincie_zuid_holland.value
+        state_manager_mock.input_data.publication_settings.provincie_ref = Provincie.provincie_zuid_holland.value
 
         output_file_1 = self._get_output_file_mock_with_content(filename="file1.xml", content="contents file 1")
         output_file_2 = self._get_output_file_mock_with_content(filename="file2.xml", content="contents file 2")
