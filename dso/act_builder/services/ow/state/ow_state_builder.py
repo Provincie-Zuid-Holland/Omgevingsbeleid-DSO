@@ -39,9 +39,7 @@ from dso.services.koop.waardelijsten.gen import ProcedureType
 class OwStateBuilder:
     def __init__(self, province_id: str, procedure_type: ProcedureType):
         self._province_id: str = province_id
-        self._procedure_status: Optional[str] = (
-            "ontwerp" if procedure_type == ProcedureType.ontwerpbesluit else None
-        )
+        self._procedure_status: Optional[str] = "ontwerp" if procedure_type == ProcedureType.ontwerpbesluit else None
         self._state: OwState = OwState()
 
     def add_ambtsgebied(self, input_ambtsgebied: OwInputAmbtsgebied):

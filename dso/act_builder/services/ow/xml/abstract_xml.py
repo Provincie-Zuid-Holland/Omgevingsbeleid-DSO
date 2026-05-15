@@ -21,9 +21,7 @@ class BuildFileResult:
 class AbstractXmlFile(ABC):
     def __init__(self, state_manager: StateManager):
         procedure_type: ProcedureType = state_manager.input_data.besluit.soort_procedure
-        self._procedure_status: Optional[str] = (
-            "ontwerp" if procedure_type == ProcedureType.ontwerpbesluit else None
-        )
+        self._procedure_status: Optional[str] = "ontwerp" if procedure_type == ProcedureType.ontwerpbesluit else None
         self._dataset: str = state_manager.input_data.ow_dataset
         self._area_title: str = state_manager.input_data.ow_gebied
         self._delivery_id: str = state_manager.input_data.publication_settings.opdracht.id_levering

@@ -149,7 +149,7 @@ class Provincie(str, Enum):
     provincie_flevoland = "/tooi/id/provincie/pv24"
     provincie_fryslan = "/tooi/id/provincie/pv21"
     provincie_gelderland = "/tooi/id/provincie/pv25"
-    provincie_groningen = "/tooi/id/provincie/pv20" 
+    provincie_groningen = "/tooi/id/provincie/pv20"
     provincie_limburg = "/tooi/id/provincie/pv31"
     provincie_noord_brabant = "/tooi/id/provincie/pv30"
     provincie_noord_holland = "/tooi/id/provincie/pv27"
