@@ -19,7 +19,8 @@ from koop.config import (
     TARGET_FILE,
     IGNORE_FILES,
     XML_NAMESPACES,
-    NAME_MAPPING, MERGE_TYPES,
+    NAME_MAPPING,
+    MERGE_TYPES,
 )
 
 OUTPUT_FILE_HEADING = """
@@ -142,7 +143,7 @@ def do_create_waardelijsten():
             output_contents.append(f"\t{member.name} = {repr(member.value)}")
 
     final_output_contents: str = "\n".join(output_contents)
-    target_path = Path(".") / TARGET_FILE
+    target_path = Path("../../") / TARGET_FILE
     resolved_path = target_path.resolve()
 
     formatted_contents: str = _format_with_ruff(final_output_contents)
