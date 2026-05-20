@@ -125,7 +125,7 @@ def do_create_gebiedsaanwijzingen():
         )
 
     final_output_contents: str = "\n\n".join(output_contents)
-    target_path = Path("../../../") / TARGET_FILE
+    target_path = Path("../../") / TARGET_FILE
     resolved_path = target_path.resolve()
 
     with open(resolved_path, "w", encoding="utf-8") as f:
