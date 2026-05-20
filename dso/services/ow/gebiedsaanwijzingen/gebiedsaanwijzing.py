@@ -2,15 +2,15 @@ from typing import Dict, List, Optional
 
 from dso.services.ow.gebiedsaanwijzingen.gen import GA_OMGEVINGSVISIE_DATA, GA_PROGRAMMA_DATA
 from dso.services.ow.gebiedsaanwijzingen.types import Gebiedsaanwijzing
-from ....services.koop.waardelijsten.gen import RegelingType
+from models import DocumentType
 
 
 class Gebiedsaanwijzingen:
-    def __init__(self, document_type: RegelingType, data: List[Gebiedsaanwijzing]):
-        self._document_type: RegelingType = document_type
+    def __init__(self, document_type: DocumentType, data: List[Gebiedsaanwijzing]):
+        self._document_type: DocumentType = document_type
         self._data: List[Gebiedsaanwijzing] = data
 
-    def get_document_type(self) -> RegelingType:
+    def get_document_type(self) -> DocumentType:
         return self._document_type
 
     def get_by_type_label(self, label: str) -> Optional[Gebiedsaanwijzing]:
@@ -27,13 +27,13 @@ class Gebiedsaanwijzingen:
 # Service to use the Gebiedsaanwijzingen Waardelijsten
 class GebiedsaanwijzingenFactory:
     def __init__(self):
-        self._data: Dict[RegelingType, Gebiedsaanwijzingen] = {
+        self._data: Dict[DocumentType, Gebiedsaanwijzingen] = {
             g.get_document_type(): g
             for g in [
-                Gebiedsaanwijzingen(RegelingType.omgevingsvisie, GA_OMGEVINGSVISIE_DATA),
-                Gebiedsaanwijzingen(RegelingType.programma, GA_PROGRAMMA_DATA),
+                Gebiedsaanwijzingen(DocumentType.OMGEVINGSVISIE, GA_OMGEVINGSVISIE_DATA),
+                Gebiedsaanwijzingen(DocumentType.PROGRAMMA, GA_PROGRAMMA_DATA),
             ]
         }
 
-    def get_for_document(self, document_type: RegelingType) -> Optional[Gebiedsaanwijzingen]:
+    def get_for_document(self, document_type: DocumentType) -> Optional[Gebiedsaanwijzingen]:
         return self._data.get(document_type)

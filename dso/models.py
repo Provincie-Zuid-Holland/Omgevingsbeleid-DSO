@@ -5,8 +5,7 @@ from typing import Dict, List, Optional, Type
 
 from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
 
-from dso.services.koop.waardelijsten.gen import BestuursorgaanType, Provincie
-from dso.services.koop.waardelijsten.gen import ProcedureStappen
+from dso.services.koop.waardelijsten.gen import BestuursorgaanType, ProcedureStappen, Provincie
 from .services.koop.waardelijsten.gen import RegelingType
 
 
@@ -207,6 +206,11 @@ class PublicatieOpdracht(BaseModel):
         return OpdrachtType[value]
 
 
+class DocumentType(str, Enum):
+    PROGRAMMA = "Programma"
+    OMGEVINGSVISIE = "Omgevingsvisie"
+
+
 class InstellingDoel(BaseModel):
     frbr: DoelFRBR
     datum_juridisch_werkend_vanaf: Optional[str] = None
@@ -222,7 +226,7 @@ class Intrekking(BaseModel):
 
 
 class PublicationSettings(BaseModel):
-    document_type: RegelingType
+    document_type: DocumentType
     datum_bekendmaking: str
     provincie_id: str
     soort_bestuursorgaan: BestuursorgaanType
@@ -237,12 +241,12 @@ class PublicationSettings(BaseModel):
 
     @field_validator("document_type", mode="before")
     def _format_document_type(cls, value):
-        if value in RegelingType.__members__.values():
+        if value in DocumentType.__members__.values():
             return value
         try:
-            return RegelingType[value]
+            return DocumentType[value]
         except KeyError:
-            raise ValueError(f"{value} is not a valid RegelingType")
+            raise ValueError(f"{value} is not a valid DocumentType")
 
     @field_validator("soort_bestuursorgaan", mode="before")
     def _format_soort_bestuursorgaan(cls, value):
