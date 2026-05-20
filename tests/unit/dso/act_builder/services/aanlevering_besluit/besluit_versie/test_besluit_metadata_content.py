@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 from dso.act_builder.services.aanlevering_besluit.besluit_versie.besluit_metadata_content import BesluitMetadataContent
 from dso.act_builder.state_manager.input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
 from dso.act_builder.state_manager.input_data.resource.besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
-from dso.services.koop.waardelijsten.gen import Provincie, BestuursorgaanType
+from dso.services.koop.waardelijsten.gen import BestuursorgaanType, Provincie
 from tests.unit.dso.act_builder.state_manager.input_data.besluit_factories import BesluitFactory
 from tests.unit.dso.act_builder.state_manager.input_data.regeling_factories import RegelingFactory
 from tests.unit.dso.act_builder.state_manager.input_data.resource.besluit_pdf.besluit_pdf_factory import (

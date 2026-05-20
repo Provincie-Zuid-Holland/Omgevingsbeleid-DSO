@@ -7,20 +7,20 @@ import xml.etree.ElementTree as ET
 import zipfile
 from enum import Enum
 from pathlib import Path
-from typing import List, Optional, Dict
+from typing import Dict, List, Optional
 
 import requests
 
 from koop.config import (
-    DOWNLOAD_URL,
-    SOURCE_FOLDER,
-    VERSION,
     DOWNLOAD_FILE,
-    TARGET_FILE,
+    DOWNLOAD_URL,
     IGNORE_FILES,
-    XML_NAMESPACES,
-    NAME_MAPPING,
     MERGE_TYPES,
+    NAME_MAPPING,
+    SOURCE_FOLDER,
+    TARGET_FILE,
+    VERSION,
+    XML_NAMESPACES,
 )
 
 OUTPUT_FILE_HEADING = """

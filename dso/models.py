@@ -6,7 +6,6 @@ from typing import Dict, List, Optional, Type
 from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
 
 from dso.services.koop.waardelijsten.gen import BestuursorgaanType, ProcedureStappen, Provincie
-from .services.koop.waardelijsten.gen import RegelingType
 
 
 class FRBR(BaseModel, metaclass=ABCMeta):

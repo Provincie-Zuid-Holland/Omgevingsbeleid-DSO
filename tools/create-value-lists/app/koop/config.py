@@ -1,5 +1,5 @@
 # See: Waardelijsten KOOP on this page view all versions https://koop.gitlab.io/stop/standaard/index.html
-from typing import List, Dict
+from typing import Dict, List
 
 from pydantic import BaseModel
 

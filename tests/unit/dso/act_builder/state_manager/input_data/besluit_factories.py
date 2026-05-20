@@ -1,5 +1,5 @@
-from dso.act_builder.state_manager.input_data.besluit import Besluit, Artikel
-from dso.services.koop.waardelijsten.gen import ProcedureType, RechtsgebiedType, OnderwerpType
+from dso.act_builder.state_manager.input_data.besluit import Artikel, Besluit
+from dso.services.koop.waardelijsten.gen import OnderwerpType, ProcedureType, RechtsgebiedType
 from tests.factory import Factory
 
 
