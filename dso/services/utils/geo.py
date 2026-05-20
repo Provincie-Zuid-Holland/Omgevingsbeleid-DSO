@@ -4,7 +4,7 @@ import re
 from xml.etree import ElementTree
 
 from .data import Publicatieinstructies
-from ..koop.waardelijsten.gen import WorkType, Provincie, InformatieObjectType
+from ..koop.waardelijsten.gen import InformatieObjectType, Provincie, WorkType
 
 
 def extract_name(filename):
