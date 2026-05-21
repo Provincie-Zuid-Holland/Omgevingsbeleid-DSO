@@ -170,6 +170,18 @@ class OwStateBuilder:
             self.add_gebiedsaanwijzing(input_gebiedsaanwijzing)
 
     def add_gebiedsaanwijzing(self, input_gebiedsaanwijzing: OwInputGebiedsaanwijzing):
+        # Register gebied to the state as gebied no longer lives as it owns object in DSO
+        for input_locatie in input_gebiedsaanwijzing.gio.locaties:
+            gebied = OwGebied(
+                object_status=OwObjectStatus.new,
+                source_code=input_locatie.source_code,
+                procedure_status=self._procedure_status,
+                identification=self._generate_identifier("gebied"),
+                title=input_locatie.title,
+                geometry_ref=input_locatie.geometry_id,
+            )
+            self._state.gebieden.add(gebied)
+
         location_refs = [
             UnresolvedGebiedRef(
                 target_code=location.source_code,
