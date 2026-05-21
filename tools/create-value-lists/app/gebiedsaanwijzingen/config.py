@@ -1,4 +1,4 @@
-from typing import List, Set
+from typing import List
 
 # See: "Waardelijsten IMOW [service als zip-bestand]" on this page: https://www.geonovum.nl/omgevingswet/STOPTPOD
 DOWNLOAD_URL: str = "https://github.com/Geonovum/TPOD-waardelijsten/raw/31a79cff014d6dc93f0db4183f764616e2438366/2026-01-21/waardelijsten_IMOW_5.1.0.zip"

@@ -34,9 +34,7 @@ class OwInputGebiedsaanwijzingFactory:
         for aanwijzing in aanwijzingen:
             gio: Gio = self._gio_repository.get_by_key(aanwijzing.gio_key)
             area_type: Optional[ad.Gebiedsaanwijzing] = (
-                self._area_types.get_by_type_label(aanwijzing.aanwijzing_type)
-                if self._area_types
-                else None
+                self._area_types.get_by_type_label(aanwijzing.aanwijzing_type) if self._area_types else None
             )
             if area_type is None:
                 raise RuntimeError(f"Invalid gebiedsaanwijzing type `{aanwijzing.aanwijzing_type}`")
