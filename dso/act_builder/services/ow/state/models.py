@@ -365,9 +365,9 @@ class OwGebiedengroep(BaseOwObject):
         self.assert_same_class(other)
         # fmt: off
         return (
-            (self.title, [r.get_key() for r in self.gebieden_refs])
+            (self.title, {r.get_key() for r in self.gebieden_refs})
             ==
-            (other.title, [r.get_key() for r in other.gebieden_refs])
+            (other.title, {r.get_key() for r in other.gebieden_refs})
         )
         # fmt: on
 
@@ -472,9 +472,9 @@ class OwGebiedsaanwijzing(BaseOwObject):
         self.assert_same_class(other)
         # fmt: off
         return (
-            (self.title, self.indication_type, self.indication_group, [r.get_key() for r in self.location_refs])
+            (self.title, self.indication_type, self.indication_group, {r.get_key() for r in self.location_refs})
             ==
-            (other.title, self.indication_type, self.indication_group, [r.get_key() for r in other.location_refs])
+            (other.title, other.indication_type, other.indication_group, {r.get_key() for r in other.location_refs})
         )
         # fmt: on
 
@@ -516,9 +516,9 @@ class OwTekstdeel(BaseOwObject):
         self.assert_same_class(other)
         # fmt: off
         return (
-            (self.idealization, self.text_ref.get_key(), [r.get_key() for r in self.location_refs], [r.get_key() for r in self.gebiedsaanwijzing_refs])
+            (self.idealization, self.text_ref.get_key(), {r.get_key() for r in self.location_refs}, {r.get_key() for r in self.gebiedsaanwijzing_refs})
             ==
-            (other.idealization, other.text_ref.get_key(), [r.get_key() for r in other.location_refs], [r.get_key() for r in other.gebiedsaanwijzing_refs])
+            (other.idealization, other.text_ref.get_key(), {r.get_key() for r in other.location_refs}, {r.get_key() for r in other.gebiedsaanwijzing_refs})
         )
         # fmt: on
 
