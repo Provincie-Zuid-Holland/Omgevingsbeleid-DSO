@@ -4,7 +4,7 @@ from typing import List
 import zipfile
 import requests
 
-from gebiedsaanwijzigen.config import (
+from gebiedsaanwijzingen.config import (
     DOWNLOAD_URL,
     OMGEVINGSVISIE_GA_MATRIX,
     PROGRAMMA_GA_MATRIX,
@@ -13,7 +13,7 @@ from gebiedsaanwijzigen.config import (
     VAR_NAME_GA_OMGEVINGSVISIE_DATA,
     VAR_NAME_GA_PROGRAMMA_DATA,
 )
-from gebiedsaanwijzigen.source_models import SourceResult, Waardelijst
+from gebiedsaanwijzingen.source_models import SourceResult, Waardelijst
 
 
 OUTPUT_FILE_HEADING = """

@@ -1,6 +1,6 @@
 import click
 
-from gebiedsaanwijzigen.service import do_create_gebiedsaanwijzingen
+from gebiedsaanwijzingen.service import do_create_gebiedsaanwijzingen
 from koop.service import do_create_waardelijsten
 
 
