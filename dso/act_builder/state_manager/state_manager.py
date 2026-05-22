@@ -16,8 +16,8 @@ class StateManager:
         self.debug: dict = {}
 
         # See current versions here: https://www.geonovum.nl/omgevingswet/STOPTPOD
-        self.imow_impl_versie: str = "3.0.1"  # IMOW: Document
-        self.imow_document_versie: str = "2.0.0"  # IMOW: Schema's
+        self.imow_document_versie: str = "3.0.1"  # IMOW: Document
+        self.imow_schema_versie: str = "2.0.0"  # IMOW: Schema's
 
         self.input_data: InputData = input_data
 
