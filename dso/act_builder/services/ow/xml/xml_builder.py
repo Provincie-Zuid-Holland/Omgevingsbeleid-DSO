@@ -58,9 +58,9 @@ class XmlBuilder:
             template_name="ow/manifest.xml",
             pretty_print=True,
             ow_files=ow_files,
-            # For IMOWversie its a bit unclear if this needs to be the version of the implementation (IMOW: Document)
+            # For IMOWversie it's a bit unclear if this needs to be the version of the implementation (IMOW: Document)
             # Or the version of the schema (IMOW: Schema's)
-            # The implementation makes more sense so that is what I went for.
+            # The implementation makes more sense, so that is what I went for.
             imow_versie=self._state_manager.imow_document_versie,
             act_work=self._state_manager.input_data.publication_settings.regeling_frbr.get_work(),
             purpose_id=self._state_manager.input_data.publication_settings.instelling_doel.frbr.get_work(),
