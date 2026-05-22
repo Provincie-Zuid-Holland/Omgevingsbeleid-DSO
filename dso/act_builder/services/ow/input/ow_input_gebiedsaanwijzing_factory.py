@@ -12,15 +12,19 @@ from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzin
 from dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import GioRepository
 from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gebiedsaanwijzing, Gio
 from dso.act_builder.state_manager.state_manager import StateManager
+from dso.models import DocumentType
 from dso.services.ow.gebiedsaanwijzingen.gebiedsaanwijzing import Gebiedsaanwijzingen, GebiedsaanwijzingenFactory
-from models import DocumentType
 
 
 class OwInputGebiedsaanwijzingFactory:
     def __init__(self, state_manager: StateManager):
         document_type: DocumentType = state_manager.input_data.publication_settings.document_type
 
-        self._area_types: Optional[Gebiedsaanwijzingen] = GebiedsaanwijzingenFactory().get_for_document(document_type)
+        area_types: Optional[Gebiedsaanwijzingen] = GebiedsaanwijzingenFactory().get_for_document(document_type)
+        if area_types is None:
+            raise RuntimeError(f"Area types unknown for '{document_type}'")
+        self._area_types: Gebiedsaanwijzingen = area_types
+
         self._aanwijzing_repository: GebiedsaanwijzingRepository = (
             state_manager.input_data.resources.gebiedsaanwijzingen_repository
         )
@@ -33,9 +37,7 @@ class OwInputGebiedsaanwijzingFactory:
         # We don't need to worry about duplicates as the OwState machine takes care of that
         for aanwijzing in aanwijzingen:
             gio: Gio = self._gio_repository.get_by_key(aanwijzing.gio_key)
-            area_type: Optional[ad.Gebiedsaanwijzing] = (
-                self._area_types.get_by_type_label(aanwijzing.aanwijzing_type) if self._area_types else None
-            )
+            area_type: Optional[ad.Gebiedsaanwijzing] = self._area_types.get_by_type_label(aanwijzing.aanwijzing_type)
             if area_type is None:
                 raise RuntimeError(f"Invalid gebiedsaanwijzing type `{aanwijzing.aanwijzing_type}`")
             area_value: Optional[ad.GebiedsaanwijzingWaarde] = area_type.get_value_by_label(aanwijzing.aanwijzing_groep)

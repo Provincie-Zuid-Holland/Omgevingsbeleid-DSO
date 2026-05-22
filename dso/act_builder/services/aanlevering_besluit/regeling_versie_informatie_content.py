@@ -1,4 +1,6 @@
+from dso.models import DocumentType
 from ...state_manager.state_manager import StateManager
+from ....services.koop.waardelijsten.gen import RegelingType
 from ....services.utils.helpers import load_template
 
 
@@ -18,7 +20,8 @@ class RegelingVersieInformatieContent:
         return content
 
     def _get_soort_regeling(self) -> str:
-        return self._state_manager.input_data.publication_settings.document_type.value
+        document_type: DocumentType = self._state_manager.input_data.publication_settings.document_type.value
+        return RegelingType[document_type].value
 
     def _get_regeling_metadata(self) -> str:
         soort_regeling = self._get_soort_regeling()
