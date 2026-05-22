@@ -635,7 +635,7 @@ class Divisietekst(Element):
         if tag.name == "div":
             return tag
 
-        # Headings will be send to the Kop
+        # Headings will be sent to the Kop
         if tag.name in ["h1", "h2"]:
             if self.kop is not None:
                 return tag
@@ -644,11 +644,11 @@ class Divisietekst(Element):
             self.kop = kop
             return None
 
-        # Any other tags will just be send in a Inhoud
+        # Any other tags will just be sent in an Inhoud
         inhoud: Inhoud = self._get_inhoud()
-        leftoverTag: LeftoverTag = inhoud.consume_tag(tag)
+        leftover_tag: LeftoverTag = inhoud.consume_tag(tag)
 
-        return leftoverTag
+        return leftover_tag
 
     def consume_string(self, string: NavigableString):
         raw: str = str(string).strip()
@@ -702,15 +702,15 @@ class Divisie(Element):
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         while True:
-            leftoverTag = self._try_consume_tag(tag)
-            if leftoverTag is None:
+            leftover_tag = self._try_consume_tag(tag)
+            if leftover_tag is None:
                 return None
 
     def _try_consume_tag(self, tag: Tag) -> LeftoverTag:
-        # Headings will be send to the Kop
-        if tag.name in ["h1", "h2", "h3", "h4"]:
+        # Headings will be sent to the Kop
+        if tag.name in ["h1", "h2", "h3", "h4", "h5", "h6"]:
             if self.kop is not None:
-                # If we already have a title and we need a title
+                # If we already have a title, and we need a title
                 # Then we create a new Divisie or Divisietekst based on the title level
                 # and then let that new component consume the title
                 # if tag.name in ["h1", "h2"]:
@@ -727,7 +727,7 @@ class Divisie(Element):
             if self.contents:
                 # We cant set the heading if we already have content.
                 # That would render the text out of order
-                # In this case we just pass allong to the divisie tekst
+                # In this case we just pass along to the divisie tekst
                 # content: Divisietekst = self._get_active_divisietekst()
                 # leftover = content.consume_tag(tag)
                 # @note: scrapped above, i think we should create a new divisietekst in this case
