@@ -20,6 +20,7 @@ class GioFactory(Factory):
         gio_frbr: GioFRBR = GioFRBRFactory(Expression_Version=self.id, frbr_type=FRBRType.GEBIED).create()
 
         return Gio(
+            key=f"gio-{self.id}",
             source_codes=source_codes,
             locaties=locaties,
             title=f"GIO {self.id}",

@@ -10,14 +10,14 @@ from tests.factory import Factory
 
 
 class TekstBijlageGioFactory(Factory):
-    ids: List[int]
+    id: int
 
     def create(self) -> TekstBijlageGio:
-        key = "_".join([f"gebied-{id}" for id in self.ids])
+        gio_key: str = f"gio-{self.id}"
         return TekstBijlageGio(
-            gio_key=key,
-            eid=f"eid-tekst-bijlage-gebied-{key}",
-            wid=f"wid-tekst-bijlage-gebied-{key}",
+            gio_key=gio_key,
+            eid=f"eid-tekst-bijlage-gebied-{gio_key}",
+            wid=f"wid-tekst-bijlage-gebied-{gio_key}",
             element="a",
         )
 
@@ -49,8 +49,8 @@ class TekstPolicyObjectFactory(Factory):
 class TextDataFactory(Factory):
     def create(self) -> TextData:
         bijlage_gebieden: List[TekstBijlageGio] = [
-            TekstBijlageGioFactory(ids=[3, 4]).create(),
-            TekstBijlageGioFactory(ids=[6, 7]).create(),
+            TekstBijlageGioFactory(id=1).create(),
+            TekstBijlageGioFactory(id=2).create(),
         ]
         bijlage_documenten: List[TekstBijlageDocument] = [
             TekstTekstBijlageDocumentFactory(id=1).create(),
