@@ -27,9 +27,8 @@ def gio_repository_mock_with_two_gebieden() -> GioRepository | Mock:
 def _get_gios(count: int = 2) -> List[Gio | Mock]:
     gios: List[Gio | Mock] = []
     for i in range(1, count + 1):
-        base = (i - 1) * 3
-        gebied_id = base + 1
-        gio = GioFactory(id=1 + base, gebied_ids={gebied_id + 2, gebied_id + 3}).create()
+        gebied_id_base = (i - 1) * 2
+        gio = GioFactory(id=i, gebied_ids={gebied_id_base + 1, gebied_id_base + 2}).create()
         gios.append(gio)
     return gios
 
