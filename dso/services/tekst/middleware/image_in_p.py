@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from lxml import html
 
 
@@ -9,12 +11,12 @@ def middleware_image_in_p(html_content: str) -> str:
     return modified_html
 
 
-def _process_html(html_content: str) -> str:
+def _process_html(html_content: str) -> Tuple[str, bool]:
     # Wrap the input in a <div> to ensure a single root
-    wrapped_html = f"<div>{html_content}</div>"
+    wrapped_html: str = f"<div>{html_content}</div>"
 
     tree = html.fromstring(wrapped_html)
-    modified = False
+    modified: bool = False
 
     for element in tree.xpath(".//p"):
         for child in list(element):
@@ -36,9 +38,9 @@ def _process_html(html_content: str) -> str:
                 # Break to handle only the first <img> in each <p>
                 break
 
-    modified_html = html.tostring(tree, pretty_print=True, encoding="unicode")
+    modified_html: str = html.tostring(tree, pretty_print=True, encoding="unicode")
 
-    modified_html = modified_html.replace("<div>", "", 1)
-    modified_html = modified_html.rsplit("</div>", 1)[0]
+    modified_html: str = modified_html.replace("<div>", "", 1)
+    modified_html: str = modified_html.rsplit("</div>", 1)[0]
 
     return modified_html, modified
