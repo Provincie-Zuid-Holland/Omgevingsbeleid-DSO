@@ -5,7 +5,7 @@ from typing import List
 from pydantic import BaseModel, field_validator
 
 from ...models import BillFRBR, ContentType, DocFRBR, ProcedureVerloop, PublicatieOpdracht
-from ...services.utils.waardelijsten import OnderwerpType
+from ...services.koop.waardelijsten.gen import OnderwerpType
 
 
 class ContentData(ABC):

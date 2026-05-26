@@ -1,7 +1,7 @@
-from .....models import DocFRBR
-from .....services.utils.helpers import load_template
-from .....services.utils.waardelijsten import WorkType
 from ....state_manager.state_manager import StateManager
+from .....models import DocFRBR
+from .....services.koop.waardelijsten.gen import WorkType
+from .....services.utils.helpers import load_template
 
 
 class ExpressionIdentificatieContent:
@@ -14,6 +14,6 @@ class ExpressionIdentificatieContent:
             "akn_kennisgeving/kennisgeving_versie/ExpressionIdentificatie.xml",
             work=doc_frbr.get_work(),
             expression=doc_frbr.get_expression(),
-            soort_work=WorkType.Kennisgeving.value,
+            soort_work=WorkType.kennisgeving.value,
         )
         return content

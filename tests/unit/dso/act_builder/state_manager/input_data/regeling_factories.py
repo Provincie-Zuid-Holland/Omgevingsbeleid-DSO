@@ -1,5 +1,5 @@
 from dso.act_builder.state_manager.input_data.regeling import Regeling
-from dso.services.utils.waardelijsten import RechtsgebiedType, OnderwerpType
+from dso.services.koop.waardelijsten.gen import OnderwerpType, RechtsgebiedType
 from tests.factory import Factory
 
 
@@ -11,7 +11,7 @@ class RegelingFactory(Factory):
             citeertitel="Omgevingsvisie van Zuid-Holland",
             is_officieel="true",
             rechtsgebieden=[
-                RechtsgebiedType.Omgevingsrecht,
+                RechtsgebiedType.omgevingsrecht,
             ],
             onderwerpen=[OnderwerpType.ruimtelijke_ordening],
         )

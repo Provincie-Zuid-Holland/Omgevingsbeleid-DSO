@@ -8,6 +8,9 @@ help:
 create-gebiedsaanwijzingen:
 	@python app/cmds.py create-gebiedsaanwijzingen
 
+create-koop-waardelijsten:
+	@python app/cmds.py create-koop-waardelijsten
+
 check: ## Check without fixing via Ruff
 	python -m ruff check app/
 

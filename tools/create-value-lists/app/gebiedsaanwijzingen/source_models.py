@@ -2,8 +2,8 @@ from typing import List
 from pydantic import BaseModel
 
 
-# These models represent the source json and are for
-# simplicity kept in their source language dutch
+# These models represent the source JSON and are for
+# simplicity kept in their source language Dutch
 
 
 class Waarde(BaseModel):
