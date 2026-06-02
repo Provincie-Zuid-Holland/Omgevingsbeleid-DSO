@@ -20,7 +20,7 @@ class RegelingVersieInformatieContent:
         return content
 
     def _get_soort_regeling(self) -> str:
-        document_type: DocumentType = self._state_manager.input_data.publication_settings.document_type.value
+        document_type: DocumentType = self._state_manager.input_data.publication_settings.document_type
         return RegelingType[document_type].value
 
     def _get_regeling_metadata(self) -> str:

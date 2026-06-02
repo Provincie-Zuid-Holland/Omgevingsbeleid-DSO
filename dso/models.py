@@ -206,8 +206,8 @@ class PublicatieOpdracht(BaseModel):
 
 
 class DocumentType(str, Enum):
-    PROGRAMMA = "Programma"
-    OMGEVINGSVISIE = "Omgevingsvisie"
+    PROGRAMMA = "programma"
+    OMGEVINGSVISIE = "omgevingsvisie"
 
 
 class InstellingDoel(BaseModel):
