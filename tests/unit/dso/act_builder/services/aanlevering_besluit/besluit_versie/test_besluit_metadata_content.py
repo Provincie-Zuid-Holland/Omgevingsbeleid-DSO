@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 from dso.act_builder.services.aanlevering_besluit.besluit_versie.besluit_metadata_content import BesluitMetadataContent
 from dso.act_builder.state_manager.input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
 from dso.act_builder.state_manager.input_data.resource.besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
-from dso.services.utils.waardelijsten import Provincie, BestuursorgaanSoort
+from dso.services.koop.waardelijsten.gen import BestuursorgaanType, Provincie
 from tests.unit.dso.act_builder.state_manager.input_data.besluit_factories import BesluitFactory
 from tests.unit.dso.act_builder.state_manager.input_data.regeling_factories import RegelingFactory
 from tests.unit.dso.act_builder.state_manager.input_data.resource.besluit_pdf.besluit_pdf_factory import (
@@ -43,8 +43,8 @@ class TestBesluitMetadataContent(XMLCompareTest):
         regeling_factory = RegelingFactory()
         state_manager_mock.input_data.regeling = regeling_factory.create()
 
-        state_manager_mock.input_data.publication_settings.provincie_ref = Provincie.Zuid_Holland.value
-        state_manager_mock.input_data.publication_settings.soort_bestuursorgaan = BestuursorgaanSoort.Provinciale_staten
+        state_manager_mock.input_data.publication_settings.provincie_ref = Provincie.provincie_zuid_holland.value
+        state_manager_mock.input_data.publication_settings.soort_bestuursorgaan = BestuursorgaanType.provinciale_staten
 
         besluit_metadata_content = BesluitMetadataContent(state_manager_mock)
         actual = besluit_metadata_content.create()

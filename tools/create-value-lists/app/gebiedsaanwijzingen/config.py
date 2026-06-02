@@ -1,6 +1,6 @@
-from typing import Set
+from typing import List
 
-# See: "Waardelijsten IMOW  [service als zip-bestand]" on this page: https://www.geonovum.nl/omgevingswet/STOPTPOD
+# See: "Waardelijsten IMOW [service als zip-bestand]" on this page: https://www.geonovum.nl/omgevingswet/STOPTPOD
 DOWNLOAD_URL: str = "https://github.com/Geonovum/TPOD-waardelijsten/raw/31a79cff014d6dc93f0db4183f764616e2438366/2026-01-21/waardelijsten_IMOW_5.1.0.zip"
 SOURCE_FILE: str = "waardelijsten IMOW 5.1.0.json"
 
@@ -11,7 +11,7 @@ VAR_NAME_GA_PROGRAMMA_DATA = "GA_PROGRAMMA_DATA"
 
 # Document type matrix from TPOD v3.0.0
 # https://docs.geostandaarden.nl/tpod/def-st-TPOD-OVI-20231215/#6F231895
-OMGEVINGSVISIE_GA_MATRIX: Set[str] = [
+OMGEVINGSVISIE_GA_MATRIX: List[str] = [
     "bodem",
     "defensie",
     "energievoorziening",
@@ -29,7 +29,7 @@ OMGEVINGSVISIE_GA_MATRIX: Set[str] = [
     "verkeer",
     "water en watersysteem",
 ]
-PROGRAMMA_GA_MATRIX: Set[str] = [
+PROGRAMMA_GA_MATRIX: List[str] = [
     "bodem",
     "defensie",
     "energievoorziening",

@@ -15,8 +15,8 @@ class GioFactory(Factory):
     achtergrond_actualiteit: str = "2024-05-03"
 
     def create(self) -> Gio:
-        source_codes: Set[str] = set([f"gebied-{id}" for id in self.gebied_ids])
-        locaties: List[GioLocatie] = [GioLocatieFactory(id=id).create() for id in self.gebied_ids]
+        source_codes: Set[str] = set([f"gebied-{gebied_id}" for gebied_id in self.gebied_ids])
+        locaties: List[GioLocatie] = [GioLocatieFactory(id=gebied_id).create() for gebied_id in self.gebied_ids]
         gio_frbr: GioFRBR = GioFRBRFactory(Expression_Version=self.id, frbr_type=FRBRType.GEBIED).create()
 
         return Gio(
