@@ -12,23 +12,23 @@
             <geo:FRBRExpression>/join/id/regdata/pv28/2025/omgevingsvisie-1/nld@2025-11-25;101</geo:FRBRExpression>
             <geo:locaties>
                 <geo:Locatie>
-                    <geo:naam>Gebied 3</geo:naam>
+                    <geo:naam>Gebied 1</geo:naam>
                     <geo:geometrie>
-                        <basisgeo:Geometrie gml:id="id-geo-3">
-                            <basisgeo:id>geo-3</basisgeo:id>
+                        <basisgeo:Geometrie gml:id="id-geo-1">
+                            <basisgeo:id>geo-1</basisgeo:id>
                             <basisgeo:geometrie>
-                                <gml:Point id="3"/>
+                                <gml:Point id="1"/>
                             </basisgeo:geometrie>
                         </basisgeo:Geometrie>
                     </geo:geometrie>
                 </geo:Locatie>
                 <geo:Locatie>
-                    <geo:naam>Gebied 4</geo:naam>
+                    <geo:naam>Gebied 2</geo:naam>
                     <geo:geometrie>
-                        <basisgeo:Geometrie gml:id="id-geo-4">
-                            <basisgeo:id>geo-4</basisgeo:id>
+                        <basisgeo:Geometrie gml:id="id-geo-2">
+                            <basisgeo:id>geo-2</basisgeo:id>
                             <basisgeo:geometrie>
-                                <gml:Point id="4"/>
+                                <gml:Point id="2"/>
                             </basisgeo:geometrie>
                         </basisgeo:Geometrie>
                     </geo:geometrie>
