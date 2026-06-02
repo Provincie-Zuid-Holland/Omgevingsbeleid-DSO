@@ -38,6 +38,9 @@ class OwInputPolicyObjectFactory:
         location_refs: List[OwInputAbstractLocatieRef] = self._get_location_refs(policy_object)
         aanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = self._get_gebiedsaanwijzing_refs(tekst_policy_object)
 
+        thema_keys = policy_object.get_themas()
+        thema_parsed_values = []
+
         result = OwInputPolicyObject(
             source_uuid=str(policy_object_data["UUID"]),
             source_code=tekst_policy_object.object_code,
@@ -45,6 +48,8 @@ class OwInputPolicyObjectFactory:
             element=tekst_policy_object.element.lower(),
             location_refs=location_refs,
             gebiedsaanwijzing_refs=aanwijzing_refs,
+            themas=thema_parsed_values,
+            hoofdlijnen=["hoofdlijn-1"],
         )
         return result
 

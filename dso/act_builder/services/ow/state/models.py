@@ -534,3 +534,36 @@ class OwTekstdeel(BaseOwObject):
         self.location_refs = other.location_refs
         self.gebiedsaanwijzing_refs = other.gebiedsaanwijzing_refs
         self.flag_changed()
+
+
+class OwHoofdlijn(BaseOwObject):
+    source_code: str
+    naam: str
+    soort: str
+
+    def get_key(self) -> str:
+        return self.source_code
+
+    def is_key_equal(self, other: "OwHoofdlijn") -> bool:
+        self.assert_same_class(other)
+        return self.get_key() == other.get_key()
+
+    def __hash__(self):
+        return hash((self.wid,))
+
+    def __eq__(self, other: "OwHoofdlijn"):
+        return self.is_key_equal(other)
+
+    def is_data_equal(self, other: "OwHoofdlijn") -> bool:
+        self.assert_same_class(other)
+        return (self.naam, self.soort) == (other.naam, other.soort)
+
+    def merge_from(self, other: "OwHoofdlijn") -> bool:
+        self.source_code = other.source_code
+        if self.is_data_equal(other):
+            self.flag_unchanged()
+            return
+        self.procedure_status = other.procedure_status
+        self.naam = other.naam
+        self.code = other.code
+        self.flag_changed()

@@ -37,3 +37,6 @@ class PolicyObject:
 
     def get_gebiedengroep_code(self) -> Optional[str]:
         return self.get("Gebiedengroep_Code")
+
+    def get_themas(self) -> List[str]:
+        return self.get("Themas", [])

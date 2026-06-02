@@ -31,6 +31,8 @@
                 {% endfor %}
             </vt:gebiedsaanwijzing>
             {% endif %}
+            /// hoofdlijnen
+            // themas
         </vt:Tekstdeel>
     </ow-dc:owObject>
   </sl:stand>

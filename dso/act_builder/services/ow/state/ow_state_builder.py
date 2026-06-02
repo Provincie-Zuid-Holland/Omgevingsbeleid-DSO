@@ -106,6 +106,8 @@ class OwStateBuilder:
         if self._is_policy_object_empty(input_policy_object):
             return
 
+        # input_policy_object.get_hoofdlijnen() = ["hoofdlijn-1", "hoofdlijn-2"]
+        # hoofdlijnen_refs: List[AbstractHoofdlijnenRef] = self._handlhoofdlijnen_refs(["hoofdlijn-1", "hoofdlijn-2"]) = [UnresolvedHoofdlijnenRef(source_code="hoofdlijn-1"), ...]
         text_ref: AbstractWidRef = self._handle_policy_object_element(input_policy_object)
         location_refs: Set[AbstractLocationRef] = set(self._handle_locations(input_policy_object.location_refs))
         aanwijzing_refs: Set[AbstractGebiedsaanwijzingRef] = set(
@@ -121,6 +123,9 @@ class OwStateBuilder:
             text_ref=text_ref,
             location_refs=location_refs,
             gebiedsaanwijzing_refs=aanwijzing_refs,
+            themas=input_policy_object.themas(),
+            # unresolved refs of hoofdlijnen
+            # hoofdlijnen=hoofdlijnen_refs,
         )
         self._state.tekstdelen.add(tekstdeel)
 
@@ -226,3 +231,33 @@ class OwStateBuilder:
 
     def get_state(self) -> OwState:
         return self._state
+
+
+
+""""
+Hoofdlijnen (object)
+
+code: hoofdlijn-1
+naam: Water
+soort: water
+
+---
+
+ambitie-1:
+Hoofdlijnen: ["hoofdlijn-1"]
+
+UnresolvedHoofdlijnRef(source_code="hoofdlijn-1")
+
+
+---
+
+Hoofdlijnen OW
+
+class OwHoofdlijn(BaseOwObject):
+    source_code: str | hoofdlijn-1
+    naam: str | Water
+    soort: str | water
+    identification: str | nl.imow.hoofdlijn.UUID
+
+
+"""

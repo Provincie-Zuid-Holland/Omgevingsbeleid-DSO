@@ -34,6 +34,7 @@ class XmlBuilder:
             XmlDivisies(state_manager),
             XmlDivisieteksten(state_manager),
             XmlTekstdelen(state_manager),
+            # XmlHoofdlijnen(state_manager),
         ]
         self._state_manager: StateManager = state_manager
 

@@ -73,6 +73,7 @@ class OwReferenceResolver:
                 return self._resolve_gebiedsaanwijzing_ref(state, input_ref)
             case UnresolvedGebiedsaanwijzingRef() as input_ref:
                 return self._resolve_gebiedsaanwijzing_ref(state, input_ref)
+            # @for UnresolvedHoofdlijnRef + HoofdlijnRef
         raise RuntimeError("Unable to resolve generic reference")
 
     def _resolve_ambtsgebied_ref(self, state: OwState) -> AmbtsgebiedRef:
