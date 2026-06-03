@@ -5,10 +5,10 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 
-create-waardelijsten-koop:
+create-waardelijsten-koop: ## Create waardelijsten for KOOP
 	@python -m app.cmds create-waardelijsten-koop
 
-create-waardelijsten-tpod:
+create-waardelijsten-tpod: ## Create waardelijsten for TPOD
 	@python -m app.cmds create-waardelijsten-tpod
 
 check: ## Check without fixing via Ruff
