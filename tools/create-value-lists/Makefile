@@ -5,11 +5,11 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 
-create-gebiedsaanwijzingen:
-	@python app/cmds.py create-gebiedsaanwijzingen
+create-waardelijsten-koop:
+	@python -m app.cmds create-waardelijsten-koop
 
-create-koop-waardelijsten:
-	@python app/cmds.py create-koop-waardelijsten
+create-waardelijsten-tpod:
+	@python -m app.cmds create-waardelijsten-tpod
 
 check: ## Check without fixing via Ruff
 	python -m ruff check app/
