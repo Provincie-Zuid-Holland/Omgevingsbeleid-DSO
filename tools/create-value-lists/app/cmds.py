@@ -1,7 +1,7 @@
 import click
 
-from gebiedsaanwijzingen.service import do_create_gebiedsaanwijzingen
-from koop.service import do_create_waardelijsten
+from .koop.service import do_create_waardelijsten as do_create_waardelijsten_koop
+from .tpod.service import do_create_waardelijsten as do_create_waardelijsten_tpod
 
 
 @click.group()
@@ -11,17 +11,17 @@ def cli():
 
 
 @click.command()
-def create_gebiedsaanwijzingen():
-    do_create_gebiedsaanwijzingen()
+def create_waardelijsten_koop():
+    do_create_waardelijsten_koop()
 
 
 @click.command()
-def create_koop_waardelijsten():
-    do_create_waardelijsten()
+def create_waardelijsten_tpod():
+    do_create_waardelijsten_tpod()
 
 
-cli.add_command(create_gebiedsaanwijzingen)
-cli.add_command(create_koop_waardelijsten)
+cli.add_command(create_waardelijsten_koop)
+cli.add_command(create_waardelijsten_tpod)
 
 
 if __name__ == "__main__":
