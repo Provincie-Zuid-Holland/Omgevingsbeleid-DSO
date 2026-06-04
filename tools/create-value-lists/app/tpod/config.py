@@ -4,7 +4,8 @@ from typing import List
 DOWNLOAD_URL: str = "https://github.com/Geonovum/TPOD-waardelijsten/raw/31a79cff014d6dc93f0db4183f764616e2438366/2026-01-21/waardelijsten_IMOW_5.1.0.zip"
 SOURCE_FILE: str = "waardelijsten IMOW 5.1.0.json"
 
-TARGET_FILE: str = "./dso/services/ow/gebiedsaanwijzingen/gen/__init__.py"
+TARGET_PATH: str = "./dso/services/ow/{name}/gen"
+TARGET_FILE: str = "__init__.py"
 
 VAR_NAME_GA_OMGEVINGSVISIE_DATA = "GA_OMGEVINGSVISIE_DATA"
 VAR_NAME_GA_PROGRAMMA_DATA = "GA_PROGRAMMA_DATA"

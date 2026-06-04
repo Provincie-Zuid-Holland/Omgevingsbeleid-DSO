@@ -11,7 +11,7 @@ from typing import Dict, List, Optional
 
 import requests
 
-from koop.config import (
+from .config import (
     DOWNLOAD_FILE,
     DOWNLOAD_URL,
     IGNORE_FILES,
