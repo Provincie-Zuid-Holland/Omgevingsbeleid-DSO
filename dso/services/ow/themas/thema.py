@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict
 
 from dso.services.ow.themas.gen import themas
 from dso.services.ow.themas.types import Thema
@@ -6,10 +6,7 @@ from dso.services.ow.themas.types import Thema
 
 class ThemaFactory:
     def __init__(self):
-        self._data = themas
+        self._data: Dict[str, Thema] = themas
 
-    def get_keys(self) -> List[str]:
-        return list(self._data.keys())
-
-    def get_thema_by_key(self, key: str) -> Thema:
-        return self._data[key]
+    def get_all(self) -> Dict[str, Thema]:
+        return self._data
