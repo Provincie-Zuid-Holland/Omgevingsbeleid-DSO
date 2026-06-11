@@ -9,6 +9,7 @@ from dso.act_builder.services.ow.state.models import (
     OwGebiedsaanwijzing,
     OwRegelingsgebied,
     OwTekstdeel,
+    OwThema,
 )
 from dso.act_builder.services.ow.state.ow_state import OwState
 
@@ -42,3 +43,6 @@ class OwXmlData:
 
     def get_tekstdelen(self) -> Set[OwTekstdeel]:
         return self._state.tekstdelen
+
+    def get_themas(self) -> Set[OwThema]:
+        return self._state.themas

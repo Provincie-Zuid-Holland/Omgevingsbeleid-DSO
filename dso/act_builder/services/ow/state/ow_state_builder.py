@@ -11,10 +11,12 @@ from dso.act_builder.services.ow.input.models import (
     OwInputRegelingsgebied,
     OwInputGebiedengroep,
     OwInputGebiedengroepLocatieRef,
+    OwInputThema,
 )
 from dso.act_builder.services.ow.state.models import (
     AbstractGebiedsaanwijzingRef,
     AbstractLocationRef,
+    AbstractThemaRef,
     AbstractWidRef,
     OwAmbtsgebied,
     OwDivisie,
@@ -25,12 +27,14 @@ from dso.act_builder.services.ow.state.models import (
     OwObjectStatus,
     OwRegelingsgebied,
     OwTekstdeel,
+    OwThema,
     UnresolvedAmbtsgebiedRef,
     UnresolvedDivisieRef,
     UnresolvedDivisietekstRef,
     UnresolvedGebiedengroepRef,
     UnresolvedGebiedRef,
     UnresolvedGebiedsaanwijzingRef,
+    UnresolvedThemaRef,
 )
 from dso.act_builder.services.ow.state.ow_state import OwState
 from dso.services.koop.waardelijsten.gen import ProcedureType
@@ -98,6 +102,16 @@ class OwStateBuilder:
         )
         self._state.gebiedengroepen.add(gebieden_groep)
 
+    def add_themas(self, input_themas: List[OwInputThema]):
+        for input_thema in input_themas:
+            thema = OwThema(
+                object_status=OwObjectStatus.new,
+                procedure_status=self._procedure_status,
+                label=input_thema.label,
+                identification=input_thema.uri,
+            )
+            self._state.themas.add(thema)
+
     def add_policy_objects(self, input_policy_objects: List[OwInputPolicyObject]):
         for input_policy_object in input_policy_objects:
             self.add_policy_object(input_policy_object)
@@ -111,6 +125,7 @@ class OwStateBuilder:
         aanwijzing_refs: Set[AbstractGebiedsaanwijzingRef] = set(
             self._handle_aanwijzing_refs(input_policy_object.gebiedsaanwijzing_refs)
         )
+        thema_refs: Set[AbstractThemaRef] = set(self._handle_thema_refs(input_policy_object.thema_refs))
         tekstdeel = OwTekstdeel(
             object_status=OwObjectStatus.new,
             source_uuid=input_policy_object.source_uuid,
@@ -121,6 +136,7 @@ class OwStateBuilder:
             text_ref=text_ref,
             location_refs=location_refs,
             gebiedsaanwijzing_refs=aanwijzing_refs,
+            thema_refs=thema_refs,
         )
         self._state.tekstdelen.add(tekstdeel)
 
@@ -218,6 +234,10 @@ class OwStateBuilder:
                     result.append(UnresolvedGebiedengroepRef(target_code=locatie_ref.code))
                 case _:
                     raise RuntimeError("Invalid location_ref for policy object")
+        return result
+
+    def _handle_thema_refs(self, input_refs: Set[OwInputThema]) -> List[AbstractThemaRef]:
+        result: List[AbstractThemaRef] = [UnresolvedThemaRef(target_key=input_ref.label) for input_ref in input_refs]
         return result
 
     def _generate_identifier(self, ow_type: str) -> str:

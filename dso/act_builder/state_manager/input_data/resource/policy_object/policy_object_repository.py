@@ -40,3 +40,6 @@ class PolicyObjectRepository:
 
     def to_dict(self):
         return {k: v.to_dict() for k, v in self._data.items()}
+
+    def get_all(self) -> List[PolicyObject]:
+        return list(self._data.values())

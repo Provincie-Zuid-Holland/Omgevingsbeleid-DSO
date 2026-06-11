@@ -41,3 +41,8 @@ class GebiedsaanwijzingRepository:
 
     def to_dict(self):
         return {str(k): json.loads(v.model_dump_json()) for k, v in self._data.items()}
+
+    def add_from_dict(self, gebiedsaanwijzingen: List[dict]) -> None:
+        for gebiedsaanwijzing_dict in gebiedsaanwijzingen:
+            gebiedsaanwijzing: Gebiedsaanwijzing = Gebiedsaanwijzing.model_validate(gebiedsaanwijzing_dict)
+            self.add(gebiedsaanwijzing)

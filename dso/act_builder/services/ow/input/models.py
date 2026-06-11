@@ -26,6 +26,10 @@ class OwInputGebiedsaanwijzingRef(OwInputAbstractLocatieRef):
         return self.code
 
 
+class OwInputThemaRef(OwInputAbstractLocatieRef):
+    label: str
+
+
 class OwInputAmbtsgebied(BaseModel):
     source_uuid: str
     administrative_borders_id: str
@@ -78,12 +82,18 @@ class OwInputGebiedsaanwijzing(BaseModel):
         return self.source_code == other.source_code
 
 
+class OwInputThema(BaseModel):
+    label: str
+    uri: str
+
+
 class OwInputPolicyObject(BaseModel):
     source_uuid: str
     source_code: str
     wid: str
     element: str
     location_refs: List[OwInputAbstractLocatieRef]
+    thema_refs: List[OwInputThemaRef]
     gebiedsaanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = Field(default_factory=list)
 
     model_config = ConfigDict(arbitrary_types_allowed=True)

@@ -11,6 +11,7 @@ from dso.act_builder.services.ow.state.models import (
     OwGebiedsaanwijzing,
     OwRegelingsgebied,
     OwTekstdeel,
+    OwThema,
 )
 
 
@@ -23,3 +24,4 @@ class OwState(BaseModel):
     divisies: Set[OwDivisie] = Field(default_factory=set)
     divisieteksten: Set[OwDivisietekst] = Field(default_factory=set)
     tekstdelen: Set[OwTekstdeel] = Field(default_factory=set)
+    themas: Set[OwThema] = Field(default_factory=set)

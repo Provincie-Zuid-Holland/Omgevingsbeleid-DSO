@@ -115,6 +115,36 @@ GebiedsaanwijzingRefUnion = Annotated[
 ]
 
 
+# Thema Ref
+class AbstractThemaRef(AbstractRef):
+    ref_type: str = Field(..., description="Type discriminator")
+
+
+class UnresolvedThemaRef(AbstractThemaRef):
+    ref_type: Literal["unresolved_thema"] = "unresolved_thema"
+    target_key: str
+
+    def get_key(self) -> str:
+        return self.target_key
+
+
+class ThemaRef(UnresolvedThemaRef):
+    ref_type: Literal["thema"] = "thema"
+    ref: str
+
+    def get_href(self) -> str:
+        return self.ref
+
+
+ThemaRefUnion = Annotated[
+    Union[
+        UnresolvedThemaRef,
+        ThemaRef,
+    ],
+    Field(discriminator="ref_type"),
+]
+
+
 # Tekst / wid
 class AbstractWidRef(AbstractRef):
     ref_type: str = Field(..., description="Type discriminator")
@@ -498,6 +528,7 @@ class OwTekstdeel(BaseOwObject):
     text_ref: WidRefUnion
     location_refs: Set[LocationRefUnion]
     gebiedsaanwijzing_refs: Set[GebiedsaanwijzingRefUnion]
+    thema_refs: Set[ThemaRefUnion]
 
     def get_key(self) -> str:
         return self.source_code
@@ -533,4 +564,42 @@ class OwTekstdeel(BaseOwObject):
         self.text_ref = other.text_ref
         self.location_refs = other.location_refs
         self.gebiedsaanwijzing_refs = other.gebiedsaanwijzing_refs
+        self.flag_changed()
+
+
+class OwThema(BaseOwObject):
+    label: str
+    identification: str
+    # text_ref: WidRefUnion
+    # thema_refs: List[ThemaRefUnion]
+
+    def get_key(self) -> str:
+        return self.label
+
+    def is_key_equal(self, other: "OwThema") -> bool:
+        self.assert_same_class(other)
+        return self.get_key() == other.get_key()
+
+    def __hash__(self):
+        return hash((self.label,))
+
+    def __eq__(self, other: "OwThema"):
+        return self.is_key_equal(other)
+
+    def is_data_equal(self, other: "OwThema") -> bool:
+        # fmt: off
+        return (
+            (self.label, self.identification)
+            ==
+            (other.label, other.identification)
+        )
+        # fmt: on
+
+    def merge_from(self, other: "OwThema") -> bool:
+        self.label = other.label
+        self.identification = other.identification
+        if self.is_data_equal(other):
+            self.flag_unchanged()
+            return
+        self.procedure_status = other.procedure_status
         self.flag_changed()

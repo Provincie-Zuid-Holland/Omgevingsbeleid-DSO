@@ -119,6 +119,8 @@ class InputDataLoader:
             object_template_repository=object_template_repository,
             ambtsgebied=ambtsgebied,
             ow_state=ow_state,
+            ow_dataset="",
+            ow_gebied="",
         )
         return data
 

@@ -1,0 +1,38 @@
+[
+  {
+    "uuid": "40000000-0000-0000-0000-000000000001",
+    "code": "gebiedsaanwijzing-1",
+    "aanwijzing_type": "bodem",
+    "aanwijzing_groep": "bodembeheergebied",
+    "title": "Gebiedsaanwijzing 1",
+    "gebied_codes": ["gebied-1", "gebied-2"],
+    "gio_key": "gio-1"
+  },
+  {
+    "uuid": "40000000-0000-0000-0000-000000000002",
+    "code": "gebiedsaanwijzing-2",
+    "aanwijzing_type": "bodem",
+    "aanwijzing_groep": "bodembeheergebied",
+    "title": "Gebiedsaanwijzing 2",
+    "gebied_codes": ["gebied-3", "gebied-4"],
+    "gio_key": "gio-2"
+  },
+  {
+    "uuid": "40000000-0000-0000-0000-000000000003",
+    "code": "gebiedsaanwijzing-3",
+    "aanwijzing_type": "bodem",
+    "aanwijzing_groep": "bodembeheergebied",
+    "title": "Gebiedsaanwijzing 3",
+    "gebied_codes": ["gebied-5", "gebied-6"],
+    "gio_key": "gio-3"
+  },
+  {
+    "uuid": "40000000-0000-0000-0000-000000000004",
+    "code": "gebiedsaanwijzing-4",
+    "aanwijzing_type": "bodem",
+    "aanwijzing_groep": "bodembeheergebied",
+    "title": "Gebiedsaanwijzing 4",
+    "gebied_codes": ["gebied-6", "gebied-7"],
+    "gio_key": "gio-4"
+  }
+]

@@ -6,6 +6,7 @@ from dso.act_builder.services.ow.input.models import (
     OwInputGebiedsaanwijzingRef,
     OwInputPolicyObject,
     OwInputGebiedengroepLocatieRef,
+    OwInputThemaRef,
 )
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object import PolicyObject
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object_repository import (
@@ -38,12 +39,15 @@ class OwInputPolicyObjectFactory:
         location_refs: List[OwInputAbstractLocatieRef] = self._get_location_refs(policy_object)
         aanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = self._get_gebiedsaanwijzing_refs(tekst_policy_object)
 
+        thema_refs: List[OwInputThemaRef] = self._get_thema_refs(policy_object)
+
         result = OwInputPolicyObject(
             source_uuid=str(policy_object_data["UUID"]),
             source_code=tekst_policy_object.object_code,
             wid=tekst_policy_object.wid,
             element=tekst_policy_object.element.lower(),
             location_refs=location_refs,
+            thema_refs=thema_refs,
             gebiedsaanwijzing_refs=aanwijzing_refs,
         )
         return result
@@ -58,10 +62,18 @@ class OwInputPolicyObjectFactory:
 
         return [OwInputGebiedengroepLocatieRef(code=gebiedengroep_code)]
 
-    def _get_gebiedsaanwijzing_refs(self, tekst_policy_object: TekstPolicyObject) -> List[OwInputAbstractLocatieRef]:
+    def _get_gebiedsaanwijzing_refs(self, tekst_policy_object: TekstPolicyObject) -> List[OwInputGebiedsaanwijzingRef]:
         result: List[OwInputGebiedsaanwijzingRef] = []
 
         for tekst_gebiedsaanwijzing in tekst_policy_object.gebiedsaanwijzingen:
             result.append(OwInputGebiedsaanwijzingRef(code=tekst_gebiedsaanwijzing.code))
+
+        return result
+
+    def _get_thema_refs(self, policy_object: PolicyObject) -> List[OwInputThemaRef]:
+        result: List[OwInputThemaRef] = []
+
+        for thema in policy_object.get_themas():
+            result.append(OwInputThemaRef(label=thema))
 
         return result

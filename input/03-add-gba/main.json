@@ -1,6 +1,6 @@
 {
     "publication_settings": {
-        "document_type": "Omgevingsvisie",
+        "document_type": "omgevingsvisie",
         "datum_bekendmaking": "2025-02-01",
         "provincie_id": "pv28",
         "soort_bestuursorgaan": "/tooi/def/thes/kern/c_411b4e4a",
@@ -154,7 +154,8 @@
             "pv28_2__div_o_2__div_o_1__div_o_1__content_o_3",
             "pv28_1__content_o_2"
         ],
-        "te_verwijderden_werkingsgebieden": []
+        "te_verwijderden_werkingsgebieden": [],
+        "te_verwijderden_gios": []
     },
     "procedure_verloop": {
         "bekend_op": "2025-01-05",
@@ -171,6 +172,8 @@
     },
     "resources": {
         "policy_object_repository": "./policy_objects.json",
+        "gebiedsaanwijzing_repository": "./gebiedsaanwijzingen.json",
+        "gio_repository": "./gios.json",
         "asset_repository": "./assets.json",
         "werkingsgebied_repository": "./werkingsgebieden.json"
     },

@@ -5,6 +5,7 @@ from dso.act_builder.services.ow.state.models import (
     DivisietekstRef,
     GebiedengroepRef,
     GebiedRef,
+    ThemaRef,
     UnresolvedAmbtsgebiedRef,
     UnresolvedDivisieRef,
     UnresolvedDivisietekstRef,
@@ -12,6 +13,7 @@ from dso.act_builder.services.ow.state.models import (
     UnresolvedGebiedRef,
     UnresolvedGebiedsaanwijzingRef,
     GebiedsaanwijzingRef,
+    UnresolvedThemaRef,
 )
 from dso.act_builder.services.ow.state.ow_state import OwState
 
@@ -45,6 +47,12 @@ class OwReferenceResolver:
                 self._resolve_generic_reference(state, ref) for ref in tekstdeel.gebiedsaanwijzing_refs
             }
 
+        # for thema in state.themas:
+        #     if thema.is_deleted():
+        #         continue
+        #     for index, ref in enumerate(thema.thema_refs):
+        #         thema.thema_refs[index] = self._resolve_generic_reference(state, ref)
+
         return state
 
     def _resolve_generic_reference(self, state: OwState, ref: AbstractRef) -> AbstractRef:
@@ -73,6 +81,10 @@ class OwReferenceResolver:
                 return self._resolve_gebiedsaanwijzing_ref(state, input_ref)
             case UnresolvedGebiedsaanwijzingRef() as input_ref:
                 return self._resolve_gebiedsaanwijzing_ref(state, input_ref)
+            case ThemaRef() as input_ref:
+                return self._resolve_thema_ref(state, input_ref)
+            case UnresolvedThemaRef() as input_ref:
+                return self._resolve_thema_ref(state, input_ref)
         raise RuntimeError("Unable to resolve generic reference")
 
     def _resolve_ambtsgebied_ref(self, state: OwState) -> AmbtsgebiedRef:
@@ -138,3 +150,14 @@ class OwReferenceResolver:
                     ref=gebiedsaanwijzing.identification,
                 )
         raise RuntimeError("No gebiedsaanwijzing found to reference to")
+
+    def _resolve_thema_ref(self, state: OwState, input_ref: UnresolvedThemaRef) -> ThemaRef:
+        for thema in state.themas:
+            if thema.is_deleted():
+                continue
+            if thema.get_key() == input_ref.get_key():
+                return ThemaRef(
+                    target_key=input_ref.target_key,
+                    ref=thema.identification,
+                )
+        raise RuntimeError("No thema found to reference to")
