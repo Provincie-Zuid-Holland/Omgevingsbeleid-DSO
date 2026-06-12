@@ -34,7 +34,6 @@ class OwStateMerger:
         self._merge_state_field(new_state, active_state, "divisies")
         self._merge_state_field(new_state, active_state, "divisieteksten")
         self._merge_state_field(new_state, active_state, "tekstdelen")
-        self._merge_state_field(new_state, active_state, "themas")
 
         active_state = self._reference_resolver.resolve_references(active_state)
 
@@ -55,7 +54,6 @@ class OwStateMerger:
         [a.flag_new() for a in state.divisies]
         [a.flag_new() for a in state.divisieteksten]
         [a.flag_new() for a in state.tekstdelen]
-        [a.flag_new() for a in state.themas]
 
     def _flag_all_deleted(self, state: OwState) -> OwState:
         [a.flag_deleted() for a in state.ambtsgebieden]
@@ -66,7 +64,6 @@ class OwStateMerger:
         [a.flag_deleted() for a in state.divisies]
         [a.flag_deleted() for a in state.divisieteksten]
         [a.flag_deleted() for a in state.tekstdelen]
-        [a.flag_deleted() for a in state.themas]
 
     def _merge_state_field(self, new_state: OwState, active_state: OwState, field: str):
         """
@@ -106,7 +103,6 @@ class OwStateMerger:
             divisies=filter_unchanged(state.divisies),
             divisieteksten=filter_unchanged(state.divisieteksten),
             tekstdelen=filter_unchanged(state.tekstdelen),
-            themas=filter_unchanged(state.themas),
         )
         return result
 
@@ -125,6 +121,5 @@ class OwStateMerger:
             divisies=filter_deleted(state.divisies),
             divisieteksten=filter_deleted(state.divisieteksten),
             tekstdelen=filter_deleted(state.tekstdelen),
-            themas=filter_deleted(state.themas),
         )
         return result

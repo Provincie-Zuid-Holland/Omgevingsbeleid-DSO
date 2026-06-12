@@ -16,8 +16,7 @@
     "Effect": null,
     "Area_UUID": null,
     "Created_Date": "2022-02-02T03:03:03",
-    "Modified_Date": "2022-02-02T03:03:03",
-    "Themas": ["bodem", "bouwen"]
+    "Modified_Date": "2022-02-02T03:03:03"
   },
   "ambitie-2": {
     "Module_ID": 1,
@@ -131,7 +130,8 @@
     "Effect": null,
     "Area_UUID": null,
     "Created_Date": "2023-02-02T03:03:03",
-    "Modified_Date": "2023-02-02T03:03:03"
+    "Modified_Date": "2023-02-02T03:03:03",
+    "Themas": ["bodem", "bouwen"]
   },
   "visie_algemeen-1": {
     "Module_ID": 0,

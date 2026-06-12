@@ -1,12 +1,12 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
+from dso import Thema, ThemaFactory
 from dso.act_builder.services.ow.input.models import (
     OwInputAbstractLocatieRef,
     OwInputAmbtsgebiedLocatieRef,
+    OwInputGebiedengroepLocatieRef,
     OwInputGebiedsaanwijzingRef,
     OwInputPolicyObject,
-    OwInputGebiedengroepLocatieRef,
-    OwInputThemaRef,
 )
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object import PolicyObject
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object_repository import (
@@ -17,10 +17,11 @@ from dso.act_builder.state_manager.states.text_manipulator.models import TekstPo
 
 
 class OwInputPolicyObjectFactory:
-    def __init__(self, state_manager: StateManager):
+    def __init__(self, state_manager: StateManager, thema_factory: ThemaFactory):
         self._policy_object_repository: PolicyObjectRepository = (
             state_manager.input_data.resources.policy_object_repository
         )
+        self._thema_types: Dict[str, Thema] = thema_factory.get_all()
         self._text_data: TextData = state_manager.text_data
 
     def get_policy_objects(self) -> List[OwInputPolicyObject]:
@@ -39,7 +40,7 @@ class OwInputPolicyObjectFactory:
         location_refs: List[OwInputAbstractLocatieRef] = self._get_location_refs(policy_object)
         aanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = self._get_gebiedsaanwijzing_refs(tekst_policy_object)
 
-        thema_refs: List[OwInputThemaRef] = self._get_thema_refs(policy_object)
+        thema_uris: List[str] = self._get_thema_uris(policy_object.get_themas())
 
         result = OwInputPolicyObject(
             source_uuid=str(policy_object_data["UUID"]),
@@ -47,7 +48,7 @@ class OwInputPolicyObjectFactory:
             wid=tekst_policy_object.wid,
             element=tekst_policy_object.element.lower(),
             location_refs=location_refs,
-            thema_refs=thema_refs,
+            themas=thema_uris,
             gebiedsaanwijzing_refs=aanwijzing_refs,
         )
         return result
@@ -70,10 +71,13 @@ class OwInputPolicyObjectFactory:
 
         return result
 
-    def _get_thema_refs(self, policy_object: PolicyObject) -> List[OwInputThemaRef]:
-        result: List[OwInputThemaRef] = []
-
-        for thema in policy_object.get_themas():
-            result.append(OwInputThemaRef(label=thema))
-
+    def _get_thema_uris(self, thema_labels: List[str]) -> List[str]:
+        result: List[str] = []
+        for thema_label in thema_labels:
+            maybe_thema: Optional[Thema] = self._thema_types.get(thema_label)
+            if maybe_thema is None:
+                raise RuntimeError(f"Thema unknown '{thema_label}'")
+            if maybe_thema.deprecated:
+                raise RuntimeError(f"Thema '{thema_label}' is deprecated")
+            result.append(maybe_thema.uri)
         return result

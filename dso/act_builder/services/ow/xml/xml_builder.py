@@ -11,7 +11,6 @@ from dso.act_builder.services.ow.xml.xml_gebiedengroepen import XmlGebiedengroep
 from dso.act_builder.services.ow.xml.xml_gebiedsaanwijzingen import XmlGebiedsaanwijzingen
 from dso.act_builder.services.ow.xml.xml_regelingsgebieden import XmlRegelingsgebieden
 from dso.act_builder.services.ow.xml.xml_tekstdelen import XmlTekstdelen
-from dso.act_builder.services.ow.xml.xml_themas import XmlThemas
 from dso.act_builder.state_manager.models import OutputFile, StrContentData
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.models import ContentType
@@ -35,7 +34,6 @@ class XmlBuilder:
             XmlDivisies(state_manager),
             XmlDivisieteksten(state_manager),
             XmlTekstdelen(state_manager),
-            XmlThemas(state_manager),
         ]
         self._state_manager: StateManager = state_manager
 
