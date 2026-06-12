@@ -45,12 +45,6 @@ class OwReferenceResolver:
                 self._resolve_generic_reference(state, ref) for ref in tekstdeel.gebiedsaanwijzing_refs
             }
 
-        # for thema in state.themas:
-        #     if thema.is_deleted():
-        #         continue
-        #     for index, ref in enumerate(thema.thema_refs):
-        #         thema.thema_refs[index] = self._resolve_generic_reference(state, ref)
-
         return state
 
     def _resolve_generic_reference(self, state: OwState, ref: AbstractRef) -> AbstractRef:
