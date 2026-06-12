@@ -77,7 +77,5 @@ class OwInputPolicyObjectFactory:
             maybe_thema: Optional[Thema] = self._thema_types.get(thema_label)
             if maybe_thema is None:
                 raise RuntimeError(f"Thema unknown '{thema_label}'")
-            if maybe_thema.deprecated:
-                raise RuntimeError(f"Thema '{thema_label}' is deprecated")
             result.append(maybe_thema.uri)
         return result
