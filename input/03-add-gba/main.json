@@ -175,7 +175,7 @@
         "gebiedsaanwijzing_repository": "./gebiedsaanwijzingen.json",
         "gio_repository": "./gios.json",
         "asset_repository": "./assets.json",
-        "werkingsgebied_repository": "./werkingsgebieden.json"
+        "hoofdlijn_repository": "./hoofdlijnen.json"
     },
     "object_template_repository": {
         "visie_algemeen": "\n<h1>{{ o.Title }}</h1>\n<!--[OBJECT-CODE:{{o.Code}}]-->\n{{ o.Description | default('', true) }}\n",

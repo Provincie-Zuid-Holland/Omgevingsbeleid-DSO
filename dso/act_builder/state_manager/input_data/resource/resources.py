@@ -1,16 +1,13 @@
 from pydantic import BaseModel, ConfigDict
 
-from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzing_repository import (
-    GebiedsaanwijzingRepository,
-)
-
-
 from .asset.asset_repository import AssetRepository
 from .besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
-from .gebieden.gio_repository import GioRepository
-from .gebieden.gebiedengroep_repository import GebiedengroepRepository
-from .policy_object.policy_object_repository import PolicyObjectRepository
 from .document.document_repository import DocumentRepository
+from .gebieden.gebiedengroep_repository import GebiedengroepRepository
+from .gebieden.gebiedsaanwijzing_repository import GebiedsaanwijzingRepository
+from .gebieden.gio_repository import GioRepository
+from .hoofdlijn.hoofdlijn_repository import HoofdlijnRepository
+from .policy_object.policy_object_repository import PolicyObjectRepository
 
 
 class Resources(BaseModel):
@@ -21,4 +18,5 @@ class Resources(BaseModel):
     gebiedsaanwijzingen_repository: GebiedsaanwijzingRepository
     besluit_pdf_repository: BesluitPdfRepository
     document_repository: DocumentRepository
+    hoofdlijn_repository: HoofdlijnRepository
     model_config = ConfigDict(arbitrary_types_allowed=True)

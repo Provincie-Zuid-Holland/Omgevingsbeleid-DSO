@@ -115,6 +115,36 @@ GebiedsaanwijzingRefUnion = Annotated[
 ]
 
 
+# Hoofdlijn Ref
+class AbstractHoofdlijnRef(AbstractRef):
+    ref_type: str = Field(..., description="Type discriminator")
+
+
+class UnresolvedHoofdlijnRef(AbstractHoofdlijnRef):
+    ref_type: Literal["unresolved_hoofdlijn"] = "unresolved_hoofdlijn"
+    target_key: str
+
+    def get_key(self) -> str:
+        return self.target_key
+
+
+class HoofdlijnRef(UnresolvedHoofdlijnRef):
+    ref_type: Literal["hoofdlijn"] = "hoofdlijn"
+    ref: str
+
+    def get_href(self) -> str:
+        return self.ref
+
+
+HoofdlijnRefUnion = Annotated[
+    Union[
+        UnresolvedHoofdlijnRef,
+        HoofdlijnRef,
+    ],
+    Field(discriminator="ref_type"),
+]
+
+
 # Tekst / wid
 class AbstractWidRef(AbstractRef):
     ref_type: str = Field(..., description="Type discriminator")
@@ -491,6 +521,45 @@ class OwGebiedsaanwijzing(BaseOwObject):
         self.flag_changed()
 
 
+class OwHoofdlijn(BaseOwObject):
+    source_uuid: str
+    source_code: str
+    title: str
+    hoofdlijn_type: str
+
+    def get_key(self) -> str:
+        return self.source_code
+
+    def is_key_equal(self, other: "OwHoofdlijn") -> bool:
+        self.assert_same_class(other)
+        return self.get_key() == other.get_key()
+
+    def __hash__(self):
+        return hash((self.source_code,))
+
+    def __eq__(self, other: "OwHoofdlijn"):
+        return self.is_key_equal(other)
+
+    def is_data_equal(self, other: "OwHoofdlijn") -> bool:
+        self.assert_same_class(other)
+        # fmt: off
+        return (
+            (self.title, self.hoofdlijn_type)
+            ==
+            (other.title, other.hoofdlijn_type)
+        )
+        # fmt: on
+
+    def merge_from(self, other: "OwHoofdlijn") -> bool:
+        self.source_code = other.source_code
+        if self.is_data_equal(other):
+            self.flag_unchanged()
+            return
+        self.title = other.title
+        self.identification = other.identification
+        self.flag_changed()
+
+
 class OwTekstdeel(BaseOwObject):
     source_uuid: str
     source_code: str
@@ -498,6 +567,7 @@ class OwTekstdeel(BaseOwObject):
     text_ref: WidRefUnion
     location_refs: Set[LocationRefUnion]
     gebiedsaanwijzing_refs: Set[GebiedsaanwijzingRefUnion]
+    hoofdlijn_refs: Set[HoofdlijnRefUnion]
     themas: Set[str]
 
     def get_key(self) -> str:
@@ -517,9 +587,9 @@ class OwTekstdeel(BaseOwObject):
         self.assert_same_class(other)
         # fmt: off
         return (
-            (self.idealization, self.text_ref.get_key(), {r.get_key() for r in self.location_refs}, {r.get_key() for r in self.gebiedsaanwijzing_refs})
+            (self.idealization, self.text_ref.get_key(), {r.get_key() for r in self.location_refs}, {r.get_key() for r in self.gebiedsaanwijzing_refs}, {r.get_key() for r in self.hoofdlijn_refs})
             ==
-            (other.idealization, other.text_ref.get_key(), {r.get_key() for r in other.location_refs}, {r.get_key() for r in other.gebiedsaanwijzing_refs})
+            (other.idealization, other.text_ref.get_key(), {r.get_key() for r in other.location_refs}, {r.get_key() for r in other.gebiedsaanwijzing_refs}, {r.get_key() for r in other.hoofdlijn_refs})
         )
         # fmt: on
 
@@ -534,4 +604,5 @@ class OwTekstdeel(BaseOwObject):
         self.text_ref = other.text_ref
         self.location_refs = other.location_refs
         self.gebiedsaanwijzing_refs = other.gebiedsaanwijzing_refs
+        self.hoofdlijn_refs = other.hoofdlijn_refs
         self.flag_changed()

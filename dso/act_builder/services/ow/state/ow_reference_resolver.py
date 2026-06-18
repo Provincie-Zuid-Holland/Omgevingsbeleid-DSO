@@ -5,6 +5,7 @@ from dso.act_builder.services.ow.state.models import (
     DivisietekstRef,
     GebiedengroepRef,
     GebiedRef,
+    HoofdlijnRef,
     UnresolvedAmbtsgebiedRef,
     UnresolvedDivisieRef,
     UnresolvedDivisietekstRef,
@@ -12,6 +13,7 @@ from dso.act_builder.services.ow.state.models import (
     UnresolvedGebiedRef,
     UnresolvedGebiedsaanwijzingRef,
     GebiedsaanwijzingRef,
+    UnresolvedHoofdlijnRef,
 )
 from dso.act_builder.services.ow.state.ow_state import OwState
 
@@ -44,6 +46,7 @@ class OwReferenceResolver:
             tekstdeel.gebiedsaanwijzing_refs = {
                 self._resolve_generic_reference(state, ref) for ref in tekstdeel.gebiedsaanwijzing_refs
             }
+            tekstdeel.hoofdlijn_refs = {self._resolve_generic_reference(state, ref) for ref in tekstdeel.hoofdlijn_refs}
 
         return state
 
@@ -73,6 +76,10 @@ class OwReferenceResolver:
                 return self._resolve_gebiedsaanwijzing_ref(state, input_ref)
             case UnresolvedGebiedsaanwijzingRef() as input_ref:
                 return self._resolve_gebiedsaanwijzing_ref(state, input_ref)
+            case HoofdlijnRef() as input_ref:
+                return self._resolve_hoofdlijn_ref(state, input_ref)
+            case UnresolvedHoofdlijnRef() as input_ref:
+                return self._resolve_hoofdlijn_ref(state, input_ref)
         raise RuntimeError("Unable to resolve generic reference")
 
     def _resolve_ambtsgebied_ref(self, state: OwState) -> AmbtsgebiedRef:
@@ -138,3 +145,14 @@ class OwReferenceResolver:
                     ref=gebiedsaanwijzing.identification,
                 )
         raise RuntimeError("No gebiedsaanwijzing found to reference to")
+
+    def _resolve_hoofdlijn_ref(self, state: OwState, input_ref: UnresolvedHoofdlijnRef) -> HoofdlijnRef:
+        for hoofdlijn in state.hoofdlijnen:
+            if hoofdlijn.is_deleted():
+                continue
+            if hoofdlijn.get_key() == input_ref.get_key():
+                return HoofdlijnRef(
+                    target_key=input_ref.target_key,
+                    ref=hoofdlijn.identification,
+                )
+        raise RuntimeError("No hoofdlijn found to reference to")

@@ -5,12 +5,14 @@ from dso.act_builder.services.ow.input.models import (
     OwInputAmbtsgebied,
     OwInputGebiedengroep,
     OwInputGebiedsaanwijzing,
+    OwInputHoofdlijn,
     OwInputPolicyObject,
     OwInputRegelingsgebied,
 )
 from dso.act_builder.services.ow.input.ow_input_ambtsgebied_factory import OwInputAmbtsgebiedFactory
 from dso.act_builder.services.ow.input.ow_input_gebiedengroepen_factory import OwInputGebiedengroepenFactory
 from dso.act_builder.services.ow.input.ow_input_gebiedsaanwijzing_factory import OwInputGebiedsaanwijzingFactory
+from dso.act_builder.services.ow.input.ow_input_hoofdlijnen_factory import OwInputHoofdlijnenFactory
 from dso.act_builder.services.ow.input.ow_input_policy_object_factory import OwInputPolicyObjectFactory
 from dso.act_builder.services.ow.input.ow_input_regelingsgebied_factory import OwInputRegelingsgebiedFactory
 from dso.act_builder.state_manager.state_manager import StateManager
@@ -24,6 +26,7 @@ class OwInputFactory:
         self._gebiedsaanwijzingen_factory: OwInputGebiedsaanwijzingFactory = OwInputGebiedsaanwijzingFactory(
             state_manager
         )
+        self._hoofdlijnen_factory: OwInputHoofdlijnenFactory = OwInputHoofdlijnenFactory(state_manager)
         self._policy_object_factory: OwInputPolicyObjectFactory = OwInputPolicyObjectFactory(
             state_manager, ThemaFactory()
         )
@@ -42,3 +45,6 @@ class OwInputFactory:
 
     def get_gebiedengroepen(self) -> List[OwInputGebiedengroep]:
         return self._gebiedengroepen_factory.get_gebiedengroepen()
+
+    def get_hoofdlijnen(self) -> List[OwInputHoofdlijn]:
+        return self._hoofdlijnen_factory.get_hoofdlijnen()

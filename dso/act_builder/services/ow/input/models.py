@@ -26,6 +26,13 @@ class OwInputGebiedsaanwijzingRef(OwInputAbstractLocatieRef):
         return self.code
 
 
+class OwInputHoofdlijnRef(BaseModel):
+    code: str
+
+    def get_code(self) -> Optional[str]:
+        return self.code
+
+
 class OwInputAmbtsgebied(BaseModel):
     source_uuid: str
     administrative_borders_id: str
@@ -78,6 +85,23 @@ class OwInputGebiedsaanwijzing(BaseModel):
         return self.source_code == other.source_code
 
 
+class OwInputHoofdlijn(BaseModel):
+    source_uuid: str
+    source_code: str
+    title: str
+    hoofdlijn_type: str
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    def __hash__(self):
+        return hash(self.source_code)
+
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+        return self.source_code == other.source_code
+
+
 class OwInputPolicyObject(BaseModel):
     source_uuid: str
     source_code: str
@@ -86,5 +110,6 @@ class OwInputPolicyObject(BaseModel):
     location_refs: List[OwInputAbstractLocatieRef]
     themas: List[str]
     gebiedsaanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = Field(default_factory=list)
+    hoofdlijn_refs: List[OwInputHoofdlijnRef] = Field(default_factory=list)
 
     model_config = ConfigDict(arbitrary_types_allowed=True)

@@ -14,6 +14,11 @@
             {% endif %}
             <vt:identificatie>{{ ow_object.identification }}</vt:identificatie>
             <vt:idealisatie>{{ ow_object.idealization }}</vt:idealisatie>
+            {% for hoofdlijn_ref in ow_object.hoofdlijn_refs %}
+            <vt:hoofdlijnaanduiding>
+                <vt:HoofdlijnRef xlink:href="{{ hoofdlijn_ref.get_href() }}" />
+            </vt:hoofdlijnaanduiding>
+            {% endfor %}
             {% for thema in ow_object.themas %}
             <vt:thema>{{ thema }}</vt:thema>
             {% endfor %}

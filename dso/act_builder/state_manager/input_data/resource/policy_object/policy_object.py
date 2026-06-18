@@ -43,3 +43,9 @@ class PolicyObject:
         if maybe_themas:
             return maybe_themas
         return []
+
+    def get_hoofdlijnen(self) -> List[str]:
+        maybe_hoofdlijnen: Optional[List[str]] = self.get("Hoofdlijnen")
+        if maybe_hoofdlijnen:
+            return maybe_hoofdlijnen
+        return []

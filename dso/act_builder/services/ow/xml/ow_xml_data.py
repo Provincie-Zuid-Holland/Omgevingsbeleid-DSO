@@ -7,6 +7,7 @@ from dso.act_builder.services.ow.state.models import (
     OwGebied,
     OwGebiedengroep,
     OwGebiedsaanwijzing,
+    OwHoofdlijn,
     OwRegelingsgebied,
     OwTekstdeel,
 )
@@ -33,6 +34,9 @@ class OwXmlData:
 
     def get_gebiedsaanwijzingen(self) -> Set[OwGebiedsaanwijzing]:
         return self._state.gebiedsaanwijzingen
+
+    def get_hoofdlijnen(self) -> Set[OwHoofdlijn]:
+        return self._state.hoofdlijnen
 
     def get_divisies(self) -> Set[OwDivisie]:
         return self._state.divisies

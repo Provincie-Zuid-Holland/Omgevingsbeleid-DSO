@@ -16,7 +16,8 @@
     "Effect": null,
     "Area_UUID": null,
     "Created_Date": "2022-02-02T03:03:03",
-    "Modified_Date": "2022-02-02T03:03:03"
+    "Modified_Date": "2022-02-02T03:03:03",
+    "Hoofdlijnen": ["hoofdlijn-1"]
   },
   "ambitie-2": {
     "Module_ID": 1,
@@ -54,7 +55,8 @@
     "Effect": null,
     "Area_UUID": null,
     "Created_Date": "2023-02-02T03:03:03",
-    "Modified_Date": "2023-02-02T03:03:03"
+    "Modified_Date": "2023-02-02T03:03:03",
+    "Hoofdlijnen": ["hoofdlijn-2"]
   },
   "beleidskeuze-1": {
     "Module_ID": 3,
@@ -73,7 +75,8 @@
     "Effect": null,
     "Area_UUID": null,
     "Created_Date": "2023-02-02T03:03:03",
-    "Modified_Date": "2023-02-02T03:03:03"
+    "Modified_Date": "2023-02-02T03:03:03",
+    "Hoofdlijnen": ["hoofdlijn-3"]
   },
   "beleidskeuze-3": {
     "Module_ID": 2,
