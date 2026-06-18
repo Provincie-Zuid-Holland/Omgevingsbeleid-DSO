@@ -112,8 +112,7 @@
     },
     "resources": {
         "policy_object_repository": "./policy_objects.json",
-        "asset_repository": "./assets.json",
-        "werkingsgebied_repository": "./werkingsgebieden.json"
+        "asset_repository": "./assets.json"
     },
     "object_template_repository": {
         "visie_algemeen": "\n<h1>{{ o.Title }}</h1>\n<!--[OBJECT-CODE:{{o.Code}}]-->\n{{ o.Description | default('', true) }}\n",

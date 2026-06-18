@@ -9,6 +9,7 @@ from dso.act_builder.services.ow.state.models import (
     OwGebied,
     OwGebiedengroep,
     OwGebiedsaanwijzing,
+    OwHoofdlijn,
     OwRegelingsgebied,
     OwTekstdeel,
 )
@@ -23,3 +24,4 @@ class OwState(BaseModel):
     divisies: Set[OwDivisie] = Field(default_factory=set)
     divisieteksten: Set[OwDivisietekst] = Field(default_factory=set)
     tekstdelen: Set[OwTekstdeel] = Field(default_factory=set)
+    hoofdlijnen: Set[OwHoofdlijn] = Field(default_factory=set)

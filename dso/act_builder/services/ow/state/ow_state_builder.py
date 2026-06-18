@@ -9,6 +9,7 @@ from dso.act_builder.services.ow.input.models import (
     OwInputGebiedengroepLocatieRef,
     OwInputGebiedsaanwijzing,
     OwInputGebiedsaanwijzingRef,
+    OwInputHoofdlijn,
     OwInputPolicyObject,
     OwInputRegelingsgebied,
 )
@@ -22,6 +23,7 @@ from dso.act_builder.services.ow.state.models import (
     OwGebied,
     OwGebiedengroep,
     OwGebiedsaanwijzing,
+    OwHoofdlijn,
     OwObjectStatus,
     OwRegelingsgebied,
     OwTekstdeel,
@@ -97,6 +99,19 @@ class OwStateBuilder:
             gebieden_refs=gebieden_refs,
         )
         self._state.gebiedengroepen.add(gebieden_groep)
+
+    def add_hoofdlijnen(self, input_hoofdlijnen: List[OwInputHoofdlijn]):
+        for input_hoofdlijn in input_hoofdlijnen:
+            hoofdlijn: OwHoofdlijn = OwHoofdlijn(
+                object_status=OwObjectStatus.new,
+                source_uuid=input_hoofdlijn.source_uuid,
+                source_code=input_hoofdlijn.source_code,
+                procedure_status=self._procedure_status,
+                identification=self._generate_identifier("hoofdlijn"),
+                title=input_hoofdlijn.title,
+                hoofdlijn_type=input_hoofdlijn.hoofdlijn_type,
+            )
+            self._state.hoofdlijnen.add(hoofdlijn)
 
     def add_policy_objects(self, input_policy_objects: List[OwInputPolicyObject]):
         for input_policy_object in input_policy_objects:

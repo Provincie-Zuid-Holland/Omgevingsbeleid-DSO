@@ -59,9 +59,9 @@ class InputData(BaseModel):
         return {
             "policy_object_repository": v.policy_object_repository.to_dict(),
             "asset_repository": {k: w.model_dump() for k, w in v.asset_repository.to_dict().items()},
-            "werkingsgebied_repository": {k: w.model_dump() for k, w in v.werkingsgebied_repository.to_dict().items()},
             "besluit_pdf_repository": v.besluit_pdf_repository.to_dict(),
             "document_repository": v.document_repository.to_dict(),
+            "hoofdlijn_repository": v.hoofdlijn_repository.to_dict(),
         }
 
     @field_serializer("object_template_repository")
@@ -197,12 +197,6 @@ class InputDataExporter:
         with open(file_path, "w") as file:
             json.dump(asset_dict, file, indent=4)
 
-    def export_werkingsgebieden(self, filename: str = "werkingsgebieden.json") -> None:
-        werkingsgebied_dict = self._input_data.resources.werkingsgebied_repository.to_dict()
-        file_path = os.path.join(self._output_dir, filename)
-        with open(file_path, "w") as file:
-            json.dump(werkingsgebied_dict, file, indent=4)
-
     def export_main_json(self, file_name: str = "main.json") -> None:
         """
         Export a single main.json file with all inputdata values.
@@ -226,16 +220,11 @@ class InputDataExporter:
         # Resource files seperated
         self.export_policy_objects(filename="policy_objects.json")
         self.export_assets(filename="assets.json")
-        self.export_werkingsgebieden(filename="werkingsgebieden.json")
 
         # Update main.json refs to seperated files
         regeling_vrijetekst_ref = "./regelingvrijetekst_template.xml"
 
-        resources_ref = {
-            "policy_object_repository": "./policy_objects.json",
-            "asset_repository": "./assets.json",
-            "werkingsgebied_repository": "./werkingsgebieden.json",
-        }
+        resources_ref = {"policy_object_repository": "./policy_objects.json", "asset_repository": "./assets.json"}
 
         export_dict_updates = {
             "resources": resources_ref,

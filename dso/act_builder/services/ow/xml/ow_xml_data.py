@@ -1,5 +1,6 @@
 from typing import Set
 
+from act_builder.services.ow.state.models import OwHoofdlijn
 from dso.act_builder.services.ow.state.models import (
     OwAmbtsgebied,
     OwDivisie,
@@ -33,6 +34,9 @@ class OwXmlData:
 
     def get_gebiedsaanwijzingen(self) -> Set[OwGebiedsaanwijzing]:
         return self._state.gebiedsaanwijzingen
+
+    def get_hoofdlijnen(self) -> Set[OwHoofdlijn]:
+        return self._state.hoofdlijnen
 
     def get_divisies(self) -> Set[OwDivisie]:
         return self._state.divisies

@@ -12,6 +12,7 @@
     xmlns:da="http://www.geostandaarden.nl/imow/datatypenalgemeen"
     xmlns:ow="http://www.geostandaarden.nl/imow/owobject"
     xmlns:rg="http://www.geostandaarden.nl/imow/regelingsgebied"
+    xmlns:hl="http://www.geostandaarden.nl/imow/hoofdlijn"
     xmlns:ow-dc="http://www.geostandaarden.nl/imow/bestanden/deelbestand">
     <sl:standBestand>
         <sl:dataset>{{ dataset }}</sl:dataset>

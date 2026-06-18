@@ -31,6 +31,7 @@ class OwStateMerger:
         self._merge_state_field(new_state, active_state, "gebieden")
         self._merge_state_field(new_state, active_state, "gebiedengroepen")
         self._merge_state_field(new_state, active_state, "gebiedsaanwijzingen")
+        self._merge_state_field(new_state, active_state, "hoofdlijnen")
         self._merge_state_field(new_state, active_state, "divisies")
         self._merge_state_field(new_state, active_state, "divisieteksten")
         self._merge_state_field(new_state, active_state, "tekstdelen")
@@ -51,6 +52,7 @@ class OwStateMerger:
         [a.flag_new() for a in state.gebieden]
         [a.flag_new() for a in state.gebiedengroepen]
         [a.flag_new() for a in state.gebiedsaanwijzingen]
+        [a.flag_new() for a in state.hoofdlijnen]
         [a.flag_new() for a in state.divisies]
         [a.flag_new() for a in state.divisieteksten]
         [a.flag_new() for a in state.tekstdelen]
@@ -61,6 +63,7 @@ class OwStateMerger:
         [a.flag_deleted() for a in state.gebieden]
         [a.flag_deleted() for a in state.gebiedengroepen]
         [a.flag_deleted() for a in state.gebiedsaanwijzingen]
+        [a.flag_deleted() for a in state.hoofdlijnen]
         [a.flag_deleted() for a in state.divisies]
         [a.flag_deleted() for a in state.divisieteksten]
         [a.flag_deleted() for a in state.tekstdelen]
@@ -100,6 +103,7 @@ class OwStateMerger:
             gebieden=filter_unchanged(state.gebieden),
             gebiedengroepen=filter_unchanged(state.gebiedengroepen),
             gebiedsaanwijzingen=filter_unchanged(state.gebiedsaanwijzingen),
+            hoofdlijnen=filter_unchanged(state.hoofdlijnen),
             divisies=filter_unchanged(state.divisies),
             divisieteksten=filter_unchanged(state.divisieteksten),
             tekstdelen=filter_unchanged(state.tekstdelen),
@@ -118,6 +122,7 @@ class OwStateMerger:
             gebieden=filter_deleted(state.gebieden),
             gebiedengroepen=filter_deleted(state.gebiedengroepen),
             gebiedsaanwijzingen=filter_deleted(state.gebiedsaanwijzingen),
+            hoofdlijnen=filter_deleted(state.hoofdlijnen),
             divisies=filter_deleted(state.divisies),
             divisieteksten=filter_deleted(state.divisieteksten),
             tekstdelen=filter_deleted(state.tekstdelen),

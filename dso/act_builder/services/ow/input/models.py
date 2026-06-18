@@ -78,6 +78,23 @@ class OwInputGebiedsaanwijzing(BaseModel):
         return self.source_code == other.source_code
 
 
+class OwInputHoofdlijn(BaseModel):
+    source_uuid: str
+    source_code: str
+    title: str
+    hoofdlijn_type: str
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    def __hash__(self):
+        return hash(self.source_code)
+
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+        return self.source_code == other.source_code
+
+
 class OwInputPolicyObject(BaseModel):
     source_uuid: str
     source_code: str
