@@ -544,9 +544,9 @@ class OwHoofdlijn(BaseOwObject):
         self.assert_same_class(other)
         # fmt: off
         return (
-            (self.title, self.identification)
+            (self.title, self.hoofdlijn_type)
             ==
-            (other.title, other.identification)
+            (other.title, other.hoofdlijn_type)
         )
         # fmt: on
 
@@ -589,7 +589,7 @@ class OwTekstdeel(BaseOwObject):
         return (
             (self.idealization, self.text_ref.get_key(), {r.get_key() for r in self.location_refs}, {r.get_key() for r in self.gebiedsaanwijzing_refs}, {r.get_key() for r in self.hoofdlijn_refs})
             ==
-            (other.idealization, other.text_ref.get_key(), {r.get_key() for r in other.location_refs}, {r.get_key() for r in other.gebiedsaanwijzing_refs}, {r.get_key() for r in self.hoofdlijn_refs})
+            (other.idealization, other.text_ref.get_key(), {r.get_key() for r in other.location_refs}, {r.get_key() for r in other.gebiedsaanwijzing_refs}, {r.get_key() for r in other.hoofdlijn_refs})
         )
         # fmt: on
 

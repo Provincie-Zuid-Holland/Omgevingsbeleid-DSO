@@ -1,3 +1,4 @@
+import json
 from typing import Dict, List, Optional
 
 from .hoofdlijn import Hoofdlijn
@@ -32,15 +33,11 @@ class HoofdlijnRepository:
         return not self._hoofdlijnen
 
     def to_dict(self) -> Dict[str, str]:
-        serializable_data = {str(k): v.get_title() for k, v in self._hoofdlijnen.items()}
-        return serializable_data
+        return {str(k): json.loads(v.model_dump_json()) for k, v in self._hoofdlijnen.items()}
 
     def get_by_codes(self, codes: List[str]) -> List[Hoofdlijn]:
         result: List[Hoofdlijn] = [d for _, d in self._hoofdlijnen.items() if d.Code in codes]
         return result
-
-    def get_new(self) -> List[Hoofdlijn]:
-        return [d for d in self._hoofdlijnen.values() if d.New]
 
     def add_from_dict(self, hoofdlijnen: List[dict]) -> None:
         for hoofdlijn_dict in hoofdlijnen:

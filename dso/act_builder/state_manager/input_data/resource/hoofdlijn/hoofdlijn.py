@@ -11,3 +11,6 @@ class Hoofdlijn(BaseModel):
 
     def get_title(self) -> str:
         return self.Title
+
+    def get_hoofdlijn_type(self) -> str:
+        return self.Hoofdlijn_Type
