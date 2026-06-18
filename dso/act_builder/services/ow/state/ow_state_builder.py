@@ -10,11 +10,13 @@ from dso.act_builder.services.ow.input.models import (
     OwInputGebiedsaanwijzing,
     OwInputGebiedsaanwijzingRef,
     OwInputHoofdlijn,
+    OwInputHoofdlijnRef,
     OwInputPolicyObject,
     OwInputRegelingsgebied,
 )
 from dso.act_builder.services.ow.state.models import (
     AbstractGebiedsaanwijzingRef,
+    AbstractHoofdlijnRef,
     AbstractLocationRef,
     AbstractWidRef,
     OwAmbtsgebied,
@@ -33,6 +35,7 @@ from dso.act_builder.services.ow.state.models import (
     UnresolvedGebiedengroepRef,
     UnresolvedGebiedRef,
     UnresolvedGebiedsaanwijzingRef,
+    UnresolvedHoofdlijnRef,
 )
 from dso.act_builder.services.ow.state.ow_state import OwState
 from dso.services.koop.waardelijsten.gen import ProcedureType
@@ -126,6 +129,7 @@ class OwStateBuilder:
         aanwijzing_refs: Set[AbstractGebiedsaanwijzingRef] = set(
             self._handle_aanwijzing_refs(input_policy_object.gebiedsaanwijzing_refs)
         )
+        hoofdlijn_refs: Set[AbstractHoofdlijnRef] = set(self._handle_hoofdlijn_refs(input_policy_object.hoofdlijn_refs))
         tekstdeel: OwTekstdeel = OwTekstdeel(
             object_status=OwObjectStatus.new,
             source_uuid=input_policy_object.source_uuid,
@@ -136,6 +140,7 @@ class OwStateBuilder:
             text_ref=text_ref,
             location_refs=location_refs,
             gebiedsaanwijzing_refs=aanwijzing_refs,
+            hoofdlijn_refs=hoofdlijn_refs,
             themas=set(input_policy_object.themas),
         )
         self._state.tekstdelen.add(tekstdeel)
@@ -234,6 +239,12 @@ class OwStateBuilder:
                     result.append(UnresolvedGebiedengroepRef(target_code=locatie_ref.code))
                 case _:
                     raise RuntimeError("Invalid location_ref for policy object")
+        return result
+
+    def _handle_hoofdlijn_refs(self, input_refs: Set[OwInputHoofdlijnRef]) -> List[AbstractHoofdlijnRef]:
+        result: List[AbstractHoofdlijnRef] = [
+            UnresolvedHoofdlijnRef(target_key=input_ref.code) for input_ref in input_refs
+        ]
         return result
 
     def _generate_identifier(self, ow_type: str) -> str:

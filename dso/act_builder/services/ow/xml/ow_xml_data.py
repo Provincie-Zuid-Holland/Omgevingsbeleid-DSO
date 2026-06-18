@@ -1,6 +1,5 @@
 from typing import Set
 
-from act_builder.services.ow.state.models import OwHoofdlijn
 from dso.act_builder.services.ow.state.models import (
     OwAmbtsgebied,
     OwDivisie,
@@ -8,6 +7,7 @@ from dso.act_builder.services.ow.state.models import (
     OwGebied,
     OwGebiedengroep,
     OwGebiedsaanwijzing,
+    OwHoofdlijn,
     OwRegelingsgebied,
     OwTekstdeel,
 )

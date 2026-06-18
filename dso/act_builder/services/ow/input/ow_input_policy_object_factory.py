@@ -6,6 +6,7 @@ from dso.act_builder.services.ow.input.models import (
     OwInputAmbtsgebiedLocatieRef,
     OwInputGebiedengroepLocatieRef,
     OwInputGebiedsaanwijzingRef,
+    OwInputHoofdlijnRef,
     OwInputPolicyObject,
 )
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object import PolicyObject
@@ -40,6 +41,8 @@ class OwInputPolicyObjectFactory:
         location_refs: List[OwInputAbstractLocatieRef] = self._get_location_refs(policy_object)
         aanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = self._get_gebiedsaanwijzing_refs(tekst_policy_object)
 
+        hoofdlijn_refs: List[OwInputHoofdlijnRef] = self._get_hoofdlijn_refs(policy_object)
+
         thema_uris: List[str] = self._get_thema_uris(policy_object.get_themas())
 
         result = OwInputPolicyObject(
@@ -50,6 +53,7 @@ class OwInputPolicyObjectFactory:
             location_refs=location_refs,
             themas=thema_uris,
             gebiedsaanwijzing_refs=aanwijzing_refs,
+            hoofdlijn_refs=hoofdlijn_refs,
         )
         return result
 
@@ -78,4 +82,8 @@ class OwInputPolicyObjectFactory:
             if maybe_thema is None:
                 raise RuntimeError(f"Thema unknown '{thema_label}'")
             result.append(maybe_thema.uri)
+        return result
+
+    def _get_hoofdlijn_refs(self, policy_object: PolicyObject) -> List[OwInputHoofdlijnRef]:
+        result = [OwInputHoofdlijnRef(code=hoofdlijn) for hoofdlijn in policy_object.get_hoofdlijnen()]
         return result
