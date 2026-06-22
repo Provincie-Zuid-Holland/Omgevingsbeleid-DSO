@@ -17,11 +17,11 @@ from dso.act_builder.state_manager.states.text_manipulator.models import TekstPo
 
 
 class OwInputPolicyObjectFactory:
-    def __init__(self, state_manager: StateManager, thema_factory: ThemaFactory):
+    def __init__(self, state_manager: StateManager):
         self._policy_object_repository: PolicyObjectRepository = (
             state_manager.input_data.resources.policy_object_repository
         )
-        self._thema_types: Dict[str, Thema] = thema_factory.get_all()
+        self._thema_types: Dict[str, Thema] = ThemaFactory().get_all()
         self._text_data: TextData = state_manager.text_data
 
     def get_policy_objects(self) -> List[OwInputPolicyObject]:

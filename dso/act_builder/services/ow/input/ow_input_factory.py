@@ -1,6 +1,5 @@
 from typing import List
 
-from dso import ThemaFactory
 from dso.act_builder.services.ow.input.models import (
     OwInputAmbtsgebied,
     OwInputGebiedengroep,
@@ -24,9 +23,7 @@ class OwInputFactory:
         self._gebiedsaanwijzingen_factory: OwInputGebiedsaanwijzingFactory = OwInputGebiedsaanwijzingFactory(
             state_manager
         )
-        self._policy_object_factory: OwInputPolicyObjectFactory = OwInputPolicyObjectFactory(
-            state_manager, ThemaFactory()
-        )
+        self._policy_object_factory: OwInputPolicyObjectFactory = OwInputPolicyObjectFactory(state_manager)
 
     def get_ambtsgebied(self) -> OwInputAmbtsgebied:
         return self._ambtsgebied_factory.get_ambtsgebied()
