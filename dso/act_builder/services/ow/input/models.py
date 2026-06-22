@@ -84,6 +84,7 @@ class OwInputPolicyObject(BaseModel):
     wid: str
     element: str
     location_refs: List[OwInputAbstractLocatieRef]
+    themas: List[str]
     gebiedsaanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = Field(default_factory=list)
 
     model_config = ConfigDict(arbitrary_types_allowed=True)

@@ -1,11 +1,12 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
+from dso import Thema, ThemaFactory
 from dso.act_builder.services.ow.input.models import (
     OwInputAbstractLocatieRef,
     OwInputAmbtsgebiedLocatieRef,
+    OwInputGebiedengroepLocatieRef,
     OwInputGebiedsaanwijzingRef,
     OwInputPolicyObject,
-    OwInputGebiedengroepLocatieRef,
 )
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object import PolicyObject
 from dso.act_builder.state_manager.input_data.resource.policy_object.policy_object_repository import (
@@ -20,6 +21,7 @@ class OwInputPolicyObjectFactory:
         self._policy_object_repository: PolicyObjectRepository = (
             state_manager.input_data.resources.policy_object_repository
         )
+        self._thema_types: Dict[str, Thema] = ThemaFactory().get_all()
         self._text_data: TextData = state_manager.text_data
 
     def get_policy_objects(self) -> List[OwInputPolicyObject]:
@@ -38,12 +40,15 @@ class OwInputPolicyObjectFactory:
         location_refs: List[OwInputAbstractLocatieRef] = self._get_location_refs(policy_object)
         aanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = self._get_gebiedsaanwijzing_refs(tekst_policy_object)
 
+        thema_uris: List[str] = self._get_thema_uris(policy_object.get_themas())
+
         result = OwInputPolicyObject(
             source_uuid=str(policy_object_data["UUID"]),
             source_code=tekst_policy_object.object_code,
             wid=tekst_policy_object.wid,
             element=tekst_policy_object.element.lower(),
             location_refs=location_refs,
+            themas=thema_uris,
             gebiedsaanwijzing_refs=aanwijzing_refs,
         )
         return result
@@ -58,10 +63,19 @@ class OwInputPolicyObjectFactory:
 
         return [OwInputGebiedengroepLocatieRef(code=gebiedengroep_code)]
 
-    def _get_gebiedsaanwijzing_refs(self, tekst_policy_object: TekstPolicyObject) -> List[OwInputAbstractLocatieRef]:
+    def _get_gebiedsaanwijzing_refs(self, tekst_policy_object: TekstPolicyObject) -> List[OwInputGebiedsaanwijzingRef]:
         result: List[OwInputGebiedsaanwijzingRef] = []
 
         for tekst_gebiedsaanwijzing in tekst_policy_object.gebiedsaanwijzingen:
             result.append(OwInputGebiedsaanwijzingRef(code=tekst_gebiedsaanwijzing.code))
 
+        return result
+
+    def _get_thema_uris(self, thema_labels: List[str]) -> List[str]:
+        result: List[str] = []
+        for thema_label in thema_labels:
+            maybe_thema: Optional[Thema] = self._thema_types.get(thema_label)
+            if maybe_thema is None:
+                raise RuntimeError(f"Thema unknown '{thema_label}'")
+            result.append(maybe_thema.uri)
         return result

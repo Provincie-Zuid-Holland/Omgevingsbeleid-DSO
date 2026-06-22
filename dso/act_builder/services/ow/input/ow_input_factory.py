@@ -2,16 +2,16 @@ from typing import List
 
 from dso.act_builder.services.ow.input.models import (
     OwInputAmbtsgebied,
+    OwInputGebiedengroep,
     OwInputGebiedsaanwijzing,
     OwInputPolicyObject,
     OwInputRegelingsgebied,
-    OwInputGebiedengroep,
 )
 from dso.act_builder.services.ow.input.ow_input_ambtsgebied_factory import OwInputAmbtsgebiedFactory
+from dso.act_builder.services.ow.input.ow_input_gebiedengroepen_factory import OwInputGebiedengroepenFactory
 from dso.act_builder.services.ow.input.ow_input_gebiedsaanwijzing_factory import OwInputGebiedsaanwijzingFactory
 from dso.act_builder.services.ow.input.ow_input_policy_object_factory import OwInputPolicyObjectFactory
 from dso.act_builder.services.ow.input.ow_input_regelingsgebied_factory import OwInputRegelingsgebiedFactory
-from dso.act_builder.services.ow.input.ow_input_gebiedengroepen_factory import OwInputGebiedengroepenFactory
 from dso.act_builder.state_manager.state_manager import StateManager
 
 

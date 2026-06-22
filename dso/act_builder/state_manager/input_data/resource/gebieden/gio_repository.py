@@ -34,3 +34,8 @@ class GioRepository:
 
     def to_dict(self):
         return [json.loads(g.model_dump_json()) for g in self._gios]
+
+    def add_from_dict(self, gios: List[dict]) -> None:
+        for gio_dict in gios:
+            gio: Gio = Gio.model_validate(gio_dict)
+            self.add(gio)

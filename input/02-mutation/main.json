@@ -1,6 +1,6 @@
 {
     "publication_settings": {
-        "document_type": "Omgevingsvisie",
+        "document_type": "omgevingsvisie",
         "datum_bekendmaking": "2025-01-01",
         "provincie_id": "pv28",
         "soort_bestuursorgaan": "/tooi/def/thes/kern/c_411b4e4a",
@@ -170,7 +170,8 @@
                 "geboorteregeling": "omgevingsvisie-1",
                 "titel": "Testgebied 2"
             }
-        ]
+        ],
+        "te_verwijderden_gios": []
     },
     "procedure_verloop": {
         "bekend_op": "2024-09-20",

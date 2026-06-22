@@ -67,8 +67,8 @@ class OwStateMerger:
 
     def _merge_state_field(self, new_state: OwState, active_state: OwState, field: str):
         """
-        # Its the same for this specific version working for `ambtsgebieden`
-        # But instead of writing these loops for every field, we abtracted it
+        # It's the same for this specific version working for `ambtsgebieden`
+        # But instead of writing these loops for every field, we abstracted it
 
         for new_ambtsgebied in new_state.ambtsgebieden:
             if new_ambtsgebied not in active_state.ambtsgebieden:

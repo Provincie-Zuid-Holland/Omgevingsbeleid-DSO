@@ -5,12 +5,12 @@ from dso.act_builder.services.ow.input.models import (
     OwInputAbstractLocatieRef,
     OwInputAmbtsgebied,
     OwInputAmbtsgebiedLocatieRef,
+    OwInputGebiedengroep,
+    OwInputGebiedengroepLocatieRef,
     OwInputGebiedsaanwijzing,
     OwInputGebiedsaanwijzingRef,
     OwInputPolicyObject,
     OwInputRegelingsgebied,
-    OwInputGebiedengroep,
-    OwInputGebiedengroepLocatieRef,
 )
 from dso.act_builder.services.ow.state.models import (
     AbstractGebiedsaanwijzingRef,
@@ -111,7 +111,7 @@ class OwStateBuilder:
         aanwijzing_refs: Set[AbstractGebiedsaanwijzingRef] = set(
             self._handle_aanwijzing_refs(input_policy_object.gebiedsaanwijzing_refs)
         )
-        tekstdeel = OwTekstdeel(
+        tekstdeel: OwTekstdeel = OwTekstdeel(
             object_status=OwObjectStatus.new,
             source_uuid=input_policy_object.source_uuid,
             source_code=input_policy_object.source_code,
@@ -121,6 +121,7 @@ class OwStateBuilder:
             text_ref=text_ref,
             location_refs=location_refs,
             gebiedsaanwijzing_refs=aanwijzing_refs,
+            themas=set(input_policy_object.themas),
         )
         self._state.tekstdelen.add(tekstdeel)
 

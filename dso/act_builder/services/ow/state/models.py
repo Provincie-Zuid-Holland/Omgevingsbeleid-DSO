@@ -498,6 +498,7 @@ class OwTekstdeel(BaseOwObject):
     text_ref: WidRefUnion
     location_refs: Set[LocationRefUnion]
     gebiedsaanwijzing_refs: Set[GebiedsaanwijzingRefUnion]
+    themas: Set[str]
 
     def get_key(self) -> str:
         return self.source_code

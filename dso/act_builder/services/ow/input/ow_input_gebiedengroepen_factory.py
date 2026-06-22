@@ -16,7 +16,7 @@ class OwInputGebiedengroepenFactory:
         gebiedengroepen: List[GebiedenGroep] = self._groep_repository.all()
         result: List[OwInputGebiedengroep] = []
 
-        # We dont need to worry about duplicates as the OwState machine takes care of that
+        # We don't need to worry about duplicates as the OwState machine takes care of that
         for groep in gebiedengroepen:
             gio: Gio = self._gio_repository.get_by_key(groep.gio_key)
             input_locaties: List[OwInputLocatie] = [
