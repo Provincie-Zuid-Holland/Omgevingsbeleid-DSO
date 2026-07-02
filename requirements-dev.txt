@@ -22,7 +22,7 @@ executing==2.2.1
     #   stack-data
 iniconfig==2.3.0
     # via pytest
-ipython==9.14.0
+ipython==9.15.0
     # via -r requirements-dev.in
 ipython-pygments-lexers==1.1.1
     # via ipython
@@ -57,23 +57,23 @@ pygments==2.20.0
     #   ipython-pygments-lexers
     #   pytest
     #   rich
-pytest==9.0.3
+pytest==9.1.1
     # via -r requirements-dev.in
 pyyaml==6.0.3
     # via bandit
 rich==15.0.0
     # via bandit
-ruff==0.15.15
+ruff==0.15.20
     # via -r requirements-dev.in
 six==1.17.0
     # via asttokens
 stack-data==0.6.3
     # via ipython
-stevedore==5.8.0
+stevedore==5.9.0
     # via bandit
-traitlets==5.15.0
+traitlets==5.15.1
     # via
     #   ipython
     #   matplotlib-inline
-wcwidth==0.7.0
+wcwidth==0.8.2
     # via prompt-toolkit
