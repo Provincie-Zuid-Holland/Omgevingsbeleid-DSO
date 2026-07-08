@@ -14,17 +14,17 @@
             {% endif %}
             <vt:identificatie>{{ ow_object.identification }}</vt:identificatie>
             <vt:idealisatie>{{ ow_object.idealization }}</vt:idealisatie>
-            {% for hoofdlijn_ref in ow_object.hoofdlijn_refs %}
-            <vt:hoofdlijnaanduiding>
-                <vt:HoofdlijnRef xlink:href="{{ hoofdlijn_ref.get_href() }}" />
-            </vt:hoofdlijnaanduiding>
-            {% endfor %}
             {% for thema in ow_object.themas %}
             <vt:thema>{{ thema }}</vt:thema>
             {% endfor %}
             <vt:divisieaanduiding>
                 <vt:{{ ow_object.text_ref.get_xml_element_name() }} xlink:href="{{ ow_object.text_ref.get_href() }}"/>
             </vt:divisieaanduiding>
+            {% for hoofdlijn_ref in ow_object.hoofdlijn_refs %}
+            <vt:hoofdlijnaanduiding>
+                <vt:HoofdlijnRef xlink:href="{{ hoofdlijn_ref.get_href() }}" />
+            </vt:hoofdlijnaanduiding>
+            {% endfor %}
             {% if ow_object.location_refs | length > 0 %}
             <vt:locatieaanduiding>
                 {% for location_ref in ow_object.location_refs %}
