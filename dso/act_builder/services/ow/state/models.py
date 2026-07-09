@@ -496,9 +496,9 @@ class OwTekstdeel(BaseOwObject):
     source_code: str
     idealization: str
     text_ref: WidRefUnion
-    location_refs: Set[LocationRefUnion]
-    gebiedsaanwijzing_refs: Set[GebiedsaanwijzingRefUnion]
-    themas: Set[str]
+    location_refs: Set[LocationRefUnion] = Field(default_factory=set)
+    gebiedsaanwijzing_refs: Set[GebiedsaanwijzingRefUnion] = Field(default_factory=set)
+    themas: Set[str] = Field(default_factory=set)
 
     def get_key(self) -> str:
         return self.source_code
