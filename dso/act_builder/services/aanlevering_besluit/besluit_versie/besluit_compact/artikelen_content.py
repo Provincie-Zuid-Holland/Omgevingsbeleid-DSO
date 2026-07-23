@@ -28,7 +28,7 @@ class ArtikelenContent:
         besluit: Besluit = self._state_manager.input_data.besluit
 
         # Wijziging Artikel
-        wijzig_artikel = self._create_article(
+        wijzig_artikel: ArtikelContent = self._create_article(
             besluit.wijzig_artikel.nummer,
             besluit.wijzig_artikel.inhoud,
         )
@@ -37,17 +37,18 @@ class ArtikelenContent:
         # Tijds Artikel
         tijd_artikel: Optional[ArtikelContent] = None
         if besluit.tijd_artikel is not None:
-            tijd_artikel = self._create_article(
+            inhoud: str = self._html_to_xml_inhoud(besluit.tijd_artikel.inhoud)
+            tijd_artikel: ArtikelContent = self._create_article(
                 besluit.tijd_artikel.nummer,
-                besluit.tijd_artikel.inhoud,
+                inhoud,
             )
             self._state_manager.artikel_eid.add(tijd_artikel.eId, ArtikelEidType.BESLUIT_INWERKINGSTIJD)
 
         # Tekst Artikelen
         tekst_artikelen: List[ArtikelContent] = []
         for tekst_artikel in besluit.tekst_artikelen:
-            inhoud = self._html_to_xml_inhoud(tekst_artikel.inhoud)
-            inhoud = self._replace_ref_appendices(inhoud)
+            inhoud: str = self._html_to_xml_inhoud(tekst_artikel.inhoud)
+            inhoud: str = self._replace_ref_appendices(inhoud)
             artikel_content: ArtikelContent = self._create_article(tekst_artikel.nummer, inhoud)
 
             tekst_artikelen.append(artikel_content)
@@ -78,7 +79,7 @@ class ArtikelenContent:
 
     def _html_to_xml_inhoud(self, html: str) -> str:
         input_soup = BeautifulSoup(html, "html.parser")
-        lichaam = Inhoud()
+        lichaam: Inhoud = Inhoud()
         lichaam.consume_children(input_soup.children)
 
         output_soup = BeautifulSoup(features="xml")
@@ -89,8 +90,8 @@ class ArtikelenContent:
     def _replace_ref_appendices(self, content: str) -> str:
         matches = re.findall(self._ref_appendix_pattern, content)
         for ref_id in matches:
-            search = f"[REF_APPENDIX:{ref_id}]"
-            replacement = f"""<IntRef ref="cmp_{ref_id}">Bijlage {ref_id}</IntRef>"""
+            search: str = f"[REF_APPENDIX:{ref_id}]"
+            replacement: str = f"""<IntRef ref="cmp_{ref_id}">Bijlage {ref_id}</IntRef>"""
             content = content.replace(search, replacement)
 
         return content
