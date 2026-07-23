@@ -37,9 +37,10 @@ class ArtikelenContent:
         # Tijds Artikel
         tijd_artikel: Optional[ArtikelContent] = None
         if besluit.tijd_artikel is not None:
+            inhoud = self._html_to_xml_inhoud(besluit.tijd_artikel.inhoud)
             tijd_artikel = self._create_article(
                 besluit.tijd_artikel.nummer,
-                besluit.tijd_artikel.inhoud,
+                inhoud,
             )
             self._state_manager.artikel_eid.add(tijd_artikel.eId, ArtikelEidType.BESLUIT_INWERKINGSTIJD)
 

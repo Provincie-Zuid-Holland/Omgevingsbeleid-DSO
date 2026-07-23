@@ -1,0 +1,23 @@
+<Lichaam eId="body" wId="body">
+    <WijzigArtikel eId="art_I" wId="pv28_301__art_I">
+        <Kop>
+            <Label>Artikel</Label>
+            <Nummer>I</Nummer>
+        </Kop>
+        <Wat>De Omgevingsvisie wordt vastgesteld zoals gegeven in <IntRef ref="cmp_1">Bijlage 1</IntRef> van dit Besluit.</Wat>
+    </WijzigArtikel>
+    <Artikel eId="art_II" wId="pv28_301__art_II">
+        <Kop>
+            <Label>Artikel</Label>
+            <Nummer>II</Nummer>
+        </Kop>
+            <Inhoud><Al>Deze Omgevingsvisie treedt in werking op 10 juli 2024.</Al></Inhoud>
+    </Artikel>
+    <Artikel eId="art_III" wId="pv28_301__art_III">
+        <Kop>
+            <Label>Artikel</Label>
+            <Nummer>III</Nummer>
+        </Kop>
+        <Inhoud><Al>Hierbij nog meer tekst</Al></Inhoud>
+    </Artikel>
+</Lichaam>
