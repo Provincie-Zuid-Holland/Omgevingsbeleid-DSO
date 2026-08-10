@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <publicatieOpdracht xmlns="http://www.overheid.nl/2017/lvbb">
   <idLevering>{{ opdracht.id_levering }}</idLevering>
-  <idBevoegdGezag>{{ opdracht.id_bevoegdgezag }}</idBevoegdGezag> 
+  <idBevoegdGezag>{{ opdracht.id_bevoegdgezag }}</idBevoegdGezag>
   <idAanleveraar>{{ opdracht.id_aanleveraar }}</idAanleveraar>
   <publicatie>{{ opdracht.publicatie_bestand }}</publicatie>
   <datumBekendmaking>{{ opdracht.datum_bekendmaking }}</datumBekendmaking>
