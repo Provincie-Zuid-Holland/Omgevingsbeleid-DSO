@@ -195,7 +195,7 @@ class BaseOwObject(BaseModel):
             raise RuntimeError("Can not handle different classes")
 
     def get_deleted_status(self) -> str:
-        return "beëindigen"
+        return "B"
 
     def is_deleted(self) -> bool:
         return self.object_status == OwObjectStatus.deleted
