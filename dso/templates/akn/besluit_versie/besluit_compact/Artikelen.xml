@@ -6,22 +6,20 @@
         </Kop>
         <Wat>{{ wijzig_artikel.inhoud }}</Wat>
     </WijzigArtikel>
-    {% if tijd_artikel is not none %}
+    {%- if tijd_artikel is not none %}
     <Artikel eId="{{ tijd_artikel.eId }}" wId="{{ tijd_artikel.wId }}">
         <Kop>
             <Label>Artikel</Label>
             <Nummer>{{ tijd_artikel.nummer }}</Nummer>
         </Kop>
-        {% if tijd_artikel.inhoud %}
-        <Inhoud>
+        {%- if tijd_artikel.inhoud %}
             {{ tijd_artikel.inhoud }}
-        </Inhoud>
-        {% else %}
+        {%- else %}
             <Gereserveerd/>
-        {% endif %}
+        {%- endif %}
     </Artikel>
-    {% endif %}
-    {% for tekst_artikel in tekst_artikelen %}
+    {%- endif %}
+    {%- for tekst_artikel in tekst_artikelen %}
     <Artikel eId="{{ tekst_artikel.eId }}" wId="{{ tekst_artikel.wId }}">
         <Kop>
             <Label>Artikel</Label>
@@ -29,5 +27,5 @@
         </Kop>
         {{ tekst_artikel.inhoud }}
     </Artikel>
-    {% endfor %}
+    {%- endfor %}
 </Lichaam>

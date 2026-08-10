@@ -18,7 +18,7 @@ class BesluitFactory(Factory):
                 Artikel(label="Artikel", nummer="III", inhoud="<p>Hierbij nog meer tekst</p>"),
             ],
             tijd_artikel=Artikel(
-                label="Artikel", nummer="II", inhoud="<Al>Deze Omgevingsvisie treedt in werking op 10 juli 2024.</Al>"
+                label="Artikel", nummer="II", inhoud="<p>Deze Omgevingsvisie treedt in werking op 10 juli 2024.</p>"
             ),
             sluiting="<p>Aldus vastgesteld in de vergadering van 3 juli 2024.</p>",
             ondertekening="<p>Gedeputeerde Staten</p>",
