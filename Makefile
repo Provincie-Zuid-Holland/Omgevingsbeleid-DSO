@@ -27,16 +27,16 @@ generate:
 	@python -m dso.cmds generate $(MAIN_FILE) $(OUTPUT_DIR)
 
 pip-sync:
-	pip install -U pip pip-tools
+	pip install -U "pip<26.2" pip pip-tools
 	pip-sync requirements.txt requirements-dev.txt
 
 pip-compile:
-	pip install -U pip pip-tools
+	pip install -U "pip<26.2" pip pip-tools
 	pip-compile requirements.in
 	pip-compile requirements-dev.in
 
 pip-upgrade:
-	pip install -U pip pip-tools
+	pip install -U "pip<26.2" pip pip-tools
 	pip-compile --upgrade requirements.in
 	pip-compile --upgrade requirements-dev.in
 
