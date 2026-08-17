@@ -18,6 +18,10 @@ class RenvooiInternalServerError(RenvooiError):
     pass
 
 
+class RenvooiConnectionError(RenvooiError):
+    pass
+
+
 class RenvooiUnknownError(RenvooiError):
     def __init__(self, msg: str, status_code: int):
         self.msg = msg
