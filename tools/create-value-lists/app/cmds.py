@@ -7,7 +7,6 @@ from .tpod.service import do_create_waardelijsten as do_create_waardelijsten_tpo
 @click.group()
 def cli():
     """Value lists commands."""
-    pass
 
 
 @click.command()

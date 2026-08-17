@@ -1,5 +1,3 @@
-from typing import List
-
 from ...builder_service import BuilderService
 from ...state_manager.input_data.resource.asset.asset import Asset
 from ...state_manager.input_data.resource.asset.asset_repository import AssetRepository
@@ -10,7 +8,7 @@ from ...state_manager.state_manager import StateManager
 class AssetBuilder(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
         asset_repository: AssetRepository = state_manager.input_data.resources.asset_repository
-        assets: List[Asset] = asset_repository.all()
+        assets: list[Asset] = asset_repository.all()
 
         for asset in assets:
             if str(asset.UUID) not in state_manager.used_asset_uuids:

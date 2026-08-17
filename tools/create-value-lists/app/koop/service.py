@@ -7,7 +7,6 @@ import xml.etree.ElementTree as ET
 import zipfile
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import requests
 
@@ -40,7 +39,7 @@ def _sanitize_key(key: str) -> str:
 
 
 def _get_text_value_for_element(xml_element: ET.Element, path: str, default_value: str = "") -> str:
-    the_element: Optional[ET.Element] = xml_element.find(path, XML_NAMESPACES)
+    the_element: ET.Element | None = xml_element.find(path, XML_NAMESPACES)
     if the_element is None:
         raise RuntimeWarning(f"Can't find XML element using path '{path}'")
     value: str = the_element.text or default_value
@@ -51,7 +50,7 @@ def _remove_accents(s: str) -> str:
     return "".join(c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn")
 
 
-def _download_source() -> List[Enum]:
+def _download_source() -> list[Enum]:
     download_url = DOWNLOAD_URL.replace("[version]", VERSION)
     download_file = DOWNLOAD_FILE.replace("[version]", VERSION)
     zip_folder = download_file.removesuffix(".zip")
@@ -62,7 +61,7 @@ def _download_source() -> List[Enum]:
 
     zip_bytes = io.BytesIO(resp.content)
 
-    enums: List[Enum] = []
+    enums: list[Enum] = []
 
     with zipfile.ZipFile(zip_bytes, "r") as z:
         xml_files = [
@@ -76,7 +75,7 @@ def _download_source() -> List[Enum]:
         for file_name in xml_files:
             with z.open(file_name) as f:
                 root: ET.Element[str] = ET.fromstring(f.read())
-                enum_dict: Dict[str, str] = {}
+                enum_dict: dict[str, str] = {}
                 for element in root.findall(".//rsc:Waarde", XML_NAMESPACES):
                     id_value = _get_text_value_for_element(element, "rsc:id")
                     label_value = _get_text_value_for_element(element, "rsc:label")
@@ -95,7 +94,7 @@ def _download_source() -> List[Enum]:
                 enums.append(enum_type)
 
         for merge_type in MERGE_TYPES:
-            merged_enum_dict: Dict[str, str] = {}
+            merged_enum_dict: dict[str, str] = {}
             for enum in enums:
                 if enum.__name__ not in merge_type.koop_types:
                     continue
@@ -121,7 +120,7 @@ def _format_with_ruff(code: str) -> str:
     return formatted
 
 
-def _get_parts(value: str) -> List[str]:
+def _get_parts(value: str) -> list[str]:
     parts = re.split(r"[_\-\s()'.,]+", value)
     parts = [p for p in parts if p]  # remove empty chunks
     return parts
@@ -133,14 +132,14 @@ def _to_snake_case(value: str) -> str:
 
 
 def do_create_waardelijsten():
-    output_contents: List[str] = []
+    output_contents: list[str] = []
     output_contents.append(OUTPUT_FILE_HEADING)
 
     enums = _download_source()
     for enum in enums:
         output_contents.append(f"class {enum.__name__}(str, Enum):")
         for member in enum:
-            output_contents.append(f"\t{member.name} = {repr(member.value)}")
+            output_contents.append(f"\t{member.name} = {member.value!r}")
 
     final_output_contents: str = "\n".join(output_contents)
     target_path = Path("../../") / TARGET_FILE

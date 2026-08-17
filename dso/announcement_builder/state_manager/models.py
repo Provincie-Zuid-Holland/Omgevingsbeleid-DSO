@@ -1,6 +1,5 @@
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import List
 
 from pydantic import BaseModel, field_validator
 
@@ -27,7 +26,7 @@ class OutputFile:
 
 class Kennisgeving(BaseModel):
     officiele_titel: str
-    onderwerpen: List[OnderwerpType]
+    onderwerpen: list[OnderwerpType]
     mededeling_over_frbr: BillFRBR
 
     @field_validator("onderwerpen", mode="before")

@@ -1,6 +1,5 @@
 import re
 from uuid import UUID
-from typing import List, Set
 
 from pydantic import BaseModel, ConfigDict
 
@@ -34,8 +33,8 @@ class Gio(BaseModel):
 
     # These are the gebied-x codes which are in this gio
     # source_codes and the key() func are used to determine uniqueness and "lineage"
-    source_codes: Set[str]  # [gebied-1, gebied-2]
-    locaties: List[GioLocatie]  # 1 locatie per source-code
+    source_codes: set[str]  # [gebied-1, gebied-2]
+    locaties: list[GioLocatie]  # 1 locatie per source-code
 
     title: str
     frbr: GioFRBR
@@ -84,5 +83,5 @@ class Gebiedsaanwijzing(BaseModel):
     aanwijzing_type: str
     aanwijzing_groep: str
     title: str
-    gebied_codes: Set[str]
+    gebied_codes: set[str]
     gio_key: str

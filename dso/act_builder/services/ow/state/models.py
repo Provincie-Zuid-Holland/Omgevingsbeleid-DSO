@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from enum import Enum
-from typing import Annotated, List, Literal, Optional, Set, Union
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -73,14 +73,12 @@ class GebiedengroepRef(UnresolvedGebiedengroepRef):
 
 # Define the union type for all location references
 LocationRefUnion = Annotated[
-    Union[
-        AmbtsgebiedRef,
-        UnresolvedAmbtsgebiedRef,
-        GebiedRef,
-        UnresolvedGebiedRef,
-        GebiedengroepRef,
-        UnresolvedGebiedengroepRef,
-    ],
+    AmbtsgebiedRef
+    | UnresolvedAmbtsgebiedRef
+    | GebiedRef
+    | UnresolvedGebiedRef
+    | GebiedengroepRef
+    | UnresolvedGebiedengroepRef,
     Field(discriminator="ref_type"),
 ]
 
@@ -107,10 +105,7 @@ class GebiedsaanwijzingRef(UnresolvedGebiedsaanwijzingRef):
 
 
 GebiedsaanwijzingRefUnion = Annotated[
-    Union[
-        UnresolvedGebiedsaanwijzingRef,
-        GebiedsaanwijzingRef,
-    ],
+    UnresolvedGebiedsaanwijzingRef | GebiedsaanwijzingRef,
     Field(discriminator="ref_type"),
 ]
 
@@ -165,12 +160,7 @@ class DivisietekstRef(UnresolvedDivisietekstRef):
 
 
 WidRefUnion = Annotated[
-    Union[
-        DivisieRef,
-        UnresolvedDivisieRef,
-        DivisietekstRef,
-        UnresolvedDivisietekstRef,
-    ],
+    DivisieRef | UnresolvedDivisieRef | DivisietekstRef | UnresolvedDivisietekstRef,
     Field(discriminator="ref_type"),
 ]
 
@@ -188,7 +178,7 @@ class OwObjectStatus(str, Enum):
 class BaseOwObject(BaseModel):
     identification: str
     object_status: OwObjectStatus = Field(OwObjectStatus.unchanged)
-    procedure_status: Optional[str] = Field(None)  # @deprecated?
+    procedure_status: str | None = Field(None)  # @deprecated?
 
     def assert_same_class(self, other: "BaseOwObject"):
         if type(self) is not type(other):
@@ -346,7 +336,7 @@ class OwGebied(BaseOwObject):
 class OwGebiedengroep(BaseOwObject):
     source_code: str
     title: str
-    gebieden_refs: List[LocationRefUnion] = Field(default_factory=list)
+    gebieden_refs: list[LocationRefUnion] = Field(default_factory=list)
 
     def get_key(self) -> str:
         return self.source_code
@@ -453,7 +443,7 @@ class OwGebiedsaanwijzing(BaseOwObject):
     title: str
     indication_type: str
     indication_group: str
-    location_refs: List[LocationRefUnion] = Field(default_factory=list)
+    location_refs: list[LocationRefUnion] = Field(default_factory=list)
 
     def get_key(self) -> str:
         return self.source_code
@@ -496,9 +486,9 @@ class OwTekstdeel(BaseOwObject):
     source_code: str
     idealization: str
     text_ref: WidRefUnion
-    location_refs: Set[LocationRefUnion] = Field(default_factory=set)
-    gebiedsaanwijzing_refs: Set[GebiedsaanwijzingRefUnion] = Field(default_factory=set)
-    themas: Set[str] = Field(default_factory=set)
+    location_refs: set[LocationRefUnion] = Field(default_factory=set)
+    gebiedsaanwijzing_refs: set[GebiedsaanwijzingRefUnion] = Field(default_factory=set)
+    themas: set[str] = Field(default_factory=set)
 
     def get_key(self) -> str:
         return self.source_code

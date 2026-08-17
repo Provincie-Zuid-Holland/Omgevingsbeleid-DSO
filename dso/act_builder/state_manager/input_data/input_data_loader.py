@@ -1,6 +1,5 @@
 import json
 import os
-from typing import Dict, List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
@@ -29,7 +28,7 @@ class InputData(BaseModel):
     besluit: Besluit
     regeling: Regeling
     regeling_vrijetekst: str
-    regeling_mutatie: Optional[RegelingMutatie] = Field(None)
+    regeling_mutatie: RegelingMutatie | None = Field(None)
     procedure_verloop: ProcedureVerloop
     resources: Resources
     object_template_repository: ObjectTemplateRepository
@@ -42,13 +41,13 @@ class InputData(BaseModel):
         arbitrary_types_allowed=True,
     )
 
-    def get_known_wid_map(self) -> Dict[str, str]:
+    def get_known_wid_map(self) -> dict[str, str]:
         if self.regeling_mutatie is None:
             return {}
 
         return self.regeling_mutatie.bekend_wid_map
 
-    def get_known_wids(self) -> List[str]:
+    def get_known_wids(self) -> list[str]:
         if self.regeling_mutatie is None:
             return []
 
@@ -148,7 +147,7 @@ class InputDataLoader:
         publication_settings: PublicationSettings,
         procedure_config: dict,
     ) -> ProcedureVerloop:
-        stappen: List[ProcedureStap] = [ProcedureStap.model_validate(s) for s in procedure_config["stappen"]]
+        stappen: list[ProcedureStap] = [ProcedureStap.model_validate(s) for s in procedure_config["stappen"]]
         procedure_verloop = ProcedureVerloop(
             bekend_op=publication_settings.datum_bekendmaking,
             stappen=stappen,

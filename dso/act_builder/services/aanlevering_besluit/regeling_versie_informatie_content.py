@@ -1,7 +1,8 @@
 from dso.models import DocumentType
-from ...state_manager.state_manager import StateManager
+
 from ....services.koop.waardelijsten.gen import RegelingType
 from ....services.utils.helpers import load_template
+from ...state_manager.state_manager import StateManager
 
 
 class RegelingVersieInformatieContent:

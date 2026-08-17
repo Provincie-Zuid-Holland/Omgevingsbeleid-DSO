@@ -3,8 +3,8 @@ import os
 import re
 from xml.etree import ElementTree
 
-from .data import Publicatieinstructies
 from ..koop.waardelijsten.gen import InformatieObjectType, Provincie, WorkType
+from .data import Publicatieinstructies
 
 
 def extract_name(filename):

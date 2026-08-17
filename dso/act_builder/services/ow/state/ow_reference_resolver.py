@@ -5,13 +5,13 @@ from dso.act_builder.services.ow.state.models import (
     DivisietekstRef,
     GebiedengroepRef,
     GebiedRef,
+    GebiedsaanwijzingRef,
     UnresolvedAmbtsgebiedRef,
     UnresolvedDivisieRef,
     UnresolvedDivisietekstRef,
     UnresolvedGebiedengroepRef,
     UnresolvedGebiedRef,
     UnresolvedGebiedsaanwijzingRef,
-    GebiedsaanwijzingRef,
 )
 from dso.act_builder.services.ow.state.ow_state import OwState
 

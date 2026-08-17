@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from lxml import html
 
 
@@ -11,7 +9,7 @@ def middleware_image_in_p(html_content: str) -> str:
     return modified_html
 
 
-def _process_html(html_content: str) -> Tuple[str, bool]:
+def _process_html(html_content: str) -> tuple[str, bool]:
     # Wrap the input in a <div> to ensure a single root
     wrapped_html: str = f"<div>{html_content}</div>"
 

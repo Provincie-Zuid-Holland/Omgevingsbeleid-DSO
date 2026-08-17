@@ -1,4 +1,3 @@
-from typing import List, Optional
 from pydantic import BaseModel
 
 
@@ -34,13 +33,13 @@ class GebiedsaanwijzingGroep(BaseModel):
 class Gebiedsaanwijzing(BaseModel):
     aanwijzing_type: GebiedsaanwijzingType
     aanwijzing_groep: GebiedsaanwijzingGroep
-    waardes: List[GebiedsaanwijzingWaarde]
+    waardes: list[GebiedsaanwijzingWaarde]
 
-    def get_value_labels(self) -> List[str]:
-        result: List[str] = [w.label for w in self.waardes]
+    def get_value_labels(self) -> list[str]:
+        result: list[str] = [w.label for w in self.waardes]
         return result
 
-    def get_value_by_label(self, label: str) -> Optional[GebiedsaanwijzingWaarde]:
+    def get_value_by_label(self, label: str) -> GebiedsaanwijzingWaarde | None:
         for value in self.waardes:
             if value.label == label:
                 return value

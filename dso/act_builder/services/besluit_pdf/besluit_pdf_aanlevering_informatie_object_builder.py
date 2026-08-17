@@ -1,5 +1,3 @@
-from typing import List
-
 from ....models import ContentType
 from ....services.utils.hashlib import compute_sha512_of_output_file
 from ....services.utils.helpers import load_template
@@ -11,7 +9,7 @@ from ...state_manager.state_manager import StateManager
 
 class BesluitPdfAanleveringInformatieObjectBuilder(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
-        pdfs: List[BesluitPdf] = state_manager.input_data.resources.besluit_pdf_repository.all()
+        pdfs: list[BesluitPdf] = state_manager.input_data.resources.besluit_pdf_repository.all()
 
         for pdf in pdfs:
             output_file: OutputFile = self._generate_io(state_manager, pdf)

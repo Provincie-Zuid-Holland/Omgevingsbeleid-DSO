@@ -1,5 +1,4 @@
 # See: Waardelijsten KOOP on this page view all versions https://koop.gitlab.io/stop/standaard/index.html
-from typing import Dict, List
 
 from pydantic import BaseModel
 
@@ -10,9 +9,9 @@ SOURCE_FOLDER: str = "waardelijsten"
 
 TARGET_FILE: str = "./dso/services/koop/waardelijsten/gen/__init__.py"
 
-XML_NAMESPACES: Dict[str, str] = {"rsc": "https://standaarden.overheid.nl/stop/imop/resources/"}
+XML_NAMESPACES: dict[str, str] = {"rsc": "https://standaarden.overheid.nl/stop/imop/resources/"}
 
-IGNORE_FILES: List[str] = [
+IGNORE_FILES: list[str] = [
     "bekendmakingsblad",
     "gemeente",
     "ministerie",
@@ -21,7 +20,7 @@ IGNORE_FILES: List[str] = [
     "waterschap",
 ]
 
-NAME_MAPPING: Dict[str, str] = {
+NAME_MAPPING: dict[str, str] = {
     "Besluitvormingsprocedures": "ProcedureType",
     "Bestuursorganen": "BestuursorgaanType",
     "BWB-rechtgebied": "RechtsgebiedType",
@@ -38,10 +37,10 @@ NAME_MAPPING: Dict[str, str] = {
 
 class MergeTypes(BaseModel):
     name: str
-    koop_types: List[str]
+    koop_types: list[str]
 
 
-MERGE_TYPES: List[MergeTypes] = [
+MERGE_TYPES: list[MergeTypes] = [
     MergeTypes(
         name="ProcedureStappen",
         koop_types=[

@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 from pydantic import BaseModel, Field, field_validator
 
 from ....services.koop.waardelijsten.gen import OnderwerpType, ProcedureType, RechtsgebiedType
@@ -23,15 +21,15 @@ class WijzigBijlage(BaseModel):
 
 
 class Motivering(BaseModel):
-    nummer: Optional[str] = Field(None)
+    nummer: str | None = Field(None)
     opschrift: str
     content: str
-    bijlagen: List[Bijlage] = Field(default_factory=list)
+    bijlagen: list[Bijlage] = Field(default_factory=list)
 
 
 class Besluit(BaseModel):
     officiele_titel: str
-    citeertitel: Optional[str] = Field(None)
+    citeertitel: str | None = Field(None)
     aanhef: str
     wijzig_artikel: Artikel
     wijzig_bijlage: WijzigBijlage = Field(
@@ -40,18 +38,18 @@ class Besluit(BaseModel):
             opschrift="bij Artikel I",
         )
     )
-    tekst_artikelen: List[Artikel]
+    tekst_artikelen: list[Artikel]
 
     # tijd_artikel does not exist on drafts and should then be set to reserved
-    tijd_artikel: Optional[Artikel] = Field(None)
+    tijd_artikel: Artikel | None = Field(None)
 
     sluiting: str
     ondertekening: str
-    rechtsgebieden: List[RechtsgebiedType]
-    onderwerpen: List[OnderwerpType]
+    rechtsgebieden: list[RechtsgebiedType]
+    onderwerpen: list[OnderwerpType]
     soort_procedure: ProcedureType
-    bijlagen: List[Bijlage] = Field(default_factory=list)
-    motivering: Optional[Motivering] = Field(None)
+    bijlagen: list[Bijlage] = Field(default_factory=list)
+    motivering: Motivering | None = Field(None)
 
     @field_validator("rechtsgebieden", mode="before")
     def _format_rechtsgebieden(cls, value):

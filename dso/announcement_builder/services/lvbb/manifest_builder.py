@@ -1,5 +1,3 @@
-from typing import List
-
 from ....models import ContentType
 from ....services.utils.helpers import load_template
 from ...builder_service import BuilderService
@@ -16,7 +14,7 @@ class ManifestBuilder(BuilderService):
 
         return state_manager
 
-    def _create_manifest_file(self, output_files: List[OutputFile]) -> OutputFile:
+    def _create_manifest_file(self, output_files: list[OutputFile]) -> OutputFile:
         content = load_template(
             "lvbb/manifest.xml",
             pretty_print=True,

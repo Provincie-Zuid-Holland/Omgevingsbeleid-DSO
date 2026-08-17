@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import List
 
 
 class ArtikelEidType(str, Enum):
@@ -24,7 +23,7 @@ class ArtikelEidData:
 
 class ArtikelEidRepository:
     def __init__(self):
-        self._data: List[ArtikelEidData] = []
+        self._data: list[ArtikelEidData] = []
 
     def add(self, eid: str, artikel_type: ArtikelEidType):
         self._data.append(
@@ -34,12 +33,12 @@ class ArtikelEidRepository:
             )
         )
 
-    def find_by_type(self, artikel_type: ArtikelEidType) -> List[ArtikelEidData]:
-        results: List[ArtikelEidData] = [d for d in self._data if d.artikel_type == artikel_type]
+    def find_by_type(self, artikel_type: ArtikelEidType) -> list[ArtikelEidData]:
+        results: list[ArtikelEidData] = [d for d in self._data if d.artikel_type == artikel_type]
         return results
 
     def find_one_by_type(self, artikel_type: ArtikelEidType) -> ArtikelEidData:
-        results: List[ArtikelEidData] = self.find_by_type(artikel_type)
+        results: list[ArtikelEidData] = self.find_by_type(artikel_type)
         match results:
             case [x]:
                 return x
