@@ -703,10 +703,8 @@ class Divisie(Element):
     def __init__(self, tag: Tag | None = None):
         self.kop: Kop | None = None
         self.contents: list[Divisie | Divisietekst] = []
-        self.wid_code: str | list[str] | None = tag.get("data-hint-wid-code", None) if tag else None
-        self.object_code: str | list[str] | None = tag.get("data-hint-object-code", None) if tag else None
-        if not self.wid_code and not self.object_code:
-            raise RuntimeError("Divisietekst must contain either a wid-code or object-code")
+        self.wid_code: str | None = tag.get("data-hint-wid-code", None)
+        self.object_code: str | None = tag.get("data-hint-object-code", None)
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         while True:
@@ -807,7 +805,7 @@ class Divisie(Element):
 
     def as_xml(self, soup: BeautifulSoup) -> Tag | str:
         tag_divisie: Tag = soup.new_tag("Divisie")
-        wid_code = self.wid_code or self.object_code
+        wid_code: str | None = self.wid_code or self.object_code
 
         tag_divisie.attrs = {
             **({"data-hint-wid-code": wid_code} if wid_code else {}),
