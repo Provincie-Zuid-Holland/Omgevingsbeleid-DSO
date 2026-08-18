@@ -9,6 +9,13 @@ from tests.unit.dso.act_builder.state_manager.input_data.regeling_factories impo
 from tests.unit.dso.act_builder.state_manager.input_data.resource.besluit_pdf.besluit_pdf_factory import (
     BesluitPdfFactory,
 )
+from tests.unit.dso.act_builder.state_manager.input_data.resource.document import (
+    document_repository_mock_with_two_documents,
+)
+from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden import (
+    gio_repository_mock_with_two_new_gebieden,
+)
+from tests.unit.dso.act_builder.state_manager.state_manager_test_case import state_manager_mock
 from tests.unit.dso.model_factories import PubdataFRBRFactory
 from tests.unit.xml_compare_test import XMLCompareTest
 

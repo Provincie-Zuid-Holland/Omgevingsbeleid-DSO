@@ -3,7 +3,10 @@ from dso.act_builder.state_manager import StrContentData
 from dso.announcement_builder.state_manager.models import OutputFile
 from dso.models import ContentType
 from dso.services.koop.waardelijsten.gen import Provincie
-from tests.unit.dso.act_builder.state_manager.state_manager_test_case import StateManagerTestCase
+from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden import (
+    gio_repository_mock_with_two_new_gebieden,
+)
+from tests.unit.dso.act_builder.state_manager.state_manager_test_case import StateManagerTestCase, state_manager_mock
 from tests.unit.xml_compare_test import XMLCompareTest
 
 
