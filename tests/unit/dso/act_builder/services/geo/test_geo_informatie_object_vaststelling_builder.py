@@ -2,7 +2,6 @@ from dso.act_builder.services.geo.geo_informatie_object_vaststelling_builder imp
     GeoInformatieObjectVaststellingBuilder,
 )
 from dso.announcement_builder.state_manager.models import OutputFile
-
 from tests.unit.dso.act_builder.state_manager.state_manager_test_case import StateManagerTestCase
 from tests.unit.xml_compare_test import XMLCompareTest
 
