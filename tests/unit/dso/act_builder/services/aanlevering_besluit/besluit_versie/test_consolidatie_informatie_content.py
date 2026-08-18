@@ -6,13 +6,6 @@ from dso.act_builder.services.aanlevering_besluit.besluit_versie.consolidatie_in
 from dso.act_builder.state_manager import ArtikelEidRepository
 from dso.act_builder.state_manager.states.artikel_eid_repository import ArtikelEidData, ArtikelEidType
 from dso.models import GioFRBR, RegelingMutatie, VerwijderdeGio
-from tests.unit.dso.act_builder.state_manager.input_data.resource.document import (
-    document_repository_mock_with_two_new_documents,
-)
-from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden import (
-    gio_repository_mock_with_two_new_gebieden,
-)
-from tests.unit.dso.act_builder.state_manager.state_manager_test_case import state_manager_mock
 from tests.unit.dso.act_builder.state_manager.states.text_manipulator.model_factories import TextDataFactory
 from tests.unit.dso.model_factories import (
     ActFRBRFactory,

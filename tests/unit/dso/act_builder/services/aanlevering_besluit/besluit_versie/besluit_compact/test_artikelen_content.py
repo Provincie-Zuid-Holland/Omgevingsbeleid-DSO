@@ -2,8 +2,6 @@ from dso.act_builder.services.aanlevering_besluit.besluit_versie.besluit_compact
     ArtikelenContent,
 )
 from tests.unit.dso.act_builder.state_manager.input_data.besluit_factories import BesluitFactory
-from tests.unit.dso.act_builder.state_manager.state_manager_test_case import state_manager_mock
-from tests.unit.dso.act_builder.state_manager.states import artikel_eid_repository_with_eid_data
 from tests.unit.dso.model_factories import ActFRBRFactory
 from tests.unit.xml_compare_test import XMLCompareTest
 

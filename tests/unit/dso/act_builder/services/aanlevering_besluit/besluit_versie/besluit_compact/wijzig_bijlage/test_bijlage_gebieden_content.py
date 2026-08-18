@@ -2,11 +2,6 @@ from dso.act_builder.services.aanlevering_besluit.besluit_versie.besluit_compact
     BijlageGioContent,
 )
 from dso.services.ewid.ewid_service import EWIDService
-from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden import (
-    gio_repository_mock_empty,
-    gio_repository_mock_with_two_gebieden,
-)
-from tests.unit.dso.act_builder.state_manager.state_manager_test_case import state_manager_mock
 from tests.unit.dso.act_builder.state_manager.states.text_manipulator.model_factories import TextDataFactory
 from tests.unit.xml_compare_test import XMLCompareTest
 

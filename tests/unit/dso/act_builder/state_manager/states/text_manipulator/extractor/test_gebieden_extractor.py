@@ -1,6 +1,6 @@
 from dso.act_builder.state_manager.states.text_manipulator.extractor.text_gio_extractor import TextGioExtractor
 from dso.act_builder.state_manager.states.text_manipulator.models import TekstBijlageGio, TextData
-from tests.unit.dso.act_builder.state_manager.state_manager_test_case import StateManagerTestCase, state_manager_mock
+from tests.unit.dso.act_builder.state_manager.state_manager_test_case import StateManagerTestCase
 
 
 class TestTextGioExtractor(StateManagerTestCase):
