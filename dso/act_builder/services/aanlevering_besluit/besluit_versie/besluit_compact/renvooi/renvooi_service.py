@@ -3,7 +3,6 @@ from urllib.parse import urljoin
 import requests
 from lxml import etree
 from requests.exceptions import ConnectionError as RequestsConnectionError
-from requests.exceptions import SSLError, Timeout
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 from .......exceptions import (
@@ -54,7 +53,7 @@ class RenvooiService:
                 headers=headers,
                 data=multipart_data,
             )
-        except (SSLError, RequestsConnectionError, Timeout) as exc:
+        except RequestsConnectionError as exc:
             raise RenvooiConnectionError(str(exc)) from exc
 
         match response.status_code:
