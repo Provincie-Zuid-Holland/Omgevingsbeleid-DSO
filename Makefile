@@ -44,9 +44,12 @@ check: ## Check without fixing via Ruff
 	python -m ruff check dso/ tests/
 
 check-fix: ## Fix issues found by Ruff
-	python -m ruff check --fix dso/
+	python -m ruff check --fix dso/ tests/
 
 format: ## Format code via Ruff
 	python -m ruff format dso/ tests/
 
 fix: check-fix format ## Fix and Format the code via Ruff
+
+test:
+	pytest tests/unit/

@@ -1,5 +1,4 @@
-from typing import List
-from unittest.mock import Mock, MagicMock
+from unittest.mock import MagicMock, Mock
 
 import pytest
 
@@ -24,8 +23,8 @@ def gio_repository_mock_with_two_gebieden() -> GioRepository | Mock:
     return gio_repository_mock
 
 
-def _get_gios(count: int = 2) -> List[Gio | Mock]:
-    gios: List[Gio | Mock] = []
+def _get_gios(count: int = 2) -> list[Gio | Mock]:
+    gios: list[Gio | Mock] = []
     for i in range(1, count + 1):
         gebied_id_base = (i - 1) * 2
         gio = GioFactory(id=i, gebied_ids={gebied_id_base + 1, gebied_id_base + 2}).create()

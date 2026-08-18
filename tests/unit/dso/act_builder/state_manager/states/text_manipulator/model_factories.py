@@ -1,10 +1,8 @@
-from typing import List
-
 from dso.act_builder.state_manager.states.text_manipulator.models import (
-    TextData,
-    TekstBijlageGio,
     TekstBijlageDocument,
+    TekstBijlageGio,
     TekstPolicyObject,
+    TextData,
 )
 from tests.factory import Factory
 
@@ -48,15 +46,15 @@ class TekstPolicyObjectFactory(Factory):
 
 class TextDataFactory(Factory):
     def create(self) -> TextData:
-        bijlage_gebieden: List[TekstBijlageGio] = [
+        bijlage_gebieden: list[TekstBijlageGio] = [
             TekstBijlageGioFactory(id=1).create(),
             TekstBijlageGioFactory(id=2).create(),
         ]
-        bijlage_documenten: List[TekstBijlageDocument] = [
+        bijlage_documenten: list[TekstBijlageDocument] = [
             TekstTekstBijlageDocumentFactory(id=1).create(),
             TekstTekstBijlageDocumentFactory(id=2).create(),
         ]
-        policy_objects: List[TekstPolicyObject] = [
+        policy_objects: list[TekstPolicyObject] = [
             TekstPolicyObjectFactory(id=1).create(),
             TekstPolicyObjectFactory(id=2).create(),
         ]
