@@ -129,6 +129,7 @@ class OwStateBuilder:
             [
                 len(input_policy_object.location_refs) > 0,
                 len(input_policy_object.gebiedsaanwijzing_refs) > 0,
+                len(input_policy_object.themas) > 0,
             ]
         )
 
