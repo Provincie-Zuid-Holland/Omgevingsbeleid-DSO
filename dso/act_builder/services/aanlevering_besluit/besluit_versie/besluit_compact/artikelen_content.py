@@ -36,7 +36,10 @@ class ArtikelenContent:
         # Tijds Artikel
         tijd_artikel: ArtikelContent | None = None
         if besluit.tijd_artikel is not None:
-            inhoud: str = self._html_to_xml_inhoud(besluit.tijd_artikel.inhoud)
+            inhoud: str = besluit.tijd_artikel.inhoud.strip()
+            if inhoud:
+                inhoud = self._html_to_xml_inhoud(inhoud)
+
             tijd_artikel: ArtikelContent = self._create_article(
                 besluit.tijd_artikel.nummer,
                 inhoud,

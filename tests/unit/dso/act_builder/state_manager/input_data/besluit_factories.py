@@ -4,7 +4,11 @@ from tests.factory import Factory
 
 
 class BesluitFactory(Factory):
-    def create(self) -> Besluit:
+    def create(self, include_tijd_artikel_inhoud: bool = True) -> Besluit:
+        tijd_artikel = Artikel(label="Artikel", nummer="II", inhoud="")
+        if include_tijd_artikel_inhoud:
+            tijd_artikel.inhoud = "<p>Deze Omgevingsvisie treedt in werking op 10 juli 2024.</p>"
+
         return Besluit(
             officiele_titel="Omgevingsvisie van Zuid-Holland",
             citeertitel="",
@@ -17,9 +21,7 @@ class BesluitFactory(Factory):
             tekst_artikelen=[
                 Artikel(label="Artikel", nummer="III", inhoud="<p>Hierbij nog meer tekst</p>"),
             ],
-            tijd_artikel=Artikel(
-                label="Artikel", nummer="II", inhoud="<p>Deze Omgevingsvisie treedt in werking op 10 juli 2024.</p>"
-            ),
+            tijd_artikel=tijd_artikel,
             sluiting="<p>Aldus vastgesteld in de vergadering van 3 juli 2024.</p>",
             ondertekening="<p>Gedeputeerde Staten</p>",
             rechtsgebieden=[
