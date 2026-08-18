@@ -1,5 +1,6 @@
-import pytest
 from xml.etree.ElementTree import fromstring
+
+import pytest
 
 from dso.services.ewid.ewid_service import EWIDService
 
@@ -75,9 +76,6 @@ class TestEWIDService:
 
     def test_fill_ewid(self, mock_xml):
         self.ewid_service._fill_ewid(mock_xml)
-        import xml.etree.ElementTree as ET
-
-        result_xml: str = ET.tostring(mock_xml, encoding="utf-8").decode("utf-8")
 
         # assert lichaam root not touched
         assert mock_xml.get("eId") == "body"

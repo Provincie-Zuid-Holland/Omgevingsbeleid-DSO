@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+
 import pytest
 from lxml import etree
 
@@ -14,7 +14,7 @@ TEST_SCENARIO_DIRS = [
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
 @pytest.mark.usefixtures("initialize_dso_builder")
 class TestOWGebiedsaanwijzingenFileOutput:
-    output_dir: Optional[Path] = None
+    output_dir: Path | None = None
 
     @pytest.fixture(autouse=True)
     def check_gebiedsaanwijzingen(self, expected_results):

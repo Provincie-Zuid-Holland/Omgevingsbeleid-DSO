@@ -1,13 +1,15 @@
+# ruff: noqa: T100
 import json
-import yaml
-from pathlib import Path
 import os
-import pytest
 import shutil
+from pathlib import Path
 
-from dso.cmds import build_input_data_from_dir
+import pytest
+import yaml
+
 from dso.act_builder.builder import Builder
 from dso.act_builder.state_manager.input_data.input_data_loader import InputData
+from dso.cmds import build_input_data_from_dir
 
 
 @pytest.fixture
@@ -79,30 +81,27 @@ def initialize_dso_builder(request, input_dir, output_dir) -> Builder:
 @pytest.fixture(scope="class")
 def namespaces():
     namespaces = {
-        "xsi": "http://www.w3.org/2001/XMLSchema-instance",
-        "xlink": "http://www.w3.org/1999/xlink",
-        "r": "http://www.geostandaarden.nl/imow/regels",
-        "vt": "http://www.geostandaarden.nl/imow/vrijetekst",
-        "rol": "http://www.geostandaarden.nl/imow/regelsoplocatie",
-        "p": "http://www.geostandaarden.nl/imow/pons",
-        "l": "http://www.geostandaarden.nl/imow/locatie",
-        "k": "http://www.geostandaarden.nl/imow/kaart",
-        "op": "http://www.geostandaarden.nl/imow/opobject",
-        "ga": "http://www.geostandaarden.nl/imow/gebiedsaanwijzing",
-        "sl": "http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek",
-        "da": "http://www.geostandaarden.nl/imow/datatypenalgemeen",
-        "ow": "http://www.geostandaarden.nl/imow/owobject",
-        "rg": "http://www.geostandaarden.nl/imow/regelingsgebied",
-        "ow-dc": "http://www.geostandaarden.nl/imow/bestanden/deelbestand",
-        "lvbb": "http://www.overheid.nl/2017/lvbb",
         "basisgeo": "http://www.geostandaarden.nl/basisgeometrie/1.0",
-        "gio": "https://standaarden.overheid.nl/stop/imop/gio/",
-        "geo": "https://standaarden.overheid.nl/stop/imop/geo/",
+        "da": "http://www.geostandaarden.nl/imow/datatypenalgemeen",
         "data": "https://standaarden.overheid.nl/stop/imop/data/",
+        "ga": "http://www.geostandaarden.nl/imow/gebiedsaanwijzing",
+        "geo": "https://standaarden.overheid.nl/stop/imop/geo/",
+        "gio": "https://standaarden.overheid.nl/stop/imop/gio/",
         "gml": "http://www.opengis.net/gml/3.2",
+        "k": "http://www.geostandaarden.nl/imow/kaart",
+        "l": "http://www.geostandaarden.nl/imow/locatie",
+        "lvbb": "http://www.overheid.nl/2017/lvbb",
+        "op": "http://www.geostandaarden.nl/imow/opobject",
+        "ow": "http://www.geostandaarden.nl/imow/owobject",
+        "ow-dc": "http://www.geostandaarden.nl/imow/bestanden/deelbestand",
+        "p": "http://www.geostandaarden.nl/imow/pons",
+        "r": "http://www.geostandaarden.nl/imow/regels",
         "rg": "http://www.geostandaarden.nl/imow/regelingsgebied",
+        "rol": "http://www.geostandaarden.nl/imow/regelsoplocatie",
+        "sl": "http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek",
         "tekst": "https://standaarden.overheid.nl/stop/imop/tekst/",
         "vt": "http://www.geostandaarden.nl/imow/vrijetekst",
-        "ga": "http://www.geostandaarden.nl/imow/gebiedsaanwijzing",
+        "xlink": "http://www.w3.org/1999/xlink",
+        "xsi": "http://www.w3.org/2001/XMLSchema-instance",
     }
     return namespaces

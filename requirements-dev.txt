@@ -58,7 +58,9 @@ pygments==2.20.0
 pytest==9.1.1
     # via -r requirements-dev.in
 pyyaml==6.0.3
-    # via bandit
+    # via
+    #   -r requirements-dev.in
+    #   bandit
 rich==15.0.0
     # via bandit
 ruff==0.16.2

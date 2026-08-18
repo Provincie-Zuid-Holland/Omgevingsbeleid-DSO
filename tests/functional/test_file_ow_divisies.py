@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional
+
 import pytest
 from lxml import etree
 
@@ -10,7 +10,7 @@ TEST_SCENARIO_DIRS = ["./input/01-initial", "./input/02-mutation", "./input/03-a
 @pytest.mark.parametrize("input_dir", TEST_SCENARIO_DIRS, indirect=True)
 @pytest.mark.usefixtures("initialize_dso_builder")
 class TestOWDivisiesFileOutput:
-    output_dir: Optional[Path] = None
+    output_dir: Path | None = None
 
     @pytest.fixture(autouse=True)
     def check_divisies(self, expected_results):
@@ -27,7 +27,6 @@ class TestOWDivisiesFileOutput:
         assert obj_count == expected_obj_count, f"Expected object count {expected_obj_count}, found {obj_count}"
 
     def test_new_ow_divisiestekst_objects(self, expected_results, namespaces):
-        expected_div_wids: List[str] = expected_results["owDivisies"]["divisietekst"]["new"]
         tree = etree.parse(f"{self.output_dir}/owDivisies.xml", parser=None)
         root = tree.getroot()
 

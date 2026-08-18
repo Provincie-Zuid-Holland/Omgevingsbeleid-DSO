@@ -1,22 +1,20 @@
-from typing import Set, List
-
 from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gio, GioLocatie
 from dso.models import GioFRBR
 from tests.factory import Factory
-from tests.unit.dso.model_factories import GioFRBRFactory, FRBRType
+from tests.unit.dso.model_factories import FRBRType, GioFRBRFactory
 
 
 class GioFactory(Factory):
     id: int
-    gebied_ids: Set[int]
+    gebied_ids: set[int]
     new: bool = True
     geboorteregeling: str = "akn/nl/act/pv28/2024/omgevingsvisie-1"
     achtergrond_verwijzing: str = "TOP10NL"
     achtergrond_actualiteit: str = "2024-05-03"
 
     def create(self) -> Gio:
-        source_codes: Set[str] = set([f"gebied-{gebied_id}" for gebied_id in self.gebied_ids])
-        locaties: List[GioLocatie] = [GioLocatieFactory(id=gebied_id).create() for gebied_id in self.gebied_ids]
+        source_codes: set[str] = {f"gebied-{gebied_id}" for gebied_id in self.gebied_ids}
+        locaties: list[GioLocatie] = [GioLocatieFactory(id=gebied_id).create() for gebied_id in self.gebied_ids]
         gio_frbr: GioFRBR = GioFRBRFactory(Expression_Version=self.id, frbr_type=FRBRType.GEBIED).create()
 
         return Gio(
