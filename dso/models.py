@@ -1,7 +1,6 @@
 import os
 from abc import ABCMeta, abstractmethod
 from enum import Enum
-from typing import Dict, List, Optional, Type
 
 from pydantic import BaseModel, Field, ValidationError, field_validator, model_validator
 
@@ -14,7 +13,7 @@ class FRBR(BaseModel, metaclass=ABCMeta):
     Work_Other: str
     Expression_Language: str
     Expression_Date: str
-    Expression_Version: Optional[int] = None
+    Expression_Version: int | None = None
 
     @abstractmethod
     def get_work(self) -> str:
@@ -119,7 +118,7 @@ class DoelFRBR(FRBR):
     # Removing these base fields by declaring a default value
     Expression_Language: str = Field("")
     Expression_Date: str = Field("")
-    Expression_Version: Optional[int] = Field(1)
+    Expression_Version: int | None = Field(1)
 
     def get_work(self) -> str:
         work: str = f"/join/id/proces/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
@@ -145,7 +144,7 @@ class ProcedureStap(BaseModel):
 
 class ProcedureVerloop(BaseModel):
     bekend_op: str
-    stappen: List[ProcedureStap] = Field([])
+    stappen: list[ProcedureStap] = Field([])
 
 
 class ContentType(str, Enum):
@@ -212,7 +211,7 @@ class DocumentType(str, Enum):
 
 class InstellingDoel(BaseModel):
     frbr: DoelFRBR
-    datum_juridisch_werkend_vanaf: Optional[str] = None
+    datum_juridisch_werkend_vanaf: str | None = None
 
 
 class InstrekkingDoel(BaseModel):
@@ -236,7 +235,7 @@ class PublicationSettings(BaseModel):
     regeling_frbr: ActFRBR
     opdracht: PublicatieOpdracht
     instelling_doel: InstellingDoel
-    intrekking: Optional[Intrekking] = Field(None)
+    intrekking: Intrekking | None = Field(None)
 
     @field_validator("document_type", mode="before")
     def _format_document_type(cls, value):
@@ -276,19 +275,19 @@ class RegelingMutatie(BaseModel, metaclass=ABCMeta):
 
     # wId's used by identifiers, for example beleidskeuze-4 by that object
     # Although it should be possible to add custom identifiers
-    bekend_wid_map: Dict[str, str]
+    bekend_wid_map: dict[str, str]
 
     # All previously used wIds. Which are allowed to be used again
     # The main reason here is that we can not generate new wIds for old versions
-    bekend_wids: List[str]
+    bekend_wids: list[str]
 
-    te_verwijderden_gios: List[VerwijderdeGio]
+    te_verwijderden_gios: list[VerwijderdeGio]
 
     @classmethod
     def from_dict(cls, data: dict) -> "RegelingMutatie":
         type_map = {"vervang": VervangRegelingMutatie, "renvooi": RenvooiRegelingMutatie}
         try:
-            class_type: Type[RegelingMutatie] = type_map[data["type"]]
+            class_type: type[RegelingMutatie] = type_map[data["type"]]
             return class_type(**data)
         except KeyError:
             raise ValueError(f"Unknown type {data['type']}")
@@ -308,7 +307,7 @@ class RenvooiRegelingMutatie(RegelingMutatie):
 
     @field_validator("renvooi_api_key", mode="after")
     def _overwrite_renvooi_api_key_from_env(cls, value):
-        env_key: Optional[str] = os.getenv("RENVOOI_API_KEY")
+        env_key: str | None = os.getenv("RENVOOI_API_KEY")
         if env_key:
             return env_key
         return value

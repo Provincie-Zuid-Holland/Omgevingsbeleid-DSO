@@ -1,5 +1,3 @@
-from typing import List
-
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
 from dso.act_builder.state_manager.states.text_manipulator.data_hint_cleaner import DataHintCleaner
 from dso.act_builder.state_manager.states.text_manipulator.extractor.documenten_extractor import TextDocumentenExtractor
@@ -15,7 +13,7 @@ class BijlageDocumentenContent:
         self._data_hint_cleaner: DataHintCleaner = DataHintCleaner()
 
     def create(self) -> str:
-        documenten: List[Document] = self._state_manager.input_data.resources.document_repository.all()
+        documenten: list[Document] = self._state_manager.input_data.resources.document_repository.all()
         documenten = sorted(documenten, key=lambda d: d.Title)
         if len(documenten) == 0:
             return ""

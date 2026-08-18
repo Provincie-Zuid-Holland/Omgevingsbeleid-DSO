@@ -1,5 +1,3 @@
-from typing import List
-
 from .registry import WaardelijstProcessor
 from .source_models import SourceResult, Waarde, Waardelijst
 
@@ -14,11 +12,11 @@ from dso.services.ow.themas.types import Thema
 class ThemaProcessor(WaardelijstProcessor):
     def process(self, source: SourceResult) -> str:
         thema_list: Waardelijst = source.get_by_label("thema")
-        themas: List[Waarde] = thema_list.waarden.waarde
+        themas: list[Waarde] = thema_list.waarden.waarde
         if not themas:
             raise RuntimeError("Thema waardelijst was not found")
 
-        output_contents: List[str] = [OUTPUT_FILE_HEADING, "themas: Dict[str, Thema] = {\n"]
+        output_contents: list[str] = [OUTPUT_FILE_HEADING, "themas: Dict[str, Thema] = {\n"]
 
         for thema_type in thema_list.waarden.waarde:
             output_contents.append(f"""
@@ -31,7 +29,7 @@ class ThemaProcessor(WaardelijstProcessor):
         toelichting="{thema_type.toelichting}",
         bron="{thema_type.bron}",
         domein="{thema_type.domein}",
-        deprecated={str(thema_type.is_deprecated())},
+        deprecated={thema_type.is_deprecated()!s},
     ),""")
 
         output_contents.append("}\n")

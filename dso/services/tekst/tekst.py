@@ -1,6 +1,6 @@
 import re
 from abc import ABCMeta, abstractmethod
-from typing import Any, Dict, List, Optional, Type, TypeAlias, Union
+from typing import Any
 
 from bs4 import BeautifulSoup, CData, Comment, Declaration, Doctype, NavigableString, ProcessingInstruction, Tag
 
@@ -9,7 +9,7 @@ from .lijst import LijstType, LijstTypeOrdered, LijstTypeUnordered, NumberingStr
 object_code_regex = r"\[OBJECT-CODE:(.*?)\]"
 
 
-def extract_object_code(text: str) -> Optional[str]:
+def extract_object_code(text: str) -> str | None:
     matched = re.search(object_code_regex, text)
     if not matched:
         return None
@@ -19,11 +19,11 @@ def extract_object_code(text: str) -> Optional[str]:
 
 class AsXmlTrait(metaclass=ABCMeta):
     @abstractmethod
-    def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup) -> Tag | str:
         pass
 
 
-LeftoverTag: TypeAlias = Optional[Tag]
+type LeftoverTag = Tag | None
 
 
 class IsEmptyTrait(metaclass=ABCMeta):
@@ -33,7 +33,7 @@ class IsEmptyTrait(metaclass=ABCMeta):
 
 
 class Element(AsXmlTrait, metaclass=ABCMeta):
-    def consume_children(self, children: List[Any]):
+    def consume_children(self, children: list[Any]):
         for element in children:
             if isinstance(element, Comment):
                 self.consume_comment(element)
@@ -50,7 +50,7 @@ class Element(AsXmlTrait, metaclass=ABCMeta):
             elif isinstance(element, Tag):
                 self.consume_tag(element)
             else:
-                raise Exception("Unknown type", element)
+                raise TypeError("Unknown type", element)
 
     @abstractmethod
     def consume_tag(self, tag: Tag) -> LeftoverTag:
@@ -68,17 +68,18 @@ class ElementGenerator(metaclass=ABCMeta):
     def can_consume_tag(self, tag: Tag) -> bool:
         pass
 
-    def generate(self, tag: Tag, context: dict = {}) -> Element:
+    def generate(self, tag: Tag, context: dict | None = None) -> Element:
         pass
 
 
 class SimpleElement(Element, metaclass=ABCMeta):
-    element_generators: List[ElementGenerator] = []
-
-    def __init__(self, xml_tag_name: str = "", xml_tag_attrs: Dict[str, str] = {}):
-        self.contents: List[Union[Element, str]] = []
+    def __init__(self, xml_tag_name: str = "", xml_tag_attrs: dict[str, str] | None = None):
+        if xml_tag_attrs is None:
+            xml_tag_attrs = {}
+        self.element_generators: list[ElementGenerator] = []
+        self.contents: list[Element | str] = []
         self.xml_tag_name: str = xml_tag_name
-        self.xml_tag_attrs: Dict[str, str] = xml_tag_attrs
+        self.xml_tag_attrs: dict[str, str] = xml_tag_attrs
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         for element_generator in self.element_generators:
@@ -99,9 +100,9 @@ class SimpleElement(Element, metaclass=ABCMeta):
     def as_xml(
         self,
         soup: BeautifulSoup,
-        tag_name_overwrite: Optional[str] = None,
-        tag_attrs_overwrite: Optional[Dict[str, str]] = None,
-    ) -> Union[Tag, str]:
+        tag_name_overwrite: str | None = None,
+        tag_attrs_overwrite: dict[str, str] | None = None,
+    ) -> Tag | str:
         tag_name: str = tag_name_overwrite if tag_name_overwrite is not None else self.xml_tag_name
         tag: Tag = soup.new_tag(tag_name)
         tag.attrs = tag_attrs_overwrite if tag_attrs_overwrite is not None else self.xml_tag_attrs
@@ -123,14 +124,14 @@ class SimpleElement(Element, metaclass=ABCMeta):
 
 
 class SimpleGenerator(ElementGenerator):
-    def __init__(self, tag_name: str, class_type: Type[SimpleElement]):
+    def __init__(self, tag_name: str, class_type: type[SimpleElement]):
         self._tag_name: str = tag_name
-        self._class_type: Type[SimpleElement] = class_type
+        self._class_type: type[SimpleElement] = class_type
 
     def can_consume_tag(self, tag: Tag) -> bool:
         return tag.name == self._tag_name
 
-    def generate(self, tag: Tag, context: dict = {}) -> Element:
+    def generate(self, tag: Tag, context: dict | None = None) -> Element:
         element = self._class_type(tag)
         return element
 
@@ -139,8 +140,10 @@ class OrderedLijstGenerator(ElementGenerator):
     def can_consume_tag(self, tag: Tag) -> bool:
         return tag.name == "ol"
 
-    def generate(self, tag: Tag, context: dict = {}) -> Element:
-        current_strategy: Optional[NumberingStrategy] = context.get("current_strategy", None)
+    def generate(self, tag: Tag, context: dict | None = None) -> Element:
+        if context is None:
+            context = {}
+        current_strategy: NumberingStrategy | None = context.get("current_strategy", None)
         next_strategy: NumberingStrategy = numbering_factory.get_next(current_strategy)
         element = Lijst(
             tag=tag,
@@ -153,7 +156,7 @@ class UnorderedLijstGenerator(ElementGenerator):
     def can_consume_tag(self, tag: Tag) -> bool:
         return tag.name == "ul"
 
-    def generate(self, tag: Tag, context: dict = {}) -> Element:
+    def generate(self, tag: Tag, context: dict | None = None) -> Element:
         element = Lijst(
             tag=tag,
             lijst_type=LijstTypeUnordered(),
@@ -165,11 +168,13 @@ class LiGenerator(ElementGenerator):
     def can_consume_tag(self, tag: Tag) -> bool:
         return tag.name == "li"
 
-    def generate(self, tag: Tag, context: dict = {}) -> Element:
-        lijst_type: Optional[LijstType] = context.get("lijst_type", None)
+    def generate(self, tag: Tag, context: dict | None = None) -> Element:
+        if context is None:
+            context = {}
+        lijst_type: LijstType | None = context.get("lijst_type", None)
         if lijst_type is None:
             raise RuntimeError("Missing required context LijstType to create a Li")
-        idx: Optional[int] = context.get("idx", None)
+        idx: int | None = context.get("idx", None)
         if idx is None:
             raise RuntimeError("Missing required context idx to create a Li")
         element = Li(tag, lijst_type, idx)
@@ -180,8 +185,8 @@ class RefGenerator(ElementGenerator):
     def can_consume_tag(self, tag: Tag) -> bool:
         return tag.name == "a"
 
-    def generate(self, tag: Tag, context: dict = {}) -> Element:
-        hint_type: Optional[str] = tag.get("data-hint-type", None)
+    def generate(self, tag: Tag, context: dict | None = None) -> Element:
+        hint_type: str | None = tag.get("data-hint-type", None)
         if hint_type == "gebiedsaanwijzing":
             return GebiedsaanwijzingRef(tag)
 
@@ -197,46 +202,46 @@ class RefGenerator(ElementGenerator):
         return ExtRef(tag)
 
 
-class I(SimpleElement):  # noqa: E742
-    def __init__(self, tag: Optional[Tag] = None):
+class I(SimpleElement):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="i")
 
 
 class B(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="b")
 
 
 class U(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="u")
 
 
 class Sub(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="sub")
 
 
 class Sup(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="sup")
 
 
 class Strong(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="strong")
 
 
 class TussenKop(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="Tussenkop")
 
 
 class Al(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="Al")
 
-    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: str | None = None) -> Tag | str:
         if self._is_empty():
             return ""
 
@@ -256,14 +261,14 @@ class Al(SimpleElement):
 
 
 class Br(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="br")
 
 
 class Figuur(SimpleElement):
     src_pattern = r"^\[ASSET:(.{36})\]$"
 
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__()
         self._asset_uuid: str = ""
 
@@ -275,7 +280,7 @@ class Figuur(SimpleElement):
             raise RuntimeError("Wrong format for image src")
         self._asset_uuid = src_match.group(1)
 
-    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: str | None = None) -> Tag | str:
         figuur: Tag = soup.new_tag("Figuur")
         illustratie: Tag = soup.new_tag("Illustratie")
         illustratie.attrs = {
@@ -289,14 +294,14 @@ class Figuur(SimpleElement):
 class ExtRef(SimpleElement):
     AKN_PATTERN = r"^/akn/"
 
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__()
         self.href: str = tag.get("href")
         self.soort: str = "URL"
         if re.match(self.AKN_PATTERN, self.href):
             self.soort = "AKN"
 
-    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: str | None = None) -> Tag | str:
         result = SimpleElement.as_xml(
             self,
             soup=soup,
@@ -310,11 +315,11 @@ class ExtRef(SimpleElement):
 
 
 class Contact(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__()
         self._adres: str = tag.get("href", "")[7:]
 
-    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: str | None = None) -> Tag | str:
         result = SimpleElement.as_xml(
             self,
             soup=soup,
@@ -332,7 +337,7 @@ class TekstObjectRef(SimpleElement):
         super().__init__()
         self.object_code: str = tag["data-hint-value"]
 
-    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: str | None = None) -> Tag | str:
         result = SimpleElement.as_xml(
             self,
             soup=soup,
@@ -359,10 +364,10 @@ class DocumentRef(SimpleElement):
 
     def __init__(self, tag: Tag):
         super().__init__()
-        self._document_code: Optional[str] = tag.get("data-hint-document-code")
-        self._wid_code: Optional[str] = tag.get("data-hint-wid-code")
+        self._document_code: str | None = tag.get("data-hint-document-code")
+        self._wid_code: str | None = tag.get("data-hint-wid-code")
 
-    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: str | None = None) -> Tag | str:
         result = SimpleElement.as_xml(
             self,
             soup=soup,
@@ -392,7 +397,7 @@ class GebiedsaanwijzingRef(SimpleElement):
         super().__init__()
         self._code: str = tag.get("data-code")
 
-    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: Optional[str] = None) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup, tag_name_overwrite: str | None = None) -> Tag | str:
         result = SimpleElement.as_xml(
             self,
             soup=soup,
@@ -407,14 +412,14 @@ class GebiedsaanwijzingRef(SimpleElement):
 
 
 class Kop(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__()
-        self.nummer: Optional[str] = None
+        self.nummer: str | None = None
 
         if tag is not None:
             self.nummer = tag.get("data-nummer", None)
 
-    def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup) -> Tag | str:
         kop: Tag = soup.new_tag("Kop")
 
         if self.nummer is not None:
@@ -429,13 +434,13 @@ class Kop(SimpleElement):
 
 
 class Inhoud(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="Inhoud")
 
 
 # td
 class Entry(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(
             xml_tag_name="entry",
             xml_tag_attrs={
@@ -456,7 +461,7 @@ class Entry(SimpleElement):
 
 # tr
 class Row(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(xml_tag_name="row")
 
     def consume_string(self, string: NavigableString):
@@ -466,7 +471,7 @@ class Row(SimpleElement):
 
 
 class Tbody(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(
             xml_tag_name="tbody",
             xml_tag_attrs={
@@ -481,7 +486,7 @@ class Tbody(SimpleElement):
 
 
 class Thead(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(
             xml_tag_name="thead",
             xml_tag_attrs={
@@ -496,10 +501,10 @@ class Thead(SimpleElement):
 
 
 class Table(Element):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         self.columns: int = int(tag.attrs.get("data-columns"))
-        self.thead: Optional[Thead] = None
-        self.tbody: Optional[Tbody] = None
+        self.thead: Thead | None = None
+        self.tbody: Tbody | None = None
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         if tag.name == "thead":
@@ -521,7 +526,7 @@ class Table(Element):
             return
         raise RuntimeError("Consume string not implemented for Table")
 
-    def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup) -> Tag | str:
         table: Tag = soup.new_tag("table")
         tgroup: Tag = soup.new_tag("tgroup")
         tgroup["cols"] = self.columns
@@ -546,7 +551,7 @@ class Table(Element):
 
 
 class Li(SimpleElement):
-    def __init__(self, tag: Optional[Tag], lijst_type: LijstType, idx: int):
+    def __init__(self, tag: Tag | None, lijst_type: LijstType, idx: int):
         super().__init__()
         self.lijst_type: LijstType = lijst_type
         self.idx: int = idx
@@ -560,7 +565,7 @@ class Li(SimpleElement):
         al.consume_string(string)
         self.contents.append(al)
 
-    def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup) -> Tag | str:
         tag_li: Tag = soup.new_tag("Li")
         if self.lijst_type.has_number():
             nummer: str = self.lijst_type.get_number(self.idx)
@@ -582,14 +587,14 @@ class Li(SimpleElement):
         return tag_li
 
     def _get_generate_context(self) -> dict:
-        current_strategy: Optional[NumberingStrategy] = self.lijst_type.get_numbering_strategy()
+        current_strategy: NumberingStrategy | None = self.lijst_type.get_numbering_strategy()
         return {
             "current_strategy": current_strategy,
         }
 
 
 class Lijst(SimpleElement):
-    def __init__(self, tag: Optional[Tag], lijst_type: LijstType):
+    def __init__(self, tag: Tag | None, lijst_type: LijstType):
         super().__init__()
         self.lijst_type: LijstType = lijst_type
 
@@ -598,7 +603,7 @@ class Lijst(SimpleElement):
         if len(raw) != 0:
             raise RuntimeError(f"Can not write plain text to Lijst. Trying to write: {raw}")
 
-    def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup) -> Tag | str:
         attributes: dict = {"type": self.lijst_type.get_type()}
         tag: Tag = soup.new_tag("Lijst", **attributes)
         for content in self.contents:
@@ -620,11 +625,11 @@ class Lijst(SimpleElement):
 
 
 class Divisietekst(Element):
-    def __init__(self, tag: Optional[Tag] = None):
-        self.kop: Optional[Kop] = None
-        self.inhoud: Optional[Inhoud] = None
-        self.wid_code: Optional[str] = None
-        self.object_code: Optional[str] = None
+    def __init__(self, tag: Tag | None = None):
+        self.kop: Kop | None = None
+        self.inhoud: Inhoud | None = None
+        self.wid_code: str | None = None
+        self.object_code: str | None = None
 
         if tag is not None:
             self.wid_code = tag.get("data-hint-wid-code", None)
@@ -661,7 +666,7 @@ class Divisietekst(Element):
         Divisietekst template comments:
             - [OBJECT-CODE:objecttype-123]
         """
-        object_code: Optional[str] = extract_object_code(str(comment))
+        object_code: str | None = extract_object_code(str(comment))
         if object_code is not None:
             self.object_code = object_code
 
@@ -673,7 +678,7 @@ class Divisietekst(Element):
 
         return self.inhoud
 
-    def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup) -> Tag | str:
         tag_divisietekst: Tag = soup.new_tag("Divisietekst")
         wid_code = self.wid_code or self.object_code
 
@@ -694,11 +699,13 @@ class Divisietekst(Element):
 
 
 class Divisie(Element):
-    def __init__(self, tag: Optional[Tag] = None):
-        self.kop: Optional[Kop] = None
-        self.contents: List[Union["Divisie", Divisietekst]] = []
-        self.wid_code = tag.get("data-hint-wid-code", None)
-        self.object_code = tag.get("data-hint-object-code", None)
+    def __init__(self, tag: Tag | None = None):
+        self.kop: Kop | None = None
+        self.contents: list[Divisie | Divisietekst] = []
+        self.wid_code: str | list[str] | None = tag.get("data-hint-wid-code", None) if tag else None
+        self.object_code: str | list[str] | None = tag.get("data-hint-object-code", None) if tag else None
+        if not self.wid_code and not self.object_code:
+            raise RuntimeError("Divisietekst must contain either a wid-code or object-code")
 
     def consume_tag(self, tag: Tag) -> LeftoverTag:
         while True:
@@ -776,7 +783,7 @@ class Divisie(Element):
         Divisie template comments:
             - [OBJECT-CODE:objecttype-123]
         """
-        object_code: Optional[str] = extract_object_code(str(comment))
+        object_code: str | None = extract_object_code(str(comment))
         if object_code is not None:
             self.object_code = object_code
 
@@ -797,7 +804,7 @@ class Divisie(Element):
         # Return the last which is now forced to be a Divisietekst
         return self.contents[-1]
 
-    def as_xml(self, soup: BeautifulSoup) -> Union[Tag, str]:
+    def as_xml(self, soup: BeautifulSoup) -> Tag | str:
         tag_divisie: Tag = soup.new_tag("Divisie")
         wid_code = self.wid_code or self.object_code
 
@@ -824,7 +831,7 @@ class Divisie(Element):
 
 
 class Lichaam(SimpleElement):
-    def __init__(self, tag: Optional[Tag] = None):
+    def __init__(self, tag: Tag | None = None):
         super().__init__(
             xml_tag_name="Lichaam",
             xml_tag_attrs={

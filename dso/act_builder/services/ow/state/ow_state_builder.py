@@ -1,4 +1,3 @@
-from typing import List, Optional, Set
 from uuid import uuid4
 
 from dso.act_builder.services.ow.input.models import (
@@ -39,7 +38,7 @@ from dso.services.koop.waardelijsten.gen import ProcedureType
 class OwStateBuilder:
     def __init__(self, province_id: str, procedure_type: ProcedureType):
         self._province_id: str = province_id
-        self._procedure_status: Optional[str] = "ontwerp" if procedure_type == ProcedureType.ontwerpbesluit else None
+        self._procedure_status: str | None = "ontwerp" if procedure_type == ProcedureType.ontwerpbesluit else None
         self._state: OwState = OwState()
 
     def add_ambtsgebied(self, input_ambtsgebied: OwInputAmbtsgebied):
@@ -65,12 +64,12 @@ class OwStateBuilder:
         )
         self._state.regelingsgebieden.add(regelingsgebied)
 
-    def add_gebiedengroepen(self, input_gebiedengroepen: List[OwInputGebiedengroep]):
+    def add_gebiedengroepen(self, input_gebiedengroepen: list[OwInputGebiedengroep]):
         for input_gebiedengroep in input_gebiedengroepen:
             self.add_gebiedengroep(input_gebiedengroep)
 
     def add_gebiedengroep(self, input_gebiedengroep: OwInputGebiedengroep):
-        gebieden_refs: List[UnresolvedGebiedRef] = []
+        gebieden_refs: list[UnresolvedGebiedRef] = []
         for input_gio in input_gebiedengroep.gios:
             for input_locatie in input_gio.locaties:
                 gebied = OwGebied(
@@ -98,7 +97,7 @@ class OwStateBuilder:
         )
         self._state.gebiedengroepen.add(gebieden_groep)
 
-    def add_policy_objects(self, input_policy_objects: List[OwInputPolicyObject]):
+    def add_policy_objects(self, input_policy_objects: list[OwInputPolicyObject]):
         for input_policy_object in input_policy_objects:
             self.add_policy_object(input_policy_object)
 
@@ -107,8 +106,8 @@ class OwStateBuilder:
             return
 
         text_ref: AbstractWidRef = self._handle_policy_object_element(input_policy_object)
-        location_refs: Set[AbstractLocationRef] = set(self._handle_locations(input_policy_object.location_refs))
-        aanwijzing_refs: Set[AbstractGebiedsaanwijzingRef] = set(
+        location_refs: set[AbstractLocationRef] = set(self._handle_locations(input_policy_object.location_refs))
+        aanwijzing_refs: set[AbstractGebiedsaanwijzingRef] = set(
             self._handle_aanwijzing_refs(input_policy_object.gebiedsaanwijzing_refs)
         )
         tekstdeel: OwTekstdeel = OwTekstdeel(
@@ -166,7 +165,7 @@ class OwStateBuilder:
             case _:
                 raise RuntimeError("Invalid element type for policy object")
 
-    def add_gebiedsaanwijzingen(self, input_gebiedsaanwijzingen: List[OwInputGebiedsaanwijzing]):
+    def add_gebiedsaanwijzingen(self, input_gebiedsaanwijzingen: list[OwInputGebiedsaanwijzing]):
         for input_gebiedsaanwijzing in input_gebiedsaanwijzingen:
             self.add_gebiedsaanwijzing(input_gebiedsaanwijzing)
 
@@ -202,15 +201,15 @@ class OwStateBuilder:
         self._state.gebiedsaanwijzingen.add(gebiedsaanwijzing)
 
     def _handle_aanwijzing_refs(
-        self, input_refs: Set[OwInputGebiedsaanwijzingRef]
-    ) -> List[AbstractGebiedsaanwijzingRef]:
-        result: List[AbstractGebiedsaanwijzingRef] = [
+        self, input_refs: set[OwInputGebiedsaanwijzingRef]
+    ) -> list[AbstractGebiedsaanwijzingRef]:
+        result: list[AbstractGebiedsaanwijzingRef] = [
             UnresolvedGebiedsaanwijzingRef(target_key=input_ref.code) for input_ref in input_refs
         ]
         return result
 
-    def _handle_locations(self, location_refs: Set[OwInputAbstractLocatieRef]) -> List[AbstractLocationRef]:
-        result: List[AbstractLocationRef] = []
+    def _handle_locations(self, location_refs: set[OwInputAbstractLocatieRef]) -> list[AbstractLocationRef]:
+        result: list[AbstractLocationRef] = []
         for location_ref in location_refs:
             match location_ref:
                 case OwInputAmbtsgebiedLocatieRef():

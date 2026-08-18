@@ -1,5 +1,4 @@
 import io
-from typing import List
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from ..services.utils.os import empty_directory
@@ -14,7 +13,7 @@ from .state_manager.state_manager import StateManager
 class Builder:
     def __init__(self, input_data: InputData):
         self._state_manager: StateManager = StateManager(input_data)
-        self._services: List[BuilderService] = [
+        self._services: list[BuilderService] = [
             OpdrachtBuilder(),
             AanleveringKennisgevingBuilder(),
             ManifestBuilder(),

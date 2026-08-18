@@ -1,5 +1,4 @@
 import re
-from typing import List, Set
 
 from lxml import etree
 
@@ -39,7 +38,7 @@ class WijzigBijlageContent:
             settings,
         )
 
-        used_asset_uuids: Set[str] = self._calculate_used_asset_uuids(aanleveren_regeling_content)
+        used_asset_uuids: set[str] = self._calculate_used_asset_uuids(aanleveren_regeling_content)
         self._state_manager.used_asset_uuids = used_asset_uuids
 
         # We store the RegelingVrijetekst for the future mutations
@@ -57,7 +56,7 @@ class WijzigBijlageContent:
 
     def _get_regeling_content(
         self,
-        bijlagen: List[str],
+        bijlagen: list[str],
         lichaam: str,
         settings: PublicationSettings,
     ) -> str:
@@ -108,7 +107,7 @@ class WijzigBijlageContent:
                 # What we send and what we store is the same for the initial regeling
                 return regeling_vrijetekst_wordt, regeling_vrijetekst_wordt
 
-    def _calculate_used_asset_uuids(self, aanleveren_regeling_content: str) -> Set[str]:
+    def _calculate_used_asset_uuids(self, aanleveren_regeling_content: str) -> set[str]:
         # We only need to add images that are used in the resulting text.
         # - On an initial act that would be all the images
         # - On a regular renvooi that would be all current used, and removed images
@@ -118,7 +117,7 @@ class WijzigBijlageContent:
         # All in all, its safer to just check the text which images are used
         # and have that as the source of which images we should add to the zip
         parser: ActTextAssetParser = ActTextAssetParser()
-        asset_uuids: Set[str] = parser.get_asset_uuids(aanleveren_regeling_content)
+        asset_uuids: set[str] = parser.get_asset_uuids(aanleveren_regeling_content)
         return asset_uuids
 
 
@@ -126,13 +125,13 @@ class ActTextAssetParser:
     def __init__(self):
         self._uuid_regex = r"img_([a-f0-9\-]+)\.(png|jpg|jpeg|gif|bmp|tiff|webp)"
 
-    def get_asset_uuids(self, act_text: str) -> Set[str]:
+    def get_asset_uuids(self, act_text: str) -> set[str]:
         parser = etree.XMLParser(ns_clean=True)
         tree = etree.fromstring(act_text, parser)
         namespaces = {"ns": "https://standaarden.overheid.nl/stop/imop/tekst/"}
         illustraties = tree.xpath("//ns:Illustratie", namespaces=namespaces)
 
-        asset_uuids: Set[str] = set()
+        asset_uuids: set[str] = set()
         for illustratie in illustraties:
             uuidx = self._extract_uuid(illustratie.attrib.get("naam", ""))
             asset_uuids.add(uuidx)

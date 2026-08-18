@@ -1,5 +1,4 @@
 import os
-from typing import List
 
 from ...services.ewid.ewid_service import EWIDService
 from .models import InputData, OutputFile
@@ -11,7 +10,7 @@ class StateManager:
         self.debug: dict = {}
 
         self.input_data: InputData = input_data
-        self.output_files: List[OutputFile] = []
+        self.output_files: list[OutputFile] = []
 
         # Service is in the state manager
         # As we use it on multiple places, and the internal state should be updates for each use
@@ -27,6 +26,6 @@ class StateManager:
     def add_output_file(self, output_file: OutputFile):
         self.output_files.append(output_file)
 
-    def get_output_files(self) -> List[OutputFile]:
+    def get_output_files(self) -> list[OutputFile]:
         output_files = sorted(self.output_files, key=lambda o: o.filename)
         return output_files

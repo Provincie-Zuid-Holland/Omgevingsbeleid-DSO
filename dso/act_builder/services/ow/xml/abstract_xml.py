@@ -1,7 +1,6 @@
 import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Optional, Set
 
 from dso.act_builder.services.ow.state.models import BaseOwObject
 from dso.act_builder.services.ow.xml.ow_xml_data import OwXmlData
@@ -15,28 +14,28 @@ from dso.services.utils.helpers import load_template
 @dataclass
 class BuildFileResult:
     output_file: OutputFile
-    object_types: List[str]
+    object_types: list[str]
 
 
 class AbstractXmlFile(ABC):
     def __init__(self, state_manager: StateManager):
         procedure_type: ProcedureType = state_manager.input_data.besluit.soort_procedure
-        self._procedure_status: Optional[str] = "ontwerp" if procedure_type == ProcedureType.ontwerpbesluit else None
+        self._procedure_status: str | None = "ontwerp" if procedure_type == ProcedureType.ontwerpbesluit else None
         self._dataset: str = state_manager.input_data.ow_dataset
         self._area_title: str = state_manager.input_data.ow_gebied
         self._delivery_id: str = state_manager.input_data.publication_settings.opdracht.id_levering
 
     @abstractmethod
-    def build_file(self, xml_data: OwXmlData) -> Optional[BuildFileResult]:
+    def build_file(self, xml_data: OwXmlData) -> BuildFileResult | None:
         pass
 
     def _do_build(
         self,
         xml_filename: str,
-        object_types: List[str],
-        ow_objects: Set[BaseOwObject],
+        object_types: list[str],
+        ow_objects: set[BaseOwObject],
         output_filename: str,
-    ) -> Optional[BuildFileResult]:
+    ) -> BuildFileResult | None:
         if len(ow_objects) == 0:
             return None
 

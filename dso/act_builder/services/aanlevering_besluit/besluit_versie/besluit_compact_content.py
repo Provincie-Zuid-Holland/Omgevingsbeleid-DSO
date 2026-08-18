@@ -1,5 +1,3 @@
-from typing import Optional
-
 from bs4 import BeautifulSoup
 
 from .....services.tekst.tekst import Inhoud
@@ -24,7 +22,7 @@ class BesluitCompactContent:
         aanhef_xml: str = self._html_to_xml_without_root(besluit.aanhef)
         sluiting_xml: str = self._html_to_xml_without_root(besluit.sluiting)
 
-        ondertekening_xml: Optional[str] = None
+        ondertekening_xml: str | None = None
         if besluit.ondertekening != "":
             ondertekening_xml = self._html_to_xml_without_root(besluit.ondertekening)
 

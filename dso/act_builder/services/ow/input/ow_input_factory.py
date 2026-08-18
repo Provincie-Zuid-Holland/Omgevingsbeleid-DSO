@@ -1,5 +1,3 @@
-from typing import List
-
 from dso.act_builder.services.ow.input.models import (
     OwInputAmbtsgebied,
     OwInputGebiedengroep,
@@ -31,11 +29,11 @@ class OwInputFactory:
     def get_regelingsgebied(self) -> OwInputRegelingsgebied:
         return self._regelingsgebied_factory.get_regelingsgebied()
 
-    def get_gebiedsaanwijzingen(self) -> List[OwInputGebiedsaanwijzing]:
+    def get_gebiedsaanwijzingen(self) -> list[OwInputGebiedsaanwijzing]:
         return self._gebiedsaanwijzingen_factory.get_gebiedsaanwijzingen()
 
-    def get_policy_objects(self) -> List[OwInputPolicyObject]:
+    def get_policy_objects(self) -> list[OwInputPolicyObject]:
         return self._policy_object_factory.get_policy_objects()
 
-    def get_gebiedengroepen(self) -> List[OwInputGebiedengroep]:
+    def get_gebiedengroepen(self) -> list[OwInputGebiedengroep]:
         return self._gebiedengroepen_factory.get_gebiedengroepen()

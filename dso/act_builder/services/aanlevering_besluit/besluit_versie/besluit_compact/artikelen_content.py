@@ -1,5 +1,4 @@
 import re
-from typing import Optional, List
 
 from bs4 import BeautifulSoup
 from pydantic import BaseModel
@@ -35,7 +34,7 @@ class ArtikelenContent:
         self._state_manager.artikel_eid.add(wijzig_artikel.eId, ArtikelEidType.WIJZIG)
 
         # Tijds Artikel
-        tijd_artikel: Optional[ArtikelContent] = None
+        tijd_artikel: ArtikelContent | None = None
         if besluit.tijd_artikel is not None:
             inhoud: str = self._html_to_xml_inhoud(besluit.tijd_artikel.inhoud)
             tijd_artikel: ArtikelContent = self._create_article(
@@ -45,7 +44,7 @@ class ArtikelenContent:
             self._state_manager.artikel_eid.add(tijd_artikel.eId, ArtikelEidType.BESLUIT_INWERKINGSTIJD)
 
         # Tekst Artikelen
-        tekst_artikelen: List[ArtikelContent] = []
+        tekst_artikelen: list[ArtikelContent] = []
         for tekst_artikel in besluit.tekst_artikelen:
             inhoud: str = self._html_to_xml_inhoud(tekst_artikel.inhoud)
             inhoud: str = self._replace_ref_appendices(inhoud)

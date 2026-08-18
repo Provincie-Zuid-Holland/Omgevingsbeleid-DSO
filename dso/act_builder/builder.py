@@ -1,6 +1,5 @@
 import io
 import os
-from typing import Dict, List, Optional, Set
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from dso.act_builder.services.document.document_aanlevering_informatie_object_builder import (
@@ -31,7 +30,7 @@ class Builder:
     def __init__(self, input_data: InputData):
         self._state_manager: StateManager = StateManager(input_data)
 
-        self._services: List[BuilderService] = [
+        self._services: list[BuilderService] = [
             OpdrachtBuilder(),
             AanleveringBesluitBuilder(),
             OwBuilder(),
@@ -91,16 +90,16 @@ class Builder:
         zip_buffer.seek(0)
         return zip_buffer
 
-    def get_used_asset_uuids(self) -> Set[str]:
+    def get_used_asset_uuids(self) -> set[str]:
         return self._state_manager.used_asset_uuids
 
-    def get_used_wid_map(self) -> Dict[str, str]:
+    def get_used_wid_map(self) -> dict[str, str]:
         return self._state_manager.act_ewid_service.get_state_used_wid_map()
 
-    def get_used_wids(self) -> List[str]:
+    def get_used_wids(self) -> list[str]:
         return self._state_manager.act_ewid_service.get_state_used_wids()
 
-    def get_regeling_vrijetekst(self) -> Optional[str]:
+    def get_regeling_vrijetekst(self) -> str | None:
         return self._state_manager.regeling_vrijetekst_wordt
 
     def get_ow_state(self) -> OwState:

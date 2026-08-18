@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Any
 
 
 class StateException(Exception):
@@ -21,9 +21,7 @@ class OWStateMutationError(OWStateError):
 class OWObjectStateException(OWStateError):
     """Indicates OW State inconsistency when an object is missing expected references or is dangling."""
 
-    def __init__(
-        self, message: str, ow_object: Optional[dict] = None, ref_ow_id: Optional[str] = None, *args, **kwargs
-    ):
+    def __init__(self, message: str, ow_object: dict | None = None, ref_ow_id: str | None = None, *args, **kwargs):
         super().__init__(message, *args, **kwargs)
         self.ow_object = ow_object
         self.ref_ow_id = ref_ow_id
@@ -32,6 +30,6 @@ class OWObjectStateException(OWStateError):
 class OWStateDanglingObjectsException(OWStateError):
     """Indicates OW State inconsistency of ending up with dangling objects"""
 
-    def __init__(self, message: str, ow_objects: List[Any], *args, **kwargs):
+    def __init__(self, message: str, ow_objects: list[Any], *args, **kwargs):
         super().__init__(message, *args, **kwargs)
         self.ow_objects = ow_objects

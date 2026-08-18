@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_serializer, model_valid
 
 class IllustratieFormaat(str, Enum):
     jpg = "image/jpeg"
-    jpeg = "image/jpeg"
+    jpeg = "image/jpeg"  # noqa: PIE796
     png = "image/png"
 
 

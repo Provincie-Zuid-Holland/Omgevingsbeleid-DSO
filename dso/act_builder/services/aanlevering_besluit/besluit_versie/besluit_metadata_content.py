@@ -1,10 +1,8 @@
-from typing import List
-
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
-from ....state_manager.input_data.resource.gebieden.types import Gio
 
 from .....services.utils.helpers import load_template
 from ....state_manager.input_data.resource.besluit_pdf.besluit_pdf import BesluitPdf
+from ....state_manager.input_data.resource.gebieden.types import Gio
 from ....state_manager.state_manager import StateManager
 
 
@@ -13,18 +11,18 @@ class BesluitMetadataContent:
         self._state_manager: StateManager = state_manager
 
     def create(self) -> str:
-        informatieobject_refs: List[str] = []
+        informatieobject_refs: list[str] = []
 
-        gios_new: List[Gio] = self._state_manager.input_data.resources.gio_repository.get_new()
+        gios_new: list[Gio] = self._state_manager.input_data.resources.gio_repository.get_new()
         for gio in gios_new:
             informatieobject_refs.append(gio.frbr.get_expression())
 
-        documents: List[Document] = self._state_manager.input_data.resources.document_repository.all()
+        documents: list[Document] = self._state_manager.input_data.resources.document_repository.all()
         for document in documents:
             if document.New:
                 informatieobject_refs.append(document.Frbr.get_expression())
 
-        pdfs: List[BesluitPdf] = self._state_manager.input_data.resources.besluit_pdf_repository.all()
+        pdfs: list[BesluitPdf] = self._state_manager.input_data.resources.besluit_pdf_repository.all()
         for pdf in pdfs:
             informatieobject_refs.append(pdf.frbr.get_expression())
 
