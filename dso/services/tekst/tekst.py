@@ -1,6 +1,6 @@
 import re
 from abc import ABCMeta, abstractmethod
-from typing import Any
+from typing import Any, ClassVar
 
 from bs4 import BeautifulSoup, CData, Comment, Declaration, Doctype, NavigableString, ProcessingInstruction, Tag
 
@@ -73,10 +73,11 @@ class ElementGenerator(metaclass=ABCMeta):
 
 
 class SimpleElement(Element, metaclass=ABCMeta):
+    element_generators: ClassVar[list[ElementGenerator]] = []
+
     def __init__(self, xml_tag_name: str = "", xml_tag_attrs: dict[str, str] | None = None):
         if xml_tag_attrs is None:
             xml_tag_attrs = {}
-        self.element_generators: list[ElementGenerator] = []
         self.contents: list[Element | str] = []
         self.xml_tag_name: str = xml_tag_name
         self.xml_tag_attrs: dict[str, str] = xml_tag_attrs
