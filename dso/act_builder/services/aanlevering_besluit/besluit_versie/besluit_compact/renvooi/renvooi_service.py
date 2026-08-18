@@ -2,7 +2,8 @@ from urllib.parse import urljoin
 
 import requests
 from lxml import etree
-from requests.exceptions import ConnectionError as RequestsConnectionError, SSLError, Timeout
+from requests.exceptions import ConnectionError as RequestsConnectionError
+from requests.exceptions import SSLError, Timeout
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 from .......exceptions import (
