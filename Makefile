@@ -50,3 +50,6 @@ format: ## Format code via Ruff
 	python -m ruff format dso/ tests/
 
 fix: check-fix format ## Fix and Format the code via Ruff
+
+test:
+	pytest tests/unit/
