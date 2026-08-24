@@ -39,8 +39,7 @@ class WijzigBijlageContent:
             settings,
         )
 
-        used_asset_uuids: Set[str] = self._calculate_used_asset_uuids(aanleveren_regeling_content)
-        self._state_manager.used_asset_uuids = used_asset_uuids
+        self._calculate_and_store_asset_uuids(regeling_vrijetekst_wordt, aanleveren_regeling_content)
 
         # We store the RegelingVrijetekst for the future mutations
         self._state_manager.regeling_vrijetekst_wordt = regeling_vrijetekst_wordt
@@ -108,18 +107,16 @@ class WijzigBijlageContent:
                 # What we send and what we store is the same for the initial regeling
                 return regeling_vrijetekst_wordt, regeling_vrijetekst_wordt
 
-    def _calculate_used_asset_uuids(self, aanleveren_regeling_content: str) -> Set[str]:
-        # We only need to add images that are used in the resulting text.
-        # - On an initial act that would be all the images
-        # - On a regular renvooi that would be all current used, and removed images
-        # - On a replace text that would be all current images
-        # - The renvooi could deside to result into a replace text
+    def _calculate_and_store_asset_uuids(self, regeling_vrijetekst_wordt: str, regeling_vrijetekst_aangeleverd: str):
+        # We need two lists of asset uuid
+        # `asset_uuids_wordt` which are the one in the act_wordt text (the final product)
+        # These are the assets that the API needs to keep track of
         #
-        # All in all, its safer to just check the text which images are used
-        # and have that as the source of which images we should add to the zip
+        # `asset_uuids_aangeleverd` which are the assets we are sending to DSO
+        # Which we will filter on to determine which asset binaries we add to the zip file
         parser: ActTextAssetParser = ActTextAssetParser()
-        asset_uuids: Set[str] = parser.get_asset_uuids(aanleveren_regeling_content)
-        return asset_uuids
+        self._state_manager.asset_uuids_wordt = parser.get_asset_uuids(regeling_vrijetekst_wordt)
+        self._state_manager.asset_uuids_aangeleverd = parser.get_asset_uuids(regeling_vrijetekst_aangeleverd)
 
 
 class ActTextAssetParser:

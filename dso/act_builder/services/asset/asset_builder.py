@@ -13,7 +13,7 @@ class AssetBuilder(BuilderService):
         assets: List[Asset] = asset_repository.all()
 
         for asset in assets:
-            if str(asset.UUID) not in state_manager.used_asset_uuids:
+            if str(asset.UUID) not in state_manager.asset_uuids_aangeleverd:
                 continue
 
             output_file = OutputFile(

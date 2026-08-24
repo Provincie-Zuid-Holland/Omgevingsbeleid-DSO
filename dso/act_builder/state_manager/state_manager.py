@@ -28,7 +28,8 @@ class StateManager:
         # What we send to DSO, might be different then `wordt` because of the renvooi
         self.regeling_vrijetekst_aangeleverd: Optional[str] = None
 
-        self.used_asset_uuids: Set[str] = set()
+        self.asset_uuids_wordt: Set[str] = set()
+        self.asset_uuids_aangeleverd: Set[str] = set()
 
         # result state of ow object data after processing
         self.output_ow_state: Optional[OwState] = None
