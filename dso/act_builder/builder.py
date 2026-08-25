@@ -90,8 +90,11 @@ class Builder:
         zip_buffer.seek(0)
         return zip_buffer
 
-    def get_used_asset_uuids(self) -> set[str]:
-        return self._state_manager.used_asset_uuids
+    def get_asset_uuids_wordt(self) -> set[str]:
+        return self._state_manager.asset_uuids_wordt
+
+    def get_asset_uuids_aangeleverd(self) -> set[str]:
+        return self._state_manager.asset_uuids_aangeleverd
 
     def get_used_wid_map(self) -> dict[str, str]:
         return self._state_manager.act_ewid_service.get_state_used_wid_map()
