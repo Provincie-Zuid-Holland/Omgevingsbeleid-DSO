@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import BaseModel
 
 
@@ -11,5 +9,5 @@ class PolicyObjectReference(BaseModel):
 
     object_code: str
     wid: str
-    location: Optional[str] = None
-    ow_location_id: Optional[str] = None
+    location: str | None = None
+    ow_location_id: str | None = None

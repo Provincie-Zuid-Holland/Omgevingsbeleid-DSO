@@ -1,5 +1,3 @@
-from typing import Optional
-
 from bs4 import BeautifulSoup
 
 from dso.act_builder.services.services.appendices_service import AppendicesService, AppendixDestination
@@ -18,7 +16,7 @@ class MotiveringContent:
 
     def create(self) -> str:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
-        motivering: Optional[Motivering] = self._state_manager.input_data.besluit.motivering
+        motivering: Motivering | None = self._state_manager.input_data.besluit.motivering
         if motivering is None:
             return ""
 

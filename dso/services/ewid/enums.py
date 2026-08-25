@@ -1,6 +1,4 @@
-from typing import Dict
-
-FIXED_ELEMENT_REF: Dict[str, str] = {
+FIXED_ELEMENT_REF: dict[str, str] = {
     "Aanhef": "formula_1",
     "AlgemeneToelichting": "genrecital",
     "ArtikelgewijzeToelichting": "artrecital",
@@ -13,7 +11,7 @@ FIXED_ELEMENT_REF: Dict[str, str] = {
 }
 
 
-ELEMENT_REF: Dict[str, str] = {
+ELEMENT_REF: dict[str, str] = {
     "Afdeling": "subchp",
     "Artikel": "art",
     "Begrip": "item",

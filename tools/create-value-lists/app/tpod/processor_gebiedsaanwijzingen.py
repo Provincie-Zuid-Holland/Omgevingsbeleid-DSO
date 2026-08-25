@@ -1,5 +1,3 @@
-from typing import List
-
 from .config import (
     OMGEVINGSVISIE_GA_MATRIX,
     PROGRAMMA_GA_MATRIX,
@@ -29,16 +27,16 @@ class GebiedsaanwijzingProcessor(WaardelijstProcessor):
     """
 
     def process(self, source: SourceResult) -> str:
-        output_contents: List[str] = [OUTPUT_FILE_HEADING]
+        output_contents: list[str] = [OUTPUT_FILE_HEADING]
 
-        omgevingsvisie_data_var_names: List[str] = []
-        programma_data_var_names: List[str] = []
+        omgevingsvisie_data_var_names: list[str] = []
+        programma_data_var_names: list[str] = []
 
         designation_type_list: Waardelijst = source.get_by_label("type gebiedsaanwijzing")
         for designation_type in designation_type_list.waarden.waarde:
             designation_group: Waardelijst = source.get_by_domain(designation_type.label)
 
-            values_output: List[str] = []
+            values_output: list[str] = []
             for value in designation_group.waarden.waarde:
                 values_output.append(f"""
         GebiedsaanwijzingWaarde(
@@ -49,7 +47,7 @@ class GebiedsaanwijzingProcessor(WaardelijstProcessor):
             toelichting="{value.toelichting}",
             bron="{value.bron}",
             domein="{value.domein}",
-            deprecated={str(value.is_deprecated())},
+            deprecated={value.is_deprecated()!s},
         )""")
 
             variable_name: str = f"ga_{designation_group.get_key()}_groep"
@@ -62,7 +60,7 @@ class GebiedsaanwijzingProcessor(WaardelijstProcessor):
         definitie="{designation_type.definitie}",
         bron="{designation_type.bron}",
         domein="{designation_type.domein}",
-        deprecated={str(designation_type.is_deprecated())},
+        deprecated={designation_type.is_deprecated()!s},
     ),
     aanwijzing_groep=GebiedsaanwijzingGroep(
         label="{designation_group.label}",

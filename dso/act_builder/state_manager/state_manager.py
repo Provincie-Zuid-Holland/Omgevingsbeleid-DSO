@@ -1,5 +1,4 @@
 import os
-from typing import List, Optional, Set
 
 from dso.act_builder.services.ow.state.ow_state import OwState
 from dso.act_builder.state_manager.states.text_manipulator.models import TextData
@@ -21,18 +20,18 @@ class StateManager:
         self.text_data: TextData = TextData()
         self.artikel_eid: ArtikelEidRepository = ArtikelEidRepository()
 
-        self.output_files: List[OutputFile] = []
+        self.output_files: list[OutputFile] = []
 
         # The full act text as how the conclusion would be
-        self.regeling_vrijetekst_wordt: Optional[str] = None
+        self.regeling_vrijetekst_wordt: str | None = None
         # What we send to DSO, might be different then `wordt` because of the renvooi
-        self.regeling_vrijetekst_aangeleverd: Optional[str] = None
+        self.regeling_vrijetekst_aangeleverd: str | None = None
 
-        self.asset_uuids_wordt: Set[str] = set()
-        self.asset_uuids_aangeleverd: Set[str] = set()
+        self.asset_uuids_wordt: set[str] = set()
+        self.asset_uuids_aangeleverd: set[str] = set()
 
         # result state of ow object data after processing
-        self.output_ow_state: Optional[OwState] = None
+        self.output_ow_state: OwState | None = None
 
         # Service is in the state manager
         # As we use it on multiple places, and the internal state should be updates for each use
@@ -50,10 +49,10 @@ class StateManager:
     def add_output_file(self, output_file: OutputFile):
         self.output_files.append(output_file)
 
-    def add_output_files(self, output_files: List[OutputFile]):
+    def add_output_files(self, output_files: list[OutputFile]):
         self.output_files.extend(output_files)
 
-    def get_output_files(self) -> List[OutputFile]:
+    def get_output_files(self) -> list[OutputFile]:
         output_files = sorted(self.output_files, key=lambda o: o.filename)
         return output_files
 

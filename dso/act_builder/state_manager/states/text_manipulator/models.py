@@ -1,5 +1,3 @@
-from typing import List
-
 from pydantic import BaseModel, Field
 
 
@@ -29,13 +27,13 @@ class TekstPolicyObject(BaseModel):
     eid: str
     wid: str
     element: str
-    gebiedsaanwijzingen: List[TekstPolicyObjectGebiedsaanwijzing] = Field(default_factory=list)
+    gebiedsaanwijzingen: list[TekstPolicyObjectGebiedsaanwijzing] = Field(default_factory=list)
 
 
 class TextData(BaseModel):
-    bijlage_gios: List[TekstBijlageGio] = Field(default_factory=list)
-    bijlage_documenten: List[TekstBijlageDocument] = Field(default_factory=list)
-    policy_objects: List[TekstPolicyObject] = Field(default_factory=list)
+    bijlage_gios: list[TekstBijlageGio] = Field(default_factory=list)
+    bijlage_documenten: list[TekstBijlageDocument] = Field(default_factory=list)
+    policy_objects: list[TekstPolicyObject] = Field(default_factory=list)
 
     def get_gio_by_key(self, gio_key: str) -> TekstBijlageGio:
         for gio in self.bijlage_gios:

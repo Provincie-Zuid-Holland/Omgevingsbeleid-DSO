@@ -1,14 +1,12 @@
-from typing import Optional
-
 from ......services.utils.helpers import load_json_data
 from ......services.utils.os import create_normalized_path
 from .asset_repository import AssetRepository
 
 
 class AssetResourceLoader:
-    def __init__(self, base_dir: str, json_file_path: Optional[str]) -> None:
+    def __init__(self, base_dir: str, json_file_path: str | None) -> None:
         self._base_dir: str = base_dir
-        self._json_file_path: Optional[str] = json_file_path
+        self._json_file_path: str | None = json_file_path
 
     def load(self) -> AssetRepository:
         repository = AssetRepository()

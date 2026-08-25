@@ -5,7 +5,6 @@ from pathlib import Path
 import requests
 
 from ..util.ruff import format_with_ruff
-
 from .config import DOWNLOAD_URL, SOURCE_FILE, TARGET_FILE, TARGET_PATH
 from .processor_gebiedsaanwijzingen import GebiedsaanwijzingProcessor
 from .processor_thema import ThemaProcessor
@@ -44,6 +43,5 @@ def _download_source() -> SourceResult:
     resp.raise_for_status()
     zip_bytes = io.BytesIO(resp.content)
 
-    with zipfile.ZipFile(zip_bytes, "r") as z:
-        with z.open(SOURCE_FILE) as f:
-            return SourceResult.model_validate_json(f.read())
+    with zipfile.ZipFile(zip_bytes, "r") as z, z.open(SOURCE_FILE) as f:
+        return SourceResult.model_validate_json(f.read())

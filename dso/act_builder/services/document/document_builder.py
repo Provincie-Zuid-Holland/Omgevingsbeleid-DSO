@@ -1,5 +1,3 @@
-from typing import List
-
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
 from dso.act_builder.state_manager.input_data.resource.document.document_repository import DocumentRepository
 
@@ -11,7 +9,7 @@ from ...state_manager.state_manager import StateManager
 class DocumentBuilder(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
         document_repository: DocumentRepository = state_manager.input_data.resources.document_repository
-        documents: List[Document] = document_repository.all()
+        documents: list[Document] = document_repository.all()
 
         for document in documents:
             if document.New:

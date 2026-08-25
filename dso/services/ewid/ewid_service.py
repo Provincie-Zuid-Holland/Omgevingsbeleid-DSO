@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from typing import Dict, List
 
 from . import ELEMENT_REF, EIDGenerationError
 
@@ -31,15 +30,20 @@ class EWIDService:
     def __init__(
         self,
         wid_prefix: str,
-        known_wid_map: Dict[str, str] = {},
-        known_wids: List[str] = [],
+        known_wid_map: dict[str, str] | None = None,
+        known_wids: list[str] | None = None,
     ):
-        self._wid_prefix: str = wid_prefix
-        self._known_wid_map: Dict[str, str] = known_wid_map
-        # Make it a map for faster lookup
-        self._known_wids: Dict[str, bool] = {wid: True for wid in known_wids}
+        if known_wid_map is None:
+            known_wid_map = {}
+        if known_wids is None:
+            known_wids = []
 
-        self._element_refs: Dict[str, str] = ELEMENT_REF
+        self._wid_prefix: str = wid_prefix
+        self._known_wid_map: dict[str, str] = known_wid_map
+        # Make it a map for faster lookup
+        self._known_wids: dict[str, bool] = {wid: True for wid in known_wids}
+
+        self._element_refs: dict[str, str] = ELEMENT_REF
         self._eid_counters = defaultdict(lambda: defaultdict(int))
         self._wid_counters = defaultdict(lambda: defaultdict(int))
         self._tag_counter_format = {
@@ -48,10 +52,10 @@ class EWIDService:
 
         # wId's used by identifiers, for example beleidskeuze-4 by that object
         # Although it should be possible to add custom identifiers
-        self._state_used_wid_map: Dict[str, str] = {}
+        self._state_used_wid_map: dict[str, str] = {}
         # All used wids, for export purposes
         # This will be sent in the input data for the next version of this Act
-        self._state_used_wids: List[str] = []
+        self._state_used_wids: list[str] = []
 
     def add_ewids(self, xml_source: str, parent_eid="", parent_wid="", parent_tag_name="") -> str:
         root = self._parse_xml(xml_source)
@@ -59,10 +63,10 @@ class EWIDService:
         result_xml: str = ET.tostring(root, encoding="utf-8").decode("utf-8")
         return result_xml
 
-    def get_state_used_wid_map(self) -> Dict[str, str]:
+    def get_state_used_wid_map(self) -> dict[str, str]:
         return self._state_used_wid_map
 
-    def get_state_used_wids(self) -> List[str]:
+    def get_state_used_wids(self) -> list[str]:
         return self._state_used_wids
 
     def _parse_xml(self, xml_string: str):

@@ -1,5 +1,3 @@
-from typing import List
-
 from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gio
 
 from ....models import ContentType
@@ -11,7 +9,7 @@ from ...state_manager.state_manager import StateManager
 
 class GeoInformatieObjectVaststellingBuilder(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
-        gios: List[Gio] = state_manager.input_data.resources.gio_repository.get_new()
+        gios: list[Gio] = state_manager.input_data.resources.gio_repository.get_new()
 
         for gio in gios:
             output_file: OutputFile = self._generate_glm(gio)

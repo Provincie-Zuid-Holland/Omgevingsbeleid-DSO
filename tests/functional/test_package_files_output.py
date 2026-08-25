@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+
 import pytest
 from lxml import etree
 
@@ -21,7 +21,7 @@ class TestPackageFileOutput:
     validate the xml output.
     """
 
-    output_dir: Optional[Path] = None
+    output_dir: Path | None = None
 
     def test_expected_files_exist(self, expected_results):
         """

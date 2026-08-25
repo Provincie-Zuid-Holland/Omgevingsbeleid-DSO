@@ -1,5 +1,3 @@
-from typing import List
-
 from dso.act_builder.state_manager.state_manager import StateManager
 from dso.act_builder.state_manager.states.text_manipulator.enricher.abstract_enricher import AbstractEnricher
 from dso.act_builder.state_manager.states.text_manipulator.enricher.document_intref_enricher import (
@@ -14,7 +12,7 @@ from dso.act_builder.state_manager.states.text_manipulator.enricher.object_intre
 
 class VrijetekstEnrichers:
     def __init__(self, state_manager: StateManager):
-        self._enrichers: List[AbstractEnricher] = [
+        self._enrichers: list[AbstractEnricher] = [
             IllustrationEnricher(state_manager),
             DocumentIntrefEnricher(state_manager),
             ObjectIntrefEnricher(state_manager),

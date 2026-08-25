@@ -1,12 +1,11 @@
-from typing import List
-from unittest.mock import Mock, MagicMock
+from unittest.mock import MagicMock, Mock
 
 import pytest
 
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
 from dso.act_builder.state_manager.input_data.resource.document.document_repository import DocumentRepository
 from tests.unit.dso.act_builder.state_manager.input_data.resource.document.type_factories import DocumentFactory
-from tests.unit.dso.model_factories import GioFRBRFactory, FRBRType
+from tests.unit.dso.model_factories import FRBRType, GioFRBRFactory
 
 
 @pytest.fixture
@@ -23,8 +22,8 @@ def document_repository_mock_with_two_documents() -> DocumentRepository | Mock:
     return document_repository_mock
 
 
-def _get_documents(count: int = 2) -> List[Document | Mock]:
-    documents: List[Document | Mock] = []
+def _get_documents(count: int = 2) -> list[Document | Mock]:
+    documents: list[Document | Mock] = []
     for i in range(1, count + 1):
         frbr = GioFRBRFactory(frbr_type=FRBRType.DOCUMENT, Expression_Version=i).create()
         document = DocumentFactory(id=i, frbr=frbr).create()

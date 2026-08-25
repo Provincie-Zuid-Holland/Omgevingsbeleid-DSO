@@ -1,6 +1,5 @@
 import shutil
 from pathlib import Path
-from typing import Optional
 
 import click
 
@@ -20,7 +19,7 @@ def build_input_data_from_dir(input_dir: str, json_file: str = "main.json"):
     return input_data
 
 
-def run_generate(input_dir: str, base_output_dir: Optional[str], json_file: str):
+def run_generate(input_dir: str, base_output_dir: str | None, json_file: str):
     data: InputData = build_input_data_from_dir(input_dir, json_file)
 
     if base_output_dir is None:
@@ -43,7 +42,7 @@ def run_generate(input_dir: str, base_output_dir: Optional[str], json_file: str)
 @click.argument("input_dir")
 @click.argument("output_dir", required=False, default=None)
 @click.option("--json-file", default="main.json", help="JSON file name")
-def generate(input_dir: str, output_dir: Optional[str], json_file: str):
+def generate(input_dir: str, output_dir: str | None, json_file: str):
     run_generate(input_dir, output_dir, json_file)
 
 
@@ -51,7 +50,7 @@ def generate(input_dir: str, output_dir: Optional[str], json_file: str):
 @click.argument("input_dir")
 @click.argument("output_dir", required=False, default=None)
 @click.option("--json-file", default="main.json", help="JSON file name")
-def generate_all(input_dir: Optional[str], output_dir: Optional[str], json_file: str):
+def generate_all(input_dir: str | None, output_dir: str | None, json_file: str):
     for path in Path(input_dir).rglob("main.json"):
         dir_with_main = path.parent
         run_generate(str(dir_with_main), output_dir, json_file)

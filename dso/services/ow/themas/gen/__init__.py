@@ -1,10 +1,9 @@
 # GENERATED FILE - DO NOT EDIT
 
-from typing import Dict
+
 from dso.services.ow.themas.types import Thema
 
-
-themas: Dict[str, Thema] = {
+themas: dict[str, Thema] = {
     "bodem": Thema(
         label="bodem",
         term="Bodem",

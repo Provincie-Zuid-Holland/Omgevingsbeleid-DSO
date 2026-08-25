@@ -5,20 +5,13 @@ from dso.act_builder.services.aanlevering_besluit.besluit_versie.consolidatie_in
 )
 from dso.act_builder.state_manager import ArtikelEidRepository
 from dso.act_builder.state_manager.states.artikel_eid_repository import ArtikelEidData, ArtikelEidType
-from dso.models import RegelingMutatie, GioFRBR, VerwijderdeGio
-from tests.unit.dso.act_builder.state_manager.input_data.resource.document.document_repository import (
-    document_repository_mock_with_two_new_documents,
-)
-from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import (
-    gio_repository_mock_with_two_new_gebieden,
-)
-from tests.unit.dso.act_builder.state_manager.state_manager_test_case import state_manager_mock
+from dso.models import GioFRBR, RegelingMutatie, VerwijderdeGio
 from tests.unit.dso.act_builder.state_manager.states.text_manipulator.model_factories import TextDataFactory
 from tests.unit.dso.model_factories import (
-    InstellingDoelFactory,
     ActFRBRFactory,
-    GioFRBRFactory,
     FRBRType,
+    GioFRBRFactory,
+    InstellingDoelFactory,
 )
 from tests.unit.xml_compare_test import XMLCompareTest
 
@@ -38,7 +31,7 @@ class TestConsolidatieInformatieContent(XMLCompareTest):
         state_manager_mock.text_data = TextDataFactory().create()
 
         artikel_eid_repository: ArtikelEidRepository | Mock = MagicMock(spec=ArtikelEidRepository)
-        artikel_eid_data: ArtikelEidData = ArtikelEidData(eid=f"eid-artikel-1", artikel_type=ArtikelEidType.WIJZIG)
+        artikel_eid_data: ArtikelEidData = ArtikelEidData(eid="eid-artikel-1", artikel_type=ArtikelEidType.WIJZIG)
         artikel_eid_repository.find_one_by_type.return_value = artikel_eid_data
         state_manager_mock.artikel_eid = artikel_eid_repository
 

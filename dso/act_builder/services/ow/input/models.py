@@ -1,10 +1,8 @@
-from typing import List, Optional
-
 from pydantic import BaseModel, ConfigDict, Field
 
 
 class OwInputAbstractLocatieRef(BaseModel):
-    def get_code(self) -> Optional[str]:
+    def get_code(self) -> str | None:
         return None
 
 
@@ -15,14 +13,14 @@ class OwInputAmbtsgebiedLocatieRef(OwInputAbstractLocatieRef):
 class OwInputGebiedengroepLocatieRef(OwInputAbstractLocatieRef):
     code: str
 
-    def get_code(self) -> Optional[str]:
+    def get_code(self) -> str | None:
         return self.code
 
 
 class OwInputGebiedsaanwijzingRef(OwInputAbstractLocatieRef):
     code: str
 
-    def get_code(self) -> Optional[str]:
+    def get_code(self) -> str | None:
         return self.code
 
 
@@ -49,7 +47,7 @@ class OwInputGio(BaseModel):
     # This will make a Gebied for each locatie
     source_code: str
     title: str
-    locaties: List[OwInputLocatie]
+    locaties: list[OwInputLocatie]
 
 
 class OwInputGebiedengroep(BaseModel):
@@ -57,7 +55,7 @@ class OwInputGebiedengroep(BaseModel):
     # This will make a ow_gebiedengroep and allows the ow_tekstdeel to point to this
     source_code: str
     title: str
-    gios: List[OwInputGio]
+    gios: list[OwInputGio]
 
 
 class OwInputGebiedsaanwijzing(BaseModel):
@@ -83,8 +81,8 @@ class OwInputPolicyObject(BaseModel):
     source_code: str
     wid: str
     element: str
-    location_refs: List[OwInputAbstractLocatieRef]
-    themas: List[str]
-    gebiedsaanwijzing_refs: List[OwInputGebiedsaanwijzingRef] = Field(default_factory=list)
+    location_refs: list[OwInputAbstractLocatieRef]
+    themas: list[str]
+    gebiedsaanwijzing_refs: list[OwInputGebiedsaanwijzingRef] = Field(default_factory=list)
 
     model_config = ConfigDict(arbitrary_types_allowed=True)

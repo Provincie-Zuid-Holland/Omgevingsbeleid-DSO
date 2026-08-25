@@ -1,24 +1,27 @@
 import json
-import yaml
-from pathlib import Path
 import os
-import pytest
 import shutil
+from pathlib import Path
 
-from dso.cmds import build_input_data_from_dir
+import pytest
+import yaml
+
 from dso.act_builder.builder import Builder
 from dso.act_builder.state_manager.input_data.input_data_loader import InputData
-
-
-@pytest.fixture
-def enable_debugpy():
-    """Fixture to enable debugpy for debugging when needed."""
-    import debugpy
-
-    debugpy.listen(("0.0.0.0", 5678))
-    print("Waiting for debugger attach...")
-    debugpy.wait_for_client()
-    print("Debugger attached...")
+from dso.cmds import build_input_data_from_dir
+from tests.unit.dso.act_builder.state_manager.input_data.resource.document.document_repository import (
+    document_repository_mock_with_two_documents,  # noqa: F401
+    document_repository_mock_with_two_new_documents,  # noqa: F401
+)
+from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import (
+    gio_repository_mock_empty,  # noqa: F401
+    gio_repository_mock_with_two_gebieden,  # noqa: F401
+    gio_repository_mock_with_two_new_gebieden,  # noqa: F401
+)
+from tests.unit.dso.act_builder.state_manager.state_manager_test_case import state_manager_mock  # noqa: F401
+from tests.unit.dso.act_builder.state_manager.states.artikel_eid_repository import (
+    artikel_eid_repository_with_eid_data,  # noqa: F401
+)
 
 
 @pytest.fixture(scope="session")
@@ -79,30 +82,27 @@ def initialize_dso_builder(request, input_dir, output_dir) -> Builder:
 @pytest.fixture(scope="class")
 def namespaces():
     namespaces = {
-        "xsi": "http://www.w3.org/2001/XMLSchema-instance",
-        "xlink": "http://www.w3.org/1999/xlink",
-        "r": "http://www.geostandaarden.nl/imow/regels",
-        "vt": "http://www.geostandaarden.nl/imow/vrijetekst",
-        "rol": "http://www.geostandaarden.nl/imow/regelsoplocatie",
-        "p": "http://www.geostandaarden.nl/imow/pons",
-        "l": "http://www.geostandaarden.nl/imow/locatie",
-        "k": "http://www.geostandaarden.nl/imow/kaart",
-        "op": "http://www.geostandaarden.nl/imow/opobject",
-        "ga": "http://www.geostandaarden.nl/imow/gebiedsaanwijzing",
-        "sl": "http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek",
-        "da": "http://www.geostandaarden.nl/imow/datatypenalgemeen",
-        "ow": "http://www.geostandaarden.nl/imow/owobject",
-        "rg": "http://www.geostandaarden.nl/imow/regelingsgebied",
-        "ow-dc": "http://www.geostandaarden.nl/imow/bestanden/deelbestand",
-        "lvbb": "http://www.overheid.nl/2017/lvbb",
         "basisgeo": "http://www.geostandaarden.nl/basisgeometrie/1.0",
-        "gio": "https://standaarden.overheid.nl/stop/imop/gio/",
-        "geo": "https://standaarden.overheid.nl/stop/imop/geo/",
+        "da": "http://www.geostandaarden.nl/imow/datatypenalgemeen",
         "data": "https://standaarden.overheid.nl/stop/imop/data/",
+        "ga": "http://www.geostandaarden.nl/imow/gebiedsaanwijzing",
+        "geo": "https://standaarden.overheid.nl/stop/imop/geo/",
+        "gio": "https://standaarden.overheid.nl/stop/imop/gio/",
         "gml": "http://www.opengis.net/gml/3.2",
+        "k": "http://www.geostandaarden.nl/imow/kaart",
+        "l": "http://www.geostandaarden.nl/imow/locatie",
+        "lvbb": "http://www.overheid.nl/2017/lvbb",
+        "op": "http://www.geostandaarden.nl/imow/opobject",
+        "ow": "http://www.geostandaarden.nl/imow/owobject",
+        "ow-dc": "http://www.geostandaarden.nl/imow/bestanden/deelbestand",
+        "p": "http://www.geostandaarden.nl/imow/pons",
+        "r": "http://www.geostandaarden.nl/imow/regels",
         "rg": "http://www.geostandaarden.nl/imow/regelingsgebied",
+        "rol": "http://www.geostandaarden.nl/imow/regelsoplocatie",
+        "sl": "http://www.geostandaarden.nl/bestanden-ow/standlevering-generiek",
         "tekst": "https://standaarden.overheid.nl/stop/imop/tekst/",
         "vt": "http://www.geostandaarden.nl/imow/vrijetekst",
-        "ga": "http://www.geostandaarden.nl/imow/gebiedsaanwijzing",
+        "xlink": "http://www.w3.org/1999/xlink",
+        "xsi": "http://www.w3.org/2001/XMLSchema-instance",
     }
     return namespaces

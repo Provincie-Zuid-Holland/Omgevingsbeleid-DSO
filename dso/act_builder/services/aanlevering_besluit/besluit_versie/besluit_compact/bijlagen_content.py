@@ -1,5 +1,3 @@
-from typing import List
-
 from dso.act_builder.services.services.appendices_service import (
     AppendicesService,
     AppendixDestination,
@@ -19,7 +17,7 @@ class BijlagenContent:
         )
 
     def create(self) -> str:
-        appendices: List[Bijlage] = self._state_manager.input_data.besluit.bijlagen
+        appendices: list[Bijlage] = self._state_manager.input_data.besluit.bijlagen
         result: str = self._appendices_service.generate_xml(
             AppendixDestination.BILL,
             appendices,

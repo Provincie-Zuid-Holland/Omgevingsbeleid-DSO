@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Set
 
 from dso.act_builder.services.ow.state.models import BaseOwObject
 from dso.act_builder.services.ow.state.ow_reference_resolver import OwReferenceResolver
@@ -91,7 +90,7 @@ class OwStateMerger:
     def _generate_changeset_state(self, state: OwState) -> OwState:
         # Changeset is what we use to generate the xml files
         # In those files we do not send objects that have not changed
-        def filter_unchanged(ow_objects: Set[BaseOwObject]) -> Set[BaseOwObject]:
+        def filter_unchanged(ow_objects: set[BaseOwObject]) -> set[BaseOwObject]:
             return {x for x in ow_objects if not x.is_unchanged()}
 
         result: OwState = OwState(
@@ -109,7 +108,7 @@ class OwStateMerger:
     def _generate_result_state(self, state: OwState) -> OwState:
         # The result state which will should store for the next iteration
         # We do not care about deleted objects by then
-        def filter_deleted(ow_objects: Set[BaseOwObject]) -> Set[BaseOwObject]:
+        def filter_deleted(ow_objects: set[BaseOwObject]) -> set[BaseOwObject]:
             return {x for x in ow_objects if not x.is_deleted()}
 
         result: OwState = OwState(

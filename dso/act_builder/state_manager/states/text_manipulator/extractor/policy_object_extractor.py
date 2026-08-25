@@ -1,5 +1,3 @@
-from typing import List
-
 from lxml import etree
 
 from dso.act_builder.state_manager.state_manager import StateManager
@@ -23,7 +21,7 @@ class TextPolicyObjectExtractor:
             eid: str = element.get("eId")
             wid: str = element.get("wId")
 
-            gebiedsaanwijzingen: List[TekstPolicyObjectGebiedsaanwijzing] = self._extract_gebiedsaanwijzingen(element)
+            gebiedsaanwijzingen: list[TekstPolicyObjectGebiedsaanwijzing] = self._extract_gebiedsaanwijzingen(element)
 
             self._state_manager.text_data.policy_objects.append(
                 TekstPolicyObject(
@@ -35,8 +33,8 @@ class TextPolicyObjectExtractor:
                 )
             )
 
-    def _extract_gebiedsaanwijzingen(self, root) -> List[TekstPolicyObjectGebiedsaanwijzing]:
-        result: List[TekstPolicyObjectGebiedsaanwijzing] = []
+    def _extract_gebiedsaanwijzingen(self, root) -> list[TekstPolicyObjectGebiedsaanwijzing]:
+        result: list[TekstPolicyObjectGebiedsaanwijzing] = []
 
         elements = root.xpath(".//*[@data-hint-type='gebiedsaanwijzing']")
         for element in elements:

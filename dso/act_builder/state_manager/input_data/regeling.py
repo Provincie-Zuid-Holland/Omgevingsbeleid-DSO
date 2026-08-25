@@ -1,5 +1,3 @@
-from typing import List
-
 from pydantic import BaseModel, field_validator
 
 from ....services.koop.waardelijsten.gen import OnderwerpType, RechtsgebiedType
@@ -10,8 +8,8 @@ class Regeling(BaseModel):
     officiele_titel: str
     citeertitel: str
     is_officieel: str
-    rechtsgebieden: List[RechtsgebiedType]
-    onderwerpen: List[OnderwerpType]
+    rechtsgebieden: list[RechtsgebiedType]
+    onderwerpen: list[OnderwerpType]
 
     @field_validator("rechtsgebieden", mode="before")
     def _format_rechtsgebieden(cls, value):

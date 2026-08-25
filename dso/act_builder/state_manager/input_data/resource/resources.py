@@ -4,13 +4,12 @@ from dso.act_builder.state_manager.input_data.resource.gebieden.gebiedsaanwijzin
     GebiedsaanwijzingRepository,
 )
 
-
 from .asset.asset_repository import AssetRepository
 from .besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
-from .gebieden.gio_repository import GioRepository
-from .gebieden.gebiedengroep_repository import GebiedengroepRepository
-from .policy_object.policy_object_repository import PolicyObjectRepository
 from .document.document_repository import DocumentRepository
+from .gebieden.gebiedengroep_repository import GebiedengroepRepository
+from .gebieden.gio_repository import GioRepository
+from .policy_object.policy_object_repository import PolicyObjectRepository
 
 
 class Resources(BaseModel):

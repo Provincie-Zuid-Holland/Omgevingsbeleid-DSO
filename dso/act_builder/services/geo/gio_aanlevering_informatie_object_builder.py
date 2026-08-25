@@ -1,5 +1,5 @@
-from typing import List
 from dso.act_builder.state_manager.input_data.resource.gebieden.types import Gio
+
 from ....models import ContentType
 from ....services.utils.hashlib import compute_sha512_of_output_file
 from ....services.utils.helpers import load_template
@@ -10,7 +10,7 @@ from ...state_manager.state_manager import StateManager
 
 class GioAanleveringInformatieObjectBuilder(BuilderService):
     def apply(self, state_manager: StateManager) -> StateManager:
-        gios: List[Gio] = state_manager.input_data.resources.gio_repository.get_new()
+        gios: list[Gio] = state_manager.input_data.resources.gio_repository.get_new()
 
         for gio in gios:
             output_file: OutputFile = self._generate_gio_file(state_manager, gio)

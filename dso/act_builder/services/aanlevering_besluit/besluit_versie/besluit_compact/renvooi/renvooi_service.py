@@ -2,9 +2,16 @@ from urllib.parse import urljoin
 
 import requests
 from lxml import etree
+from requests.exceptions import ConnectionError as RequestsConnectionError
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
-from .......exceptions import RenvooiInternalServerError, RenvooiUnauthorizedError, RenvooiUnknownError, RenvooiXmlError
+from .......exceptions import (
+    RenvooiConnectionError,
+    RenvooiInternalServerError,
+    RenvooiUnauthorizedError,
+    RenvooiUnknownError,
+    RenvooiXmlError,
+)
 from .......models import ActFRBR, RenvooiRegelingMutatie
 from .......services.utils.helpers import load_template
 
@@ -40,11 +47,14 @@ class RenvooiService:
             "Content-Type": multipart_data.content_type,
         }
 
-        response = requests.post(
-            urljoin(self._mutatie.renvooi_api_url, "/regelingmutatie-maak"),
-            headers=headers,
-            data=multipart_data,
-        )
+        try:
+            response = requests.post(
+                urljoin(self._mutatie.renvooi_api_url, "/regelingmutatie-maak"),
+                headers=headers,
+                data=multipart_data,
+            )
+        except RequestsConnectionError as exc:
+            raise RenvooiConnectionError(str(exc)) from exc
 
         match response.status_code:
             case 200:

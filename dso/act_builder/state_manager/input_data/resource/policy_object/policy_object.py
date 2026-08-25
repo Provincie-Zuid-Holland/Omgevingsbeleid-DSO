@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from typing import Any, List, Optional
+from typing import Any
 
 
 class PolicyObject:
@@ -35,11 +35,11 @@ class PolicyObject:
         """
         return "Gebiedengroep_Code" in self.data
 
-    def get_gebiedengroep_code(self) -> Optional[str]:
+    def get_gebiedengroep_code(self) -> str | None:
         return self.get("Gebiedengroep_Code")
 
-    def get_themas(self) -> List[str]:
-        maybe_themas: Optional[List[str]] = self.get("Themas")
+    def get_themas(self) -> list[str]:
+        maybe_themas: list[str] | None = self.get("Themas")
         if maybe_themas:
             return maybe_themas
         return []

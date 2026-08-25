@@ -1,14 +1,9 @@
-from typing import List
-
 from dso.act_builder.services.geo.gio_aanlevering_informatie_object_builder import GioAanleveringInformatieObjectBuilder
 from dso.act_builder.state_manager import StrContentData
 from dso.announcement_builder.state_manager.models import OutputFile
 from dso.models import ContentType
 from dso.services.koop.waardelijsten.gen import Provincie
-from tests.unit.dso.act_builder.state_manager.input_data.resource.gebieden.gio_repository import (
-    gio_repository_mock_with_two_new_gebieden,
-)
-from tests.unit.dso.act_builder.state_manager.state_manager_test_case import StateManagerTestCase, state_manager_mock
+from tests.unit.dso.act_builder.state_manager.state_manager_test_case import StateManagerTestCase
 from tests.unit.xml_compare_test import XMLCompareTest
 
 
@@ -25,7 +20,7 @@ class TestGioAanleveringInformatieObjectBuilder(StateManagerTestCase, XMLCompare
         builder = GioAanleveringInformatieObjectBuilder()
         builder.apply(state_manager_mock)
 
-        output_files: List[OutputFile] = self._get_output_files(state_manager_mock)
+        output_files: list[OutputFile] = self._get_output_files(state_manager_mock)
         assert len(output_files) == 2
 
         for idx, output_file in enumerate(output_files):

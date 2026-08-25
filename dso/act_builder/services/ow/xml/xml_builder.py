@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 from dso.act_builder.services.ow.xml.abstract_xml import AbstractXmlFile, BuildFileResult
 from dso.act_builder.services.ow.xml.ow_xml_data import OwXmlData
@@ -20,12 +19,12 @@ from dso.services.utils.helpers import load_template
 @dataclass
 class OwFile:
     name: str
-    object_types: List[str]
+    object_types: list[str]
 
 
 class XmlBuilder:
     def __init__(self, state_manager: StateManager):
-        self._type_builders: List[AbstractXmlFile] = [
+        self._type_builders: list[AbstractXmlFile] = [
             XmlAmbtsgebieden(state_manager),
             XmlRegelingsgebieden(state_manager),
             XmlGebieden(state_manager),
@@ -38,7 +37,7 @@ class XmlBuilder:
         self._state_manager: StateManager = state_manager
 
     def build_files(self, xml_data: OwXmlData):
-        ow_files: List[OwFile] = []
+        ow_files: list[OwFile] = []
 
         for file_builder in self._type_builders:
             build_result: BuildFileResult = file_builder.build_file(xml_data)

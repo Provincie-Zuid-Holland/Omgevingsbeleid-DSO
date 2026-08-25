@@ -1,5 +1,5 @@
 from dso.act_builder.state_manager.input_data.resource.document.document import Document
-from dso.models import GioFRBR, ContentType
+from dso.models import ContentType, GioFRBR
 from tests.factory import Factory, TypeEnum
 
 

@@ -1,10 +1,10 @@
-from .gebieden.gio_resource_loader import GioResourceLoader
 from .....models import PublicationSettings
 from .asset.asset_resource_loader import AssetResourceLoader
 from .besluit_pdf.besluit_pdf_repository import BesluitPdfRepository
 from .document.document_repository import DocumentRepository
 from .gebieden import GebiedengroepRepository, GebiedsaanwijzingRepository, GioRepository
 from .gebieden.gebiedsaanwijzing_resource_loader import GebiedsaanwijzingResourceLoader
+from .gebieden.gio_resource_loader import GioResourceLoader
 from .policy_object.policy_object_repository import PolicyObjectRepository
 from .policy_object.policy_object_resource_loader import PolicyObjectResourceLoader
 from .resources import Resources

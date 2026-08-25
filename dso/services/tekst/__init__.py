@@ -16,5 +16,5 @@ def html_to_divisie(html: str) -> Divisie:
 
 def divisie_to_xml(divisie: Divisie) -> str:
     soup = BeautifulSoup(features="xml")
-    xml: Union[Tag, str] = divisie.as_xml(soup)
+    xml: Tag | str = divisie.as_xml(soup)
     return str(xml)

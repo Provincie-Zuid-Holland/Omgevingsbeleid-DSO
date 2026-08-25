@@ -1,7 +1,6 @@
 from enum import IntEnum
-from typing import Optional
 
-from dso.models import GioFRBR, PubdataFRBR, InstellingDoel, DoelFRBR, ActFRBR
+from dso.models import ActFRBR, DoelFRBR, GioFRBR, InstellingDoel, PubdataFRBR
 from tests.factory import Factory
 
 
@@ -86,7 +85,7 @@ class ActFRBRFactory(Factory):
 
 
 class InstellingDoelFactory(Factory):
-    datum_juridisch_werkend_vanaf: Optional[str] = None
+    datum_juridisch_werkend_vanaf: str | None = None
 
     def create(self) -> InstellingDoel:
         return InstellingDoel(

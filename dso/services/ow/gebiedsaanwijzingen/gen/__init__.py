@@ -1,13 +1,12 @@
 # GENERATED FILE - DO NOT EDIT
 
-from typing import List
-from dso.services.ow.gebiedsaanwijzingen.types import (
-    GebiedsaanwijzingWaarde,
-    GebiedsaanwijzingType,
-    GebiedsaanwijzingGroep,
-    Gebiedsaanwijzing,
-)
 
+from dso.services.ow.gebiedsaanwijzingen.types import (
+    Gebiedsaanwijzing,
+    GebiedsaanwijzingGroep,
+    GebiedsaanwijzingType,
+    GebiedsaanwijzingWaarde,
+)
 
 ga_beperkingengebiedgroep_groep = Gebiedsaanwijzing(
     aanwijzing_type=GebiedsaanwijzingType(
@@ -3487,7 +3486,7 @@ ga_water_en_watersysteemgroep_groep = Gebiedsaanwijzing(
 )
 
 
-GA_OMGEVINGSVISIE_DATA: List[Gebiedsaanwijzing] = [
+GA_OMGEVINGSVISIE_DATA: list[Gebiedsaanwijzing] = [
     ga_bodemgroep_groep,
     ga_defensiegroep_groep,
     ga_energievoorzieninggroep_groep,
@@ -3507,7 +3506,7 @@ GA_OMGEVINGSVISIE_DATA: List[Gebiedsaanwijzing] = [
 ]
 
 
-GA_PROGRAMMA_DATA: List[Gebiedsaanwijzing] = [
+GA_PROGRAMMA_DATA: list[Gebiedsaanwijzing] = [
     ga_bodemgroep_groep,
     ga_defensiegroep_groep,
     ga_energievoorzieninggroep_groep,

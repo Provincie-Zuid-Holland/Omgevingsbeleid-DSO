@@ -1,6 +1,5 @@
 import re
 from enum import Enum
-from typing import Dict, List
 
 from bs4 import BeautifulSoup
 
@@ -35,7 +34,7 @@ class AppendicesService:
         self._wid_prefix: str = (
             f"{publication_settings.provincie_id}_{publication_settings.regeling_frbr.Expression_Version}__"
         )
-        self._ewid_services: Dict[AppendixDestination, EWIDService] = {
+        self._ewid_services: dict[AppendixDestination, EWIDService] = {
             AppendixDestination.BILL: state_manager.bill_ewid_service,
             AppendixDestination.ACT: state_manager.act_ewid_service,
         }
@@ -44,10 +43,10 @@ class AppendicesService:
     def generate_xml(
         self,
         destination: AppendixDestination,
-        appendices: List[Bijlage],
+        appendices: list[Bijlage],
         eid_prefix: str = "",
     ) -> str:
-        contents: List[str] = []
+        contents: list[str] = []
 
         for appendix in appendices:
             content = self._parse_appendix(destination, eid_prefix, appendix)

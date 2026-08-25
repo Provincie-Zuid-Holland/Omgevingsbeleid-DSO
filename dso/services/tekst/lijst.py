@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
 
 import roman
 
@@ -30,10 +29,10 @@ class RomanNumberingStrategy:
 
 
 class NumberingFactory:
-    def __init__(self, strategies: List[NumberingStrategy]):
-        self._strategies: List[NumberingStrategy] = strategies
+    def __init__(self, strategies: list[NumberingStrategy]):
+        self._strategies: list[NumberingStrategy] = strategies
 
-    def get_next(self, current_strategy: Optional[NumberingStrategy] = None) -> NumberingStrategy:
+    def get_next(self, current_strategy: NumberingStrategy | None = None) -> NumberingStrategy:
         if not self._strategies:
             raise RuntimeError("No numbering strategies registered")
 
@@ -65,7 +64,7 @@ class LijstType(ABC):
     def get_number(self, n: int) -> str:
         return ""
 
-    def get_numbering_strategy(self) -> Optional[NumberingStrategy]:
+    def get_numbering_strategy(self) -> NumberingStrategy | None:
         return None
 
     @abstractmethod
@@ -89,7 +88,7 @@ class LijstTypeOrdered(LijstType):
         number: str = self._numbering_strategy.get(n)
         return f"{number}."
 
-    def get_numbering_strategy(self) -> Optional[NumberingStrategy]:
+    def get_numbering_strategy(self) -> NumberingStrategy | None:
         return self._numbering_strategy
 
     def get_type(self) -> str:
