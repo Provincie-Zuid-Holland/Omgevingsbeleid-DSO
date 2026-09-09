@@ -507,9 +507,20 @@ class OwTekstdeel(BaseOwObject):
         self.assert_same_class(other)
         # fmt: off
         return (
-            (self.idealization, self.text_ref.get_key(), {r.get_key() for r in self.location_refs}, {r.get_key() for r in self.gebiedsaanwijzing_refs})
+            (
+                self.idealization,
+                self.text_ref.get_key(),
+                {r.get_key() for r in self.location_refs},
+                {r.get_key() for r in self.gebiedsaanwijzing_refs},
+                self.themas
+            )
             ==
-            (other.idealization, other.text_ref.get_key(), {r.get_key() for r in other.location_refs}, {r.get_key() for r in other.gebiedsaanwijzing_refs})
+            (   other.idealization,
+                other.text_ref.get_key(),
+                {r.get_key() for r in other.location_refs},
+                {r.get_key() for r in other.gebiedsaanwijzing_refs},
+                other.themas
+            )
         )
         # fmt: on
 
@@ -524,4 +535,5 @@ class OwTekstdeel(BaseOwObject):
         self.text_ref = other.text_ref
         self.location_refs = other.location_refs
         self.gebiedsaanwijzing_refs = other.gebiedsaanwijzing_refs
+        self.themas = other.themas
         self.flag_changed()
