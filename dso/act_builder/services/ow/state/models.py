@@ -535,4 +535,5 @@ class OwTekstdeel(BaseOwObject):
         self.text_ref = other.text_ref
         self.location_refs = other.location_refs
         self.gebiedsaanwijzing_refs = other.gebiedsaanwijzing_refs
+        self.themas = other.themas
         self.flag_changed()
