@@ -6,6 +6,7 @@
         {{ aanhef_xml }}
     </Aanhef>
     {{ artikelen_lichaam }}
+    {% if sluiting_xml is not none %}
     <Sluiting eId="formula_2" wId="formula_2">
         {{ sluiting_xml }}
         {% if ondertekening_xml is not none %}
@@ -14,6 +15,7 @@
         </Ondertekening>
         {% endif %}
     </Sluiting>
+    {% endif %}
     {{ wijzig_bijlage }}
     {{ bijlagen_xml }}
     {{ motivering_xml }}
