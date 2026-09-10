@@ -20,11 +20,13 @@ class BesluitCompactContent:
 
         besluit: Besluit = self._state_manager.input_data.besluit
         aanhef_xml: str = self._html_to_xml_without_root(besluit.aanhef)
-        sluiting_xml: str = self._html_to_xml_without_root(besluit.sluiting)
 
+        sluiting_xml: str | None = None
         ondertekening_xml: str | None = None
-        if besluit.ondertekening != "":
-            ondertekening_xml = self._html_to_xml_without_root(besluit.ondertekening)
+        if besluit.sluiting != "":
+            sluiting_xml: str = self._html_to_xml_without_root(besluit.sluiting)
+            if besluit.ondertekening != "":
+                ondertekening_xml = self._html_to_xml_without_root(besluit.ondertekening)
 
         bijlagen_xml: str = BijlagenContent(self._state_manager).create()
         motivering_xml: str = MotiveringContent(self._state_manager).create()
