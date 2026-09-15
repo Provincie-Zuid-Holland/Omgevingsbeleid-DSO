@@ -1,7 +1,7 @@
 <Lichaam eId="body" wId="body">
     <WijzigArtikel eId="{{ wijzig_artikel.eId }}" wId="{{ wijzig_artikel.wId }}">
         <Kop>
-            {%- if wijzig_artikel.label not none %}
+            {%- if wijzig_artikel.label is not none %}
             <Label>{{ wijzig_artikel.label }}</Label>
             {%- endif %}
             <Nummer>{{ wijzig_artikel.nummer }}</Nummer>
@@ -11,7 +11,7 @@
     {%- if tijd_artikel is not none %}
     <Artikel eId="{{ tijd_artikel.eId }}" wId="{{ tijd_artikel.wId }}">
         <Kop>
-            {%- if tijd_artikel.label not none %}
+            {%- if tijd_artikel.label is not none %}
             <Label>{{ tijd_artikel.label }}</Label>
             {%- endif %}
             <Nummer>{{ tijd_artikel.nummer }}</Nummer>
@@ -26,7 +26,7 @@
     {%- for tekst_artikel in tekst_artikelen %}
     <Artikel eId="{{ tekst_artikel.eId }}" wId="{{ tekst_artikel.wId }}">
         <Kop>
-            {%- if tekst_artikel.label not none %}
+            {%- if tekst_artikel.label is not none %}
             <Label>{{ tekst_artikel.label }}</Label>
             {%- endif %}
             <Nummer>{{ tekst_artikel.nummer }}</Nummer>

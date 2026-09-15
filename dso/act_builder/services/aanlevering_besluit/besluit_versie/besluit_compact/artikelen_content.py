@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from ......models import PublicationSettings
 from ......services.tekst.tekst import Inhoud
 from ......services.utils.helpers import load_template
-from .....state_manager.input_data.besluit import Besluit
+from .....state_manager.input_data.besluit import Artikel, Besluit
 from .....state_manager.state_manager import StateManager
 from .....state_manager.states.artikel_eid_repository import ArtikelEidType
 
@@ -14,6 +14,7 @@ from .....state_manager.states.artikel_eid_repository import ArtikelEidType
 class ArtikelContent(BaseModel):
     eId: str
     wId: str
+    label: str | None
     nummer: str
     inhoud: str
 
@@ -27,10 +28,7 @@ class ArtikelenContent:
         besluit: Besluit = self._state_manager.input_data.besluit
 
         # Wijziging Artikel
-        wijzig_artikel: ArtikelContent = self._create_article(
-            besluit.wijzig_artikel.nummer,
-            besluit.wijzig_artikel.inhoud,
-        )
+        wijzig_artikel: ArtikelContent = self._create_article(besluit.wijzig_artikel)
         self._state_manager.artikel_eid.add(wijzig_artikel.eId, ArtikelEidType.WIJZIG)
 
         # Tijds Artikel
@@ -41,8 +39,7 @@ class ArtikelenContent:
                 inhoud = self._html_to_xml_inhoud(inhoud)
 
             tijd_artikel: ArtikelContent = self._create_article(
-                besluit.tijd_artikel.nummer,
-                inhoud,
+                besluit.tijd_artikel.with_inhoud(inhoud),
             )
             self._state_manager.artikel_eid.add(tijd_artikel.eId, ArtikelEidType.BESLUIT_INWERKINGSTIJD)
 
@@ -51,7 +48,7 @@ class ArtikelenContent:
         for tekst_artikel in besluit.tekst_artikelen:
             inhoud: str = self._html_to_xml_inhoud(tekst_artikel.inhoud)
             inhoud: str = self._replace_ref_appendices(inhoud)
-            artikel_content: ArtikelContent = self._create_article(tekst_artikel.nummer, inhoud)
+            artikel_content: ArtikelContent = self._create_article(tekst_artikel.with_inhoud(inhoud))
 
             tekst_artikelen.append(artikel_content)
             self._state_manager.artikel_eid.add(artikel_content.eId, ArtikelEidType.TEKST)
@@ -64,18 +61,19 @@ class ArtikelenContent:
         )
         return content
 
-    def _create_article(self, nummer: str, inhoud: str) -> ArtikelContent:
+    def _create_article(self, input_artikel: Artikel) -> ArtikelContent:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
         wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__"
         eId_prefix: str = "art_"
 
-        eId = f"{eId_prefix}{nummer}"
+        eId = f"{eId_prefix}{input_artikel.nummer}"
         wId = f"{wId_prefix}{eId}"
         artikel_content = ArtikelContent(
             eId=eId,
             wId=wId,
-            nummer=nummer,
-            inhoud=inhoud,
+            label=input_artikel.label,
+            nummer=input_artikel.nummer,
+            inhoud=input_artikel.inhoud,
         )
         return artikel_content
 

@@ -1,3 +1,5 @@
+from typing import Self
+
 from pydantic import BaseModel, Field, field_validator
 
 from ....services.koop.waardelijsten.gen import OnderwerpType, ProcedureType, RechtsgebiedType
@@ -7,6 +9,13 @@ class Artikel(BaseModel):
     label: str | None = Field(default="Artikel")
     nummer: str
     inhoud: str
+
+    def with_inhoud(self, inhoud: str) -> Self:
+        return Artikel(
+            label=self.label,
+            nummer=self.nummer,
+            inhoud=inhoud,
+        )
 
 
 class Bijlage(BaseModel):
