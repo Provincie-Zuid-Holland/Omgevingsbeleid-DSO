@@ -4,7 +4,7 @@ from ....services.koop.waardelijsten.gen import OnderwerpType, ProcedureType, Re
 
 
 class Artikel(BaseModel):
-    label: str = Field("Artikel")  # @deprecated
+    label: str | None = Field(default="Artikel")
     nummer: str
     inhoud: str
 
