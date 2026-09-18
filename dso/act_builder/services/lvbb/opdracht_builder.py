@@ -35,3 +35,5 @@ class OpdrachtBuilder(BuilderService):
                 return "lvbb/opdracht/publicatie_opdracht.xml"
             case OpdrachtType.VALIDATIE:
                 return "lvbb/opdracht/validatie_opdracht.xml"
+            case _:
+                raise RuntimeError(f"opdracht_type {opdracht_type} not known")
