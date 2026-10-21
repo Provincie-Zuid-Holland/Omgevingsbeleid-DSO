@@ -1,6 +1,6 @@
 # See: "Waardelijsten IMOW [service als zip-bestand]" on this page: https://www.geonovum.nl/omgevingswet/STOPTPOD
-DOWNLOAD_URL: str = "https://github.com/Geonovum/TPOD-waardelijsten/raw/1e4c67c31e7b57c8334142386256ff665108c53f/2026-10-15/waardelijsten_IMOW_6.0.0.zip"
-SOURCE_FILE: str = "waardelijsten IMOW 6.0.0.json"
+DOWNLOAD_URL: str = "https://github.com/Geonovum/TPOD-waardelijsten/raw/bc085eaa2cd3c7f7120486b271609be415aa5e2a/2026-10-20/waardelijsten_IMOW_6.0.1.zip"
+SOURCE_FILE: str = "waardelijsten IMOW 6.0.1.json"
 
 TARGET_PATH: str = "./dso/services/ow/{name}/gen"
 TARGET_FILE: str = "__init__.py"
