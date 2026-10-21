@@ -256,7 +256,7 @@ ga_bouwgroep_groep = Gebiedsaanwijzing(
             uri="http://standaarden.omgevingswet.overheid.nl/bouw/id/concept/NietGeluidgevoeligeGevel",
             definitie="Waarde voor attribuut groep bij het Gebiedsaanwijzingtype Bouw voor het aanwijzen van een gevel van een geluidgevoelig gebouw waarop de geluidbelasting - al dan niet met bouwkundige maatregelen - een bepaalde waarde mag overschrijden.",
             toelichting="Alleen te gebruiken in het omgevingsplan, in voorbeschermingsregels voor het omgevingsplan en in omgevingsplanregels uit een projectbesluit.",
-            bron="",
+            bron="https://wetten.overheid.nl/BWBR0041313",
             domein="http://standaarden.omgevingswet.overheid.nl/id/conceptscheme/Bouw",
             deprecated=False,
         ),
