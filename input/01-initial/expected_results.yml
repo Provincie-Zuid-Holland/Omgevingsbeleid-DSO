@@ -8,7 +8,7 @@ package_files:
   - locaties_testgebied-2.gml
   - img_00000000-aaaa-0000-0000-000000000001.png
   - manifest-ow.xml
-  - owLocaties.xml
+  - owlocaties.xml
   - owDivisies.xml
   - owRegelingsgebied.xml
 
@@ -42,7 +42,7 @@ geo:
     - lo-1-00000000-0000-0005-0000-000000000001
     - lo-1-00000000-0000-0005-0000-000000000002
 
-owLocaties:
+owlocaties:
   total: 5
   ambtsgebied:
     noemer: "Provincie Zuid-Holland"

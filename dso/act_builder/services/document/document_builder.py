@@ -12,10 +12,10 @@ class DocumentBuilder(BuilderService):
         documents: list[Document] = document_repository.all()
 
         for document in documents:
-            if document.New:
+            if document.new:
                 output_file = OutputFile(
                     filename=document.get_filename(),
-                    content_type=document.Content_Type,
+                    content_type=document.content_type,
                     content=DocumentContentData(document=document),
                 )
                 state_manager.add_output_file(output_file)

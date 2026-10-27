@@ -8,7 +8,7 @@ class GebiedsaanwijzingRepository:
         self._data: dict[str, Gebiedsaanwijzing] = {}
 
     def add(self, aanwijzing: Gebiedsaanwijzing) -> None:
-        self._data[str(aanwijzing.uuid)] = aanwijzing
+        self._data[str(aanwijzing.id)] = aanwijzing
 
     def get_optional(self, uuid: str) -> Gebiedsaanwijzing | None:
         aanwijzing: Gebiedsaanwijzing | None = self._data.get(uuid)

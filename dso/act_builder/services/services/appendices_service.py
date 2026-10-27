@@ -32,7 +32,7 @@ class AppendicesService:
 
         self._besluit_pdf_repository: BesluitPdfRepository = state_manager.input_data.resources.besluit_pdf_repository
         self._wid_prefix: str = (
-            f"{publication_settings.provincie_id}_{publication_settings.regeling_frbr.Expression_Version}__"
+            f"{publication_settings.provincie_id}_{publication_settings.regeling_frbr.expression_version}__"
         )
         self._ewid_services: dict[AppendixDestination, EWIDService] = {
             AppendixDestination.BILL: state_manager.bill_ewid_service,

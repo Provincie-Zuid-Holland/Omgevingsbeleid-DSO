@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Ambtsgebied(BaseModel):
-    UUID: uuid.UUID
+    id: uuid.UUID
     identificatie_suffix: str  # Administrative_Borders_ID
     domein: str
     geldig_op: str

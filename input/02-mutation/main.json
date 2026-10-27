@@ -12,22 +12,22 @@
             "LVBB": "1.2.0"
         },
         "besluit_frbr": {
-            "Work_Province_ID": "pv28",
-            "Work_Date": "2024",
-            "Work_Other": "omgevingsvisie-1-2",
-            "Expression_Language": "nld",
-            "Expression_Date": "2024-10-20",
-            "Expression_Version": 1,
-            "Work_Country": "nl"
+            "work_province_id": "pv28",
+            "work_date": "2024",
+            "work_other": "omgevingsvisie-1-2",
+            "expression_language": "nld",
+            "expression_date": "2024-10-20",
+            "expression_version": 1,
+            "work_country": "nl"
         },
         "regeling_frbr": {
-            "Work_Province_ID": "pv28",
-            "Work_Date": "2024",
-            "Work_Other": "omgevingsvisie-1",
-            "Expression_Language": "nld",
-            "Expression_Date": "2024-10-20",
-            "Expression_Version": 2,
-            "Work_Country": "nl"
+            "work_province_id": "pv28",
+            "work_date": "2024",
+            "work_other": "omgevingsvisie-1",
+            "expression_language": "nld",
+            "expression_date": "2024-10-20",
+            "expression_version": 2,
+            "work_country": "nl"
         },
         "opdracht": {
             "opdracht_type": "PUBLICATIE",
@@ -39,12 +39,12 @@
         },
         "instelling_doel": {
             "frbr": {
-                "Work_Province_ID": "pv28",
-                "Work_Date": "2024",
-                "Work_Other": "mutatie-omgevingsvisie-1",
-                "Expression_Language": "",
-                "Expression_Date": "",
-                "Expression_Version": 1
+                "work_province_id": "pv28",
+                "work_date": "2024",
+                "work_other": "mutatie-omgevingsvisie-1",
+                "expression_language": "",
+                "expression_date": "",
+                "expression_version": 1
             },
             "datum_juridisch_werkend_vanaf": "2025-01-01"
         },
@@ -103,13 +103,13 @@
     "regeling_mutatie": {
         "type": "vervang",
         "was_regeling_frbr": {
-            "Work_Province_ID": "pv28",
-            "Work_Date": "2024",
-            "Work_Other": "omgevingsvisie-1",
-            "Expression_Language": "nld",
-            "Expression_Date": "2024-07-08",
-            "Expression_Version": 1,
-            "Work_Country": "nl"
+            "work_province_id": "pv28",
+            "work_date": "2024",
+            "work_other": "omgevingsvisie-1",
+            "expression_language": "nld",
+            "expression_date": "2024-07-08",
+            "expression_version": 1,
+            "work_country": "nl"
         },
         "bekend_wid_map": {
             "bijlage-werkingsgebieden": "pv28_1__cmp_o_1",
@@ -156,16 +156,16 @@
         ],
         "te_verwijderden_werkingsgebieden": [
             {
-                "UUID": "00000000-0000-0005-0000-000000000002",
+                "id": "00000000-0000-0005-0000-000000000002",
                 "code": "werkingsgebied-2",
                 "object_id": 2,
                 "frbr": {
-                    "Work_Province_ID": "pv28",
-                    "Work_Date": "2024",
-                    "Work_Other": "1-2",
-                    "Expression_Language": "nld",
-                    "Expression_Date": "2024-10-10",
-                    "Expression_Version": 1
+                    "work_province_id": "pv28",
+                    "work_date": "2024",
+                    "work_other": "1-2",
+                    "expression_language": "nld",
+                    "expression_date": "2024-10-10",
+                    "expression_version": 1
                 },
                 "geboorteregeling": "omgevingsvisie-1",
                 "titel": "Testgebied 2"
@@ -192,13 +192,13 @@
         "werkingsgebied_repository": "./werkingsgebieden.json"
     },
     "object_template_repository": {
-        "visie_algemeen": "\n<h1>{{ o.Title }}</h1>\n<!--[OBJECT-CODE:{{o.Code}}]-->\n{{ o.Description | default('', true) }}\n",
-        "ambitie": "\n<h1>Ambitie {{ o.Title }}</h1>\n<!--[OBJECT-CODE:{{o.Code}}]-->\n{{ o.Description | default('', true) }}\n",
-        "beleidsdoel": "\n<h1>{{ o.Title }}</h1>\n<!--[OBJECT-CODE:{{o.Code}}]-->\n{{ o.Description | default('', true) }}\n",
-        "beleidskeuze": "\n<h1>{{ o.Title }}</h1>\n<!--[OBJECT-CODE:{{o.Code}}]-->\n{% if o.Werkingsgebied_Code is not none %}\n<!--[GEBIED-CODE:{{o.Werkingsgebied_Code}}]-->\n{% else %}\n<!--[GEBIED-CODE:ambtsgebied]-->\n{% endif %}\n\n{% if o.Description | has_text %}\n    <h6>Wat gaat de provincie doen?</h6>\n    {{ o.Description }}\n{% endif %}\n\n{% if o.Cause | has_text %}\n    <h6>Aanleiding</h6>\n    {{ o.Cause }}\n{% endif %}\n\n{% if o.Provincial_Interest | has_text %}\n    <h6>Motivering Provinciaal Belang</h6>\n    {{ o.Provincial_Interest }}\n{% endif %}\n\n{% if o.Explanation | has_text %}\n    <h6>Nadere uitwerking</h6>\n    {{ o.Explanation }}\n{% endif %}\n"
+        "visie_algemeen": "\n<h1>{{ o.title }}</h1>\n<!--[OBJECT-CODE:{{o.code}}]-->\n{{ o.description | default('', true) }}\n",
+        "ambitie": "\n<h1>Ambitie {{ o.title }}</h1>\n<!--[OBJECT-CODE:{{o.code}}]-->\n{{ o.description | default('', true) }}\n",
+        "beleidsdoel": "\n<h1>{{ o.title }}</h1>\n<!--[OBJECT-CODE:{{o.code}}]-->\n{{ o.description | default('', true) }}\n",
+        "beleidskeuze": "\n<h1>{{ o.title }}</h1>\n<!--[OBJECT-CODE:{{o.code}}]-->\n{% if o.werkingsgebied_code is not none %}\n<!--[GEBIED-CODE:{{o.werkingsgebied_code}}]-->\n{% else %}\n<!--[GEBIED-CODE:ambtsgebied]-->\n{% endif %}\n\n{% if o.description | has_text %}\n    <h6>Wat gaat de provincie doen?</h6>\n    {{ o.description }}\n{% endif %}\n\n{% if o.Cause | has_text %}\n    <h6>Aanleiding</h6>\n    {{ o.Cause }}\n{% endif %}\n\n{% if o.Provincial_Interest | has_text %}\n    <h6>Motivering Provinciaal Belang</h6>\n    {{ o.Provincial_Interest }}\n{% endif %}\n\n{% if o.Explanation | has_text %}\n    <h6>Nadere uitwerking</h6>\n    {{ o.Explanation }}\n{% endif %}\n"
     },
     "ambtsgebied": {
-        "UUID": "90000004-0000-0000-0000-000000000001",
+        "id": "90000004-0000-0000-0000-000000000001",
         "titel": "Provincie Zuid-Holland",
         "identificatie_suffix": "PV28",
         "domein": "NL.BI.BestuurlijkGebied",

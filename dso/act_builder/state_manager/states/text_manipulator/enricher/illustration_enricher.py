@@ -21,12 +21,12 @@ class IllustrationEnricher(AbstractEnricher):
             asset_uuid: str = illustration.get("data-hint-asset-uuid")
             asset: Asset = self._asset_repository.get(UUID(asset_uuid))
 
-            illustration.set("breedte", str(asset.Meta.Breedte))
-            illustration.set("dpi", str(asset.Meta.Dpi))
-            illustration.set("formaat", asset.Meta.Formaat)
-            illustration.set("hoogte", str(asset.Meta.Hoogte))
+            illustration.set("breedte", str(asset.meta.breedte))
+            illustration.set("dpi", str(asset.meta.dpi))
+            illustration.set("formaat", asset.meta.formaat)
+            illustration.set("hoogte", str(asset.meta.hoogte))
             illustration.set("naam", asset.get_filename())
-            illustration.set("uitlijning", asset.Meta.Uitlijning)
+            illustration.set("uitlijning", asset.meta.uitlijning)
 
         output: str = etree.tostring(root, pretty_print=False, encoding="utf-8").decode("utf-8")
         return output
