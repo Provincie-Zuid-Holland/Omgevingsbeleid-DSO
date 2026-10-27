@@ -8,7 +8,7 @@ package_files:
   - locaties_testgebied-3.gml
   - img_00000000-aaaa-0000-0000-000000000001.png
   - manifest-ow.xml
-  - owlocaties.xml
+  - owLocaties.xml
   - owDivisies.xml
 
 wids_used:
