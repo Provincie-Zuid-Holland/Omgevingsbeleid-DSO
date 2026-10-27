@@ -41,7 +41,7 @@ geo:
     - lo-1-00000000-0000-0005-0000-000000000001
     - lo-1-20000000-0000-0005-0000-000000000003
 
-owlocaties:
+owLocaties:
   total: 4
   ambtsgebied: null
   gebied:

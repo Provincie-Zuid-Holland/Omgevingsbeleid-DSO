@@ -42,7 +42,7 @@ geo:
     - lo-1-00000000-0000-0005-0000-000000000001
     - lo-1-00000000-0000-0005-0000-000000000002
 
-owlocaties:
+owLocaties:
   total: 5
   ambtsgebied:
     noemer: "Provincie Zuid-Holland"
