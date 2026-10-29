@@ -8,12 +8,12 @@ from dso.services.koop.waardelijsten.gen import BestuursorgaanType, ProcedureSta
 
 
 class FRBR(BaseModel, metaclass=ABCMeta):
-    Work_Province_ID: str
-    Work_Date: str
-    Work_Other: str
-    Expression_Language: str
-    Expression_Date: str
-    Expression_Version: int | None = None
+    work_province_id: str
+    work_date: str
+    work_other: str
+    expression_language: str
+    expression_date: str
+    expression_version: int | None = None
 
     @abstractmethod
     def get_work(self) -> str:
@@ -35,32 +35,32 @@ class FRBR(BaseModel, metaclass=ABCMeta):
 # <FRBRWork>/akn/nl/bill/pv28/2023/omgevingsvisie-1</FRBRWork>
 # <FRBRExpression>/akn/nl/bill/pv28/2023/omgevingsvisie-1/nld@2024-09-29;2</FRBRExpression>
 class BillFRBR(FRBR):
-    Work_Country: str
+    work_country: str
 
     def get_work(self) -> str:
-        work: str = f"/akn/{self.Work_Country}/bill/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        work: str = f"/akn/{self.work_country}/bill/{self.work_province_id}/{self.work_date}/{self.work_other}"
         return work
 
     def get_expression_part(self) -> str:
-        expression_part: str = f"{self.Expression_Language}@{self.Expression_Date}"
-        if self.Expression_Version is not None:
-            expression_part = f"{expression_part};{self.Expression_Version}"
+        expression_part: str = f"{self.expression_language}@{self.expression_date}"
+        if self.expression_version is not None:
+            expression_part = f"{expression_part};{self.expression_version}"
         return expression_part
 
 
 # <FRBRWork>/akn/nl/act/pv28/2023/omgevingsvisie-1</FRBRWork>
 # <FRBRExpression>/akn/nl/act/pv28/2023/omgevingsvisie-1/nld@2024-09-29;2</FRBRExpression>
 class ActFRBR(FRBR):
-    Work_Country: str
+    work_country: str
 
     def get_work(self) -> str:
-        work: str = f"/akn/{self.Work_Country}/act/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        work: str = f"/akn/{self.work_country}/act/{self.work_province_id}/{self.work_date}/{self.work_other}"
         return work
 
     def get_expression_part(self) -> str:
-        expression_part: str = f"{self.Expression_Language}@{self.Expression_Date}"
-        if self.Expression_Version is not None:
-            expression_part = f"{expression_part};{self.Expression_Version}"
+        expression_part: str = f"{self.expression_language}@{self.expression_date}"
+        if self.expression_version is not None:
+            expression_part = f"{expression_part};{self.expression_version}"
         return expression_part
 
 
@@ -68,13 +68,13 @@ class ActFRBR(FRBR):
 # <FRBRExpression>/join/id/regdata/pv28/2024/3/nld@2024-01-30;1855</FRBRExpression>
 class GioFRBR(FRBR):
     def get_work(self) -> str:
-        work: str = f"/join/id/regdata/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        work: str = f"/join/id/regdata/{self.work_province_id}/{self.work_date}/{self.work_other}"
         return work
 
     def get_expression_part(self) -> str:
-        expression_part: str = f"{self.Expression_Language}@{self.Expression_Date}"
-        if self.Expression_Version is not None:
-            expression_part = f"{expression_part};{self.Expression_Version}"
+        expression_part: str = f"{self.expression_language}@{self.expression_date}"
+        if self.expression_version is not None:
+            expression_part = f"{expression_part};{self.expression_version}"
         return expression_part
 
 
@@ -87,41 +87,41 @@ class GioFRBR(FRBR):
 # @see: https://koop.gitlab.io/STOP/standaard/1.3.0/EA_EC4DE25BFB1341e6B632337DAF9C2791.html#Pkg__9058BA66AF9F44fbA43752F65A2654AF
 class PubdataFRBR(FRBR):
     def get_work(self) -> str:
-        work: str = f"/join/id/pubdata/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        work: str = f"/join/id/pubdata/{self.work_province_id}/{self.work_date}/{self.work_other}"
         return work
 
     def get_expression_part(self) -> str:
-        expression_part: str = f"{self.Expression_Language}@{self.Expression_Date}"
-        if self.Expression_Version is not None:
-            expression_part = f"{expression_part};{self.Expression_Version}"
+        expression_part: str = f"{self.expression_language}@{self.expression_date}"
+        if self.expression_version is not None:
+            expression_part = f"{expression_part};{self.expression_version}"
         return expression_part
 
 
 # <FRBRWork>/akn/nl/doc/pv28/2023/kennisgeving-omgevingsvisie-1</FRBRWork>
 # <FRBRExpression>/akn/nl/doc/pv28/2023/kennisgeving-omgevingsvisie-1/nld@2024-09-29;2</FRBRExpression>
 class DocFRBR(FRBR):
-    Work_Country: str
+    work_country: str
 
     def get_work(self) -> str:
-        work: str = f"/akn/{self.Work_Country}/doc/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        work: str = f"/akn/{self.work_country}/doc/{self.work_province_id}/{self.work_date}/{self.work_other}"
         return work
 
     def get_expression_part(self) -> str:
-        expression_part: str = f"{self.Expression_Language}@{self.Expression_Date}"
-        if self.Expression_Version is not None:
-            expression_part = f"{expression_part};{self.Expression_Version}"
+        expression_part: str = f"{self.expression_language}@{self.expression_date}"
+        if self.expression_version is not None:
+            expression_part = f"{expression_part};{self.expression_version}"
         return expression_part
 
 
 # /join/id/proces/pv28/2024/instelling-programma-1
 class DoelFRBR(FRBR):
     # Removing these base fields by declaring a default value
-    Expression_Language: str = Field("")
-    Expression_Date: str = Field("")
-    Expression_Version: int | None = Field(1)
+    expression_language: str = Field("")
+    expression_date: str = Field("")
+    expression_version: int | None = Field(1)
 
     def get_work(self) -> str:
-        work: str = f"/join/id/proces/{self.Work_Province_ID}/{self.Work_Date}/{self.Work_Other}"
+        work: str = f"/join/id/proces/{self.work_province_id}/{self.work_date}/{self.work_other}"
         return work
 
     def get_expression_part(self) -> str:

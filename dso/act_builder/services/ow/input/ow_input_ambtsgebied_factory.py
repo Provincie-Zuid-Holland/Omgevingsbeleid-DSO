@@ -9,7 +9,7 @@ class OwInputAmbtsgebiedFactory:
 
     def get_ambtsgebied(self) -> OwInputAmbtsgebied:
         result = OwInputAmbtsgebied(
-            source_uuid=str(self._ambtsgebied.UUID),
+            source_uuid=str(self._ambtsgebied.id),
             administrative_borders_id=self._ambtsgebied.identificatie_suffix,
             domain=self._ambtsgebied.domein,
             valid_on=self._ambtsgebied.geldig_op,

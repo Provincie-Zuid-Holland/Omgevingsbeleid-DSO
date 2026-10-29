@@ -6,7 +6,7 @@ class DocumentRepository:
         self._documents: dict[str, Document] = {}
 
     def add(self, document: dict):
-        uuidx: str = document["UUID"]
+        uuidx: str = document["id"]
         self._documents[uuidx] = Document.model_validate(document)
 
     def add_list(self, documents: list[dict]):
@@ -34,8 +34,8 @@ class DocumentRepository:
         return serializable_data
 
     def get_by_codes(self, codes: list[str]) -> list[Document]:
-        result: list[Document] = [d for _, d in self._documents.items() if d.Code in codes]
+        result: list[Document] = [d for _, d in self._documents.items() if d.code in codes]
         return result
 
     def get_new(self) -> list[Document]:
-        return [d for d in self._documents.values() if d.New]
+        return [d for d in self._documents.values() if d.new]

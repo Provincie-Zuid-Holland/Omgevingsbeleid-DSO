@@ -11,7 +11,7 @@ class PolicyObjectRepository:
     def add_list(self, policy_objects: list[dict]):
         for policy_object in policy_objects:
             self.add(
-                f"{policy_object['Object_Type']}-{policy_object['Object_ID']}",
+                f"{policy_object['object_type']}-{policy_object['object_id']}",
                 policy_object,
             )
 

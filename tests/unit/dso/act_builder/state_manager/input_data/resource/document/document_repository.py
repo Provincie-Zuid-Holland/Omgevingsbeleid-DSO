@@ -25,7 +25,7 @@ def document_repository_mock_with_two_documents() -> DocumentRepository | Mock:
 def _get_documents(count: int = 2) -> list[Document | Mock]:
     documents: list[Document | Mock] = []
     for i in range(1, count + 1):
-        frbr = GioFRBRFactory(frbr_type=FRBRType.DOCUMENT, Expression_Version=i).create()
+        frbr = GioFRBRFactory(frbr_type=FRBRType.DOCUMENT, expression_version=i).create()
         document = DocumentFactory(id=i, frbr=frbr).create()
         documents.append(document)
     return documents

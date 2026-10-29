@@ -19,8 +19,8 @@ class BesluitMetadataContent:
 
         documents: list[Document] = self._state_manager.input_data.resources.document_repository.all()
         for document in documents:
-            if document.New:
-                informatieobject_refs.append(document.Frbr.get_expression())
+            if document.new:
+                informatieobject_refs.append(document.frbr.get_expression())
 
         pdfs: list[BesluitPdf] = self._state_manager.input_data.resources.besluit_pdf_repository.all()
         for pdf in pdfs:

@@ -15,7 +15,7 @@ class GioFactory(Factory):
     def create(self) -> Gio:
         source_codes: set[str] = {f"gebied-{gebied_id}" for gebied_id in self.gebied_ids}
         locaties: list[GioLocatie] = [GioLocatieFactory(id=gebied_id).create() for gebied_id in self.gebied_ids]
-        gio_frbr: GioFRBR = GioFRBRFactory(Expression_Version=self.id, frbr_type=FRBRType.GEBIED).create()
+        gio_frbr: GioFRBR = GioFRBRFactory(expression_version=self.id, frbr_type=FRBRType.GEBIED).create()
 
         return Gio(
             key=f"gio-{self.id}",

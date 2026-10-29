@@ -20,7 +20,7 @@ class MotiveringContent:
         if motivering is None:
             return ""
 
-        wid_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__"
+        wid_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.expression_version}__"
         motivering_eid: str = "acc"
         motivering_wid: str = f"{wid_prefix}{motivering_eid}"
 

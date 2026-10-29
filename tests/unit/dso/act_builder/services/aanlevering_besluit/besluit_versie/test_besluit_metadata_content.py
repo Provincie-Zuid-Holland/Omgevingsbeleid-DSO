@@ -25,7 +25,7 @@ class TestBesluitMetadataContent(XMLCompareTest):
         state_manager_mock.input_data.resources.document_repository = document_repository_mock_with_two_documents
 
         besluit_pdf_repository_mock: BesluitPdfRepository | MagicMock = MagicMock(spec=BesluitPdfRepository)
-        frbr_besluit_pdf_1 = PubdataFRBRFactory(Expression_Version=1).create()
+        frbr_besluit_pdf_1 = PubdataFRBRFactory(expression_version=1).create()
         besluit_pdf_1: BesluitPdf = BesluitPdfFactory(id=1, frbr=frbr_besluit_pdf_1).create()
         besluit_pdf_repository_mock.all.return_value = [besluit_pdf_1]
         state_manager_mock.input_data.resources.besluit_pdf_repository = besluit_pdf_repository_mock
