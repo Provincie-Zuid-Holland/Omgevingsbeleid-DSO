@@ -17,10 +17,10 @@ class StateManager:
         # @note: act_ewid_service is used within:
         #           <RegelingVrijetekst componentnaam="nieuweregeling"
         self.act_ewid_service: EWIDService = EWIDService(
-            wid_prefix=f"{input_data.provincie_id}_{input_data.bekendmaking_frbr.Expression_Version}",
+            wid_prefix=f"{input_data.provincie_id}_{input_data.bekendmaking_frbr.expression_version}",
         )
         self.bill_ewid_service: EWIDService = EWIDService(
-            wid_prefix=f"{input_data.provincie_id}_{input_data.bekendmaking_frbr.Expression_Version}",
+            wid_prefix=f"{input_data.provincie_id}_{input_data.bekendmaking_frbr.expression_version}",
         )
 
     def add_output_file(self, output_file: OutputFile):

@@ -41,7 +41,7 @@ class OwInputPolicyObjectFactory:
         thema_uris: list[str] = self._get_thema_uris(policy_object.get_themas())
 
         result = OwInputPolicyObject(
-            source_uuid=str(policy_object_data["UUID"]),
+            source_uuid=str(policy_object_data["id"]),
             source_code=tekst_policy_object.object_code,
             wid=tekst_policy_object.wid,
             element=tekst_policy_object.element.lower(),

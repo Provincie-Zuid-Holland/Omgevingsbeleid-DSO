@@ -27,19 +27,19 @@ class PolicyObject:
     def has_gebiedengroep(self) -> bool:
         """
         This case is a bit special.
-        If "Gebiedengroep_Code" is not even defined as a property; then the object in not eligible for a Location
-        If "Gebiedengroep_Code" is defined but None; then use ambtsgebied
-        If "Gebiedengroep_Code" has content; Use that werkingsgebied
+        If "gebiedengroep_code" is not even defined as a property; then the object in not eligible for a Location
+        If "gebiedengroep_code" is defined but None; then use ambtsgebied
+        If "gebiedengroep_code" has content; Use that werkingsgebied
 
         This could be made clear with custom class hierarchy but seems overkill for now
         """
-        return "Gebiedengroep_Code" in self.data
+        return "gebiedengroep_code" in self.data
 
     def get_gebiedengroep_code(self) -> str | None:
-        return self.get("Gebiedengroep_Code")
+        return self.get("gebiedengroep_code")
 
     def get_themas(self) -> list[str]:
-        maybe_themas: list[str] | None = self.get("Themas")
+        maybe_themas: list[str] | None = self.get("themas")
         if maybe_themas:
             return maybe_themas
         return []

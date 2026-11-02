@@ -13,7 +13,7 @@ class DocumentAanleveringInformatieObjectBuilder(BuilderService):
         documenten = state_manager.input_data.resources.document_repository.all()
 
         for document in documenten:
-            if document.New:
+            if document.new:
                 output_file: OutputFile = self._generate_io(state_manager, document)
                 state_manager.add_output_file(output_file)
 
@@ -31,12 +31,12 @@ class DocumentAanleveringInformatieObjectBuilder(BuilderService):
         content = load_template(
             "document/AanleveringInformatieObject.xml",
             pretty_print=True,
-            document_frbr=document.Frbr,
+            document_frbr=document.frbr,
             document_filename=document_filename,
             document_hash=document_hash,
-            geboorteregeling=document.Geboorteregeling,
+            geboorteregeling=document.geboorteregeling,
             provincie_ref=state_manager.input_data.publication_settings.provincie_ref,
-            naam_informatie_object=document.Title,
+            naam_informatie_object=document.title,
         )
 
         output_file = OutputFile(

@@ -11,12 +11,12 @@ class AssetBuilder(BuilderService):
         assets: list[Asset] = asset_repository.all()
 
         for asset in assets:
-            if str(asset.UUID) not in state_manager.asset_uuids_aangeleverd:
+            if str(asset.id) not in state_manager.asset_uuids_aangeleverd:
                 continue
 
             output_file = OutputFile(
                 filename=asset.get_filename(),
-                content_type=asset.Meta.Formaat,
+                content_type=asset.meta.formaat,
                 content=AssetContentData(asset=asset),
             )
             state_manager.add_output_file(output_file)

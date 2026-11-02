@@ -23,7 +23,7 @@ class Gio(BaseModel):
     This represents a AanleveringInformatieObject and GeoInformatieObjectVaststelling
     And all that comes with it, like consolidating and listing it in the Appendix of the Act.
 
-    A Gio can be built by the API's Object_Type=gebied where this Gio will just have
+    A Gio can be built by the API's object_type=gebied where this Gio will just have
     one `locatie` which is the Area in Gebied.Area_UUID
 
     And a Gio can be built by a Gebiedsaanwijzing where it might have multiple `locatie`
@@ -61,15 +61,15 @@ class Gio(BaseModel):
 
 class GebiedenGroep(BaseModel):
     """
-    GebiedenGroep comes from the API Object_Type=gebiedengroep
+    GebiedenGroep comes from the API object_type=gebiedengroep
     Which always point to a Gio which just like it does in the API
 
     This class will be used for ow.gebiedengroep where it will point to ow.gebied
     Some ow.Tekstdelen will use this ow.gebiedengroep
-    This will represent the API.Object.Maatregel.Gebiedengroep configuration
+    This will represent the API.object.maatregel.gebiedengroep configuration
     """
 
-    uuid: UUID
+    id: UUID
     code: str
     title: str
     gio_key: str
@@ -78,7 +78,7 @@ class GebiedenGroep(BaseModel):
 
 
 class Gebiedsaanwijzing(BaseModel):
-    uuid: UUID
+    id: UUID
     code: str
     aanwijzing_type: str
     aanwijzing_groep: str

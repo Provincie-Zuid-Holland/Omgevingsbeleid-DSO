@@ -18,7 +18,7 @@ class TestArtikelenContent(XMLCompareTest):
         include_tijd_artikel_inhoud: bool,
     ) -> None:
         state_manager_mock.input_data.publication_settings.provincie_id = "pv28"
-        state_manager_mock.input_data.publication_settings.regeling_frbr = ActFRBRFactory(Expression_Version=1).create()
+        state_manager_mock.input_data.publication_settings.regeling_frbr = ActFRBRFactory(expression_version=1).create()
 
         state_manager_mock.artikel_eid = artikel_eid_repository_with_eid_data
 

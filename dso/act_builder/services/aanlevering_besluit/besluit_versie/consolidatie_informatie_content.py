@@ -57,9 +57,9 @@ class ConsolidatieInformatieContent:
 
         documents_new: list[Document] = self._state_manager.input_data.resources.document_repository.get_new()
         for document in documents_new:
-            text_document: TekstBijlageDocument = text_data.get_document_by_code(document.Code)
+            text_document: TekstBijlageDocument = text_data.get_document_by_code(document.code)
             beoogd_informatieobject = BeoogdObject(
-                instrument_versie=document.Frbr.get_expression(),
+                instrument_versie=document.frbr.get_expression(),
                 eid=f"!{settings.regeling_componentnaam}#{text_document.eid}",
             )
             beoogd_informatieobjecten.append(beoogd_informatieobject)

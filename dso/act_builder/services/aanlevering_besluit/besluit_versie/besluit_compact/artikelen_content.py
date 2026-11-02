@@ -63,7 +63,7 @@ class ArtikelenContent:
 
     def _create_article(self, input_artikel: Artikel) -> ArtikelContent:
         settings: PublicationSettings = self._state_manager.input_data.publication_settings
-        wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__"
+        wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.expression_version}__"
         eId_prefix: str = "art_"
 
         eId = f"{eId_prefix}{input_artikel.nummer}"

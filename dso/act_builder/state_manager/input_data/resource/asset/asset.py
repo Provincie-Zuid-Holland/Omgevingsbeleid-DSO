@@ -17,33 +17,33 @@ class IllustratieUitlijning(str, Enum):
 
 
 class Meta(BaseModel):
-    Ext: str = Field(..., alias="ext")
-    Breedte: int = Field(..., alias="width")
-    Hoogte: int = Field(..., alias="height")
-    Size: int = Field(..., alias="size")
-    Formaat: IllustratieFormaat = Field(None)
-    Uitlijning: IllustratieUitlijning = Field(IllustratieUitlijning.start)
-    Dpi: int = Field(150)
+    ext: str = Field(..., alias="ext")
+    breedte: int = Field(..., alias="width")
+    hoogte: int = Field(..., alias="height")
+    size: int = Field(..., alias="size")
+    formaat: IllustratieFormaat = Field(None)
+    uitlijning: IllustratieUitlijning = Field(IllustratieUitlijning.start)
+    dpi: int = Field(150)
 
     @model_validator(mode="before")
     def generate_formaat(cls, data: dict):
-        if "Formaat" not in data:
-            data["Formaat"] = IllustratieFormaat[data.get("ext", data.get("Ext"))]
+        if "formaat" not in data:
+            data["formaat"] = IllustratieFormaat[data.get("ext", data.get("ext"))]
         return data
 
     model_config = ConfigDict(populate_by_name=True)
 
 
 class Asset(BaseModel):
-    UUID: uuid.UUID
-    Content: str
-    Meta: Meta
+    id: uuid.UUID
+    content: str
+    meta: Meta
 
     def get_filename(self) -> str:
-        filename: str = f"img_{self.UUID}.{self.Meta.Ext}"
+        filename: str = f"img_{self.id}.{self.meta.ext}"
         return filename
 
-    @field_serializer("UUID")
+    @field_serializer("id")
     def serialize_uuid(cls, v: uuid.UUID) -> str:
         return str(v)
 

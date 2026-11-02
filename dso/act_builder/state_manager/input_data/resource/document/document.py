@@ -6,24 +6,24 @@ from ......models import ContentType, GioFRBR
 
 
 class Document(BaseModel):
-    UUID: uuid.UUID
-    Code: str
-    Frbr: GioFRBR
-    New: bool
-    Filename: str
-    Title: str
-    Geboorteregeling: str
-    Content_Type: ContentType
-    Binary: bytes
+    id: uuid.UUID
+    code: str
+    frbr: GioFRBR
+    new: bool
+    filename: str
+    title: str
+    geboorteregeling: str
+    content_type: ContentType
+    binary: bytes
 
     def get_filename(self) -> str:
-        return self.Filename
+        return self.filename
 
     def get_io_filename(self) -> str:
-        filename: str = f"IO_{self.Filename.replace('.', '_')}.xml"
+        filename: str = f"IO_{self.filename.replace('.', '_')}.xml"
         return filename
 
-    @field_validator("Content_Type", mode="before")
+    @field_validator("content_type", mode="before")
     def _format_content_type(cls, value):
         if value in ContentType.__members__.values():
             return value

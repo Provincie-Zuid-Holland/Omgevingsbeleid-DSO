@@ -9,7 +9,7 @@ class AssetRepository:
         self._assets: dict[str, Asset] = {}
 
     def add(self, asset: dict):
-        asset_id = asset["UUID"]
+        asset_id = asset["id"]
         self._assets[asset_id] = Asset.model_validate(asset)
 
     def add_list(self, assets: list[dict]):

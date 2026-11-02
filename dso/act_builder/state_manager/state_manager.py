@@ -38,12 +38,12 @@ class StateManager:
         # @note: act_ewid_service is used within:
         #           <RegelingVrijetekst componentnaam="nieuweregeling"
         self.act_ewid_service: EWIDService = EWIDService(
-            wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.Expression_Version}",
+            wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.expression_version}",
             known_wid_map=input_data.get_known_wid_map(),
             known_wids=input_data.get_known_wids(),
         )
         self.bill_ewid_service: EWIDService = EWIDService(
-            wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.Expression_Version}",
+            wid_prefix=f"{input_data.publication_settings.provincie_id}_{input_data.publication_settings.regeling_frbr.expression_version}",
         )
 
     def add_output_file(self, output_file: OutputFile):

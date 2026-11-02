@@ -13,13 +13,13 @@ class DocumentFactory(Factory):
     def create(self) -> Document:
         title = f"Document-{self.id}"
         return Document(
-            UUID=self.get_uuid_from_id(TypeEnum.DOCUMENT, self.id),
-            Code=f"document-{self.id}",
-            Frbr=self.frbr,
-            New=self.new,
-            Filename=f"document-{self.id}.{ContentType.PDF.lower()}",
-            Title=title,
-            Geboorteregeling=self.geboorteregeling,
-            Content_Type=self.content_type,
-            Binary=title.encode(),
+            id=self.get_uuid_from_id(TypeEnum.DOCUMENT, self.id),
+            code=f"document-{self.id}",
+            frbr=self.frbr,
+            new=self.new,
+            filename=f"document-{self.id}.{ContentType.PDF.lower()}",
+            title=title,
+            geboorteregeling=self.geboorteregeling,
+            content_type=self.content_type,
+            binary=title.encode(),
         )

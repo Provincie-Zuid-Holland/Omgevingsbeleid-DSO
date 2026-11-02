@@ -12,75 +12,75 @@ class FRBRType(IntEnum):
 
 
 class GioFRBRFactory(Factory):
-    Work_Province_ID: str = "pv28"
-    Work_Other: str = "omgevingsvisie-1"
-    Expression_Language: str = "nld"
-    Work_Date: str = "2025"
-    Expression_Date: str = "2025-11-25"
-    Expression_Version: int
+    work_province_id: str = "pv28"
+    work_other: str = "omgevingsvisie-1"
+    expression_language: str = "nld"
+    work_date: str = "2025"
+    expression_date: str = "2025-11-25"
+    expression_version: int
     frbr_type: FRBRType
 
     def create(self) -> GioFRBR:
         return GioFRBR(
-            Work_Province_ID=self.Work_Province_ID,
-            Work_Other=self.Work_Other,
-            Expression_Language=self.Expression_Language,
-            Work_Date=self.Work_Date,
-            Expression_Date=self.Expression_Date,
-            Expression_Version=self.frbr_type + self.Expression_Version,
+            work_province_id=self.work_province_id,
+            work_other=self.work_other,
+            expression_language=self.expression_language,
+            work_date=self.work_date,
+            expression_date=self.expression_date,
+            expression_version=self.frbr_type + self.expression_version,
         )
 
 
 class PubdataFRBRFactory(Factory):
-    Work_Province_ID: str = "pv28"
-    Work_Other: str = "omgevingsvisie-1"
-    Expression_Language: str = "nld"
-    Work_Date: str = "2025"
-    Expression_Date: str = "2025-11-25"
-    Expression_Version: int
+    work_province_id: str = "pv28"
+    work_other: str = "omgevingsvisie-1"
+    expression_language: str = "nld"
+    work_date: str = "2025"
+    expression_date: str = "2025-11-25"
+    expression_version: int
 
     def create(self) -> PubdataFRBR:
         return PubdataFRBR(
-            Work_Province_ID=self.Work_Province_ID,
-            Work_Other=self.Work_Other,
-            Expression_Language=self.Expression_Language,
-            Work_Date=self.Work_Date,
-            Expression_Date=self.Expression_Date,
-            Expression_Version=FRBRType.PUB_DATA + self.Expression_Version,
+            work_province_id=self.work_province_id,
+            work_other=self.work_other,
+            expression_language=self.expression_language,
+            work_date=self.work_date,
+            expression_date=self.expression_date,
+            expression_version=FRBRType.PUB_DATA + self.expression_version,
         )
 
 
 class DoelFRBRFactory(Factory):
-    Work_Province_ID: str = "pv28"
-    Work_Other: str = "omgevingsvisie-1"
-    Work_Date: str = "2025"
+    work_province_id: str = "pv28"
+    work_other: str = "omgevingsvisie-1"
+    work_date: str = "2025"
 
     def create(self) -> DoelFRBR:
         return DoelFRBR(
-            Work_Province_ID=self.Work_Province_ID,
-            Work_Other=self.Work_Other,
-            Work_Date=self.Work_Date,
+            work_province_id=self.work_province_id,
+            work_other=self.work_other,
+            work_date=self.work_date,
         )
 
 
 class ActFRBRFactory(Factory):
-    Work_Country: str = "nl"
-    Work_Province_ID: str = "pv28"
-    Work_Other: str = "omgevingsvisie-1"
-    Expression_Language: str = "nld"
-    Work_Date: str = "2025"
-    Expression_Date: str = "2025-11-25"
-    Expression_Version: int
+    work_country: str = "nl"
+    work_province_id: str = "pv28"
+    work_other: str = "omgevingsvisie-1"
+    expression_language: str = "nld"
+    work_date: str = "2025"
+    expression_date: str = "2025-11-25"
+    expression_version: int
 
     def create(self) -> ActFRBR:
         return ActFRBR(
-            Work_Country=self.Work_Country,
-            Work_Province_ID=self.Work_Province_ID,
-            Work_Other=self.Work_Other,
-            Expression_Language=self.Expression_Language,
-            Work_Date=self.Work_Date,
-            Expression_Date=self.Expression_Date,
-            Expression_Version=FRBRType.ACT + self.Expression_Version,
+            work_country=self.work_country,
+            work_province_id=self.work_province_id,
+            work_other=self.work_other,
+            expression_language=self.expression_language,
+            work_date=self.work_date,
+            expression_date=self.expression_date,
+            expression_version=FRBRType.ACT + self.expression_version,
         )
 
 

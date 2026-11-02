@@ -44,7 +44,7 @@ class WijzigBijlageContent:
         self._state_manager.regeling_vrijetekst_wordt = regeling_vrijetekst_wordt
         self._state_manager.regeling_vrijetekst_aangeleverd = aanleveren_regeling_content
 
-        wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.Expression_Version}__"
+        wId_prefix: str = f"{settings.provincie_id}_{settings.regeling_frbr.expression_version}__"
         content = load_template(
             "akn/besluit_versie/besluit_compact/WijzigBijlage.xml",
             regeling_content=aanleveren_regeling_content,

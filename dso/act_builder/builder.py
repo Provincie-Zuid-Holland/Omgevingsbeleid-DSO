@@ -68,7 +68,7 @@ class Builder:
 
                 case DocumentContentData():
                     with open(destination_path, "wb") as f:
-                        f.write(output_file.content.document.Binary)
+                        f.write(output_file.content.document.binary)
 
     def zip_files(self) -> io.BytesIO:
         zip_buffer = io.BytesIO()
@@ -85,7 +85,7 @@ class Builder:
                         zip_file.writestr(output_file.filename, output_file.content.pdf.binary)
 
                     case DocumentContentData():
-                        zip_file.writestr(output_file.filename, output_file.content.document.Binary)
+                        zip_file.writestr(output_file.filename, output_file.content.document.binary)
 
         zip_buffer.seek(0)
         return zip_buffer

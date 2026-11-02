@@ -14,7 +14,7 @@ class BijlageDocumentenContent:
 
     def create(self) -> str:
         documenten: list[Document] = self._state_manager.input_data.resources.document_repository.all()
-        documenten = sorted(documenten, key=lambda d: d.Title)
+        documenten = sorted(documenten, key=lambda d: d.title)
         if len(documenten) == 0:
             return ""
 

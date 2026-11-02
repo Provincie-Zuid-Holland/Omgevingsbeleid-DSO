@@ -25,7 +25,7 @@ class TestConsolidatieInformatieContent(XMLCompareTest):
     ) -> None:
         instelling_doel = InstellingDoelFactory(datum_juridisch_werkend_vanaf="2025-11-26").create()
         state_manager_mock.input_data.publication_settings.instelling_doel = instelling_doel
-        state_manager_mock.input_data.publication_settings.regeling_frbr = ActFRBRFactory(Expression_Version=1).create()
+        state_manager_mock.input_data.publication_settings.regeling_frbr = ActFRBRFactory(expression_version=1).create()
         state_manager_mock.input_data.publication_settings.regeling_componentnaam = "pv28_omgevingsvisie_1"
 
         state_manager_mock.text_data = TextDataFactory().create()
@@ -39,9 +39,9 @@ class TestConsolidatieInformatieContent(XMLCompareTest):
         state_manager_mock.input_data.resources.document_repository = document_repository_mock_with_two_new_documents
 
         expression_version = 8
-        gio_frbr: GioFRBR = GioFRBRFactory(frbr_type=FRBRType.GEBIED, Expression_Version=expression_version).create()
+        gio_frbr: GioFRBR = GioFRBRFactory(frbr_type=FRBRType.GEBIED, expression_version=expression_version).create()
         gebied_to_be_deleted = VerwijderdeGio(frbr=gio_frbr)
-        was_regeling_frbr = ActFRBRFactory(Expression_Version=1).create()
+        was_regeling_frbr = ActFRBRFactory(expression_version=1).create()
         regeling_mutatie = RegelingMutatie(
             was_regeling_frbr=was_regeling_frbr,
             te_verwijderden_gios=[gebied_to_be_deleted],

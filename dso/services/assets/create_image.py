@@ -6,7 +6,7 @@ from ...act_builder.state_manager.input_data.resource.asset.asset import Asset
 
 
 def decode_image_data(asset: Asset):
-    match = re.match(r"data:image/(.*?);base64,(.*)", asset.Content)
+    match = re.match(r"data:image/(.*?);base64,(.*)", asset.content)
     if not match:
         raise RuntimeError("Invalid asset content")
     _, base64_data = match.groups()

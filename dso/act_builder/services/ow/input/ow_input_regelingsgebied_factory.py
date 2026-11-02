@@ -9,7 +9,7 @@ class OwInputRegelingsgebiedFactory:
 
     def get_regelingsgebied(self) -> OwInputRegelingsgebied:
         result = OwInputRegelingsgebied(
-            source_uuid=str(self._ambtsgebied.UUID),
+            source_uuid=str(self._ambtsgebied.id),
         )
 
         return result

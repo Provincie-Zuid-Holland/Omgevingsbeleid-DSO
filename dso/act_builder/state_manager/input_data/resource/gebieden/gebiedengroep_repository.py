@@ -9,7 +9,7 @@ class GebiedengroepRepository:
         self._groepen: dict[str, GebiedenGroep] = {}
 
     def add(self, groep: GebiedenGroep) -> None:
-        self._groepen[groep.uuid] = groep
+        self._groepen[groep.id] = groep
 
     def get_optional(self, idx: uuid.UUID) -> GebiedenGroep | None:
         groep: GebiedenGroep | None = self._groepen.get(str(idx))
